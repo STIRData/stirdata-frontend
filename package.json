@@ -1,0 +1,42 @@
+{
+  "name": "stirdata-frontend",
+  "version": "1.0.0",
+  "description": "STIRData Portal",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ails-lab/stirdata-frontend.git"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
+    "lint": "npm run lint:js",
+    "test:e2e": "nightwatch"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.13.1",
+    "autosuggest-highlight": "^3.1.1",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "bootstrap-vue": "^2.21.2",
+    "core-js": "^3.9.1",
+    "nuxt": "^2.15.3",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config": "^6.0.0",
+    "@nuxtjs/eslint-module": "^3.0.2",
+    "babel-eslint": "^10.1.0",
+    "chromedriver": "^89.0.0",
+    "cross-env": "^5.2.1",
+    "eslint": "^7.22.0",
+    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-vue": "^7.7.0",
+    "nightwatch": "^1.5.1",
+    "sass": "^1.34.0",
+    "sass-loader": "^10.1.1"
+  }
+}
