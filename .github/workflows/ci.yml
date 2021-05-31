@@ -3,12 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - main
-      - master
-  pull_request:
-    branches:
-      - main
-      - master
+      - dev
 
 jobs:
   ci:
@@ -18,18 +13,43 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node: [14]
+    env:
+      DEPLOY_USER: deploy
+      PROJECT: stirdata
+      APP: frontend
 
     steps:
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
+        id: extract_branch
+
+      - name: Set tag ref
+        run: |
+          echo TAG_REF=${GITHUB_SHA::8} >> $GITHUB_ENV              
+
+      - name: Set env for dev
+        if: endsWith(github.ref, '/dev')
+        run: |
+          echo DEPLOY_SERVER=hotwheels.ails.ece.ntua.gr >> $GITHUB_ENV              
+          echo DEPLOY_TARGET=/data/$PROJECT/$APP/current >> $GITHUB_ENV
+      - name: Set env for production
+        if: endsWith(github.ref, '/master')
+        run: |
+          echo DEPLOY_SERVER=lego.ails.ece.ntua.gr >> $GITHUB_ENV       
+          echo DEPLOY_TARGET=/data/$PROJECT/$APP/current >> $GITHUB_ENV
+
       - name: Checkout 🛎
         uses: actions/checkout@master
 
-      - name: Setup node env 🏗
+      - name: Setup node env
         uses: actions/setup-node@v2.1.2
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
 
-      - name: Cache node_modules 📦
+      - name: Cache node_modules 
         uses: actions/cache@v2
         with:
           path: ~/.npm
@@ -37,11 +57,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install dependencies 👨🏻‍💻
+      - name: Install dependencies
         run: npm ci
 
-      - name: Run linter 👀
-        run: npm run lint
+      - name: Run generate
+        run: npm run generate
 
-      - name: Run tests 🧪
-        run: npm run test
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.1.1
+        env:
+            SSH_PRIVATE_KEY: ${{ secrets.WITH_CI_SSH_KEY }}
+            ARGS: "-v -c -rli --delete -b --backup-dir=/home/${DEPLOY_USER}/backups/${PROJECT}${APP}-${{ steps.extract_branch.outputs.branch }}_backup"
+            SOURCE: "dist/"
+            REMOTE_HOST: ${{ env.DEPLOY_SERVER }}
+            REMOTE_USER: ${{ env.DEPLOY_USER }}
+            TARGET: ${{ env.DEPLOY_TARGET }}        
+
+
