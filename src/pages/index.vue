@@ -41,6 +41,45 @@
               />
             </b-form-group>
           </b-col>
+          <b-col>
+            <h3 class="mb-4">
+              Date
+            </h3>
+            <b-form-group
+              id="date-group"
+              label="Select date range"
+              label-for="date-0"
+            >
+              <b-row class="align-items-center">
+                <b-col cols="2" class="mb-2">From:</b-col>
+                <b-col cols="10">
+                  <b-form-datepicker
+                    id="date-0"
+                    v-model="form.startDate"
+                    class="mb-2"
+                    :start-weekday="1"
+                    :show-decade-nav="true"
+                    :hide-header="true"
+                    :state="true"
+                  />
+                </b-col>
+              </b-row>
+              <b-row class="align-items-center">
+                <b-col cols="2" class="mb-2">Until:</b-col>
+                <b-col cols="10">
+                  <b-form-datepicker
+                    id="date-1"
+                    v-model="form.endDate"
+                    class="mb-2"
+                    :start-weekday="1"
+                    :show-decade-nav="true"
+                    :hide-header="true"
+                    :state="validateInput('date')"
+                  />
+                </b-col>
+              </b-row>
+            </b-form-group>
+          </b-col>
         </b-row>
         <b-row class="mt-2 pt-4 d-flex justify-content-end px-3 border-top">
           <b-button
@@ -68,7 +107,9 @@
       return {
         form: {
           nuts: null,
-          nace: null
+          nace: null,
+          startDate: null,
+          endDate: null
         },
         nutsOptions: [],
         naceOptions: [],
@@ -88,21 +129,32 @@
       this.naceZeroResponse.results.bindings.forEach(item => {
         this.naceOptions.push({'value': item.code.value, 'text': `${item.code.value.split('/').pop()} - ${item.label.value}`});
       });
-      console.log(this.nuts);
-      console.log(this.nace);
     },
 
     methods: {
+      validateInput(field) {
+        if (field === 'date') {
+          if (this.form.endDate <= this.form.startDate) return false;
+        }
+        return true;
+      },
+
       onSubmit(event) {
-        event.preventDefault()
-        alert(JSON.stringify(this.form))
+        event.preventDefault();
+        if (!this.validateInput('date')) {
+          alert('The end date should be later than the start date.')
+          return;
+        }
+        alert(JSON.stringify(this.form));
       },
 
       onReset(event) {
-        event.preventDefault()
+        event.preventDefault();
         // Reset our form values
         this.form.nuts = null;
         this.form.nace = null;
+        this.form.startDate = null;
+        this.form.endDate = null;
         // Reset/clear native browser form validation state
         this.show = false
         this.$nextTick(() => {
