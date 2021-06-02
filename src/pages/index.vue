@@ -12,6 +12,9 @@
           <b-col>
             <h3 class="mb-4">
               Region
+              <h5 v-if="form.nuts" class="font-weight-normal mt-3">
+                {{ `Selected region: ${nutsOptions.find(option => option.value === form.nuts).text}` }}
+              </h5>
             </h3>
             <b-form-group
               id="nuts-group"
@@ -28,6 +31,9 @@
           <b-col>
             <h3 class="mb-4">
               Activity
+              <h5 v-if="form.nace" class="font-weight-normal mt-3">
+                {{ `Selected activity: ${naceOptions.find(option => option.value === form.nace).text}` }}
+              </h5>
             </h3>
             <b-form-group
               id="nace-group"
@@ -60,7 +66,7 @@
                     :start-weekday="1"
                     :show-decade-nav="true"
                     :hide-header="true"
-                    :state="true"
+                    placeholder="Choose a start date"
                   />
                 </b-col>
               </b-row>
@@ -74,7 +80,8 @@
                     :start-weekday="1"
                     :show-decade-nav="true"
                     :hide-header="true"
-                    :state="validateInput('date')"
+                    :state="validateInput('endDate')"
+                    placeholder="Choose an end date"
                   />
                 </b-col>
               </b-row>
@@ -133,16 +140,20 @@
 
     methods: {
       validateInput(field) {
-        if (field === 'date') {
-          if (this.form.endDate <= this.form.startDate) return false;
-        }
-        return true;
+        // let validNuts = !!this.form.nuts;
+        // let validNace = !!this.form.nace;
+        // let validStartDate = !!this.form.startDate;
+        let validEndDate = !this.form.endDate || !this.form.startDate || this.form.endDate > this.form.startDate;
+
+        if (field === 'endDate') return validEndDate;
+
+        return validEndDate && (!!this.form.nuts || !!this.form.nace || !!this.form.startDate || !!this.form.endDate);
       },
 
       onSubmit(event) {
         event.preventDefault();
-        if (!this.validateInput('date')) {
-          alert('The end date should be later than the start date.')
+        if (!this.validateInput('')) {
+          alert('You have to enter at least one value in the form.')
           return;
         }
         alert(JSON.stringify(this.form));
