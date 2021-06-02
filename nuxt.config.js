@@ -1,3 +1,4 @@
+
 /* eslint-disable camelcase */
 
 export default {
@@ -17,11 +18,16 @@ export default {
     ]
   },
 
+  env: {
+    baseUrl: process.env.BASE_API_URL || 'http://localhost:3000'
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['./assets/scss/style'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/apis',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -41,12 +47,12 @@ export default {
     '@nuxtjs/axios'
   ],
 
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {   
+  },
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
 
-  srcDir: 'src/',
+  srcDir: 'src/'
 }
