@@ -19,7 +19,7 @@ export default {
   },
 
   env: {
-    baseUrl: process.env.BASE_API_URL || 'http://localhost:3000'
+    baseUrl: process.env.BASE_API_URL
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -36,7 +36,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module'
+    // '@nuxtjs/eslint-module'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -47,7 +47,7 @@ export default {
     '@nuxtjs/axios'
   ],
 
-  axios: {   
+  axios: {
   },
 
    // Build Configuration: https://go.nuxtjs.dev/config-build

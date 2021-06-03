@@ -17,6 +17,7 @@ jobs:
       DEPLOY_USER: deploy
       PROJECT: stirdata
       APP: frontend
+      BASE_API_URL: https://dev.stirdata.eu/api
 
     steps:
 
@@ -27,17 +28,17 @@ jobs:
 
       - name: Set tag ref
         run: |
-          echo TAG_REF=${GITHUB_SHA::8} >> $GITHUB_ENV              
+          echo TAG_REF=${GITHUB_SHA::8} >> $GITHUB_ENV
 
       - name: Set env for dev
         if: endsWith(github.ref, '/dev')
         run: |
-          echo DEPLOY_SERVER=hotwheels.ails.ece.ntua.gr >> $GITHUB_ENV              
+          echo DEPLOY_SERVER=hotwheels.ails.ece.ntua.gr >> $GITHUB_ENV
           echo DEPLOY_TARGET=/data/$PROJECT/$APP/current >> $GITHUB_ENV
       - name: Set env for production
         if: endsWith(github.ref, '/master')
         run: |
-          echo DEPLOY_SERVER=lego.ails.ece.ntua.gr >> $GITHUB_ENV       
+          echo DEPLOY_SERVER=lego.ails.ece.ntua.gr >> $GITHUB_ENV
           echo DEPLOY_TARGET=/data/$PROJECT/$APP/current >> $GITHUB_ENV
 
       - name: Checkout 🛎
@@ -49,7 +50,7 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
 
-      - name: Cache node_modules 
+      - name: Cache node_modules
         uses: actions/cache@v2
         with:
           path: ~/.npm
@@ -71,6 +72,4 @@ jobs:
             SOURCE: "dist/"
             REMOTE_HOST: ${{ env.DEPLOY_SERVER }}
             REMOTE_USER: ${{ env.DEPLOY_USER }}
-            TARGET: ${{ env.DEPLOY_TARGET }}        
-
-
+            TARGET: ${{ env.DEPLOY_TARGET }}

@@ -1,6 +1,5 @@
 <template>
   <header
-    v-visible-on-scroll
     class="m-0 navbar-brand container-fluid d-flex justify-content-between"
     role="banner"
   >
