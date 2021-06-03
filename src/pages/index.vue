@@ -47,7 +47,7 @@
               id="date-group"
             >
               <b-row class="align-items-center mb-2">
-                <b-col cols="2" class="mb-2">From:</b-col>
+                <b-col cols="2" class="mb-2">After:</b-col>
                 <b-col cols="10">
                   <b-form-datepicker
                     id="date-0"
@@ -56,12 +56,12 @@
                     :start-weekday="1"
                     :show-decade-nav="true"
                     :hide-header="true"
-                    placeholder="Start date"
+                    placeholder="Registered after"
                   />
                 </b-col>
               </b-row>
               <b-row class="align-items-center">
-                <b-col cols="2" class="mb-2">Until:</b-col>
+                <b-col cols="2" class="mb-2">Before:</b-col>
                 <b-col cols="10">
                   <b-form-datepicker
                     id="date-1"
@@ -71,7 +71,7 @@
                     :show-decade-nav="true"
                     :hide-header="true"
                     :state="validateInput('endDate')"
-                    placeholder="End date"
+                    placeholder="Registered before"
                   />
                 </b-col>
               </b-row>
@@ -105,7 +105,7 @@
           v-for="(endpoint, index) in results"
           :key="index"
         >
-          <h5 class="mt-4">{{ index }}</h5>
+          <h5 class="text-capitalize mt-4">{{ index.split('-').join(' ') }}:</h5>
           <b-table striped hover small :items="endpoint"></b-table>
         </div>
       </div>
