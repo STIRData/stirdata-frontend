@@ -150,7 +150,7 @@
 
     methods: {
       validateInput(field) {
-        let validNuts = !!this.form.nuts;
+        let validNuts = this.form.nuts.length == 4;
         // let validNace = !!this.form.nace;
         // let validStartDate = !!this.form.startDate;
         let validEndDate = !this.form.endDate || !this.form.startDate || this.form.endDate > this.form.startDate;
@@ -206,11 +206,11 @@
         }
 
         let query = "";
-        if (this.form.nuts) query = query + `NUTS=${this.form.nuts[this.form.nuts.length - 1]}&`;
-        if (this.form.nace) query = query + `NACE=${this.form.nace[this.form.nace.length - 1]}&`;
+        if (this.form.nuts.length > 0) query = query + `NUTS=${this.form.nuts[this.form.nuts.length - 1]}&`;
+        if (this.form.nace.length > 0) query = query + `NACE=${this.form.nace[this.form.nace.length - 1]}&`;
         if (this.form.startDate) query = query + `startDate=${this.form.startDate}&`;
         if (this.form.endDate) query = query + `endDate=${this.form.endDate}&`;
-        this.$api.get(`query?${query}`)
+        this.$api.get(`query?${query.slice(0, -1)}`)
           .then(queryResponse => {
             this.results = {};
             for (let endpoint of queryResponse.data) {
