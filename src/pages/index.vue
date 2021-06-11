@@ -19,8 +19,8 @@
                 input-id="nuts-tags"
                 input-class="d-none"
                 :input-attrs="{'readonly':'true'}"
-                tag-variant="secondary"
-                tag-class="p-2"
+                tag-variant="info"
+                tag-class="font-weight-bold p-2"
                 add-button-text=""
                 no-outer-focus
                 size="md"
@@ -32,12 +32,29 @@
               :key="'nuts-group-'+index"
               id="'nuts-group-'+index"
             >
-              <b-form-select
-                id="'nuts-'+index"
-                v-model="form.nuts[index]"
-                :options="nuts"
-                v-on:change="selectNuts(index)"
-              />
+              <b-col
+                cols="10"
+                class="d-inline-flex p-0"
+              >
+                <b-form-select
+                  id="'nuts-'+index"
+                  v-model="form.nuts[index]"
+                  :options="nuts"
+                  v-on:change="selectNuts(index)"
+                />
+              </b-col>
+              <b-col
+                v-if="index < 3 && form.nuts[index] && form.nuts[index].length > 0"
+                cols="1"
+                class="d-inline-flex p-0"
+              >
+                <b-button
+                  variant="secondary"
+                  @click="form.nutsTags.push(form.nuts[index].split('/').pop())"
+                >
+                  <i class="fa fa-plus" aria-hidden="true" />
+                </b-button>
+              </b-col>
             </b-form-group>
           </b-col>
           <b-col>
@@ -50,8 +67,8 @@
                 input-id="nace-tags"
                 input-class="d-none"
                 :input-attrs="{'readonly':'true'}"
-                tag-variant="secondary"
-                tag-class="p-2"
+                tag-variant="info"
+                tag-class="font-weight-bold p-2"
                 add-button-text=""
                 no-outer-focus
                 size="md"
@@ -63,12 +80,30 @@
               :key="'nace-group-'+index"
               id="'nace-group-'+index"
             >
-              <b-form-select
-                id="'nace-'+index"
-                v-model="form.nace[index]"
-                :options="nace"
-                v-on:change="selectNace(index)"
-              />
+              <b-col
+                cols="10"
+                class="d-inline-flex p-0"
+              >
+                <b-form-select
+                  id="'nace-'+index"
+                  v-model="form.nace[index]"
+                  :options="nace"
+                  v-on:change="selectNace(index)"
+                />
+              </b-col>
+              <b-col
+                v-if="index < 3 && form.nace[index] && form.nace[index].length > 0"
+                cols="1"
+                class="d-inline-flex p-0"
+              >
+                <b-button
+                  variant="secondary"
+                  @click="form.naceTags.push(form.nace[index].split('/').pop())"
+                >
+                  <i class="fa fa-plus" aria-hidden="true" />
+                </b-button>
+              </b-col>
+
             </b-form-group>
           </b-col>
           <b-col>
@@ -131,13 +166,15 @@
         class="mt-4 pt-4 border-secondary border-top"
       >
         <h3 class="text-center">Results</h3>
-        <div
-          v-for="(endpoint, index) in results"
-          :key="index"
-        >
-          <h5 class="text-capitalize mt-4">{{ index.split('-').join(' ') }}:</h5>
-          <b-table striped hover small :items="endpoint"></b-table>
-        </div>
+        <b-tabs content-class="mt-3" justified>
+          <b-tab
+            v-for="(endpoint, index) in results"
+            :key="index"
+            :title="index.split('-').join(' ')"
+          >
+            <b-table striped hover small :items="endpoint"></b-table>
+          </b-tab>
+        </b-tabs>
       </div>
     </div>
   </div>
@@ -159,7 +196,8 @@
         queryResponse: null,
         results: null,
         nutsOptions: [],
-        naceOptions: []
+        naceOptions: [],
+        endpoints: {}
       }
     },
 
@@ -170,6 +208,7 @@
       let nutsZeroResponse = await this.$api.get('nuts');
       nutsZeroResponse.data.results.bindings.forEach(item => {
         nuts0.push({'value': item.code.value, 'text': `${item.code.value.split('/').pop()} - ${item.label.value}`});
+        this.endpoints[item.code.value.split('/').pop()] = [];
       });
       this.nutsOptions.push(nuts0);
 
@@ -204,6 +243,7 @@
               else {
                 this.nutsOptions.splice(level+1, 1, options);
                 this.nutsOptions = this.nutsOptions.slice(0, level+2);
+                this.form.nuts.splice(level+1, 4);
               }
             }
             else {
@@ -226,6 +266,7 @@
               else {
                 this.naceOptions.splice(level+1, 1, options);
                 this.naceOptions = this.naceOptions.slice(0, level+2);
+                this.form.nace.splice(level+1, 4);
               }
             }
             else {
@@ -245,6 +286,29 @@
         let naceQuery = this.form.naceTags.map(code => `NACE=https://lod.stirdata.eu/nace/nace-rev2/code/${code}&`).join('');
         let startDateQuery = this.form.startDate ? `startDate=${this.form.startDate}&` : '';
         let endDateQuery = this.form.endDate ? `endDate=${this.form.endDate}&` : '';
+
+        let queries = [];
+        if (this.form.nutsTags.length > 0) {
+          this.form.nutsTags.sort();
+          let lastCode = "";
+          this.form.nutsTags.forEach(code => {
+            this.endpoints[code.slice(0,2)].push(`NUTS=https://lod.stirdata.eu/nuts/code/${code}`);
+          });
+          for (const code in this.endpoints) {
+            if (this.endpoints[code] && this.endpoints[code].length > 0) {
+              queries.push(`query?country=${code}&${this.endpoints[code].join('&')}&${naceQuery}${startDateQuery}${endDateQuery}`);
+            }
+          };
+        }
+        else {
+          for (const code in this.endpoints) {
+            queries.push(`query?country=${code}&${naceQuery}${startDateQuery}${endDateQuery}`);
+          };
+        }
+        for (let q of queries) {
+          // TODO: When API is ready to accept countries, make the API calls here
+          console.log(q.slice(0, -1));
+        }
 
         let query = `query?${nutsQuery}${naceQuery}${startDateQuery}${endDateQuery}`;
         this.$api.get(query.slice(0, -1))
