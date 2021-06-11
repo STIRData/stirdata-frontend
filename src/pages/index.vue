@@ -12,6 +12,22 @@
           <b-col>
             <h3 class="mb-4">Region</h3>
             <b-form-group
+              v-if="form.nutsTags.length > 0"
+            >
+              <b-form-tags
+                v-model="form.nutsTags"
+                input-id="nuts-tags"
+                input-class="d-none"
+                :input-attrs="{'readonly':'true'}"
+                tag-variant="secondary"
+                tag-class="p-2"
+                add-button-text=""
+                no-outer-focus
+                size="md"
+                placeholder=""
+              />
+            </b-form-group>
+            <b-form-group
               v-for="(nuts, index) in nutsOptions"
               :key="'nuts-group-'+index"
               id="'nuts-group-'+index"
@@ -27,6 +43,22 @@
           <b-col>
             <h3 class="mb-4">Activity</h3>
             <b-form-group
+              v-if="form.naceTags.length > 0"
+            >
+              <b-form-tags
+                v-model="form.naceTags"
+                input-id="nace-tags"
+                input-class="d-none"
+                :input-attrs="{'readonly':'true'}"
+                tag-variant="secondary"
+                tag-class="p-2"
+                add-button-text=""
+                no-outer-focus
+                size="md"
+                placeholder=""
+              />
+            </b-form-group>
+            <b-form-group
               v-for="(nace, index) in naceOptions"
               :key="'nace-group-'+index"
               id="'nace-group-'+index"
@@ -40,9 +72,7 @@
             </b-form-group>
           </b-col>
           <b-col>
-            <h3 class="mb-4">
-              Date
-            </h3>
+            <h3 class="mb-4">Registration Date</h3>
             <b-form-group
               id="date-group"
             >
@@ -120,7 +150,9 @@
         show: true,
         form: {
           nuts: [],
+          nutsTags: [],
           nace: [],
+          naceTags: [],
           startDate: null,
           endDate: null
         },
@@ -150,14 +182,12 @@
 
     methods: {
       validateInput(field) {
-        let validNuts = this.form.nuts.length == 4;
-        // let validNace = !!this.form.nace;
-        // let validStartDate = !!this.form.startDate;
+        let validNuts = this.form.nutsTags.length > 0;
         let validEndDate = !this.form.endDate || !this.form.startDate || this.form.endDate > this.form.startDate;
 
         if (field === 'endDate') return validEndDate;
 
-        return validNuts && validEndDate && (!!this.form.nuts || !!this.form.nace || !!this.form.startDate || !!this.form.endDate);
+        return validNuts && validEndDate;
       },
 
       selectNuts(level) {
@@ -175,6 +205,9 @@
                 this.nutsOptions.splice(level+1, 1, options);
                 this.nutsOptions = this.nutsOptions.slice(0, level+2);
               }
+            }
+            else {
+              this.form.nutsTags.push(this.form.nuts[level].split('/').pop());
             }
           });
       },
@@ -195,6 +228,9 @@
                 this.naceOptions = this.naceOptions.slice(0, level+2);
               }
             }
+            else {
+              this.form.naceTags.push(this.form.nace[level].split('/').pop());
+            }
           });
       },
 
@@ -205,12 +241,13 @@
           return;
         }
 
-        let query = "";
-        if (this.form.nuts.length > 0) query = query + `NUTS=${this.form.nuts[this.form.nuts.length - 1]}&`;
-        if (this.form.nace.length > 0) query = query + `NACE=${this.form.nace[this.form.nace.length - 1]}&`;
-        if (this.form.startDate) query = query + `startDate=${this.form.startDate}&`;
-        if (this.form.endDate) query = query + `endDate=${this.form.endDate}&`;
-        this.$api.get(`query?${query.slice(0, -1)}`)
+        let nutsQuery = this.form.nutsTags.map(code => `NUTS=https://lod.stirdata.eu/nuts/code/${code}&`).join('');
+        let naceQuery = this.form.naceTags.map(code => `NACE=https://lod.stirdata.eu/nace/nace-rev2/code/${code}&`).join('');
+        let startDateQuery = this.form.startDate ? `startDate=${this.form.startDate}&` : '';
+        let endDateQuery = this.form.endDate ? `endDate=${this.form.endDate}&` : '';
+
+        let query = `query?${nutsQuery}${naceQuery}${startDateQuery}${endDateQuery}`;
+        this.$api.get(query.slice(0, -1))
           .then(queryResponse => {
             this.results = {};
             for (let endpoint of queryResponse.data) {
@@ -219,7 +256,7 @@
               endpoint.response.forEach(item => {
                 let name = item['http://www.w3.org/ns/regorg#legalName'][0]['@value'];
                 let date = item['https://schema.org/foundingDate'][0]['@value'];
-                this.results[endpoint.endpointName].push({'name': name, 'date': date});
+                this.results[endpoint.endpointName].push({'name': name, 'registration_date': date});
               });
             }
           })
@@ -232,8 +269,10 @@
         event.preventDefault();
         // Reset our form values
         this.form.nuts = [];
+        this.form.nutsTags = [];
         this.nutsOptions = this.nutsOptions.slice(0, 1);
         this.form.nace = [];
+        this.form.naceTags = [];
         this.naceOptions = this.naceOptions.slice(0, 1);
         this.form.startDate = null;
         this.form.endDate = null;
@@ -292,5 +331,11 @@
 
   .links {
     padding-top: 15px;
+  }
+
+  .b-form-tags {
+    padding: 0;
+    border: 0;
+    background-color: inherit;
   }
 </style>
