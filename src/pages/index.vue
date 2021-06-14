@@ -165,8 +165,8 @@
         v-if="results"
         class="mt-4 pt-4 border-secondary border-top"
       >
-        <h3 class="text-center">Results</h3>
-        <b-tabs content-class="mt-3" justified>
+        <h3 class="text-center mb-4">Results</h3>
+        <b-tabs justified>
           <b-tab
             v-for="(endpoint, index) in results"
             :key="index"
@@ -193,10 +193,9 @@
           startDate: null,
           endDate: null
         },
-        queryResponse: null,
-        results: null,
         nutsOptions: [],
         naceOptions: [],
+        results: null,
         endpoints: {}
       }
     },
@@ -278,25 +277,24 @@
       onSubmit(event) {
         event.preventDefault();
         if (!this.validateInput('')) {
-          alert('You have to select a region and enter a valid date range.')
+          alert('You have to select a region and enter a valid date range.');
           return;
         }
 
-        let nutsQuery = this.form.nutsTags.map(code => `NUTS=https://lod.stirdata.eu/nuts/code/${code}&`).join('');
         let naceQuery = this.form.naceTags.map(code => `NACE=https://lod.stirdata.eu/nace/nace-rev2/code/${code}&`).join('');
         let startDateQuery = this.form.startDate ? `startDate=${this.form.startDate}&` : '';
         let endDateQuery = this.form.endDate ? `endDate=${this.form.endDate}&` : '';
 
         let queries = [];
         if (this.form.nutsTags.length > 0) {
-          this.form.nutsTags.sort();
-          let lastCode = "";
           this.form.nutsTags.forEach(code => {
             this.endpoints[code.slice(0,2)].push(`NUTS=https://lod.stirdata.eu/nuts/code/${code}`);
           });
           for (const code in this.endpoints) {
             if (this.endpoints[code] && this.endpoints[code].length > 0) {
               queries.push(`query?country=${code}&${this.endpoints[code].join('&')}&${naceQuery}${startDateQuery}${endDateQuery}`);
+              // Empty the query of this endpoint, for the next search
+              this.endpoints[code] = [];
             }
           };
         }
@@ -305,28 +303,27 @@
             queries.push(`query?country=${code}&${naceQuery}${startDateQuery}${endDateQuery}`);
           };
         }
+
         for (let q of queries) {
-          // TODO: When API is ready to accept countries, make the API calls here
-          console.log(q.slice(0, -1));
+          this.$api.get(q.slice(0, -1))
+            .then(queryResponse => {
+              this.results = Object.assign({}, this.results);
+              if (queryResponse.data[0].response.length > 0) {
+                this.results[queryResponse.data[0].endpointName] = [];
+                queryResponse.data[0].response.forEach(item => {
+                  let name = item['http://www.w3.org/ns/regorg#legalName'][0]['@value'];
+                  let date = item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : item['https://schema.org/foundingDate'][0]['@value'];
+                  this.results[queryResponse.data[0].endpointName].push({'name': name, 'registration_date': date});
+                });
+              }
+              else {
+                console.error('No response for these criteria');
+              }
+            })
+            .catch(error => {
+              console.error(error);
+            });
         }
-
-        let query = `query?${nutsQuery}${naceQuery}${startDateQuery}${endDateQuery}`;
-        this.$api.get(query.slice(0, -1))
-          .then(queryResponse => {
-            this.results = {};
-            for (let endpoint of queryResponse.data) {
-              this.results[endpoint.endpointName] = [];
-
-              endpoint.response.forEach(item => {
-                let name = item['http://www.w3.org/ns/regorg#legalName'][0]['@value'];
-                let date = item['https://schema.org/foundingDate'][0]['@value'];
-                this.results[endpoint.endpointName].push({'name': name, 'registration_date': date});
-              });
-            }
-          })
-          .catch(error => {
-            console.error(error);
-          });
       },
 
       onReset(event) {
@@ -401,5 +398,9 @@
     padding: 0;
     border: 0;
     background-color: inherit;
+  }
+
+  .nav-tabs .nav-link {
+    text-transform: capitalize;
   }
 </style>
