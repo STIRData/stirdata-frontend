@@ -135,7 +135,7 @@
                     :start-weekday="1"
                     :show-decade-nav="true"
                     :hide-header="true"
-                    :state="validateInput('endDate')"
+                    :state="validateInput()"
                     placeholder="Registered before"
                   />
                 </b-col>
@@ -155,8 +155,14 @@
               type="submit"
               variant="primary"
               class="ml-2"
+              :disabled="loadingQueries.length > 0"
             >
-              Search
+              <div v-if="loadingQueries.length > 0" class="d-flex">
+                <b-spinner small type="grow" class="align-self-center mr-2" /> Searching...
+              </div>
+              <div v-else>
+                Search
+              </div>
             </b-button>
           </div>
         </b-row>
@@ -165,14 +171,44 @@
         v-if="results"
         class="mt-4 pt-4 border-secondary border-top"
       >
-        <h3 class="text-center mb-4">Results</h3>
-        <b-tabs justified>
+        <h3 id="searchResults" class="text-center mb-4">Results</h3>
+        <b-tabs
+          justified
+          nav-class="mx-3"
+        >
           <b-tab
             v-for="(endpoint, index) in results"
             :key="index"
-            :title="index.split('-').join(' ')"
+            :title="index.split('-')[0] + ' (' + endpoint.count.toLocaleString() + ')'"
+            title-item-class="text-capitalize"
           >
-            <b-table striped hover small :items="endpoint"></b-table>
+            <div
+              v-if="loading"
+              class="d-flex justify-content-center m-5"
+            >
+              <b-spinner label="Loading" />
+            </div>
+            <b-table
+              striped
+              hover
+              small
+              :items="endpoint.entries"
+            />
+            <div
+              v-if="loading"
+              class="d-flex justify-content-center m-5"
+            >
+              <b-spinner label="Loading" />
+            </div>
+            <div class="overflow-auto">
+              <b-pagination-nav
+                align="center"
+                :limit="11"
+                :number-of-pages="Math.ceil(parseInt(endpoint.count) / endpoint.entries.length)"
+                :link-gen="page => {return '';}"
+                @page-click="(event, page) => {goToPage(event, page, index);}"
+              />
+            </div>
           </b-tab>
         </b-tabs>
       </div>
@@ -185,6 +221,8 @@
     data() {
       return {
         show: true,
+        loading: false,
+        loadingQueries: [],
         form: {
           nuts: [],
           nutsTags: [],
@@ -195,6 +233,7 @@
         },
         nutsOptions: [],
         naceOptions: [],
+        queries: [],
         results: null,
         endpoints: {}
       }
@@ -219,13 +258,10 @@
     },
 
     methods: {
-      validateInput(field) {
-        let validNuts = this.form.nutsTags.length > 0;
+      validateInput() {
         let validEndDate = !this.form.endDate || !this.form.startDate || this.form.endDate > this.form.startDate;
 
-        if (field === 'endDate') return validEndDate;
-
-        return validNuts && validEndDate;
+        return validEndDate && (this.form.nutsTags.length > 0 || this.form.naceTags.length > 0);
       },
 
       selectNuts(level) {
@@ -274,9 +310,52 @@
           });
       },
 
+      goToPage(bvEvent, page, endpointName) {
+        this.$scrollTo('#searchResults', {easing: 'ease-in-out', lazy: false, offset: -88, duration: 750});
+
+        let country = '';
+        if (endpointName === "norway-endpoint") {
+          country = 'NO';
+        }
+        else if (endpointName === "belgium-endpoint") {
+          country = 'BE';
+        }
+        else if (endpointName === "czech-endpoint") {
+          country = 'CZ';
+        }
+
+        let query = this.queries.find(q => q.includes(`country=${country}`)) + `page=${page}`;
+
+        this.loading = true;
+        this.$api.get(query)
+          .then(queryResponse => {
+            this.results[endpointName].entries = [];
+            if (queryResponse.data[0].response.length > 0) {
+              queryResponse.data[0].response.forEach(item => {
+                let name = 'no-name-found';
+                let date = 'no-date-found';
+                if (item['http://www.w3.org/ns/regorg#legalName']) {
+                  name = item['http://www.w3.org/ns/regorg#legalName'][0]['@value'];
+                }
+                if (item['http://schema.org/foundingDate'] || item['https://schema.org/foundingDate']) {
+                  date = item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : item['https://schema.org/foundingDate'][0]['@value'];
+                }
+                this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date});
+              });
+            }
+            else {
+              console.error('No response for these criteria');
+            }
+            this.loading = false;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      },
+
       onSubmit(event) {
         event.preventDefault();
-        if (!this.validateInput('')) {
+        if (!this.validateInput()) {
           alert('You have to select a region and enter a valid date range.');
           return;
         }
@@ -285,14 +364,14 @@
         let startDateQuery = this.form.startDate ? `startDate=${this.form.startDate}&` : '';
         let endDateQuery = this.form.endDate ? `endDate=${this.form.endDate}&` : '';
 
-        let queries = [];
+        this.queries = [];
         if (this.form.nutsTags.length > 0) {
           this.form.nutsTags.forEach(code => {
             this.endpoints[code.slice(0,2)].push(`NUTS=https://lod.stirdata.eu/nuts/code/${code}`);
           });
           for (const code in this.endpoints) {
             if (this.endpoints[code] && this.endpoints[code].length > 0) {
-              queries.push(`query?country=${code}&${this.endpoints[code].join('&')}&${naceQuery}${startDateQuery}${endDateQuery}`);
+              this.queries.push(`query?country=${code}&${this.endpoints[code].join('&')}&${naceQuery}${startDateQuery}${endDateQuery}`);
               // Empty the query of this endpoint, for the next search
               this.endpoints[code] = [];
             }
@@ -300,27 +379,37 @@
         }
         else {
           for (const code in this.endpoints) {
-            queries.push(`query?country=${code}&${naceQuery}${startDateQuery}${endDateQuery}`);
+            this.queries.push(`query?country=${code}&${naceQuery}${startDateQuery}${endDateQuery}`);
           };
         }
 
-        for (let q of queries) {
+        this.results = {};
+        for (let q of this.queries) {
+          this.loadingQueries.push(true);
           this.$api.get(q.slice(0, -1))
             .then(queryResponse => {
               this.results = Object.assign({}, this.results);
               if (queryResponse.data[0].response.length > 0) {
-                this.results[queryResponse.data[0].endpointName] = [];
+                this.results[queryResponse.data[0].endpointName] = {'count': queryResponse.data[0].count, 'entries': []};
                 queryResponse.data[0].response.forEach(item => {
-                  let name = item['http://www.w3.org/ns/regorg#legalName'][0]['@value'];
-                  let date = item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : item['https://schema.org/foundingDate'][0]['@value'];
-                  this.results[queryResponse.data[0].endpointName].push({'name': name, 'registration_date': date});
+                  let name = 'no-name-found';
+                  let date = 'no-date-found';
+                  if (item['http://www.w3.org/ns/regorg#legalName']) {
+                    name = item['http://www.w3.org/ns/regorg#legalName'][0]['@value'];
+                  }
+                  if (item['http://schema.org/foundingDate'] || item['https://schema.org/foundingDate']) {
+                    date = item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : item['https://schema.org/foundingDate'][0]['@value'];
+                  }
+                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date});
                 });
               }
               else {
                 console.error('No response for these criteria');
               }
+              this.loadingQueries.pop();
             })
             .catch(error => {
+              this.loadingQueries.pop();
               console.error(error);
             });
         }
@@ -398,9 +487,5 @@
     padding: 0;
     border: 0;
     background-color: inherit;
-  }
-
-  .nav-tabs .nav-link {
-    text-transform: capitalize;
   }
 </style>

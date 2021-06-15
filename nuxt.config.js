@@ -43,6 +43,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
+    'vue-scrollto/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios'
   ],
