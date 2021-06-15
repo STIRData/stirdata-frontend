@@ -189,22 +189,17 @@
               <b-spinner label="Loading" />
             </div>
             <b-table
+              v-else
               striped
               hover
               small
               :items="endpoint.entries"
             />
-            <div
-              v-if="loading"
-              class="d-flex justify-content-center m-5"
-            >
-              <b-spinner label="Loading" />
-            </div>
             <div class="overflow-auto">
               <b-pagination-nav
                 align="center"
                 :limit="11"
-                :number-of-pages="Math.ceil(parseInt(endpoint.count) / endpoint.entries.length)"
+                :number-of-pages="Math.ceil(parseInt(endpoint.count) / 20)"
                 :link-gen="page => {return '';}"
                 @page-click="(event, page) => {goToPage(event, page, index);}"
               />
@@ -332,15 +327,11 @@
             this.results[endpointName].entries = [];
             if (queryResponse.data[0].response.length > 0) {
               queryResponse.data[0].response.forEach(item => {
-                let name = 'no-name-found';
-                let date = 'no-date-found';
-                if (item['http://www.w3.org/ns/regorg#legalName']) {
-                  name = item['http://www.w3.org/ns/regorg#legalName'][0]['@value'];
+                if (item['@type'] && item['@type'][0] === "http://www.w3.org/ns/regorg#RegisteredOrganization") {
+                  let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
+                  let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
+                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date});
                 }
-                if (item['http://schema.org/foundingDate'] || item['https://schema.org/foundingDate']) {
-                  date = item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : item['https://schema.org/foundingDate'][0]['@value'];
-                }
-                this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date});
               });
             }
             else {
@@ -392,15 +383,11 @@
               if (queryResponse.data[0].response.length > 0) {
                 this.results[queryResponse.data[0].endpointName] = {'count': queryResponse.data[0].count, 'entries': []};
                 queryResponse.data[0].response.forEach(item => {
-                  let name = 'no-name-found';
-                  let date = 'no-date-found';
-                  if (item['http://www.w3.org/ns/regorg#legalName']) {
-                    name = item['http://www.w3.org/ns/regorg#legalName'][0]['@value'];
+                  if (item['@type'] && item['@type'][0] === "http://www.w3.org/ns/regorg#RegisteredOrganization") {
+                    let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
+                    let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
+                    this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date});
                   }
-                  if (item['http://schema.org/foundingDate'] || item['https://schema.org/foundingDate']) {
-                    date = item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : item['https://schema.org/foundingDate'][0]['@value'];
-                  }
-                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date});
                 });
               }
               else {
