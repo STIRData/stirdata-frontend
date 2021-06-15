@@ -194,7 +194,15 @@
               hover
               small
               :items="endpoint.entries"
-            />
+            >
+              <template #cell(website)="sites">
+                <span v-for="link in sites.value">
+                  <a :href="link" class="mr-3" target="_blank">
+                    <i class="fa fa-external-link" aria-hidden="true" />
+                  </a>
+                </span>
+              </template>
+            </b-table>
             <div class="overflow-auto">
               <b-pagination-nav
                 align="center"
@@ -330,7 +338,9 @@
                 if (item['@type'] && item['@type'][0] === "http://www.w3.org/ns/regorg#RegisteredOrganization") {
                   let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
                   let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
-                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date});
+                  let activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop() : '';
+                  let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']) : [];
+                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'website': sites});
                 }
               });
             }
@@ -386,7 +396,9 @@
                   if (item['@type'] && item['@type'][0] === "http://www.w3.org/ns/regorg#RegisteredOrganization") {
                     let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
                     let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
-                    this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date});
+                    let activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop() : '';
+                    let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']) : [];
+                    this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'website': sites});
                   }
                 });
               }
