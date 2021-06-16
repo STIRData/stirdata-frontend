@@ -168,7 +168,7 @@
         </b-row>
       </b-form>
       <div
-        v-if="results"
+        v-if="results && Object.keys(results).length > 0"
         class="mt-4 pt-4 border-secondary border-top"
       >
         <h3 id="searchResults" class="text-center mb-4">Results</h3>
@@ -195,9 +195,9 @@
               small
               :items="endpoint.entries"
             >
-              <template #cell(website)="sites">
+              <template #cell(link)="sites">
                 <span v-for="link in sites.value">
-                  <a :href="link" class="mr-3" target="_blank">
+                  <a :href="link" class="pr-3" target="_blank">
                     <i class="fa fa-external-link" aria-hidden="true" />
                   </a>
                 </span>
@@ -339,13 +339,17 @@
                   let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
                   let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
                   let activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop() : '';
-                  let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']) : [];
-                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'website': sites});
+                  let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']).filter(e => !e.includes('opencorporates')) : [];
+                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'link': sites});
                 }
               });
             }
             else {
-              console.error('No response for these criteria');
+              this.$bvToast.toast(`${endpointName}: No response for these criteria.`, {
+                variant: 'danger',
+                title: 'Warning',
+                solid: true
+              });
             }
             this.loading = false;
           })
@@ -357,7 +361,11 @@
       onSubmit(event) {
         event.preventDefault();
         if (!this.validateInput()) {
-          alert('You have to select a region and enter a valid date range.');
+          this.$bvToast.toast('You have to select at least one search criteria.', {
+            variant: 'danger',
+            title: 'Warning',
+            solid: true
+          });
           return;
         }
 
@@ -397,13 +405,17 @@
                     let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
                     let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
                     let activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop() : '';
-                    let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']) : [];
-                    this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'website': sites});
+                    let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']).filter(e => !e.includes('opencorporates')) : [];
+                    this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'link': sites});
                   }
                 });
               }
               else {
-                console.error('No response for these criteria');
+                this.$bvToast.toast(`${queryResponse.data[0].endpointName}: No response for these criteria.`, {
+                  variant: 'danger',
+                  title: 'Warning',
+                  solid: true
+                });
               }
               this.loadingQueries.pop();
             })
