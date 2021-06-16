@@ -40,7 +40,7 @@
                   id="'nuts-'+index"
                   v-model="form.nuts[index]"
                   :options="nuts"
-                  v-on:change="selectNuts(index)"
+                  v-on:change="selectLevel('nuts', index)"
                 />
               </b-col>
               <b-col
@@ -88,7 +88,7 @@
                   id="'nace-'+index"
                   v-model="form.nace[index]"
                   :options="nace"
-                  v-on:change="selectNace(index)"
+                  v-on:change="selectLevel('nace', index)"
                 />
               </b-col>
               <b-col
@@ -143,7 +143,39 @@
             </b-form-group>
           </b-col>
         </b-row>
-        <b-row class="mt-2 pt-4 d-flex justify-content-end px-3 border-top">
+        <b-row class="mt-2 pt-4 d-flex justify-content-between px-3 border-top">
+          <div>
+            <b-row class="ml-0">
+              <b-col cols={6} class="mr-5">
+                <b-form-group class="mb-1">
+                  <b-form-checkbox
+                    id="gnuts3-checkbox"
+                    v-model="form.gnuts3"
+                    name="group-by-region"
+                  >
+                    Group by region
+                  </b-form-checkbox>
+                </b-form-group>
+                <b-form-group class="mb-0">
+                  <b-form-checkbox
+                    id="gnace-checkbox"
+                    v-model="form.gnace"
+                    name="group-by-activity"
+                  >
+                    Group by activity
+                  </b-form-checkbox>
+                </b-form-group>
+              </b-col>
+              <b-col cols={2} class="align-self-center">
+                <b-button
+                  variant="primary"
+                  @click="searchGroupBy()"
+                >
+                  View
+                </b-button>
+              </b-col>
+            </b-row>
+          </div>
           <div class="align-self-center">
             <b-button
               type="reset"
@@ -229,8 +261,10 @@
         form: {
           nuts: [],
           nutsTags: [],
+          gnuts3: false,
           nace: [],
           naceTags: [],
+          gnace: false,
           startDate: null,
           endDate: null
         },
@@ -267,48 +301,27 @@
         return validEndDate && (this.form.nutsTags.length > 0 || this.form.naceTags.length > 0);
       },
 
-      selectNuts(level) {
-        this.$api.get(`nuts?parent=${this.form.nuts[level]}`)
+      selectLevel(type, level) {
+        let typeOptions = `${type}Options`;
+        let typeTags = `${type}Tags`;
+        this.$api.get(`${type}?parent=${this.form[type][level]}`)
           .then(response => {
             if (response.data.results.bindings.length > 0) {
               let options = [];
               response.data.results.bindings.forEach(item => {
                 options.push({'value': item.code.value, 'text': `${item.code.value.split('/').pop()} - ${item.label.value}`});
               });
-              if (level === this.nutsOptions.length-1) {
-                this.nutsOptions.push(options);
+              if (level === this[typeOptions].length-1) {
+                this[typeOptions].push(options);
               }
               else {
-                this.nutsOptions.splice(level+1, 1, options);
-                this.nutsOptions = this.nutsOptions.slice(0, level+2);
-                this.form.nuts.splice(level+1, 4);
+                this[typeOptions].splice(level+1, 1, options);
+                this[typeOptions] = this[typeOptions].slice(0, level+2);
+                this.form[type].splice(level+1, 4);
               }
             }
             else {
-              this.form.nutsTags.push(this.form.nuts[level].split('/').pop());
-            }
-          });
-      },
-
-      selectNace(level) {
-        this.$api.get(`nace?parent=${this.form.nace[level]}`)
-          .then(response => {
-            if (response.data.results.bindings.length > 0) {
-              let options = [];
-              response.data.results.bindings.forEach(item => {
-                options.push({'value': item.code.value, 'text': `${item.code.value.split('/').pop()} - ${item.label.value}`});
-              });
-              if (level === this.naceOptions.length-1) {
-                this.naceOptions.push(options);
-              }
-              else {
-                this.naceOptions.splice(level+1, 1, options);
-                this.naceOptions = this.naceOptions.slice(0, level+2);
-                this.form.nace.splice(level+1, 4);
-              }
-            }
-            else {
-              this.form.naceTags.push(this.form.nace[level].split('/').pop());
+              this.form[typeTags].push(this.form[type][level].split('/').pop());
             }
           });
       },
@@ -317,58 +330,17 @@
         this.$scrollTo('#searchResults', {easing: 'ease-in-out', lazy: false, offset: -88, duration: 750});
 
         let country = '';
-        if (endpointName === "norway-endpoint") {
-          country = 'NO';
-        }
-        else if (endpointName === "belgium-endpoint") {
-          country = 'BE';
-        }
-        else if (endpointName === "czech-endpoint") {
-          country = 'CZ';
-        }
+        if (endpointName === "norway-endpoint") country = 'NO';
+        else if (endpointName === "belgium-endpoint") country = 'BE';
+        else if (endpointName === "czech-endpoint") country = 'CZ';
 
         let query = this.queries.find(q => q.includes(`country=${country}`)) + `page=${page}`;
 
         this.loading = true;
-        this.$api.get(query)
-          .then(queryResponse => {
-            this.results[endpointName].entries = [];
-            if (queryResponse.data[0].response.length > 0) {
-              queryResponse.data[0].response.forEach(item => {
-                if (item['@type'] && item['@type'][0] === "http://www.w3.org/ns/regorg#RegisteredOrganization") {
-                  let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
-                  let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
-                  let activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop() : '';
-                  let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']).filter(e => !e.includes('opencorporates')) : [];
-                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'link': sites});
-                }
-              });
-            }
-            else {
-              this.$bvToast.toast(`${endpointName}: No response for these criteria.`, {
-                variant: 'danger',
-                title: 'Warning',
-                solid: true
-              });
-            }
-            this.loading = false;
-          })
-          .catch(error => {
-            console.error(error);
-          });
+        this.searchQuery(query, true);
       },
 
-      onSubmit(event) {
-        event.preventDefault();
-        if (!this.validateInput()) {
-          this.$bvToast.toast('You have to select at least one search criteria.', {
-            variant: 'danger',
-            title: 'Warning',
-            solid: true
-          });
-          return;
-        }
-
+      buildQueries() {
         let naceQuery = this.form.naceTags.map(code => `NACE=https://lod.stirdata.eu/nace/nace-rev2/code/${code}&`).join('');
         let startDateQuery = this.form.startDate ? `startDate=${this.form.startDate}&` : '';
         let endDateQuery = this.form.endDate ? `endDate=${this.form.endDate}&` : '';
@@ -391,38 +363,72 @@
             this.queries.push(`query?country=${code}&${naceQuery}${startDateQuery}${endDateQuery}`);
           };
         }
+      },
+
+      searchQuery(q, update) {
+        this.$api.get(q)
+          .then(queryResponse => {
+            if (update) {
+              this.results[queryResponse.data[0].endpointName].entries = [];
+            } else {
+              this.results = Object.assign({}, this.results);
+              this.results[queryResponse.data[0].endpointName] = {'count': queryResponse.data[0].count, 'entries': []};
+            }
+            if (queryResponse.data[0].response.length > 0) {
+              queryResponse.data[0].response.forEach(item => {
+                if (item['@type'] && item['@type'][0] === "http://www.w3.org/ns/regorg#RegisteredOrganization") {
+                  let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
+                  let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
+                  let activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop() : '';
+                  let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']).filter(e => !e.includes('opencorporates')) : [];
+                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'link': sites});
+                }
+              });
+            }
+            else {
+              this.$bvToast.toast(`${queryResponse.data[0].endpointName}: No response for these criteria.`, {
+                variant: 'danger',
+                title: 'Warning',
+                solid: true
+              });
+            }
+            if (update) {
+              this.loading = false;
+            } else {
+              this.loadingQueries.pop();
+            }
+          })
+          .catch(error => {
+            if (update) {
+              this.loading = false;
+            } else {
+              this.loadingQueries.pop();
+            }
+            console.error(error);
+          });
+      },
+
+      searchGroupBy() {
+        console.log(this.form.gnuts3, this.form.gnace);
+      },
+
+      onSubmit(event) {
+        event.preventDefault();
+        if (!this.validateInput()) {
+          this.$bvToast.toast('You have to select at least one search criteria.', {
+            variant: 'danger',
+            title: 'Warning',
+            solid: true
+          });
+          return;
+        }
+
+        this.buildQueries();
 
         this.results = {};
         for (let q of this.queries) {
           this.loadingQueries.push(true);
-          this.$api.get(q.slice(0, -1))
-            .then(queryResponse => {
-              this.results = Object.assign({}, this.results);
-              if (queryResponse.data[0].response.length > 0) {
-                this.results[queryResponse.data[0].endpointName] = {'count': queryResponse.data[0].count, 'entries': []};
-                queryResponse.data[0].response.forEach(item => {
-                  if (item['@type'] && item['@type'][0] === "http://www.w3.org/ns/regorg#RegisteredOrganization") {
-                    let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
-                    let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
-                    let activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop() : '';
-                    let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']).filter(e => !e.includes('opencorporates')) : [];
-                    this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'link': sites});
-                  }
-                });
-              }
-              else {
-                this.$bvToast.toast(`${queryResponse.data[0].endpointName}: No response for these criteria.`, {
-                  variant: 'danger',
-                  title: 'Warning',
-                  solid: true
-                });
-              }
-              this.loadingQueries.pop();
-            })
-            .catch(error => {
-              this.loadingQueries.pop();
-              console.error(error);
-            });
+          this.searchQuery(q.slice(0, -1), false);
         }
       },
 
@@ -452,34 +458,12 @@
 
   .container {
     margin: 0 auto;
-    /* min-height: 100vh; */
     display: flex;
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* text-align: center; */
   }
 
   .filters-overview {
     width: 80%;
     font-size: $font-size-small;
-  }
-
-  .title {
-    font-family:
-      'Quicksand',
-      'Source Sans Pro',
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      Roboto,
-      'Helvetica Neue',
-      Arial,
-      sans-serif;
-    display: block;
-    font-weight: 300;
-    font-size: 100px;
-    color: #35495e;
-    letter-spacing: 1px;
   }
 
   .subtitle {
