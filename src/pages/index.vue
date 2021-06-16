@@ -211,7 +211,7 @@
           <b-tab
             v-for="(endpoint, index) in results"
             :key="index"
-            :title="index.split('-')[0] + ' (' + endpoint.count.toLocaleString() + ')'"
+            :title="endpoint.title"
             title-item-class="text-capitalize"
           >
             <div
@@ -367,7 +367,12 @@
               this.results[queryResponse.data[0].endpointName].entries = [];
             } else {
               this.results = Object.assign({}, this.results);
-              this.results[queryResponse.data[0].endpointName] = {'countryCode': queryResponse.data[0].countryCode,'count': queryResponse.data[0].count, 'entries': []};
+              this.results[queryResponse.data[0].endpointName] = {
+                'countryCode': queryResponse.data[0].countryCode,
+                'count': queryResponse.data[0].count,
+                'title': `${queryResponse.data[0].endpointName.split('-')[0]} (${queryResponse.data[0].count.toLocaleString()})`,
+                'entries': []
+              };
             }
             if (queryResponse.data[0].response.length > 0) {
               queryResponse.data[0].response.forEach(item => {
@@ -403,9 +408,62 @@
           });
       },
 
-      searchGroupBy() {
+      searchGroupBy(update) {
         // TODO: Retrieve groupBy results and display them
-        console.log(this.form.gnuts3, this.form.gnace);
+        if (!this.validateInput()) {
+          this.$bvToast.toast('You have to select at least one search criteria.', {
+            variant: 'danger',
+            title: 'Warning',
+            solid: true
+          });
+          return;
+        }
+
+        this.buildQueries();
+        let q = `${this.queries[0].replace("query", "query/grouped")}&gnace=${this.form.gnace}&gnuts3=${this.form.gnuts3}`;
+
+        this.$api.get(q)
+          .then(response => {
+            if (update) {
+              this.results[response.data[0].endpointName+'-stats'].entries = [];
+            } else {
+              this.results = Object.assign({}, this.results);
+              this.results[response.data[0].endpointName+'-stats'] = {
+                'countryCode': response.data[0].countryCode,
+                'count': response.data[0].count,
+                'title': `${response.data[0].endpointName.split('-')[0]} statistics`,
+                'entries': []
+              };
+            }
+            if (response.data[0].response.results.bindings.length > 0) {
+              response.data[0].response.results.bindings.forEach(item => {
+                let activity = item.nace ? item.nace.value.split('/').pop() : '';
+                let region = item.nuts3 ? item.nuts3.value.split('/').pop() : '';
+                let count = item.count ? item.count.value : 0;
+                this.results[response.data[0].endpointName+'-stats'].entries.push({'activity': activity, 'region': region, 'count': count});
+              });
+            }
+            else {
+              this.$bvToast.toast(`${response.data[0].endpointName}: No response for these criteria.`, {
+                variant: 'danger',
+                title: 'Warning',
+                solid: true
+              });
+            }
+            if (update) {
+              this.loading = false;
+            } else {
+              this.loadingQueries.pop();
+            }
+          })
+          .catch(error => {
+            if (update) {
+              this.loading = false;
+            } else {
+              this.loadingQueries.pop();
+            }
+            console.error(error);
+          });
       },
 
       onSubmit(event) {
