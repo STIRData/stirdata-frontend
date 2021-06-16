@@ -239,9 +239,9 @@
               <b-pagination-nav
                 align="center"
                 :limit="11"
-                :number-of-pages="Math.ceil(parseInt(endpoint.count) / 20)"
+                :number-of-pages="Math.ceil(parseInt(endpoint.count) / pageSize)"
                 :link-gen="page => {return '';}"
-                @page-click="(event, page) => {goToPage(event, page, index);}"
+                @page-click="(event, page) => {goToPage(event, page, endpoint.countryCode);}"
               />
             </div>
           </b-tab>
@@ -272,6 +272,7 @@
         naceOptions: [],
         queries: [],
         results: null,
+        pageSize: 20,
         endpoints: {}
       }
     },
@@ -326,16 +327,10 @@
           });
       },
 
-      goToPage(bvEvent, page, endpointName) {
+      goToPage(bvEvent, page, country) {
         this.$scrollTo('#searchResults', {easing: 'ease-in-out', lazy: false, offset: -88, duration: 750});
 
-        let country = '';
-        if (endpointName === "norway-endpoint") country = 'NO';
-        else if (endpointName === "belgium-endpoint") country = 'BE';
-        else if (endpointName === "czech-endpoint") country = 'CZ';
-
         let query = this.queries.find(q => q.includes(`country=${country}`)) + `page=${page}`;
-
         this.loading = true;
         this.searchQuery(query, true);
       },
@@ -372,7 +367,7 @@
               this.results[queryResponse.data[0].endpointName].entries = [];
             } else {
               this.results = Object.assign({}, this.results);
-              this.results[queryResponse.data[0].endpointName] = {'count': queryResponse.data[0].count, 'entries': []};
+              this.results[queryResponse.data[0].endpointName] = {'countryCode': queryResponse.data[0].countryCode,'count': queryResponse.data[0].count, 'entries': []};
             }
             if (queryResponse.data[0].response.length > 0) {
               queryResponse.data[0].response.forEach(item => {
@@ -409,6 +404,7 @@
       },
 
       searchGroupBy() {
+        // TODO: Retrieve groupBy results and display them
         console.log(this.form.gnuts3, this.form.gnace);
       },
 
