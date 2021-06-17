@@ -355,7 +355,7 @@
         }
         else {
           for (const code in this.endpoints) {
-            this.queries.push(`query?country=${code}&${naceQuery}${startDateQuery}${endDateQuery}`);
+            this.queries.push(`query?country=${code}&NUTS=https://lod.stirdata.eu/nuts/code/${code}&${naceQuery}${startDateQuery}${endDateQuery}`);
           };
         }
       },
