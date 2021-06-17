@@ -169,9 +169,15 @@
               <b-col cols={2} class="align-self-center">
                 <b-button
                   variant="primary"
+                  :disabled="loadingQueries.length > 0"
                   @click="viewGrouped()"
                 >
-                  View
+                  <div v-if="loadingQueries.length > 0" class="d-flex">
+                    <b-spinner small type="grow" class="align-self-center mr-2" /> Loading...
+                  </div>
+                  <span v-else>
+                    View
+                  </span>
                 </b-button>
               </b-col>
             </b-row>
@@ -190,7 +196,7 @@
               :disabled="loadingQueries.length > 0"
             >
               <div v-if="loadingQueries.length > 0" class="d-flex">
-                <b-spinner small type="grow" class="align-self-center mr-2" /> Searching...
+                <b-spinner small type="grow" class="align-self-center mr-2" /> Loading...
               </div>
               <div v-else>
                 Search
@@ -234,12 +240,22 @@
                   </a>
                 </span>
               </template>
+              <template #cell(activity)="nace">
+                <span v-b-tooltip.hover :title="nace.value.label">
+                  {{ nace.value.code }}
+                </span>
+              </template>
+              <template #cell(region)="nuts">
+                <span v-b-tooltip.hover :title="nuts.value.label">
+                  {{ nuts.value.code }}
+                </span>
+              </template>
             </b-table>
             <div class="overflow-auto">
               <b-pagination-nav
                 align="center"
                 :limit="11"
-                :number-of-pages="Math.ceil(parseInt(endpoint.count) / pageSize)"
+                :number-of-pages="endpoint.count ? Math.ceil(parseInt(endpoint.count) / pageSize) : 1"
                 :link-gen="page => {return '';}"
                 @page-click="(event, page) => {goToPage(event, page, endpoint.countryCode);}"
               />
@@ -329,6 +345,18 @@
           });
       },
 
+      getLabel(id) {
+        return this.$api.get(`data/label?resource=${id}`)
+          .then(response => {
+            let index = response.data[0]['http://www.w3.org/2004/02/skos/core#prefLabel'].findIndex(el => el['@language'] === 'en');
+            if (index < 0) index = 0;
+            return response.data[0]['http://www.w3.org/2004/02/skos/core#prefLabel'][index]['@value'];
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      },
+
       goToPage(bvEvent, page, country) {
         this.$scrollTo('#searchResults', {easing: 'ease-in-out', lazy: false, offset: -88, duration: 750});
 
@@ -384,13 +412,19 @@
               };
             }
             if (queryResponse.data[0].response.length > 0) {
-              queryResponse.data[0].response.forEach(item => {
+              queryResponse.data[0].response.forEach(async item => {
                 if (item['@type'] && item['@type'][0] === "http://www.w3.org/ns/regorg#RegisteredOrganization") {
-                  let name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
-                  let date = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
-                  let activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop() : '';
-                  let sites = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']).filter(e => !e.includes('opencorporates')) : [];
-                  this.results[queryResponse.data[0].endpointName].entries.push({'name': name, 'registration_date': date, 'activity': activity, 'link': sites});
+                  let entry = {}
+                  entry.name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
+                  entry['registration_date'] = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
+                  entry.activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? {'code': item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop(), 'label': ''} : {};
+                  entry.link = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']).filter(e => !e.includes('opencorporates')) : [];
+                  this.results[queryResponse.data[0].endpointName].entries.push(entry);
+
+                  if (item['http://www.w3.org/ns/regorg#orgActivity']) {
+                    entry.activity.label = await this.getLabel(item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id']);
+                    this.results[queryResponse.data[0].endpointName].entries.push(entry);
+                  }
                 }
               });
             }
@@ -432,12 +466,20 @@
               };
             }
             if (response.data[0].response.results.bindings.length > 0) {
-              response.data[0].response.results.bindings.forEach(item => {
-                let entry = {}
-                if (this.form.gnace) entry.activity = item.nace ? item.nace.value.split('/').pop() : '';
-                if (this.form.gnuts3) entry.region = item.nuts3 ? item.nuts3.value.split('/').pop() : '';;
+              response.data[0].response.results.bindings.forEach(async item => {
+                let entry = {};
+                if (this.form.gnace) entry.activity = item.nace ? {'code': item.nace.value.split('/').pop(), 'label': ''} : {};
+                if (this.form.gnuts3) entry.region = item.nuts3 ? {'code': item.nuts3.value.split('/').pop(), 'label': ''} : {};
                 entry.count = item.count ? item.count.value : 0;
                 this.results[response.data[0].endpointName+'-stats'].entries.push(entry);
+                //
+                // if (this.form.gnace && item.nace) {
+                //   entry.activity.label = await this.getLabel(item.nace.value);
+                // }
+                // if (this.form.gnuts3 && item.nuts3) {
+                //   entry.region.label = await this.getLabel(item.nuts3.value);
+                // }
+                // this.results[response.data[0].endpointName+'-stats'].entries.push(entry);
               });
             }
             else {
