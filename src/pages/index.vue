@@ -135,7 +135,7 @@
                     :start-weekday="1"
                     :show-decade-nav="true"
                     :hide-header="true"
-                    :state="validateInput()"
+                    :state="validateInput('')"
                     placeholder="Registered before"
                   />
                 </b-col>
@@ -169,7 +169,7 @@
               <b-col cols={2} class="align-self-center">
                 <b-button
                   variant="primary"
-                  @click="searchGroupBy()"
+                  @click="viewGrouped()"
                 >
                   View
                 </b-button>
@@ -271,6 +271,7 @@
         nutsOptions: [],
         naceOptions: [],
         queries: [],
+        queriesGrouped: [],
         results: null,
         pageSize: 20,
         endpoints: {}
@@ -296,10 +297,11 @@
     },
 
     methods: {
-      validateInput() {
+      validateInput(type) {
         let validEndDate = !this.form.endDate || !this.form.startDate || this.form.endDate > this.form.startDate;
+        let validGrouped = (type === 'grouped') ? (this.form.gnace || this.form.gnuts3) : true;
 
-        return validEndDate && (this.form.nutsTags.length > 0 || this.form.naceTags.length > 0);
+        return validEndDate && validGrouped && (this.form.nutsTags.length > 0 || this.form.naceTags.length > 0);
       },
 
       selectLevel(type, level) {
@@ -335,19 +337,26 @@
         this.searchQuery(query, true);
       },
 
-      buildQueries() {
+      buildQueries(querySuffix) {
+        var queriesType = 'queries';
+        var suffixParams = '';
+        if (querySuffix.length > 0) {
+          queriesType = queriesType + querySuffix.charAt(1).toUpperCase() + querySuffix.slice(2);
+          suffixParams = `gnace=${this.form.gnace}&gnuts3=${this.form.gnuts3}`;
+        }
+
         let naceQuery = this.form.naceTags.map(code => `NACE=https://lod.stirdata.eu/nace/nace-rev2/code/${code}&`).join('');
         let startDateQuery = this.form.startDate ? `startDate=${this.form.startDate}&` : '';
         let endDateQuery = this.form.endDate ? `endDate=${this.form.endDate}&` : '';
 
-        this.queries = [];
+        this[queriesType] = [];
         if (this.form.nutsTags.length > 0) {
           this.form.nutsTags.forEach(code => {
             this.endpoints[code.slice(0,2)].push(`NUTS=https://lod.stirdata.eu/nuts/code/${code}`);
           });
           for (const code in this.endpoints) {
             if (this.endpoints[code] && this.endpoints[code].length > 0) {
-              this.queries.push(`query?country=${code}&${this.endpoints[code].join('&')}&${naceQuery}${startDateQuery}${endDateQuery}`);
+              this[queriesType].push(`query${querySuffix}?country=${code}&${this.endpoints[code].join('&')}&${naceQuery}${startDateQuery}${endDateQuery}${suffixParams}`);
               // Empty the query of this endpoint, for the next search
               this.endpoints[code] = [];
             }
@@ -355,7 +364,7 @@
         }
         else {
           for (const code in this.endpoints) {
-            this.queries.push(`query?country=${code}&NUTS=https://lod.stirdata.eu/nuts/code/${code}&${naceQuery}${startDateQuery}${endDateQuery}`);
+            this[queriesType].push(`query${querySuffix}?country=${code}&NUTS=https://lod.stirdata.eu/nuts/code/${code}&${naceQuery}${startDateQuery}${endDateQuery}`);
           };
         }
       },
@@ -408,20 +417,7 @@
           });
       },
 
-      searchGroupBy(update) {
-        // TODO: Retrieve groupBy results and display them
-        if (!this.validateInput()) {
-          this.$bvToast.toast('You have to select at least one search criteria.', {
-            variant: 'danger',
-            title: 'Warning',
-            solid: true
-          });
-          return;
-        }
-
-        this.buildQueries();
-        let q = `${this.queries[0].replace("query", "query/grouped")}&gnace=${this.form.gnace}&gnuts3=${this.form.gnuts3}`;
-
+      searchGroupedQuery(q, update) {
         this.$api.get(q)
           .then(response => {
             if (update) {
@@ -437,10 +433,11 @@
             }
             if (response.data[0].response.results.bindings.length > 0) {
               response.data[0].response.results.bindings.forEach(item => {
-                let activity = item.nace ? item.nace.value.split('/').pop() : '';
-                let region = item.nuts3 ? item.nuts3.value.split('/').pop() : '';
-                let count = item.count ? item.count.value : 0;
-                this.results[response.data[0].endpointName+'-stats'].entries.push({'activity': activity, 'region': region, 'count': count});
+                let entry = {}
+                if (this.form.gnace) entry.activity = item.nace ? item.nace.value.split('/').pop() : '';
+                if (this.form.gnuts3) entry.region = item.nuts3 ? item.nuts3.value.split('/').pop() : '';;
+                entry.count = item.count ? item.count.value : 0;
+                this.results[response.data[0].endpointName+'-stats'].entries.push(entry);
               });
             }
             else {
@@ -466,9 +463,9 @@
           });
       },
 
-      onSubmit(event) {
-        event.preventDefault();
-        if (!this.validateInput()) {
+      viewGrouped() {
+        // TODO: Retrieve groupBy results and display them
+        if (!this.validateInput('grouped')) {
           this.$bvToast.toast('You have to select at least one search criteria.', {
             variant: 'danger',
             title: 'Warning',
@@ -477,7 +474,26 @@
           return;
         }
 
-        this.buildQueries();
+        this.buildQueries("/grouped");
+
+        for (let q of this.queriesGrouped) {
+          this.loadingQueries.push(true);
+          this.searchGroupedQuery(q, false);
+        }
+      },
+
+      onSubmit(event) {
+        event.preventDefault();
+        if (!this.validateInput('')) {
+          this.$bvToast.toast('You have to select at least one search criteria.', {
+            variant: 'danger',
+            title: 'Warning',
+            solid: true
+          });
+          return;
+        }
+
+        this.buildQueries("");
 
         this.results = {};
         for (let q of this.queries) {
