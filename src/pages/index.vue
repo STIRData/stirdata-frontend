@@ -240,14 +240,23 @@
                   </a>
                 </span>
               </template>
-              <template #cell(activity)="nace">
-                <span v-b-tooltip.hover :title="nace.value.label">
-                  {{ nace.value.code }}
-                </span>
+              <template #cell(activity)="naces">
+                <p v-for="nace in naces.value.slice(0,3)" v-b-tooltip.hover.left :title="nace.label" class="mb-0">
+                  {{ nace.code.split('/').pop() }}
+                </p>
+                <div v-if="naces.value.length > 3" class="text-center">
+                  <b-collapse :id="'activities-'+naces.index">
+                    <p v-for="nace in naces.value.slice(3)" v-b-tooltip.hover.left :title="nace.label" class="mb-0">
+                      {{ nace.code.split('/').pop() }}
+                    </p>
+                  </b-collapse>
+                  <i v-b-toggle="'activities-'+naces.index" class="arrow-up fa fa-chevron-up" aria-hidden="true" />
+                  <i v-b-toggle="'activities-'+naces.index" class="arrow-down fa fa-chevron-down" aria-hidden="true" />
+                </div>
               </template>
               <template #cell(region)="nuts">
                 <span v-b-tooltip.hover :title="nuts.value.label">
-                  {{ nuts.value.code }}
+                  {{ nuts.value.code.split('/').pop() }}
                 </span>
               </template>
             </b-table>
@@ -357,12 +366,21 @@
           });
       },
 
-      goToPage(bvEvent, page, country) {
+      resolveLabels(index, type) {
+        this.results[index].entries.forEach(async (entry,i) => {
+          entry[type].forEach(async (node,j) => {
+            this.results[index].entries[i][type][j].label = node.code ? await this.getLabel(node.code) : '';
+          });
+        });
+      },
+
+      async goToPage(bvEvent, page, country) {
         this.$scrollTo('#searchResults', {easing: 'ease-in-out', lazy: false, offset: -88, duration: 750});
 
         let query = this.queries.find(q => q.includes(`country=${country}`)) + `page=${page}`;
         this.loading = true;
-        this.searchQuery(query, true);
+        let index = await this.searchQuery(query, true);
+        this.resolveLabels(index, 'activity');
       },
 
       buildQueries(querySuffix) {
@@ -398,7 +416,7 @@
       },
 
       searchQuery(q, update) {
-        this.$api.get(q)
+        return this.$api.get(q)
           .then(queryResponse => {
             if (update) {
               this.results[queryResponse.data[0].endpointName].entries = [];
@@ -414,17 +432,12 @@
             if (queryResponse.data[0].response.length > 0) {
               queryResponse.data[0].response.forEach(async item => {
                 if (item['@type'] && item['@type'][0] === "http://www.w3.org/ns/regorg#RegisteredOrganization") {
-                  let entry = {}
+                  let entry = {'name': '', 'registration_date': '', 'activity': [], 'link': []};
                   entry.name = item['http://www.w3.org/ns/regorg#legalName'] ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value'] : 'no-name-found';
                   entry['registration_date'] = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
-                  entry.activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? {'code': item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id'].split('/').pop(), 'label': ''} : {};
+                  entry.activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'].map(e => ({'code': e['@id'], 'label': ''})) : [];
                   entry.link = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']).filter(e => !e.includes('opencorporates')) : [];
                   this.results[queryResponse.data[0].endpointName].entries.push(entry);
-
-                  if (item['http://www.w3.org/ns/regorg#orgActivity']) {
-                    entry.activity.label = await this.getLabel(item['http://www.w3.org/ns/regorg#orgActivity'][0]['@id']);
-                    this.results[queryResponse.data[0].endpointName].entries.push(entry);
-                  }
                 }
               });
             }
@@ -440,6 +453,8 @@
             } else {
               this.loadingQueries.pop();
             }
+            // Return index of results, to resolve codes afterwards
+            return queryResponse.data[0].endpointName;
           })
           .catch(error => {
             if (update) {
@@ -468,18 +483,10 @@
             if (response.data[0].response.results.bindings.length > 0) {
               response.data[0].response.results.bindings.forEach(async item => {
                 let entry = {};
-                if (this.form.gnace) entry.activity = item.nace ? {'code': item.nace.value.split('/').pop(), 'label': ''} : {};
-                if (this.form.gnuts3) entry.region = item.nuts3 ? {'code': item.nuts3.value.split('/').pop(), 'label': ''} : {};
+                if (this.form.gnace) entry.activity = item.nace ? [{'code': item.nace.value, 'label': ''}] : [];
+                if (this.form.gnuts3) entry.region = item.nuts3 ? {'code': item.nuts3.value, 'label': ''} : {};
                 entry.count = item.count ? item.count.value : 0;
                 this.results[response.data[0].endpointName+'-stats'].entries.push(entry);
-                //
-                // if (this.form.gnace && item.nace) {
-                //   entry.activity.label = await this.getLabel(item.nace.value);
-                // }
-                // if (this.form.gnuts3 && item.nuts3) {
-                //   entry.region.label = await this.getLabel(item.nuts3.value);
-                // }
-                // this.results[response.data[0].endpointName+'-stats'].entries.push(entry);
               });
             }
             else {
@@ -524,7 +531,7 @@
         }
       },
 
-      onSubmit(event) {
+      async onSubmit(event) {
         event.preventDefault();
         if (!this.validateInput('')) {
           this.$bvToast.toast('You have to select at least one search criteria.', {
@@ -536,11 +543,11 @@
         }
 
         this.buildQueries("");
-
         this.results = {};
         for (let q of this.queries) {
           this.loadingQueries.push(true);
-          this.searchQuery(q.slice(0, -1), false);
+          let index = await this.searchQuery(q.slice(0, -1), false);
+          this.resolveLabels(index, 'activity');
         }
       },
 
@@ -594,5 +601,10 @@
     padding: 0;
     border: 0;
     background-color: inherit;
+  }
+
+  .arrow-up.collapsed,
+  .arrow-down.not-collapsed {
+    display: none;
   }
 </style>
