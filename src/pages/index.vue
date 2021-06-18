@@ -231,20 +231,19 @@
               striped
               hover
               small
+              table-class="text-center"
               :items="endpoint.entries"
             >
-              <template #cell(link)="sites">
-                <span v-for="link in sites.value">
-                  <a :href="link" class="pr-3" target="_blank">
-                    <i class="fa fa-external-link" aria-hidden="true" />
-                  </a>
-                </span>
+              <template #cell(name)="name">
+                <div class="text-left">
+                  <span>{{ name.value }}</span>
+                </div>
               </template>
               <template #cell(activity)="naces">
                 <p v-for="nace in naces.value.slice(0,3)" v-b-tooltip.hover.left :title="nace.label" class="mb-0">
                   {{ nace.code.split('/').pop() }}
                 </p>
-                <div v-if="naces.value.length > 3" class="text-center">
+                <div v-if="naces.value.length > 3">
                   <b-collapse :id="'activities-'+naces.index">
                     <p v-for="nace in naces.value.slice(3)" v-b-tooltip.hover.left :title="nace.label" class="mb-0">
                       {{ nace.code.split('/').pop() }}
@@ -257,6 +256,13 @@
               <template #cell(region)="nuts">
                 <span v-b-tooltip.hover :title="nuts.value.label">
                   {{ nuts.value.code.split('/').pop() }}
+                </span>
+              </template>
+              <template #cell(link)="sites">
+                <span v-for="link in sites.value">
+                  <a :href="link" class="pr-0" target="_blank">
+                    <i class="fa fa-external-link" aria-hidden="true" />
+                  </a>
                 </span>
               </template>
             </b-table>
