@@ -232,20 +232,21 @@
               hover
               small
               table-class="text-center"
+              :fields="tableColumns"
               :items="endpoint.entries"
             >
               <template #cell(name)="name">
-                <div class="text-left">
+                <div class="clickable-row text-left" @click="showInfoModal(name)">
                   <span>{{ name.value }}</span>
                 </div>
               </template>
               <template #cell(activity)="naces">
-                <p v-for="nace in naces.value.slice(0,3)" v-b-tooltip.hover.left :title="nace.label" class="mb-0">
+                <p v-for="nace in naces.value.slice(0,3)" v-b-tooltip.hover.left :title="nace.label" delay="150" class="mb-0">
                   {{ nace.code.split('/').pop() }}
                 </p>
                 <div v-if="naces.value.length > 3">
                   <b-collapse :id="'activities-'+naces.index">
-                    <p v-for="nace in naces.value.slice(3)" v-b-tooltip.hover.left :title="nace.label" class="mb-0">
+                    <p v-for="nace in naces.value.slice(3)" v-b-tooltip.hover.left :title="nace.label" delay="150" class="mb-0">
                       {{ nace.code.split('/').pop() }}
                     </p>
                   </b-collapse>
@@ -254,7 +255,7 @@
                 </div>
               </template>
               <template #cell(region)="nuts">
-                <span v-b-tooltip.hover :title="nuts.value.label">
+                <span v-b-tooltip.hover :title="nuts.value.label" delay="150">
                   {{ nuts.value.code.split('/').pop() }}
                 </span>
               </template>
@@ -277,6 +278,9 @@
             </div>
           </b-tab>
         </b-tabs>
+        <InfoModal
+          :item="selectedEntry"
+        />
       </div>
     </div>
   </div>
@@ -284,6 +288,10 @@
 
 <script>
   export default {
+    components: {
+      InfoModal: () => import('../components/InfoModal')
+    },
+
     data() {
       return {
         show: true,
@@ -299,13 +307,15 @@
           startDate: null,
           endDate: null
         },
+        tableColumns: [],
         nutsOptions: [],
         naceOptions: [],
         queries: [],
         queriesGrouped: [],
         results: null,
         pageSize: 20,
-        endpoints: {}
+        endpoints: {},
+        selectedEntry: {}
       }
     },
 
@@ -369,6 +379,7 @@
           })
           .catch(error => {
             console.error(error);
+            return '';
           });
       },
 
@@ -422,6 +433,7 @@
       },
 
       searchQuery(q, update) {
+        this.tableColumns = ['name', 'registration_date', 'activity', 'link'];
         return this.$api.get(q)
           .then(queryResponse => {
             if (update) {
@@ -443,6 +455,7 @@
                   entry['registration_date'] = item['https://schema.org/foundingDate'] ? item['https://schema.org/foundingDate'][0]['@value'] : (item['http://schema.org/foundingDate'] ? item['http://schema.org/foundingDate'][0]['@value'] : 'no-date-found');
                   entry.activity = item['http://www.w3.org/ns/regorg#orgActivity'] ? item['http://www.w3.org/ns/regorg#orgActivity'].map(e => ({'code': e['@id'], 'label': ''})) : [];
                   entry.link = item['http://www.w3.org/2002/07/owl#sameAs'] ? item['http://www.w3.org/2002/07/owl#sameAs'].map(e => e['@id']).filter(e => !e.includes('opencorporates')) : [];
+                  entry.json = item;
                   this.results[queryResponse.data[0].endpointName].entries.push(entry);
                 }
               });
@@ -473,6 +486,7 @@
       },
 
       searchGroupedQuery(q, update) {
+        this.tableColumns = ['activity', 'region', 'count'];
         this.$api.get(q)
           .then(response => {
             if (update) {
@@ -535,6 +549,12 @@
           this.loadingQueries.push(true);
           this.searchGroupedQuery(q, false);
         }
+      },
+
+      showInfoModal(row) {
+        console.log(row.item);
+        this.selectedEntry = row.item;
+        this.$bvModal.show('info-modal');
       },
 
       async onSubmit(event) {

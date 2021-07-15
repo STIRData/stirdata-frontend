@@ -81,3 +81,18 @@ body {
   color: #fff;
   background-color: #35495e;
 }
+
+.clickable-row {
+  cursor: pointer;
+
+  &:hover {
+    font-weight: 500;
+    &:after {
+      font-family: 'FontAwesome';
+      margin-left: 0.5rem;
+      color: $blue;
+      content: "\f05a";
+      font-size: 12pt;
+    }
+  }
+}
