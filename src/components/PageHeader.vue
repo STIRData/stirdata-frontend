@@ -3,16 +3,30 @@
     class="m-0 navbar-brand container-fluid d-flex justify-content-between"
     role="banner"
   >
-    <img
-      src="../assets/img/stirdata-logo.png"
-      alt="logo"
-      class="logo ml-3"
+    <b-link
+      :to="{ name: 'index'}"
     >
+      <img
+        src="../assets/img/stirdata-logo.png"
+        alt="logo"
+        class="logo ml-3"
+      >
+    </b-link>
     <b-navbar
       class="align-items-center flex-row d-flex p-0 mr-3"
       role="navigation"
     >
       <b-navbar-nav class="ml-xl-auto top-navbar">
+        <b-nav-item
+          :to="{ name: 'index'}"
+        >
+          HOME
+        </b-nav-item>
+        <b-nav-item
+          :to="{ name: 'search'}"
+        >
+          SEARCH
+        </b-nav-item>
         <b-nav-item
           href="https://stirdata.eu/"
           target="_blank"
@@ -47,16 +61,21 @@
   .navbar-brand {
     min-width: 11.0625rem;
     flex: 0 0 auto;
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: 0.9rem;
 
     .logo {
       padding: 5px;
-      min-width: 9.5625rem;
       transition: 0.3s ease-in-out;
-      img {
-        width: 9.5625rem;
-      }
+      width: 9.5625rem;
+    }
+
+    a.nav-link {
+      padding: 18px 10px 18px 10px;
+    }
+
+    a.nav-link.nuxt-link-exact-active.nuxt-link-active {
+      color: $default;
+      font-weight: bold;
     }
   }
 </style>
