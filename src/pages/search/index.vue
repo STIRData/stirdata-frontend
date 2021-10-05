@@ -420,7 +420,6 @@
       var hrs = regionPolygon.states.create("hover");
       hrs.properties.fill = chart.colors.getIndex(4);
       var el3Nuts, el4Nuts, el5Nuts, el6Nuts;
-      var jsonObj;
 
       countryPolygon.events.on("hit", function (ev) {
         ev.target.series.chart.zoomToMapObject(ev.target);
@@ -2650,10 +2649,11 @@
 
       // Set up click events
       polygonTemplate.events.on("hit", function (ev) {
-        ev.target.series.chart.zoomToMapObject(ev.target);
+
         var id = ev.target.dataItem.dataContext.id;
 
         if (id === "GR") {
+          ev.target.series.chart.zoomToMapObject(ev.target);
           // ev.target.isHover = false;
           var greecejson = {
             type: "FeatureCollection",
@@ -4535,6 +4535,10 @@
           //if we do not have info for the clicked country do not show piechart
           if (!hasInfoBool) {
             //Toast with appropriate message to inform about no available info
+            regionSeries.hide();
+            countrySeries.hide();
+            polygonSeries.getPolygonById("GR").show();
+            nutsFocus = "";
             chart.goHome();
             $nuxt.$emit(
               "toast-warning",
