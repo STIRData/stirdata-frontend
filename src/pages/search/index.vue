@@ -2654,7 +2654,6 @@
 
         if (id === "GR") {
           ev.target.series.chart.zoomToMapObject(ev.target);
-          // ev.target.isHover = false;
           var greecejson = {
             type: "FeatureCollection",
             features: [
