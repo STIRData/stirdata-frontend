@@ -8,10 +8,23 @@ export default {
     htmlAttrs: {
       lang: 'en'
     },
+    script: [
+      {
+        src: 'https://apis.google.com/js/platform.js?onload=renderButton'
+      }
+    ],
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'STIRData portal' }
+      { hid: 'description', name: 'description', content: 'STIRData portal' },
+      {
+        name: 'google-signin-scope',
+        content: 'profile email'
+      },
+      {
+        name: 'google-signin-client_id',
+        content: process.env.GOOGLE_CLIENT_ID
+      }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -32,7 +45,6 @@ export default {
       src: '~/plugins/amCharts.js',
       ssr: false
     }
-
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

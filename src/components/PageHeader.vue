@@ -33,10 +33,82 @@
         >
           PROJECT
         </b-nav-item>
+        <b-nav-item
+          v-show="isAuthenticated"
+          @click="signOut"
+        >
+          Sign out
+        </b-nav-item>
+        <b-nav-item v-show="!isAuthenticated">
+          <div
+            id="google-signin-button"
+            class="g-signin2"
+          />
+        </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
   </header>
 </template>
+
+<script>
+  /* global gapi */
+  import { mapGetters } from "vuex";
+
+  export default {
+    name: 'PageHeader',
+
+    data() {
+      return {
+        id_token: null
+      };
+    },
+
+    computed: {
+      ...mapGetters({
+        user: "user"
+      }),
+
+      isAuthenticated() {
+        return this.$store.getters['isAuthenticated'];
+      }
+    },
+
+    mounted() {
+      setTimeout(() => {
+        gapi.signin2.render('google-signin-button', {
+          onsuccess: this.onSignIn
+        })
+      });
+    },
+
+    methods: {
+      onSignIn(user) {
+        const profile = user.getBasicProfile();
+        this.$store.commit('setUser', profile);
+        // console.log('ID: ' + profile.getId()); // Don't send this directly to your server!
+        // console.log('Full Name: ' + profile.getName());
+        // console.log('Given Name: ' + profile.getGivenName());
+        // console.log('Family Name: ' + profile.getFamilyName());
+        // console.log('Image URL: ' + profile.getImageUrl());
+        // console.log('Email: ' + profile.getEmail());
+        this.$store.commit('setUser', profile);
+
+        // The ID token for backend:
+        this.id_token = user.getAuthResponse().id_token;
+        // console.log('ID Token: ' + this.id_token);
+      },
+
+      signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut()
+          .then(function () {
+            auth2.disconnect();
+          })
+          .then(this.$store.commit('setUser', null));
+      }
+    }
+  }
+</script>
 
 <style lang="scss" scoped>
   @import '../assets/scss/variables.scss';
@@ -78,4 +150,5 @@
       font-weight: bold;
     }
   }
+
 </style>

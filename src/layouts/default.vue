@@ -16,3 +16,9 @@
     }
   }
 </script>
+
+<style type="text/css">
+  [v-cloak] {
+    display: none;
+  }
+</style>
