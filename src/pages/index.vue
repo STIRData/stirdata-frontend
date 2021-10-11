@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <SingleMap
+    <SimpleMap
       @toast-warning="throwToast"
     />
   </div>
@@ -9,7 +9,7 @@
 <script>
   export default {
     components: {
-      SingleMap: () => import("../components/map/SimpleMap"),
+      SimpleMap: () => import("../components/map/SimpleMap")
     },
 
     methods: {
