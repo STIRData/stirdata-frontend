@@ -18,6 +18,7 @@ jobs:
       PROJECT: stirdata
       APP: frontend
       BASE_API_URL: https://dev.stirdata.eu/api
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 
     steps:
 
