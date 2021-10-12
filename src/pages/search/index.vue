@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="container d-flex justify-content-center">
-      <DetailedMap />
+      <!-- <CustomMap /> -->
+      <DetailedMap
+        @toast-warning="throwToast"
+      />
     </div>
     <div class="container mb-4">
       <div class="w-100">
@@ -312,6 +315,7 @@
   export default {
     components: {
       InfoModal: () => import("../../components/InfoModal"),
+      // CustomMap: () => import("../../components/map/CustomMap"),
       DetailedMap: () => import("../../components/map/DetailedMap")
     },
 
@@ -379,6 +383,14 @@
     },
 
     methods: {
+      throwToast(message) {
+        this.$bvToast.toast(message, {
+          variant: 'danger',
+          title: 'Warning',
+          solid: true
+        });
+      },
+
       validateInput(type) {
         let validEndDate =
           !this.form.endDate ||

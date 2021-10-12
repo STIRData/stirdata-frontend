@@ -20,9 +20,9 @@
     },
 
     mounted() {
-      this.am4core = this.$am4core().am4core,
-      this.am4maps = this.$am4core().am4maps,
-      this.europeHigh = this.$am4core().europeHigh,
+      this.am4core = this.$am4core().am4core;
+      this.am4maps = this.$am4core().am4maps;
+      this.europeHigh = this.$am4core().europeHigh;
 
       this.initializeMap();
     },
