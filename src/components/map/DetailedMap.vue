@@ -8,7 +8,13 @@
 
     data() {
       return {
+        countrySeries: [],
+        countryTemplate: null,
         selectedCountry: null,
+        regionSeries: [],
+        regionTemplate: null,
+        selectedRegion: null,
+        countryIds: ['BE', 'GB', 'CZ', 'GR', 'NO'],
         countries: [
           { id: "BE", name: "Belgium",        fill: "#454ea0", hasInfo: true },
           { id: "GB", name: "United Kingdom", fill: "#454ea0", hasInfo: true },
@@ -30,13 +36,6 @@
       this.am4maps = this.$am4core().am4maps;
       this.europeHigh = this.$am4core().europeHigh;
 
-      // console.log(this.europeHigh)
-      // this.$store.dispatch('fetchTopLevelNuts');
-      // this.$store.dispatch('fetchTopLevelNace');
-      // this.$calls.getTopLevel('nuts')
-      //   .then(response => console.log(response));
-      //   this.$calls.getTopLevel('nace')
-      //     .then(response => console.log(response));
       this.initializeMap();
     },
 
@@ -69,29 +68,42 @@
         homeButton.dy = 8;
         homeButton.parent = chart;
 
-        // Create map polygon series
-        var polygonSeries = chart.series.push(new this.am4maps.MapPolygonSeries());
-        polygonSeries.useGeodata = true;     // Make map load polygon (like country names) data from GeoJSON
-        polygonSeries.data = this.countries; // Load countries data
-
+        // Create country series
+        this.countrySeries = chart.series.push(new this.am4maps.MapPolygonSeries());
+        this.countrySeries.useGeodata = true;     // Make map load polygon (like country names) data from GeoJSON
+        this.countrySeries.data = this.countries; // Load countries data
         // Configure series
-        var polygonTemplate = polygonSeries.mapPolygons.template;
-        polygonTemplate.propertyFields.fill = "fill";
-        polygonTemplate.tooltipText = "{name}";
-        polygonTemplate.fill = this.am4core.color("#a6a6a6");
-
+        this.countryTemplate = this.countrySeries.mapPolygons.template;
+        this.countryTemplate.propertyFields.fill = "fill";
+        this.countryTemplate.tooltipText = "{name}";
+        this.countryTemplate.fill = this.am4core.color("#a6a6a6");
         // Create hover state and set alternative fill color
-        var hs = polygonTemplate.states.create("hover");
+        var hs = this.countryTemplate.states.create("hover");
         hs.properties.fill = this.am4core.color("#0c145c");
-        var ss = polygonTemplate.states.create("active");
+        var ss = this.countryTemplate.states.create("active");
+        ss.properties.fill = this.am4core.color("#0c145c");
+
+        // Create region series
+        this.regionSeries = chart.series.push(new this.am4maps.MapPolygonSeries());
+        this.regionSeries.useGeodata = true;
+        this.regionSeries.hide();
+        // Configure series
+        this.regionTemplate = this.regionSeries.mapPolygons.template;
+        this.regionTemplate.propertyFields.fill = "fill";
+        this.regionTemplate.tooltipText = "{name}";
+        this.regionTemplate.fill = this.am4core.color("#a6a6a6");
+        // Create hover state and set alternative fill color
+        var hs = this.regionTemplate.states.create("hover");
+        hs.properties.fill = this.am4core.color("#0c145c");
+        var ss = this.regionTemplate.states.create("active");
         ss.properties.fill = this.am4core.color("#0c145c");
 
         // Add event listeners
         homeButton.events.on("hit", () => this.goMapHome());
-        polygonTemplate.events.on("hit", (ev) => this.handleZoomIn(ev));
+        this.countryTemplate.events.on("hit", (ev) => this.zoomInCountry(ev));
       },
 
-      handleZoomIn(ev) {
+      async zoomInCountry(ev) {
         var hasCountryInfo = this.countries.findIndex(c => c.hasOwnProperty("hasInfo") && c.name === ev.target.dataItem.dataContext.name) > -1;
 
         if (!hasCountryInfo) {
@@ -105,15 +117,25 @@
         this.selectedCountry = ev.target;
         this.selectedCountry.isActive = true;
 
-        this.mapChart.hide();
-        // this.$store.dispatch('fetchCountryGeoJSON', `https://lod.stirdata.eu/nuts/code/${this.getCountryCode(ev.target.dataItem.dataContext.id)}`)
-        this.$calls.getCountryGeoJSON(`https://lod.stirdata.eu/nuts/code/${this.getCountryCode(ev.target.dataItem.dataContext.id)}`)
-          .then(response => {
-            // console.log(response);
-            // console.log(this.mapChart.geodata.features);
-            this.mapChart.geodata.features.push(response);
-            this.mapChart.show();
-          });
+        var countryUri = `https://lod.stirdata.eu/nuts/code/${this.getCountryCode(ev.target.dataItem.dataContext.id)}`;
+        var country = await this.$calls.getCountryRegions(countryUri);
+        this.countrySeries.getPolygonById(ev.target.dataItem.dataContext.id).hide();
+
+        var regionsGeodata = new Object({
+          type: "FeatureCollection",
+          features: []
+        });
+        this.regionSeries.geodata = regionsGeodata;
+        country.regionUris.forEach(async (region, index) => {
+          this.$calls.getCountryGeoJSON(region, country.regionNames[index])
+            .then(response => {
+              // this.regionSeries.geodata = response;
+              regionsGeodata.features.push(response);
+              this.regionSeries.geodata = regionsGeodata;
+              console.log(this.regionSeries.geodata)
+              this.regionSeries.show();
+            });
+        });
 
         this.mapChart.zoomToMapObject(this.selectedCountry);
       },
@@ -122,6 +144,7 @@
         if (this.selectedCountry) {
           this.selectedCountry.isActive = false;
         }
+        this.regionSeries.hide();
         this.mapChart.goHome();
       },
 
