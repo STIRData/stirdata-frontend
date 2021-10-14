@@ -14,7 +14,8 @@
         regionSeries: [],
         regionTemplate: null,
         selectedRegion: null,
-        countryIds: ['BE', 'GB', 'CZ', 'GR', 'NO'],
+        previousLevel: null,
+        // countryIds: ['BE', 'GB', 'CZ', 'GR', 'NO'],
         countries: [
           { id: "BE", name: "Belgium",        fill: "#454ea0", hasInfo: true },
           { id: "GB", name: "United Kingdom", fill: "#454ea0", hasInfo: true },
@@ -119,25 +120,29 @@
 
         var countryUri = `https://lod.stirdata.eu/nuts/code/${this.getCountryCode(ev.target.dataItem.dataContext.id)}`;
         var country = await this.$calls.getCountryRegions(countryUri);
-        this.countrySeries.getPolygonById(ev.target.dataItem.dataContext.id).hide();
 
         var regionsGeodata = new Object({
           type: "FeatureCollection",
           features: []
         });
-        this.regionSeries.geodata = regionsGeodata;
-        country.regionUris.forEach(async (region, index) => {
-          this.$calls.getCountryGeoJSON(region, country.regionNames[index])
-            .then(response => {
-              // this.regionSeries.geodata = response;
-              regionsGeodata.features.push(response);
-              this.regionSeries.geodata = regionsGeodata;
-              console.log(this.regionSeries.geodata)
-              this.regionSeries.show();
-            });
+        Promise.all(
+          country.regionUris.map((region,index) => {
+            return new Promise((resolve) => {
+              this.$calls.getCountryGeoJSON(region, country.regionNames[index])
+                .then(response => {
+                  resolve(response);
+                })
+            })
+          })
+        )
+        .then(responses => {
+          this.countrySeries.getPolygonById(ev.target.dataItem.dataContext.id).hide();
+          regionsGeodata.features = responses.filter(item => !!item);
+          this.regionSeries.geodata = regionsGeodata;
+          console.log(this.regionSeries.geodata);
+          this.regionSeries.show();
+          this.mapChart.zoomToMapObject(this.selectedCountry);
         });
-
-        this.mapChart.zoomToMapObject(this.selectedCountry);
       },
 
       goMapHome() {

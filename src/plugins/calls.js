@@ -37,13 +37,19 @@ export default (ctx, inject) => {
 
     getCountryGeoJSON: (uri, name) => {
       return ctx.$api.get(`nuts/getGeoJson?nutsUri=${uri}`)
-        .then(response => new Object({
-          type: "Feature",
-          id: response.data['@graph'][1]['@id'].split(':')[1],
-          contains: response.data['@graph'][1]['contains'],
-          geometry: JSON.parse(response.data['@graph'][0]['asGeoJSON']),
-          properties: countryProperties(response.data['@graph'][1]['@id'].split(':')[1], name)
-        }));
+        .then(response => response.data['@graph']
+          ?
+            new Object({
+              type: "Feature",
+              id: response.data['@graph'][1]['@id'].split(':')[1],
+              contains: response.data['@graph'][1]['contains'],
+              geometry: JSON.parse(response.data['@graph'][0]['asGeoJSON']),
+              properties: countryProperties(response.data['@graph'][1]['@id'].split(':')[1], name)
+            })
+          :
+            null
+        )
+        .catch(error => console.error(error));
     }
   }
 
