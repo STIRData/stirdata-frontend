@@ -13,8 +13,8 @@
         selectedCountry: null,
         regionSeries: [],
         regionTemplate: null,
-        selectedRegion: null,
-        previousLevel: null,
+        // selectedRegion: null,
+        previousLevel: '',
         colorShades: ['#aaaed5', '#6b72b5', '#2b3595'],
         countries: [
           { id: "BE", name: "Belgium",        fill: "#aaaed5", hasInfo: true },
@@ -109,8 +109,8 @@
         hs.properties.fill = this.am4core.color(this.colorShades[2]);
 
         // Add event listeners
-        homeButton.events.on("hit", () => this.goMapHome());
-        backButton.events.on("hit", () => this.goMapHome());
+        homeButton.events.on("hit", () => this.goToHome());
+        backButton.events.on("hit", () => this.goToPreviousLevel());
         this.countryTemplate.events.on("hit", (ev) => this.goToPolygon('country', ev.target, ev.target.dataItem.dataContext.id, ev.target.dataItem.dataContext.name));
         this.regionTemplate.events.on("hit", (ev) => this.goToPolygon('region', ev.target, ev.target.dataItem.dataContext.id, ev.target.dataItem.dataContext.name));
       },
@@ -149,27 +149,48 @@
           })
         )
         .then(responses => {
+          let previousGeodataFeatures = this.regionSeries.geodata ? this.regionSeries.geodata.features : [];
           if (type === 'country') {
             this.countrySeries.getPolygonById(id).hide();
           }
-          // Remove father's polygon
-          let previousGeodataFeatures = this.regionSeries.geodata ? this.regionSeries.geodata.features.filter(item => item.id != id) : [];
+          else {
+            if (this.previousLevel) {
+              // If instead of choosing a subregion of the previous region you chose another same-level region, clear the previous region's subregions
+              if (id.length !== this.previousLevel.length+1) {
+                previousGeodataFeatures = previousGeodataFeatures.filter(item => item.id.length<=id.length);
+              }
+            }
+            this.previousLevel = id;
+          }
           let newGeodataFeatures = responses.filter(item => !!item).concat(previousGeodataFeatures);
           regionsGeodata.features = newGeodataFeatures;
           this.regionSeries.geodata = regionsGeodata;
           this.regionSeries.show();
           document.body.style.cursor = 'default';
 
+          // TODO: when issue with map scale is resolved, move zoomToMapObject out in the open
           if (type === 'country') {
             this.mapChart.zoomToMapObject(target);
           }
         });
       },
 
-      goMapHome() {
+      goToPreviousLevel() {
+        if (this.previousLevel) {
+          let previous = this.regionSeries.getPolygonById(this.previousLevel);
+          // this.previousLevel = this.previousLevel + '00';
+          this.goToPolygon('region', previous, previous.dataItem.dataContext.id, previous.dataItem.dataContext.name);
+        }
+        else {
+          this.goToHome();
+        }
+      },
+
+      goToHome() {
         if (this.selectedCountry) {
           this.selectedCountry.isActive = false;
         }
+        this.previousLevel = '';
         var regionsGeodata = new Object({ type: "FeatureCollection", features: [] });
         this.regionSeries.geodata = regionsGeodata;
         this.countrySeries.getPolygonById(this.selectedCountry.dataItem.dataContext.id).show();
