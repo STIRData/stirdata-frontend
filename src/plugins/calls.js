@@ -26,12 +26,11 @@ export default (ctx, inject) => {
         ));
     },
 
-    getCountryRegions: uri => {
+    getSubRegions: uri => {
       return ctx.$api.get(`nuts?parent=${uri}`)
         .then(response => new Object({
-          countryId: uri,
-          regionNames: response.data.results.bindings.map(item => item.label.value),
-          regionUris: response.data.results.bindings.map(item => item.code.value)
+          names: response.data.results.bindings.map(item => item.label.value),
+          uris: response.data.results.bindings.map(item => item.code.value)
         }));
     },
 
@@ -42,7 +41,7 @@ export default (ctx, inject) => {
             new Object({
               type: "Feature",
               id: response.data['@graph'][1]['@id'].split(':')[1],
-              contains: response.data['@graph'][1]['contains'],
+              // contains: response.data['@graph'][1]['contains'],
               geometry: JSON.parse(response.data['@graph'][0]['asGeoJSON']),
               properties: countryProperties(response.data['@graph'][1]['@id'].split(':')[1], name)
             })

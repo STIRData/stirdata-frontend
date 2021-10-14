@@ -15,22 +15,16 @@
         regionTemplate: null,
         selectedRegion: null,
         previousLevel: null,
-        // countryIds: ['BE', 'GB', 'CZ', 'GR', 'NO'],
+        colorShades: ['#aaaed5', '#6b72b5', '#2b3595'],
         countries: [
-          { id: "BE", name: "Belgium",        fill: "#454ea0", hasInfo: true },
-          { id: "GB", name: "United Kingdom", fill: "#454ea0", hasInfo: true },
-          { id: "CZ", name: "Czechia",        fill: "#454ea0", hasInfo: true },
-          { id: "GR", name: "Greece",         fill: "#454ea0", hasInfo: true },
-          { id: "NO", name: "Norway",         fill: "#454ea0", hasInfo: true }
+          { id: "BE", name: "Belgium",        fill: "#aaaed5", hasInfo: true },
+          { id: "GB", name: "United Kingdom", fill: "#aaaed5", hasInfo: true },
+          { id: "CZ", name: "Czechia",        fill: "#aaaed5", hasInfo: true },
+          { id: "GR", name: "Greece",         fill: "#aaaed5", hasInfo: true },
+          { id: "NO", name: "Norway",         fill: "#aaaed5", hasInfo: true }
         ]
       };
     },
-
-    // computed: {
-    //   activeGeoJSON() {
-    //     return this.$store.countryGeoJSON || {};
-    //   }
-    // },
 
     mounted() {
       this.am4core = this.$am4core().am4core;
@@ -52,83 +46,102 @@
 
         // Configure home button
         var homeButton = new this.am4core.Button();
-        homeButton.tooltip = new this.am4core.Tooltip();
         homeButton.icon = new this.am4core.Sprite();
+        homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
         homeButton.background.fill = this.am4core.color("#2b3595");
         homeButton.fill = this.am4core.color("#FFF");
+        homeButton.padding(7, 5, 23, 5);
+        homeButton.height = 30;
+        homeButton.width = 30;
+        homeButton.dx = 12;
+        homeButton.dy = 12;
+        homeButton.tooltip = new this.am4core.Tooltip();
         homeButton.tooltip.pointerOrientation = "left";
         homeButton.tooltip.dx = 16;
-        homeButton.tooltip.dy = 13;
+        homeButton.tooltip.dy = 8;
         homeButton.tooltipText = "Return to Europe";
         homeButton.tooltipColorSource = this.am4core.color("#2b3595");
-        homeButton.padding(7, 5, 23, 5);
-        homeButton.height = 40;
-        homeButton.width = 40;
-        homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
-        homeButton.dx = 8;
-        homeButton.dy = 8;
         homeButton.parent = chart;
+
+        // Configure back Button
+        var backButton = new this.am4core.Button();
+        backButton.icon = new this.am4core.Sprite();
+        backButton.icon.path = "M 0.625 12.5 L 10 3.75 L 19.375 12.5 L 16.875 15 L 10 8.75 L 3.125 15 Z M 0.625 12.5";
+        backButton.background.fill = this.am4core.color("#2b3595");
+        backButton.fill = this.am4core.color("#FFF");
+        backButton.padding(9, 6, 20, 6);
+        backButton.height = 30;
+        backButton.width = 30;
+        backButton.dx = 12;
+        backButton.dy = 48;
+        backButton.tooltip = new this.am4core.Tooltip();
+        backButton.tooltip.pointerOrientation = "left";
+        backButton.tooltip.dx = 16;
+        backButton.tooltip.dy = 6;
+        backButton.tooltipText = "Go to previous level";
+        backButton.tooltipColorSource = this.am4core.color("#2b3595");
+        backButton.parent = chart;
 
         // Create country series
         this.countrySeries = chart.series.push(new this.am4maps.MapPolygonSeries());
         this.countrySeries.useGeodata = true;     // Make map load polygon (like country names) data from GeoJSON
         this.countrySeries.data = this.countries; // Load countries data
-        // Configure series
+        // Configure polygon template
         this.countryTemplate = this.countrySeries.mapPolygons.template;
         this.countryTemplate.propertyFields.fill = "fill";
         this.countryTemplate.tooltipText = "{name}";
-        this.countryTemplate.fill = this.am4core.color("#a6a6a6");
+        this.countryTemplate.fill = this.am4core.color("#c1c1c1");
         // Create hover state and set alternative fill color
         var hs = this.countryTemplate.states.create("hover");
-        hs.properties.fill = this.am4core.color("#0c145c");
-        var ss = this.countryTemplate.states.create("active");
-        ss.properties.fill = this.am4core.color("#0c145c");
+        hs.properties.fill = this.am4core.color(this.colorShades[2]);
 
         // Create region series
         this.regionSeries = chart.series.push(new this.am4maps.MapPolygonSeries());
         this.regionSeries.useGeodata = true;
         this.regionSeries.hide();
-        // Configure series
+        // Configure polygon template
         this.regionTemplate = this.regionSeries.mapPolygons.template;
         this.regionTemplate.propertyFields.fill = "fill";
         this.regionTemplate.tooltipText = "{name}";
-        this.regionTemplate.fill = this.am4core.color("#a6a6a6");
+        this.regionTemplate.fill = this.am4core.color(this.colorShades[1]);
         // Create hover state and set alternative fill color
         var hs = this.regionTemplate.states.create("hover");
-        hs.properties.fill = this.am4core.color("#0c145c");
-        var ss = this.regionTemplate.states.create("active");
-        ss.properties.fill = this.am4core.color("#0c145c");
+        hs.properties.fill = this.am4core.color(this.colorShades[2]);
 
         // Add event listeners
         homeButton.events.on("hit", () => this.goMapHome());
-        this.countryTemplate.events.on("hit", (ev) => this.zoomInCountry(ev));
+        backButton.events.on("hit", () => this.goMapHome());
+        this.countryTemplate.events.on("hit", (ev) => this.goToPolygon('country', ev.target, ev.target.dataItem.dataContext.id, ev.target.dataItem.dataContext.name));
+        this.regionTemplate.events.on("hit", (ev) => this.goToPolygon('region', ev.target, ev.target.dataItem.dataContext.id, ev.target.dataItem.dataContext.name));
       },
 
-      async zoomInCountry(ev) {
-        var hasCountryInfo = this.countries.findIndex(c => c.hasOwnProperty("hasInfo") && c.name === ev.target.dataItem.dataContext.name) > -1;
-
-        if (!hasCountryInfo) {
-          this.$emit('toast-warning', `There is no data available for ${ev.target.dataItem.dataContext.name}`);
-          return;
+      async goToPolygon(type, target, id, name) {
+        if (type === 'country') {
+          var hasCountryInfo = this.countries.findIndex(c => c.hasOwnProperty("hasInfo") && c.name === name) > -1;
+          if (!hasCountryInfo) {
+            this.$emit('toast-warning', `There is no data available for ${name}`);
+            return;
+          }
+          // If we switched country, remove the old country's regionSeries geodata, and show the old country again
+          if (this.selectedCountry) {
+            this.selectedCountry.isActive = false;
+            this.countrySeries.getPolygonById(this.selectedCountry.dataItem.dataContext.id).show();
+            var regionsGeodata = new Object({ type: "FeatureCollection", features: [] });
+            this.regionSeries.geodata = regionsGeodata;
+          }
+          // Select the new country
+          this.selectedCountry = target;
+          this.selectedCountry.isActive = true;
         }
 
-        if (this.selectedCountry) {
-          this.selectedCountry.isActive = false;
-        }
-        this.selectedCountry = ev.target;
-        this.selectedCountry.isActive = true;
-
-        var countryUri = `https://lod.stirdata.eu/nuts/code/${this.getCountryCode(ev.target.dataItem.dataContext.id)}`;
-        var country = await this.$calls.getCountryRegions(countryUri);
-
-        var regionsGeodata = new Object({
-          type: "FeatureCollection",
-          features: []
-        });
+        document.body.style.cursor = 'wait';
+        var countryUri = `https://lod.stirdata.eu/nuts/code/${this.getCountryCode(id)}`;
+        var regions = await this.$calls.getSubRegions(countryUri);
+        var regionsGeodata = new Object({ type: "FeatureCollection", features: [] });
         Promise.all(
-          country.regionUris.map((region,index) => {
+          regions.uris.map((region,index) => {
             return new Promise((resolve) => {
-              this.$calls.getCountryGeoJSON(region, country.regionNames[index])
+              this.$calls.getCountryGeoJSON(region, regions.names[index])
                 .then(response => {
                   resolve(response);
                 })
@@ -136,12 +149,20 @@
           })
         )
         .then(responses => {
-          this.countrySeries.getPolygonById(ev.target.dataItem.dataContext.id).hide();
-          regionsGeodata.features = responses.filter(item => !!item);
+          if (type === 'country') {
+            this.countrySeries.getPolygonById(id).hide();
+          }
+          // Remove father's polygon
+          let previousGeodataFeatures = this.regionSeries.geodata ? this.regionSeries.geodata.features.filter(item => item.id != id) : [];
+          let newGeodataFeatures = responses.filter(item => !!item).concat(previousGeodataFeatures);
+          regionsGeodata.features = newGeodataFeatures;
           this.regionSeries.geodata = regionsGeodata;
-          console.log(this.regionSeries.geodata);
           this.regionSeries.show();
-          this.mapChart.zoomToMapObject(this.selectedCountry);
+          document.body.style.cursor = 'default';
+
+          if (type === 'country') {
+            this.mapChart.zoomToMapObject(target);
+          }
         });
       },
 
@@ -149,13 +170,18 @@
         if (this.selectedCountry) {
           this.selectedCountry.isActive = false;
         }
-        this.regionSeries.hide();
+        var regionsGeodata = new Object({ type: "FeatureCollection", features: [] });
+        this.regionSeries.geodata = regionsGeodata;
+        this.countrySeries.getPolygonById(this.selectedCountry.dataItem.dataContext.id).show();
+
         this.mapChart.goHome();
       },
 
       getCountryCode(id) {
         if (id === 'GR') return 'EL';
+        else if (id === 'EL') return 'GR';
         else if (id === 'GB') return 'UK';
+        else if (id === 'UK') return 'GB';
         else return id;
       }
     },
