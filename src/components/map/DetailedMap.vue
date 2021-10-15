@@ -164,14 +164,10 @@
           }
           let newGeodataFeatures = responses.filter(item => !!item).concat(previousGeodataFeatures);
           regionsGeodata.features = newGeodataFeatures;
+          this.mapChart.zoomToMapObject(target);
           this.regionSeries.geodata = regionsGeodata;
           this.regionSeries.show();
           document.body.style.cursor = 'default';
-
-          // TODO: when issue with map scale is resolved, move zoomToMapObject out in the open
-          if (type === 'country') {
-            this.mapChart.zoomToMapObject(target);
-          }
         });
       },
 
