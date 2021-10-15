@@ -141,7 +141,7 @@
         Promise.all(
           regions.uris.map((region,index) => {
             return new Promise((resolve) => {
-              this.$calls.getCountryGeoJSON(region, regions.names[index])
+              this.$calls.getCountryGeoJSON(region, regions.names[index], this.getNutsResolution(region.split('/').pop()))
                 .then(response => {
                   resolve(response);
                 })
@@ -176,11 +176,17 @@
       },
 
       goToPreviousLevel() {
-        if (this.previousLevel) {
-          let previous = this.regionSeries.getPolygonById(this.previousLevel);
-          // this.previousLevel = this.previousLevel + '00';
+        // If you are in NUT2 level or below, just go back to the previous NUT level
+        if (this.previousLevel && this.previousLevel.length >= 4) {
+          let previous = this.regionSeries.getPolygonById(this.previousLevel.slice(0, -1));
           this.goToPolygon('region', previous, previous.dataItem.dataContext.id, previous.dataItem.dataContext.name);
         }
+        // If you are in NUT1 go the country level
+        else if (this.previousLevel && this.previousLevel.length < 4) {
+          let previous = this.countrySeries.getPolygonById(this.getCountryCode(this.previousLevel.slice(0, -1)));
+          this.goToPolygon('country', previous, previous.dataItem.dataContext.id, previous.dataItem.dataContext.name);
+        }
+        // If you are in NUT0, go back to Europe
         else {
           this.goToHome();
         }
@@ -204,6 +210,11 @@
         else if (id === 'GB') return 'UK';
         else if (id === 'UK') return 'GB';
         else return id;
+      },
+
+      getNutsResolution(nutsId) {
+        if (nutsId.length <= 2) return "1:10000000";
+        else return "1:3000000";
       }
     },
 

@@ -34,8 +34,8 @@ export default (ctx, inject) => {
         }));
     },
 
-    getCountryGeoJSON: (uri, name) => {
-      return ctx.$api.get(`nuts/getGeoJson?nutsUri=${uri}`)
+    getCountryGeoJSON: (uri, name, resolution) => {
+      return ctx.$api.get(`nuts/getGeoJson?nutsUri=${uri}&spatialResolution=${resolution}`)
         .then(response => response.data['@graph']
           ?
             new Object({
