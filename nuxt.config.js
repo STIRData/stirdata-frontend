@@ -41,6 +41,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/apis',
+    '~/plugins/calls',
     {
       src: '~/plugins/amCharts.js',
       ssr: false

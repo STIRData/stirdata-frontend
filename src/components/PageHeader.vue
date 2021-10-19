@@ -18,16 +18,19 @@
     >
       <b-navbar-nav class="ml-xl-auto top-navbar">
         <b-nav-item
+          class="my-2"
           :to="{ name: 'index'}"
         >
           HOME
         </b-nav-item>
         <b-nav-item
+          class="my-2"
           :to="{ name: 'search'}"
         >
           SEARCH
         </b-nav-item>
         <b-nav-item
+        class="my-2"
           href="https://stirdata.eu/"
           target="_blank"
         >
@@ -35,9 +38,11 @@
         </b-nav-item>
         <b-nav-item
           v-show="isAuthenticated"
+          class="my-2 pl-3 ml-3 border-left"
           @click="signOut"
         >
-          Sign out
+          <i class="fa fa-sign-out fa-lg" aria-hidden="true" />
+          <span>SIGN OUT</span>
         </b-nav-item>
         <b-nav-item v-show="!isAuthenticated">
           <div
@@ -150,5 +155,4 @@
       font-weight: bold;
     }
   }
-
 </style>
