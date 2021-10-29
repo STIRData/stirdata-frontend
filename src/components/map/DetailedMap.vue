@@ -21,6 +21,8 @@
           { id: "GB", name: "United Kingdom", fill: "#aaaed5", hasInfo: true },
           { id: "CZ", name: "Czechia",        fill: "#aaaed5", hasInfo: true },
           { id: "GR", name: "Greece",         fill: "#aaaed5", hasInfo: true },
+          { id: "CY", name: "Cyprus",         fill: "#aaaed5", hasInfo: true },
+          { id: "FI", name: "Finland",        fill: "#aaaed5", hasInfo: true },
           { id: "NO", name: "Norway",         fill: "#aaaed5", hasInfo: true }
         ]
       };
