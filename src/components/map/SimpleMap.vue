@@ -17,7 +17,7 @@
           { id: "CY", name: "Cyprus",         fill: "#454ea0", hasInfo: true },
           { id: "FI", name: "Finland",        fill: "#454ea0", hasInfo: true },
           { id: "EE", name: "Estonia",        fill: "#454ea0", hasInfo: true },
-          { id: "EE", name: "Latvia",         fill: "#454ea0", hasInfo: true },
+          { id: "LV", name: "Latvia",         fill: "#454ea0", hasInfo: true },
           { id: "NO", name: "Norway",         fill: "#454ea0", hasInfo: true },
           { id: "RO", name: "Romania",        fill: "#454ea0", hasInfo: true }
         ]
