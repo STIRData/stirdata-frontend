@@ -392,7 +392,7 @@
       },
 
       validateInput(type) {
-        let validEndDate =
+        let validFoundingEndDate =
           !this.form.foundingEndDate ||
           !this.form.foundingStartDate ||
           this.form.foundingEndDate > this.form.foundingStartDate;
@@ -400,7 +400,7 @@
           type === "grouped" ? this.form.gnace || this.form.gnuts3 : true;
 
         return (
-          validEndDate &&
+          validFoundingEndDate &&
           validGrouped &&
           (this.form.nutsTags.length > 0 || this.form.naceTags.length > 0)
         );
@@ -733,8 +733,8 @@
         this.form.nace = [];
         this.form.naceTags = [];
         this.naceOptions = this.naceOptions.slice(0, 1);
-        this.form.startDate = null;
-        this.form.endDate = null;
+        this.form.foundingStartDate = null;
+        this.form.foundingEndDate = null;
         // Reset/clear native browser form validation state
         this.show = false;
         this.$nextTick(() => {
