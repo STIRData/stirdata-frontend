@@ -112,7 +112,7 @@
                   <b-col cols="10">
                     <b-form-datepicker
                       id="date-0"
-                      v-model="form.startDate"
+                      v-model="form.foundingStartDate"
                       class="mb-2"
                       :start-weekday="1"
                       :show-decade-nav="true"
@@ -126,7 +126,7 @@
                   <b-col cols="10">
                     <b-form-datepicker
                       id="date-1"
-                      v-model="form.endDate"
+                      v-model="form.foundingEndDate"
                       class="mb-2"
                       :start-weekday="1"
                       :show-decade-nav="true"
@@ -331,8 +331,8 @@
           nace: [],
           naceTags: [],
           gnace: false,
-          startDate: null,
-          endDate: null,
+          foundingStartDate: null,
+          foundingEndDate: null,
         },
         tableColumns: [],
         nutsOptions: [],
@@ -393,9 +393,9 @@
 
       validateInput(type) {
         let validEndDate =
-          !this.form.endDate ||
-          !this.form.startDate ||
-          this.form.endDate > this.form.startDate;
+          !this.form.foundingEndDate ||
+          !this.form.foundingStartDate ||
+          this.form.foundingEndDate > this.form.foundingStartDate;
         let validGrouped =
           type === "grouped" ? this.form.gnace || this.form.gnuts3 : true;
 
@@ -495,11 +495,11 @@
             (code) => `NACE=https://lod.stirdata.eu/nace/nace-rev2/code/${code}&`
           )
           .join("");
-        let startDateQuery = this.form.startDate
-          ? `startDate=${this.form.startDate}&`
+        let foundingStartDateQuery = this.form.foundingStartDate
+          ? `foundingStartDate=${this.form.foundingStartDate}&`
           : "";
-        let endDateQuery = this.form.endDate
-          ? `endDate=${this.form.endDate}&`
+        let foundingEndDateQuery = this.form.foundingEndDate
+          ? `foundingEndDate=${this.form.foundingEndDate}&`
           : "";
 
         this[queriesType] = [];
@@ -514,7 +514,7 @@
               this[queriesType].push(
                 `query${querySuffix}?country=${code}&${this.endpoints[code].join(
                   "&"
-                )}&${naceQuery}${startDateQuery}${endDateQuery}${suffixParams}`
+                )}&${naceQuery}${foundingStartDateQuery}${foundingEndDateQuery}${suffixParams}`
               );
               // Empty the query of this endpoint, for the next search
               this.endpoints[code] = [];
@@ -523,7 +523,7 @@
         } else {
           for (const code in this.endpoints) {
             this[queriesType].push(
-              `query${querySuffix}?country=${code}&NUTS=https://lod.stirdata.eu/nuts/code/${code}&${naceQuery}${startDateQuery}${endDateQuery}`
+              `query${querySuffix}?country=${code}&NUTS=https://lod.stirdata.eu/nuts/code/${code}&${naceQuery}${foundingStartDateQuery}${foundingEndDateQuery}`
             );
           }
         }
