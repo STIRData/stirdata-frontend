@@ -18,14 +18,15 @@
         colorShades: ['#aaaed5', '#6b72b5', '#2b3595'],
         countries: [
           { id: "BE", name: "Belgium",        fill: "#aaaed5", hasInfo: true },
-          { id: "GB", name: "United Kingdom", fill: "#aaaed5", hasInfo: true },
+          { id: "UK", name: "United Kingdom", fill: "#aaaed5", hasInfo: true },
           { id: "CZ", name: "Czechia",        fill: "#aaaed5", hasInfo: true },
           { id: "GR", name: "Greece",         fill: "#aaaed5", hasInfo: true },
           { id: "CY", name: "Cyprus",         fill: "#aaaed5", hasInfo: true },
           { id: "FI", name: "Finland",        fill: "#aaaed5", hasInfo: true },
           { id: "EE", name: "Estonia",        fill: "#aaaed5", hasInfo: true },
           { id: "LV", name: "Latvia",         fill: "#aaaed5", hasInfo: true },
-          { id: "NO", name: "Norway",         fill: "#aaaed5", hasInfo: true }
+          { id: "NO", name: "Norway",         fill: "#aaaed5", hasInfo: true },
+          { id: "RO", name: "Romania",        fill: "#aaaed5", hasInfo: true }
         ]
       };
     },

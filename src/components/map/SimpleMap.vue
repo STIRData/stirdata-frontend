@@ -11,14 +11,15 @@
         selectedCountry: null,
         countries: [
           { id: "BE", name: "Belgium",        fill: "#454ea0", hasInfo: true },
-          { id: "GB", name: "United Kingdom", fill: "#454ea0", hasInfo: true },
+          { id: "UK", name: "United Kingdom", fill: "#454ea0", hasInfo: true },
           { id: "CZ", name: "Czechia",        fill: "#454ea0", hasInfo: true },
           { id: "GR", name: "Greece",         fill: "#454ea0", hasInfo: true },
           { id: "CY", name: "Cyprus",         fill: "#454ea0", hasInfo: true },
           { id: "FI", name: "Finland",        fill: "#454ea0", hasInfo: true },
           { id: "EE", name: "Estonia",        fill: "#454ea0", hasInfo: true },
           { id: "EE", name: "Latvia",         fill: "#454ea0", hasInfo: true },
-          { id: "NO", name: "Norway",         fill: "#454ea0", hasInfo: true }
+          { id: "NO", name: "Norway",         fill: "#454ea0", hasInfo: true },
+          { id: "RO", name: "Romania",        fill: "#454ea0", hasInfo: true }
         ]
       };
     },
