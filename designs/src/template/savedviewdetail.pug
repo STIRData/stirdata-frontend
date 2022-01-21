@@ -1,0 +1,147 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "Saved View"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/headerlog.pug
+
+		// page main
+		main(role="main")
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item
+							a( href="profile.html" ) PROFILE
+						li.breadcrumb-item.active(aria-current="page") SAVED VIEW
+
+			// container
+			section.profile 
+				.container 
+
+					// row
+					.row 
+
+						// column
+						.col-md-4.col-lg-3.col-xl-3.profile-sidebar
+							
+							// headingtext
+							h3 Welcome,
+							h1 Mark Wiens
+
+							// navigation
+							nav.sidenavigation
+								ul 
+									li 
+										a( href="profile.html" ) Profile
+									li.active 
+										a( href="savedview.html" ) Saved View
+									li 
+										a( href="login.html" ) Sign out
+
+						// column
+						.col-sm-12.col-md-8.col-lg-7.col-xl-7.profile-content
+
+							// heading
+							.headingtext
+								h2 Animal Production Companies in Belgium and Norway
+								p.accent Created on 12 April 2021
+
+							// filter list
+							.filterlist
+
+								// countries
+								.filterlist-section
+									.title Countries and Region 
+									.category-pill
+										ul
+											li
+												span.pill Belgium
+										ul
+											li 
+												span.pill Norway
+											li.separator
+												ul 
+													li 
+														span.pill Svalbag og Jan Mayen
+													li.separator
+														ul 
+															li 
+																span.pill Svalbag
+								
+								// countries
+								.filterlist-section
+									.title Business Activity
+									.category-pill
+										ul
+											li 
+												span.pill Agriculture, Forestry and Fishing
+											li.separator
+												ul 
+													li 
+														span.pill Crop and animal production, hunting
+													li.separator
+														ul 
+															li 
+																span.pill Plant propagation
+										ul
+											li 
+												span.pill Mining and Quarrying
+											li.separator
+												ul 
+													li 
+														span.pill Extraction of crude petroleum and natural gas
+										ul
+											li 
+												span.pill Water Supply; Sewerage, Waste Management and Remediation Activities
+
+								// countries
+								.filterlist-section
+									.title Registration Date
+									.category-pill
+										ul
+											li
+												span.pill 
+													b After 
+													| 1 January 2021
+										ul
+											li
+												span.pill 
+													b Before 
+													| 1 January 2022
+								
+							
+							.inputaction
+								span.note.first
+									a( href="savedview.html" ) Back
+								a.button( href="explore.html" ) View in Explore page
+								
+								button.delete( type="button" ) Delete View
+
+							
+
+						// column
+						.col.lg-2.col-xl-2.profile-decor
+
+							// img
+							img( src="img/ic-decor-vertical.png" )
+
+
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

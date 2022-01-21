@@ -1,0 +1,3490 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,500;1,400;1,500&display=swap");
+* {
+  outline: none !important;
+}
+*:focus {
+  outline: none !important;
+}
+
+a {
+  text-decoration: none;
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -ms-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  position: relative;
+}
+.container::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 2.875rem;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 1.375rem;
+  line-height: 2rem;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 1.188rem;
+  font-weight: 500;
+}
+
+.dropdown-menu {
+  padding: 0;
+  background: #355FAA;
+  color: #fff;
+  font-size: 0.875rem;
+  border: 0;
+}
+
+.dropdown-item {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+.dropdown-item:hover {
+  background: #4b78c7;
+  text-decoration: none;
+}
+
+body {
+  background: #FFFFFF;
+  font-family: "Jost", "Avenir", "sans-serif";
+  font-size: 16px;
+  line-height: 30px;
+  color: #21314D;
+}
+body header {
+  height: 140px;
+  position: relative;
+  z-index: 2;
+}
+body header .container {
+  height: 100%;
+}
+body header .container .logo {
+  width: 181px;
+}
+body header .container nav ul {
+  margin: 0;
+  padding: 0;
+}
+body header .container nav ul li {
+  list-style: none;
+  display: inline-block;
+}
+body header .container nav ul li a {
+  color: #21314D;
+  position: relative;
+}
+body header .container nav ul li a:hover {
+  text-decoration: underline;
+  color: #121a29;
+}
+body header .container nav.mainnav {
+  margin: 0 0 0 100px;
+}
+body header .container nav.mainnav.collapse {
+  display: block;
+}
+body header .container nav.mainnav ul li {
+  margin: 0 30px 0 0;
+}
+body header .container nav.mainnav ul li.active a {
+  font-weight: bold;
+}
+body header .container nav.mainnav ul li a::after {
+  width: 100%;
+  height: 3px;
+  background: #21314D;
+  position: absolute;
+  content: "";
+  bottom: -15px;
+  left: 0;
+  display: none;
+}
+body header .container nav.actionnav {
+  margin-left: auto;
+}
+body header .container nav.actionnav ul li {
+  margin: 0 0 0 30px;
+}
+body header .container nav.actionnav ul li .button {
+  padding: 5px 35px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #21314D;
+  color: #fff;
+}
+body header .container nav.actionnav ul li .button:hover {
+  background: #121a29;
+  color: #fff;
+}
+body header .container nav.actionnav ul li .button:active {
+  background: #020406;
+  color: #fff;
+}
+body header .container nav.actionnav ul li .button:hover, body header .container nav.actionnav ul li .button:active, body header .container nav.actionnav ul li .button:visited, body header .container nav.actionnav ul li .button:focus {
+  text-decoration: none;
+}
+body header .container nav.actionnav ul li.username {
+  position: relative;
+}
+body header .container nav.actionnav ul li.username li {
+  margin: 0;
+  display: block;
+}
+body header .container nav.actionnav .caret {
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+}
+body header .container .navbar-toggler {
+  background: #355FAA;
+  box-shadow: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  margin-left: 10px;
+  display: none;
+}
+body header .container .navbar-toggler:hover {
+  background-color: #294983;
+}
+body header .container .navbar-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.90%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+body header .container .navbar-toggler.collapsed {
+  background: #21314D;
+}
+body header .container .navbar-toggler.collapsed:hover {
+  background-color: #121a29;
+}
+body main[role=main] {
+  min-height: calc(100vh - 420px);
+  /* ***********************************************
+  	PAGE SPECIFIC STYLING 
+   *********************************************** */
+  /* ***********************************************
+  	COMMON STYLING 
+   *********************************************** */
+}
+body main[role=main] section.homepage .homepage-hero {
+  margin: 80px 0 0 0;
+  padding: 0 60px 0 50px;
+}
+body main[role=main] section.homepage .homepage-hero h1 span {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+}
+body main[role=main] section.homepage .homepage-hero h1 span::after {
+  width: 100%;
+  position: absolute;
+  bottom: 7px;
+  left: 0;
+  height: 10px;
+  content: "";
+  background-color: #F9A800;
+  opacity: 30%;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.homepage .homepage-hero p {
+  margin: 20px 0 30px 0;
+  color: #4A5569;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul li {
+  margin-right: 10px;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul li .button {
+  padding: 5px 35px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #21314D;
+  color: #fff;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul li .button:hover {
+  background: #121a29;
+  color: #fff;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul li .button:active {
+  background: #020406;
+  color: #fff;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul li .button:hover, body main[role=main] section.homepage .homepage-hero nav.heronav ul li .button:active, body main[role=main] section.homepage .homepage-hero nav.heronav ul li .button:visited, body main[role=main] section.homepage .homepage-hero nav.heronav ul li .button:focus {
+  text-decoration: none;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul li a {
+  color: #21314D;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul li a:hover {
+  text-decoration: underline;
+  color: #121a29;
+}
+body main[role=main] section.homepage .homepage-hero nav.heronav ul li a span {
+  font-style: italic;
+  color: #7987a0;
+  display: inline-block;
+  margin-right: 10px;
+}
+body main[role=main] section.homepage .homepage-stat-region {
+  margin: 60px 0 0 0;
+  padding: 0 60px 0 50px;
+  width: 550px;
+  float: right;
+}
+body main[role=main] section.homepage .homepage-stat-region h2 {
+  text-align: right;
+}
+body main[role=main] section.homepage .homepage-stat-region .line-stats {
+  margin: 30px 0 0 0;
+}
+body main[role=main] section.homepage .homepage-stat-trend {
+  margin: 580px 0 0 0;
+  padding: 0 0 0 10px;
+}
+body main[role=main] section.homepage .homepage-stat-trend p {
+  color: #4A5569;
+  margin: 20px 0 25px 0;
+}
+body main[role=main] section.homepage .homepage-stat-trend .selector {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] section.homepage .homepage-stat-trend .selector li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.homepage .homepage-stat-trend .selector li {
+  margin: 0 5px 10px 0;
+}
+body main[role=main] section.homepage .homepage-stat-trend .selector li a {
+  padding: 4px 25px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #E4E8EE;
+  color: #fff;
+  color: #4A5569;
+  font-size: 0.875rem;
+}
+body main[role=main] section.homepage .homepage-stat-trend .selector li a:hover {
+  background: #c5cdda;
+  color: #fff;
+}
+body main[role=main] section.homepage .homepage-stat-trend .selector li a:active {
+  background: #a5b3c7;
+  color: #fff;
+}
+body main[role=main] section.homepage .homepage-stat-trend .selector li a:hover, body main[role=main] section.homepage .homepage-stat-trend .selector li a:active, body main[role=main] section.homepage .homepage-stat-trend .selector li a:visited, body main[role=main] section.homepage .homepage-stat-trend .selector li a:focus {
+  text-decoration: none;
+}
+body main[role=main] section.homepage .homepage-stat-trend .selector li a:hover {
+  background: #21314D;
+  color: #fff;
+}
+body main[role=main] section.homepage .homepage-stat-trend .selector li.active a {
+  background: #21314D;
+  color: #fff;
+}
+body main[role=main] section.homepage .homepage-stat-trend .trend-chart {
+  margin: 30px 0 0 0;
+  width: 100%;
+}
+body main[role=main] section.homepage .homepage-stat-trend .trend-chart img {
+  width: 100%;
+}
+body main[role=main] section.features {
+  margin: 80px 0 0 0;
+  position: relative;
+}
+body main[role=main] section.features .decor {
+  padding-right: 20px;
+  padding-bottom: 10px;
+}
+body main[role=main] section.features .decor img {
+  width: 100%;
+}
+body main[role=main] section.features .featuretext {
+  padding-left: 50px;
+  position: absolute;
+  bottom: 0;
+}
+body main[role=main] section.features .featuretext h2 {
+  position: relative;
+  margin-bottom: 60px;
+  display: inline-block;
+}
+body main[role=main] section.features .featuretext h2::after {
+  position: absolute;
+  content: "";
+  background: #F9A800;
+  width: 50%;
+  bottom: -35px;
+  height: 5px;
+  left: 0;
+}
+body main[role=main] section.features .featuretext p {
+  color: #4A5569;
+}
+body main[role=main] section.features .featuretext .features {
+  margin-top: 30px;
+}
+body main[role=main] section.features .featuretext .features h3 {
+  margin-bottom: 15px;
+}
+body main[role=main] section.features .featuretext .features p {
+  font-size: 0.938rem;
+  margin-bottom: 0;
+}
+body main[role=main] section.about-hero .headingtext {
+  padding-right: 60px;
+}
+body main[role=main] section.about-hero .headingtext h1 {
+  margin-bottom: 40px;
+}
+body main[role=main] section.about-hero .decor img {
+  width: 100%;
+}
+body main[role=main] section.about-hero .heronav {
+  margin: 40px 0 0 0;
+}
+body main[role=main] section.about-hero .heronav ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] section.about-hero .heronav ul li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.about-hero .heronav .button {
+  padding: 5px 35px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #21314D;
+  color: #fff;
+}
+body main[role=main] section.about-hero .heronav .button:hover {
+  background: #121a29;
+  color: #fff;
+}
+body main[role=main] section.about-hero .heronav .button:active {
+  background: #020406;
+  color: #fff;
+}
+body main[role=main] section.about-hero .heronav .button:hover, body main[role=main] section.about-hero .heronav .button:active, body main[role=main] section.about-hero .heronav .button:visited, body main[role=main] section.about-hero .heronav .button:focus {
+  text-decoration: none;
+}
+body main[role=main] section.about-hero::after {
+  width: 100%;
+  height: 300px;
+  background-image: url("../img/bg-wave.png");
+  background-size: cover;
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  bottom: 40px;
+  opacity: 50%;
+}
+body main[role=main] section.about-highlight {
+  margin: 80px 0 70px 0;
+}
+body main[role=main] section.about-highlight .box {
+  width: 65%;
+  margin: 0 auto;
+  background: #F9A800;
+  border-radius: 4px;
+  color: #fff;
+  padding: 40px;
+  position: relative;
+}
+body main[role=main] section.about-highlight .box .commentwrap {
+  border: 5px solid rgba(255, 255, 255, 0.4);
+  padding: 30px;
+  position: relative;
+}
+body main[role=main] section.about-highlight .box .commentwrap p {
+  margin-bottom: 0;
+}
+body main[role=main] section.about-highlight .box .commentwrap .triangle {
+  position: absolute;
+  bottom: 10px;
+  left: -26px;
+  z-index: 1;
+  opacity: 0.4;
+}
+body main[role=main] section.about-highlight .box .commentwrap::after {
+  position: absolute;
+  height: 45px;
+  width: 5px;
+  background: #F9A800;
+  content: "";
+  left: -5px;
+  bottom: 10px;
+}
+body main[role=main] section.about-highlight .box .contact {
+  position: relative;
+}
+body main[role=main] section.about-highlight .box .contactwrap {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  padding: 0 40px 0 10px;
+}
+body main[role=main] section.about-highlight .box .contactwrap img.decor {
+  width: 60px;
+}
+body main[role=main] section.about-highlight .box .contactwrap p {
+  margin: 20px 0 20px 0;
+}
+body main[role=main] section.about-highlight .box .contactwrap .heronav ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] section.about-highlight .box .contactwrap .heronav ul li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.about-highlight .box .contactwrap .heronav ul li .button {
+  padding: 5px 35px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #fff;
+  color: #fff;
+  color: #F9A800;
+}
+body main[role=main] section.about-highlight .box .contactwrap .heronav ul li .button:hover {
+  background: #e6e6e6;
+  color: #fff;
+}
+body main[role=main] section.about-highlight .box .contactwrap .heronav ul li .button:active {
+  background: #cccccc;
+  color: #fff;
+}
+body main[role=main] section.about-highlight .box .contactwrap .heronav ul li .button:hover, body main[role=main] section.about-highlight .box .contactwrap .heronav ul li .button:active, body main[role=main] section.about-highlight .box .contactwrap .heronav ul li .button:visited, body main[role=main] section.about-highlight .box .contactwrap .heronav ul li .button:focus {
+  text-decoration: none;
+}
+body main[role=main] section.about-highlight .box .contactwrap .heronav ul li .button:hover {
+  color: #c68600;
+  background: #fff;
+}
+body main[role=main] section.about-highlight .box::after {
+  width: 40%;
+  height: 40%;
+  background: #355FAA;
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  right: -30px;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.two-columns {
+  margin: 60px 0 0 0;
+  position: relative;
+}
+body main[role=main] section.two-columns .two-columns-sidebar {
+  padding-right: 20px;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads {
+  position: sticky;
+  top: 60px;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads .decor {
+  width: 90px;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads .ads-learn {
+  margin-bottom: 50px;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads .ads-learn p {
+  margin: 30px 0 25px 0;
+  font-size: 0.938rem;
+  color: #4A5569;
+  line-height: 1.625rem;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads .ads-explore {
+  margin: 0px 0 50px 0;
+  width: 100%;
+  border-radius: 4px;
+  background: #F9A800;
+  color: #fff;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+  background-image: url("../img/bg-lines.png");
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads .ads-explore p {
+  font-size: 0.938rem;
+  line-height: 1.625rem;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads .ads-explore nav.heronav ul li {
+  margin-right: 0;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads .ads-explore nav.heronav ul li .button {
+  background: #fff;
+  color: #F9A800;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads .ads-explore nav.heronav ul li .button:hover {
+  color: #c68600;
+  background: #fff;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads .ads-explore::after {
+  width: 80%;
+  height: 80%;
+  background: #355FAA;
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  right: -15px;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li {
+  margin-right: 10px;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li .button {
+  padding: 5px 35px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #21314D;
+  color: #fff;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li .button:hover {
+  background: #121a29;
+  color: #fff;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li .button:active {
+  background: #020406;
+  color: #fff;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li .button:hover, body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li .button:active, body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li .button:visited, body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li .button:focus {
+  text-decoration: none;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li a {
+  color: #21314D;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li a:hover {
+  text-decoration: underline;
+  color: #121a29;
+}
+body main[role=main] section.two-columns .two-columns-sidebar .ads nav.heronav ul li a span {
+  font-style: italic;
+  color: #7987a0;
+  display: inline-block;
+  margin-right: 10px;
+}
+body main[role=main] section.two-columns .two-columns-content {
+  padding-left: 100px;
+}
+body main[role=main] section.two-columns .two-columns-content .partnerlist {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] section.two-columns .two-columns-content .partnerlist li {
+  list-style: none;
+  margin-bottom: 40px;
+}
+body main[role=main] section.two-columns .two-columns-content .partnerlist li .logos {
+  width: 120px;
+}
+body main[role=main] section.two-columns .two-columns-content .partnerlist li h2 {
+  margin: 20px 0;
+}
+body main[role=main] section.two-columns .two-columns-content .partnerlist li p {
+  color: #4A5569;
+}
+body main[role=main] section.two-columns .two-columns-content .partnerlist li .coordinator {
+  font-size: 0.813rem;
+  display: inline-block;
+  padding: 0px 10px;
+  border-radius: 4px;
+  background: #355FAA;
+  color: #fff;
+  margin: 0 0 0 15px;
+  position: relative;
+  top: -2px;
+  font-weight: 400;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section {
+  position: relative;
+  margin-top: 30px;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section ul {
+  padding: 0;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section ul li {
+  list-style: none;
+  display: block;
+  padding: 15px 0;
+  border-bottom: 1px solid #E4E8EE;
+  height: 61px;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section ul li.head {
+  border-bottom: 2px solid #355FAA;
+  padding: 18px 0;
+  height: 68px;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section ul li a {
+  color: #21314D;
+  text-decoration: underline;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section ul li a:hover {
+  text-decoration: underline;
+  color: #121a29;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .table-section-column {
+  padding-right: 0;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .table-section-column ul {
+  margin-left: 0;
+  border-top: 2px solid #355FAA;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .table-section-column ul li {
+  font-weight: 500;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .table-section-data {
+  padding-left: 0;
+  border-top: 2px solid #355FAA;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .table-section-data::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .table-section-data ul {
+  margin: 0;
+  float: left;
+  width: 25%;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .table-section-data ul li {
+  text-align: center;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .table-section-data ul li img {
+  width: 19px;
+  display: inline-block !important;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .slick-arrow {
+  position: absolute;
+  top: -22px;
+  right: -85px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  color: #fff;
+  border-radius: 50%;
+  background: #355FAA;
+  font-size: 20px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  line-height: 0;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .slick-arrow.slick-prev {
+  right: -40px;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .slick-arrow:hover {
+  background: #294983;
+}
+body main[role=main] section.two-columns .two-columns-content .table-section .slick-arrow.slick-disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+body main[role=main] section.two-columns .two-columns-content .headingtext h2 {
+  margin-bottom: 20px;
+}
+body main[role=main] section.two-columns .two-columns-content .data-information {
+  margin-top: 50px;
+  padding-bottom: 230px;
+}
+body main[role=main] section.two-columns::after {
+  width: 100%;
+  height: 300px;
+  background-image: url("../img/bg-wave.png");
+  background-size: cover;
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  bottom: 40px;
+  opacity: 50%;
+}
+body main[role=main] section.two-columns::after {
+  bottom: -60px;
+}
+body main[role=main] section.statistics {
+  position: relative;
+  margin: 50px 0;
+  z-index: 1;
+}
+body main[role=main] section.statistics .statistics-countries-list {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+body main[role=main] section.statistics .statistics-countries-list .country {
+  width: 20%;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap {
+  background: #F9A800;
+  border-radius: 4px;
+  color: #fff;
+  padding: 25px 30px;
+  margin-bottom: 35px;
+  position: relative;
+  display: block;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap ul {
+  margin: 20px 0 0 0;
+  padding: 0;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap ul::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap ul li {
+  list-style: none;
+  float: left;
+  width: 50%;
+  font-size: 0.875rem;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap ul li span {
+  display: block;
+  line-height: 1.3rem;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap ul li span.amount {
+  font-weight: 500;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap ul li span.label {
+  opacity: 0.8;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap ul li:last-child {
+  padding-left: 15px;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap:hover {
+  background: #355FAA;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap:hover::after {
+  background: #F9A800;
+}
+body main[role=main] section.statistics .statistics-countries-list .wrap::after {
+  width: 90%;
+  height: 90%;
+  background: #355FAA;
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap {
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-top: 40px;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul {
+  float: left;
+  margin: 0;
+  padding: 0 20px 0 20px;
+  width: 25%;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li {
+  list-style: none;
+  margin-bottom: 40px;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a {
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a .icon {
+  margin-right: 20px;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a .icon img {
+  width: 77px;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a .text {
+  color: #21314D;
+  height: 100%;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a .text .counter {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a .text .counter::after {
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  height: 13px;
+  content: "";
+  background-color: #F9A800;
+  opacity: 30%;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a .text .counter::after {
+  bottom: 0px;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a .text .label {
+  font-size: 0.875rem;
+  line-height: 1.363rem;
+  color: #4A5569;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap ul li a:hover .text .counter::after {
+  opacity: 60%;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap .slick-arrow {
+  position: absolute;
+  top: -22px;
+  right: -85px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  color: #fff;
+  border-radius: 50%;
+  background: #355FAA;
+  font-size: 20px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  line-height: 0;
+  top: -88px;
+  right: 12px;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap .slick-arrow.slick-prev {
+  right: -40px;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap .slick-arrow:hover {
+  background: #294983;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap .slick-arrow.slick-disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+body main[role=main] section.statistics .statistics-activity-list-wrap .slick-arrow.slick-prev {
+  right: 58px;
+}
+body main[role=main] section.signs .sign-background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0;
+  z-index: -1;
+}
+body main[role=main] section.signs .sign-background .side {
+  background-color: #F9A800;
+  background-image: url("../img/bg-decor-triangle.png");
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+body main[role=main] section.signs .sign-background.blue .side {
+  background-color: #355FAA;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures {
+  margin: 0;
+  padding: 0;
+  margin-left: -20px;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures img {
+  width: 100%;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures li {
+  list-style: none;
+  display: block;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures li .text {
+  color: #fff;
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures li .text h2 {
+  font-size: 1.75rem;
+  line-height: 2.625rem;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures li .text p {
+  opacity: 0.8;
+  margin: 20px 0 0 0;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures .slick-dots {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  margin: 40px 0 0 0;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures .slick-dots li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures .slick-dots li {
+  margin: 0 10px;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures .slick-dots li button {
+  text-indent: -999em;
+  overflow: hidden;
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  opacity: 0.5;
+}
+body main[role=main] section.signs section.signcontent .signcontent-left .bannerfeatures .slick-dots li.slick-active button {
+  opacity: 1;
+}
+body main[role=main] section.signs section.signcontent .signcontent-right {
+  padding-left: 200px;
+}
+body main[role=main] section.authentication {
+  margin-top: 40px;
+}
+body main[role=main] section.authentication .authentication-left {
+  padding-right: 100px;
+}
+body main[role=main] section.authentication .box.signup {
+  background-color: #355FAA;
+}
+body main[role=main] section.authentication .box.signup::after {
+  background-color: #F9A800;
+}
+body main[role=main] section.authentication .box.signup::before {
+  background-color: #355FAA;
+}
+body main[role=main] section.authentication .box {
+  background-image: url("../img/bg-decor-triangle.png");
+  background-position: top right;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  position: relative;
+  padding: 50px 70px;
+  background-color: #F9A800;
+}
+body main[role=main] section.authentication .box::after {
+  width: 50%;
+  height: 50%;
+  background: #355FAA;
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.authentication .box::before {
+  width: 100vw;
+  content: "";
+  height: 100%;
+  position: absolute;
+  background: #F9A800;
+  right: 0;
+  top: 0;
+  z-index: -1;
+  border-radius: 4px;
+}
+body main[role=main] section.authentication .box .bannerfeatures {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] section.authentication .box .bannerfeatures img {
+  width: 100%;
+}
+body main[role=main] section.authentication .box .bannerfeatures li {
+  list-style: none;
+  display: block;
+}
+body main[role=main] section.authentication .box .bannerfeatures li .text {
+  color: #fff;
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+body main[role=main] section.authentication .box .bannerfeatures li .text h2 {
+  font-size: 1.75rem;
+  line-height: 2.625rem;
+}
+body main[role=main] section.authentication .box .bannerfeatures li .text p {
+  opacity: 0.8;
+  margin: 10px 0 0 0;
+}
+body main[role=main] section.authentication .box .bannerfeatures .slick-dots {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  margin: 40px 0 0 0;
+}
+body main[role=main] section.authentication .box .bannerfeatures .slick-dots li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.authentication .box .bannerfeatures .slick-dots li {
+  margin: 0 10px;
+}
+body main[role=main] section.authentication .box .bannerfeatures .slick-dots li button {
+  text-indent: -999em;
+  overflow: hidden;
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  opacity: 0.5;
+}
+body main[role=main] section.authentication .box .bannerfeatures .slick-dots li.slick-active button {
+  opacity: 1;
+}
+body main[role=main] section.statisticsdetail .counter {
+  margin: 0;
+  padding: 0;
+  margin-top: 40px;
+  margin-top: 20px;
+}
+body main[role=main] section.statisticsdetail .counter li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.statisticsdetail .counter li {
+  margin-right: 40px;
+}
+body main[role=main] section.statisticsdetail .counter li::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.statisticsdetail .counter li .count {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  font-size: 3.125rem;
+  margin: 0 15px 0 0;
+  color: #355FAA;
+  font-weight: 500;
+  float: left;
+  line-height: 2.438rem;
+}
+body main[role=main] section.statisticsdetail .counter li .count::after {
+  width: 100%;
+  position: absolute;
+  bottom: 17px;
+  left: 0;
+  height: 20px;
+  content: "";
+  background-color: #F9A800;
+  opacity: 30%;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.statisticsdetail .counter li .count::after {
+  bottom: -10px;
+}
+body main[role=main] section.statisticsdetail .counter li .text {
+  overflow: auto;
+  font-size: 0.875rem;
+  color: #4A5569;
+  display: inline-block;
+  line-height: 1.313rem;
+}
+body main[role=main] section.statisticsdetail .statisticsdetail-right {
+  padding-top: 10px;
+  padding-left: 60px;
+}
+body main[role=main] section.statisticsdetail .statisticsmap, body main[role=main] section.statisticsdetail .activityimage {
+  width: 100%;
+  height: 400px;
+  background-color: #E4E8EE;
+  margin-top: 40px;
+  border-radius: 4px;
+  position: relative;
+}
+body main[role=main] section.statisticsdetail .statisticsmap::after, body main[role=main] section.statisticsdetail .activityimage::after {
+  width: 50%;
+  height: 50%;
+  background: #355FAA;
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.statisticsdetail .statisticsmap-section {
+  text-align: right;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+body main[role=main] section.statisticsdetail .statisticsmap-section .tmpmap {
+  height: 600px;
+}
+body main[role=main] section.statisticsdetail .activityimage {
+  height: auto;
+}
+body main[role=main] section.statisticsdetail .activityimage img {
+  width: 100%;
+  border-radius: 4px;
+}
+body main[role=main] section.statisticsdetail .activityimage::after {
+  width: 50%;
+  height: 50%;
+  background: #F9A800;
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.statisticsdetail .statisticstrend {
+  margin-top: 70px;
+}
+body main[role=main] section.statisticsdetail .statisticstrend .chart {
+  margin: 40px 0 0 0;
+}
+body main[role=main] section.statisticsdetail .statisticstrend .chart img {
+  width: 100%;
+}
+body main[role=main] section.statisticsdetail .statisticsother {
+  margin: 60px 0 0 0;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul {
+  margin: 40px 0 0 0;
+  padding: 0;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li {
+  list-style: none;
+  margin-bottom: 20px;
+  width: 33.333%;
+  float: left;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a {
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a .icon {
+  margin-right: 15px;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a .icon img {
+  width: 75px;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a .text {
+  color: #21314D;
+  height: 100%;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a .text .counter {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a .text .counter::after {
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  height: 13px;
+  content: "";
+  background-color: #F9A800;
+  opacity: 30%;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a .text .counter::after {
+  bottom: 0px;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a .text .label {
+  font-size: 0.875rem;
+  line-height: 1.563rem;
+  color: #4A5569;
+  margin-top: -3px;
+}
+body main[role=main] section.statisticsdetail .statisticsother ul li a:hover .text .counter::after {
+  opacity: 60%;
+}
+body main[role=main] section.statisticsdetail .activitystats {
+  margin: 50px 0 0 0;
+}
+body main[role=main] section.statisticsdetail .activitylist {
+  margin: 60px 0 0 0;
+}
+body main[role=main] section.statisticsdetail .activitylist::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.statisticsdetail .activitylist .headingtext {
+  margin-bottom: 40px;
+}
+body main[role=main] section.statisticsdetail .activitylist .slick-arrow {
+  position: absolute;
+  top: -22px;
+  right: -85px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  color: #fff;
+  border-radius: 50%;
+  background: #355FAA;
+  font-size: 20px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  line-height: 0;
+  top: -82px;
+}
+body main[role=main] section.statisticsdetail .activitylist .slick-arrow.slick-prev {
+  right: -40px;
+}
+body main[role=main] section.statisticsdetail .activitylist .slick-arrow:hover {
+  background: #294983;
+}
+body main[role=main] section.statisticsdetail .activitylist .slick-arrow.slick-disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+body main[role=main] section.statisticsdetail .activitylist .slick-arrow.slick-next {
+  right: -20px;
+}
+body main[role=main] section.statisticsdetail .activitylist .slick-arrow.slick-prev {
+  right: 27px;
+}
+body main[role=main] section.statisticsdetail .activitylist ul {
+  margin: 0;
+  padding: 0;
+  float: left;
+  width: 50%;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li {
+  display: block;
+  margin: 0 0 20px 0;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li a {
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li a::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.statisticsdetail .activitylist ul li a .icon {
+  float: left;
+  width: 25%;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li a .icon img {
+  width: 100%;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li a .text {
+  float: left;
+  width: 75%;
+  padding-left: 30px;
+  padding-right: 20px;
+  color: #21314D;
+  height: 100%;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li a .text .counter {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li a .text .counter::after {
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  height: 13px;
+  content: "";
+  background-color: #F9A800;
+  opacity: 30%;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li a .text .counter::after {
+  bottom: 0px;
+}
+body main[role=main] section.statisticsdetail .activitylist ul li a .text .label {
+  line-height: 1.363rem;
+  font-size: 0.875rem;
+  color: #4A5569;
+  margin-top: 3px;
+}
+body main[role=main] section.companydetail .companydetail-map {
+  width: 100%;
+  height: 400px;
+  background-color: #E4E8EE;
+  border-radius: 4px;
+  position: relative;
+}
+body main[role=main] section.companydetail .companydetail-map::after {
+  width: 50%;
+  height: 50%;
+  background: #355FAA;
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.companydetail .companydetail-data .row {
+  padding: 15px 0;
+  border-bottom: 1px solid #E4E8EE;
+  overflow-wrap: break-word;
+}
+body main[role=main] section.companydetail .companydetail-data .row .head {
+  font-weight: 500;
+}
+body main[role=main] section.companydetail .companydetail-data .row a.anchor {
+  color: #21314D;
+}
+body main[role=main] section.companydetail .companydetail-data .row a.anchor:hover {
+  text-decoration: underline;
+  color: #121a29;
+}
+body main[role=main] section.companydetail .companydetail-map-section {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+body main[role=main] section.companydetail .companydetail-map-section .tmpmap {
+  height: 600px;
+}
+body main[role=main] section.companydetail .companydetail-related {
+  margin-top: 40px;
+}
+body main[role=main] section.companydetail .companydetail-related .action {
+  text-align: right;
+}
+body main[role=main] section.companydetail .companydetail-related .action a {
+  color: #4A5569;
+}
+body main[role=main] section.companydetail .companydetail-related .action a span.text {
+  display: inline-block;
+  margin-right: 15px;
+}
+body main[role=main] section.companydetail .companydetail-related .action a span.icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: #F9A800;
+  border-radius: 50%;
+  padding-top: 6px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  position: relative;
+  top: 3px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.companydetail .companydetail-related .action a:hover .text {
+  text-decoration: underline;
+}
+body main[role=main] section.companydetail .companydetail-related .action a:hover .icon {
+  background: #c68600;
+}
+body main[role=main] section.companydetail .companydetail-right {
+  padding-left: 50px;
+}
+body main[role=main] section.companydetail .companydetail-right table td {
+  padding-left: 40px;
+}
+body main[role=main] section.companydetail .companydetail-right .headingtext {
+  margin-bottom: 20px;
+}
+body main[role=main] section.profile {
+  position: relative;
+}
+body main[role=main] section.profile .profile-content {
+  padding: 0 0px 0 40px;
+}
+body main[role=main] section.profile .profile-content .filterlist {
+  margin-bottom: 20px;
+}
+body main[role=main] section.profile .profile-content .filterlist .filterlist-section {
+  border-bottom: 1px solid #E4E8EE;
+  margin: 0 0 0px 0;
+  padding: 18px 0 18px 0;
+  /*
+  > ul > li {
+  	// first level
+  	position: relative;
+  	margin-left: 25px;
+  	&::before {
+  		width: 10px;
+  		height: 10px;
+  		border: 2px solid $pills-color;
+  		content: "";
+  		position: absolute;
+  		left: -25px;
+  		top: 13px;
+  		border-radius: 5px;
+  	}
+  	&.separator {
+  		&::before {
+  			display: none;
+  		}
+  	}
+  }*/
+}
+body main[role=main] section.profile .profile-content .filterlist .filterlist-section .title {
+  font-weight: 500;
+  margin-bottom: 15px;
+  font-size: 1.125rem;
+}
+body main[role=main] section.profile .profile-decor {
+  text-align: right;
+}
+body main[role=main] section.profile .profile-decor img {
+  width: 90px;
+}
+body main[role=main] section.profile .sidenavigation {
+  margin: 40px 0 0 0;
+}
+body main[role=main] section.profile .sidenavigation ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] section.profile .sidenavigation ul li {
+  list-style: none;
+  display: block;
+  margin: 0 0 10px 0;
+}
+body main[role=main] section.profile .sidenavigation ul li a {
+  font-weight: 500;
+  display: block;
+  width: 80%;
+  padding: 5px 20px;
+  color: #21314D;
+  text-decoration: none;
+}
+body main[role=main] section.profile .sidenavigation ul li a:hover {
+  padding-left: 25px;
+}
+body main[role=main] section.profile .sidenavigation ul li.active a {
+  color: #fff;
+  background: #F9A800;
+  border-radius: 4px;
+}
+body main[role=main] section.profile .sidenavigation ul li.active a:hover {
+  padding-left: 20px;
+}
+body main[role=main] section.profile::after {
+  width: 100%;
+  height: 300px;
+  background-image: url("../img/bg-wave.png");
+  background-size: cover;
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  bottom: 40px;
+  opacity: 50%;
+}
+body main[role=main] section.profile::after {
+  bottom: -200px;
+}
+body main[role=main] section.profile h2 {
+  font-size: 1.625rem;
+}
+body main[role=main] section.explore .explore-map {
+  width: 100%;
+  height: 360px;
+  background: #EFF3F8;
+  margin: 30px 0 0 0;
+  position: relative;
+  z-index: 0;
+}
+body main[role=main] section.explore .explore-map .container-fluid {
+  height: 100%;
+}
+body main[role=main] section.explore .explore-map .explore-map-section {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-align: right;
+}
+body main[role=main] section.explore .explore-map .explore-map-section .tmpmap {
+  height: 600px;
+}
+body main[role=main] section.explore .explore-controls .sidebar {
+  position: relative;
+  margin-top: -300px;
+  width: 100%;
+  z-index: 1;
+}
+body main[role=main] section.explore .explore-controls .sidebar .wraps {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: #fff;
+  border-radius: 4px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .wraps::after {
+  width: 100%;
+  height: 100%;
+  background: #355FAA;
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap {
+  padding: 27px 25px 25px 25px;
+  border-bottom: 1px solid #CCD3DD;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .form {
+  margin: 20px 0 0 0;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .form .inputform {
+  margin-bottom: 15px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .form .inputform input {
+  height: 42px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .form.registrationdate {
+  margin-top: 30px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .form.registrationdate .datepicker {
+  margin-bottom: 30px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .form.registrationdate .datepicker:last-child {
+  margin-bottom: 0;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap.sidebar-action {
+  border-bottom: 0px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .savefilter {
+  display: block;
+  text-align: right;
+  margin: 10px 0 0px 0;
+  font-size: 0.938rem;
+  color: #21314D;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .savefilter .add {
+  display: inline-block;
+  margin: 0 5px 0 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .inputaction {
+  padding-top: 0;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .inputaction button {
+  background: #355FAA;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .inputaction button:hover {
+  background: #2f5497;
+}
+body main[role=main] section.explore .explore-controls .sidebar .sidebar-section-wrap .inputaction button:active {
+  background: #1d345c;
+}
+body main[role=main] section.explore .explore-controls .sidebar h3 {
+  margin-bottom: 0;
+}
+body main[role=main] section.explore .explore-controls .sidebar h3 a {
+  color: #21314D;
+  text-decoration: none;
+  display: block;
+}
+body main[role=main] section.explore .explore-controls .sidebar h3 a::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.explore .explore-controls .sidebar h3 a.accordion-button {
+  background: none;
+  font-size: inherit;
+  padding: 0;
+}
+body main[role=main] section.explore .explore-controls .sidebar h3 a.accordion-button:not(.collapsed) {
+  box-shadow: none;
+}
+body main[role=main] section.explore .explore-controls .sidebar h3 a.accordion-button:focus {
+  box-shadow: none;
+  border: 0;
+  border-color: #355FAA;
+}
+body main[role=main] section.explore .explore-controls .sidebar h3 a.accordion-button::after {
+  display: block;
+  float: right;
+  top: 2px;
+  position: relative;
+}
+body main[role=main] section.explore .explore-controls .sidebar ul.pills {
+  margin: 0;
+  padding: 0;
+  margin-top: 15px;
+}
+body main[role=main] section.explore .explore-controls .sidebar ul.pills li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] section.explore .explore-controls .sidebar ul.pills li {
+  background: #97CC04;
+  padding: 1px 10px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: #fff;
+  margin-right: 2px;
+}
+body main[role=main] section.explore .explore-controls .sidebar ul.pills li a {
+  color: #fff;
+  position: relative;
+  top: 1px;
+  margin-left: 3px;
+  text-decoration: none;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-wrap {
+  position: relative;
+  margin-top: 20px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-wrap .search {
+  position: absolute;
+  left: 15px;
+  top: 16px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-wrap .form-control {
+  padding-left: 40px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .form-select, body main[role=main] section.explore .explore-controls .sidebar .form-control {
+  border-color: #21314D;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 15px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .form-select:focus, body main[role=main] section.explore .explore-controls .sidebar .form-control:focus {
+  box-shadow: none;
+  border-color: #355FAA;
+}
+body main[role=main] section.explore .explore-controls .sidebar .form-select:hover, body main[role=main] section.explore .explore-controls .sidebar .form-control:hover {
+  border-color: #355FAA;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter {
+  margin: 20px 0 0 0;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li {
+  list-style: none;
+  font-size: 0.875rem;
+  margin-bottom: 7px;
+  border-bottom: 0px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li > ul {
+  margin: 5px 0 0 26px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li > ul li {
+  position: relative;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li > ul li::after {
+  position: absolute;
+  top: 9px;
+  left: -22px;
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: url("../img/ic-hierarchy-small.png");
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li a {
+  color: #21314D;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li a.moreless {
+  margin-left: 25px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li a.moreless span {
+  text-decoration: underline;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li a.moreless .less {
+  display: none;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li a.moreless .more {
+  display: inline-block;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li a.showing span.expand {
+  background: url("../img/ic-minus.png") no-repeat;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li a.showing .less {
+  display: inline-block;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li a.showing .more {
+  display: none;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter ul li span.expand {
+  display: block;
+  float: right;
+  width: 10px;
+  height: 10px;
+  background: url("../img/ic-plus.png") no-repeat;
+  margin-top: 9px;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter input[type=checkbox] {
+  display: none;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter input + label {
+  display: inline-block;
+  width: 90%;
+  height: 23px;
+  cursor: pointer;
+  padding-left: 25px;
+  background-image: url("../img/ic-checkbox-unchecked.png");
+  background-repeat: no-repeat;
+  background-position: 0 4px;
+  line-height: 1.563rem;
+}
+body main[role=main] section.explore .explore-controls .sidebar .input-filter input[type=checkbox]:checked + label {
+  background-image: url("../img/ic-checkbox.png");
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results {
+  padding: 40px 0 0 40px;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .resultheading {
+  margin-bottom: 25px;
+  display: none;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .no-result {
+  text-align: center;
+  padding: 40px;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .no-result h2 {
+  font-size: 1.25rem;
+  font-weight: normal;
+  margin-bottom: 0;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .no-result .loading {
+  font-style: italic;
+  opacity: 0.5;
+  color: #F9A800;
+  margin-left: 10px;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .nav-tabs {
+  border: 0;
+  margin-bottom: 20px;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .nav-tabs button {
+  border: 0;
+  background: transparent;
+  font-size: 1.5rem;
+  opacity: 0.4;
+  font-weight: 500;
+  margin-right: 30px;
+  padding: 0;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .nav-tabs button.active {
+  opacity: 1;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-heading {
+  border-bottom: 3px solid #F9A800;
+  margin-bottom: 0;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-heading .accordion-button {
+  padding: 10px 0 10px 0;
+  font-size: 1.25rem;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: none;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-heading .accordion-button.collapse {
+  background: transparent;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-heading .accordion-button::after {
+  background: #F9A800;
+  color: #fff;
+  padding: 20px;
+  border-radius: 50%;
+  position: absolute;
+  right: -39px;
+  top: 32px;
+  background-image: url("../img/ic-caret-white.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse {
+  padding: 30px 0;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option {
+  margin-bottom: 30px;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .filter-left-option, body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .form-switch {
+  float: left;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .filter-right-option {
+  float: right;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .form-switch {
+  margin-top: 3px;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .form-switch input {
+  margin-top: 7px;
+  cursor: pointer;
+  box-shadow: none;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .form-switch label {
+  cursor: pointer;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .form-switch .form-check-input:checked {
+  border-color: #355FAA;
+  background-color: #355FAA;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .btn-outline-primary {
+  color: #355FAA;
+  border-color: #355FAA;
+  box-shadow: none;
+  font-size: 0.875rem;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .btn-outline-primary:hover {
+  color: #fff;
+  background: #355FAA;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-stat-option .btn-check:checked + .btn-outline-primary {
+  color: #fff;
+  background: #355FAA;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-list-option::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-list-option .pagination-detail {
+  float: left;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-list-option .download {
+  float: right;
+  padding: 3px 20px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #355FAA;
+  color: #fff;
+  font-size: 0.938rem;
+  background: #355FAA;
+  position: relative;
+  top: -3px;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-list-option .download:hover {
+  background: #294983;
+  color: #fff;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-list-option .download:active {
+  background: #1d345c;
+  color: #fff;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-list-option .download:hover, body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-list-option .download:active, body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-list-option .download:visited, body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .filter-list-option .download:focus {
+  text-decoration: none;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .headingtext {
+  margin: 30px 0 0 0;
+}
+body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-collapse .pagination-detail {
+  margin-top: 0;
+}
+body main[role=main] .container::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .pagination-detail {
+  color: #F9A800;
+  margin: 30px 0 20px 0;
+  font-size: 0.938rem;
+}
+body main[role=main] .bread {
+  display: inline-block;
+  margin: 0 0 30px 0;
+  border-bottom: 3px solid #F9A800;
+}
+body main[role=main] .bread ol {
+  margin-bottom: 1.4rem;
+}
+body main[role=main] .bread ol li {
+  font-size: 0.875rem;
+  color: #21314D;
+  font-weight: 500;
+}
+body main[role=main] .bread ol li a {
+  color: #21314D;
+  font-weight: 400;
+}
+body main[role=main] .form {
+  margin: 40px 0;
+}
+body main[role=main] .form .inputform {
+  margin: 0 0 30px 0;
+  border: 1px solid #4A5569;
+  border-radius: 4px;
+  position: relative;
+}
+body main[role=main] .form .inputform:hover {
+  border-color: #355FAA;
+}
+body main[role=main] .form .inputform .label {
+  position: absolute;
+  background: #fff;
+  padding: 0 8px;
+  top: -16px;
+  left: 5px;
+}
+body main[role=main] .form .inputform input {
+  height: 47px;
+  margin: 4px 5px 0 5px;
+  background: #fff;
+  border: 0;
+  padding: 0 20px;
+  width: calc(100% - 10px);
+}
+body main[role=main] .form .inputform.error {
+  border-color: #FF3737;
+}
+body main[role=main] .form .datepicker {
+  border: 1px solid #4A5569;
+  border-radius: 4px;
+  position: relative;
+  margin-bottom: 20px;
+}
+body main[role=main] .form .datepicker::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .form .datepicker:hover {
+  border-color: #355FAA;
+}
+body main[role=main] .form .datepicker:hover button.icon {
+  color: #355FAA;
+}
+body main[role=main] .form .datepicker .label {
+  position: absolute;
+  background: #fff;
+  padding: 0 8px;
+  top: -16px;
+  left: 5px;
+}
+body main[role=main] .form .datepicker button.icon {
+  float: right;
+  border: 0;
+  background: transparent;
+  margin: 9px 8px 0 0;
+  color: #21314D;
+}
+body main[role=main] .form .datepicker .dialog {
+  border: 0;
+}
+body main[role=main] .form .datepicker .dialog label {
+  display: block;
+  padding: 10px 20px;
+  float: left;
+  min-height: 50px;
+  cursor: pointer;
+  width: 80%;
+}
+body main[role=main] .inputaction {
+  padding-top: 10px;
+}
+body main[role=main] .inputaction::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .inputaction button {
+  padding: 5px 35px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #21314D;
+  color: #fff;
+  border: 0;
+}
+body main[role=main] .inputaction button:hover {
+  background: #121a29;
+  color: #fff;
+}
+body main[role=main] .inputaction button:active {
+  background: #020406;
+  color: #fff;
+}
+body main[role=main] .inputaction button:hover, body main[role=main] .inputaction button:active, body main[role=main] .inputaction button:visited, body main[role=main] .inputaction button:focus {
+  text-decoration: none;
+}
+body main[role=main] .inputaction button.google {
+  background: #FF3737;
+  margin-left: 10px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] .inputaction button.google:hover {
+  background: #ea0000;
+}
+body main[role=main] .inputaction button.delete {
+  background: #FF3737;
+  margin-left: 10px;
+  float: right;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] .inputaction button.delete:hover {
+  background: #ea0000;
+}
+body main[role=main] .inputaction .note span {
+  font-style: italic;
+  color: #7987a0;
+  display: inline-block;
+  margin-left: 15px;
+}
+body main[role=main] .inputaction .note a {
+  color: #4A5569;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+body main[role=main] .inputaction .note a span.text {
+  display: inline-block;
+  margin-right: 15px;
+}
+body main[role=main] .inputaction .note a span.icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: #F9A800;
+  border-radius: 50%;
+  padding-top: 6px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  position: relative;
+  top: 3px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] .inputaction .note a:hover .text {
+  text-decoration: underline;
+}
+body main[role=main] .inputaction .note a:hover .icon {
+  background: #c68600;
+}
+body main[role=main] .inputaction .note.first a {
+  margin-left: 0px;
+  margin-right: 20px;
+}
+body main[role=main] .inputaction .note.space {
+  margin-left: 20px;
+}
+body main[role=main] .inputaction .button {
+  padding: 5px 25px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #21314D;
+  color: #fff;
+}
+body main[role=main] .inputaction .button:hover {
+  background: #121a29;
+  color: #fff;
+}
+body main[role=main] .inputaction .button:active {
+  background: #020406;
+  color: #fff;
+}
+body main[role=main] .inputaction .button:hover, body main[role=main] .inputaction .button:active, body main[role=main] .inputaction .button:visited, body main[role=main] .inputaction .button:focus {
+  text-decoration: none;
+}
+body main[role=main] .inputaction .pagination-stir {
+  margin: 10px 0 0 0;
+}
+body main[role=main] .inputaction .pagination-stir ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] .inputaction .pagination-stir ul li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] .inputaction .pagination-stir ul a {
+  padding: 5px 16px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #21314D;
+  color: #fff;
+  background: #21314D;
+}
+body main[role=main] .inputaction .pagination-stir ul a:hover {
+  background: #121a29;
+  color: #fff;
+}
+body main[role=main] .inputaction .pagination-stir ul a:active {
+  background: #020406;
+  color: #fff;
+}
+body main[role=main] .inputaction .pagination-stir ul a:hover, body main[role=main] .inputaction .pagination-stir ul a:active, body main[role=main] .inputaction .pagination-stir ul a:visited, body main[role=main] .inputaction .pagination-stir ul a:focus {
+  text-decoration: none;
+}
+body main[role=main] .inputaction .pagination-stir ul li.active a {
+  background: #F9A800;
+}
+body main[role=main] .table-stir th, body main[role=main] .table-stir td {
+  padding: 15px 0;
+}
+body main[role=main] .table-stir th.end, body main[role=main] .table-stir td.end {
+  text-align: right;
+}
+body main[role=main] .table-stir th a, body main[role=main] .table-stir td a {
+  color: #21314D;
+}
+body main[role=main] .table-stir th a:hover, body main[role=main] .table-stir td a:hover {
+  text-decoration: underline;
+  color: #121a29;
+}
+body main[role=main] .table-stir tbody tr {
+  border-bottom: 1px solid #E4E8EE;
+}
+body main[role=main] .table-stir tbody tr:last-child {
+  border-bottom: 0;
+}
+body main[role=main] .maps {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 55%;
+  height: 675px;
+  overflow: hidden;
+  text-align: right;
+  z-index: 1;
+}
+body main[role=main] .maps.small {
+  height: 500px;
+}
+body main[role=main] .maps img {
+  height: 100%;
+}
+body main[role=main] .maps svg a {
+  fill: #C4CEDD;
+}
+body main[role=main] .maps svg a.highlight {
+  fill: #F9A800;
+}
+body main[role=main] .maps svg a:hover {
+  fill: #F9A800;
+}
+body main[role=main] .maps .map-box {
+  width: 100%;
+  height: 100%;
+}
+body main[role=main] .maps-notify {
+  position: absolute;
+  padding: 10px 30px;
+  right: 0;
+  bottom: 0;
+  background: #F9A800;
+  color: #fff;
+  z-index: 2;
+  font-size: 0.875rem;
+  font-style: italic;
+}
+body main[role=main] .maps-notify i {
+  margin-right: 10px;
+}
+body main[role=main] .headingtext h1 {
+  margin-bottom: 15px;
+}
+body main[role=main] .headingtext h3 {
+  margin-bottom: 25px;
+}
+body main[role=main] .headingtext p {
+  color: #4A5569;
+}
+body main[role=main] .headingtext p.half {
+  width: 50%;
+}
+body main[role=main] .headingtext p.accent {
+  color: #F9A800;
+}
+body main[role=main] .headingtext a.anchor {
+  color: #21314D;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+}
+body main[role=main] .headingtext a.anchor:hover {
+  text-decoration: underline;
+  color: #121a29;
+}
+body main[role=main] .headingtext a.anchor::after {
+  width: 100%;
+  position: absolute;
+  bottom: 7px;
+  left: 0;
+  height: 10px;
+  content: "";
+  background-color: #F9A800;
+  opacity: 30%;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] .headingtext .counter {
+  margin: 0;
+  padding: 0;
+  margin-top: 40px;
+}
+body main[role=main] .headingtext .counter li {
+  list-style: none;
+  display: inline-block;
+}
+body main[role=main] .headingtext .counter li {
+  margin-right: 40px;
+}
+body main[role=main] .headingtext .counter li::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .headingtext .counter li .count {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  font-size: 3.125rem;
+  margin: 0 15px 0 0;
+  color: #355FAA;
+  font-weight: 500;
+  float: left;
+  line-height: 2.438rem;
+}
+body main[role=main] .headingtext .counter li .count::after {
+  width: 100%;
+  position: absolute;
+  bottom: 17px;
+  left: 0;
+  height: 20px;
+  content: "";
+  background-color: #F9A800;
+  opacity: 30%;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] .headingtext .counter li .count::after {
+  bottom: -10px;
+}
+body main[role=main] .headingtext .counter li .text {
+  overflow: auto;
+  font-size: 0.875rem;
+  color: #4A5569;
+  display: inline-block;
+  line-height: 1.313rem;
+}
+body main[role=main] .chart-line-d ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] .chart-line-d ul li {
+  list-style: none;
+  margin: 0px 0;
+  border-bottom: 1px solid #E4E8EE;
+}
+body main[role=main] .chart-line-d ul li.heading {
+  font-weight: 500;
+  border-bottom: 0;
+  padding: 5px 0 0 0;
+}
+body main[role=main] .chart-line-d ul li.heading .stat {
+  color: #21314D;
+  font-size: 1rem;
+}
+body main[role=main] .chart-line-d ul li.heading .plothead {
+  text-align: right;
+}
+body main[role=main] .chart-line-d ul li .wrap {
+  padding: 13px 0 13px 0;
+}
+body main[role=main] .chart-line-d ul li .wrap::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .chart-line-d ul li .subject {
+  float: left;
+  width: 45%;
+}
+body main[role=main] .chart-line-d ul li .subject a {
+  color: #21314D;
+}
+body main[role=main] .chart-line-d ul li .stat {
+  float: left;
+  width: 24%;
+  font-size: 0.933rem;
+  color: #4A5569;
+  text-align: right;
+  padding: 0 30px 0 0;
+}
+body main[role=main] .chart-line-d ul li .stat span {
+  margin-left: 15px;
+}
+body main[role=main] .chart-line-d ul li .scale {
+  float: left;
+  width: 31%;
+  font-size: 0.933rem;
+}
+body main[role=main] .chart-line-d ul li .scale::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .chart-line-d ul li .scale .percentage {
+  display: block;
+  float: left;
+  width: 30%;
+  text-align: right;
+  padding-right: 10px;
+  color: #355FAA;
+}
+body main[role=main] .chart-line-d ul li .scale .plot {
+  margin: 11px 0 0 0;
+  height: 6px;
+  border-radius: 3px;
+  background: #D8D8D8;
+  float: left;
+  width: 70%;
+}
+body main[role=main] .chart-line-d ul li .scale .plot .plotter {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  width: 0%;
+  background: #355FAA;
+  position: relative;
+  top: -14px;
+}
+body main[role=main] .chart-line-d ul li:last-child {
+  border-bottom: 0;
+}
+body main[role=main] .chart-line-d .action {
+  text-align: right;
+  padding: 20px 0 0 0;
+}
+body main[role=main] .chart-line-d .action a {
+  color: #4A5569;
+}
+body main[role=main] .chart-line-d .action a span.text {
+  display: inline-block;
+  margin-right: 15px;
+}
+body main[role=main] .chart-line-d .action a span.icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: #F9A800;
+  border-radius: 50%;
+  padding-top: 6px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  position: relative;
+  top: 3px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] .chart-line-d .action a:hover .text {
+  text-decoration: underline;
+}
+body main[role=main] .chart-line-d .action a:hover .icon {
+  background: #c68600;
+}
+body main[role=main] .chart-line-b ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] .chart-line-b ul li {
+  list-style: none;
+  margin: 0px 0;
+  border-bottom: 1px solid #E4E8EE;
+}
+body main[role=main] .chart-line-b ul li.heading {
+  font-weight: 500;
+  border-bottom: 0;
+  padding: 5px 0 0 0;
+}
+body main[role=main] .chart-line-b ul li.heading .stat {
+  color: #21314D;
+  font-size: 1rem;
+}
+body main[role=main] .chart-line-b ul li.heading .plothead {
+  text-align: right;
+}
+body main[role=main] .chart-line-b ul li .wrap {
+  padding: 13px 0 13px 0;
+}
+body main[role=main] .chart-line-b ul li .wrap::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .chart-line-b ul li .subject {
+  float: left;
+  width: 45%;
+}
+body main[role=main] .chart-line-b ul li .subject a {
+  color: #21314D;
+}
+body main[role=main] .chart-line-b ul li .stat {
+  float: left;
+  width: 24%;
+  font-size: 0.933rem;
+  color: #4A5569;
+  text-align: right;
+  padding: 0 30px 0 0;
+}
+body main[role=main] .chart-line-b ul li .stat span {
+  margin-left: 15px;
+}
+body main[role=main] .chart-line-b ul li .scale {
+  float: left;
+  width: 31%;
+  font-size: 0.933rem;
+}
+body main[role=main] .chart-line-b ul li .scale::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .chart-line-b ul li .scale .percentage {
+  display: block;
+  float: left;
+  width: 30%;
+  text-align: right;
+  padding-right: 10px;
+  color: #F9A800;
+}
+body main[role=main] .chart-line-b ul li .scale .plot {
+  margin: 11px 0 0 0;
+  height: 6px;
+  border-radius: 3px;
+  background: #D8D8D8;
+  float: left;
+  width: 70%;
+}
+body main[role=main] .chart-line-b ul li .scale .plot .plotter {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  width: 0%;
+  background: #F9A800;
+  position: relative;
+  top: -14px;
+}
+body main[role=main] .chart-line-b ul li:last-child {
+  border-bottom: 0;
+}
+body main[role=main] .chart-line-b .action {
+  text-align: right;
+  padding: 20px 0 0 0;
+}
+body main[role=main] .chart-line-b .action a {
+  color: #4A5569;
+}
+body main[role=main] .chart-line-b .action a span.text {
+  display: inline-block;
+  margin-right: 15px;
+}
+body main[role=main] .chart-line-b .action a span.icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: #F9A800;
+  border-radius: 50%;
+  padding-top: 6px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  position: relative;
+  top: 3px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] .chart-line-b .action a:hover .text {
+  text-decoration: underline;
+}
+body main[role=main] .chart-line-b .action a:hover .icon {
+  background: #c68600;
+}
+body main[role=main] .chart-line-a ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] .chart-line-a ul li {
+  list-style: none;
+  margin: 11px 0;
+}
+body main[role=main] .chart-line-a ul li .wrap::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .chart-line-a ul li .subject {
+  float: left;
+  font-weight: 500;
+}
+body main[role=main] .chart-line-a ul li .subject a {
+  color: #21314D;
+}
+body main[role=main] .chart-line-a ul li .stat {
+  float: right;
+  font-size: 0.933rem;
+  color: #4A5569;
+}
+body main[role=main] .chart-line-a ul li .stat span {
+  margin-left: 15px;
+}
+body main[role=main] .chart-line-a ul li .plot {
+  margin: 11px 0 0 0;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #D8D8D8;
+}
+body main[role=main] .chart-line-a ul li .plot .plotter {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  width: 0%;
+  background: #355FAA;
+  position: relative;
+  top: -14px;
+}
+body main[role=main] .chart-line-a .action {
+  text-align: right;
+  padding: 20px 0 0 0;
+}
+body main[role=main] .chart-line-a .action a {
+  color: #4A5569;
+}
+body main[role=main] .chart-line-a .action a span.text {
+  display: inline-block;
+  margin-right: 15px;
+}
+body main[role=main] .chart-line-a .action a span.icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: #F9A800;
+  border-radius: 50%;
+  padding-top: 6px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  position: relative;
+  top: 3px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] .chart-line-a .action a:hover .text {
+  text-decoration: underline;
+}
+body main[role=main] .chart-line-a .action a:hover .icon {
+  background: #c68600;
+}
+body main[role=main] .chart-line-c .graph {
+  margin: 30px 0 15px 0;
+}
+body main[role=main] .chart-line-c .graph .base {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  display: block;
+  background: #D8D8D8;
+  overflow: hidden;
+}
+body main[role=main] .chart-line-c .graph .base::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .chart-line-c .graph .base .item {
+  float: left;
+  height: 100%;
+}
+body main[role=main] .chart-line-c ul {
+  margin: 0;
+  padding: 0;
+}
+body main[role=main] .chart-line-c ul li {
+  list-style: none;
+  margin: 0px 0;
+  border-bottom: 1px solid #E4E8EE;
+}
+body main[role=main] .chart-line-c ul li.heading {
+  font-weight: 500;
+  border-bottom: 0;
+  padding: 5px 0 0 0;
+}
+body main[role=main] .chart-line-c ul li.heading .stat {
+  color: #21314D;
+  font-size: 1rem;
+}
+body main[role=main] .chart-line-c ul li .wrap {
+  padding: 13px 0 13px 0;
+}
+body main[role=main] .chart-line-c ul li .wrap::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .chart-line-c ul li .subject {
+  float: left;
+  width: 60%;
+}
+body main[role=main] .chart-line-c ul li .subject a {
+  color: #21314D;
+}
+body main[role=main] .chart-line-c ul li .subject .color {
+  width: 10px;
+  height: 10px;
+  margin: 0 15px 0 0;
+  border-radius: 50%;
+  background-color: #355FAA;
+  display: inline-block;
+}
+body main[role=main] .chart-line-c ul li .stat {
+  float: left;
+  width: 25%;
+  font-size: 0.933rem;
+  color: #4A5569;
+  text-align: right;
+  padding: 0 30px 0 0;
+}
+body main[role=main] .chart-line-c ul li .stat span {
+  margin-left: 15px;
+}
+body main[role=main] .chart-line-c ul li .scale {
+  float: left;
+  width: 15%;
+  font-size: 0.933rem;
+  text-align: right;
+}
+body main[role=main] .chart-line-c ul li .scale::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body main[role=main] .chart-line-c ul li:last-child {
+  border-bottom: 0;
+}
+body main[role=main] .chart-line-c .action {
+  text-align: right;
+  padding: 20px 0 0 0;
+}
+body main[role=main] .chart-line-c .action a {
+  color: #4A5569;
+}
+body main[role=main] .chart-line-c .action a span.text {
+  display: inline-block;
+  margin-right: 15px;
+}
+body main[role=main] .chart-line-c .action a span.icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: #F9A800;
+  border-radius: 50%;
+  padding-top: 6px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  position: relative;
+  top: 3px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body main[role=main] .chart-line-c .action a:hover .text {
+  text-decoration: underline;
+}
+body main[role=main] .chart-line-c .action a:hover .icon {
+  background: #c68600;
+}
+body main[role=main] .category-pill ul {
+  margin: 0;
+  padding: 0;
+  display: block;
+  position: relative;
+}
+body main[role=main] .category-pill ul li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 3px;
+  margin-bottom: 7px;
+}
+body main[role=main] .category-pill ul li.separator {
+  display: block;
+  position: relative;
+}
+body main[role=main] .category-pill ul li.separator::after {
+  width: 12px;
+  height: 12px;
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 14px;
+  background-image: url("../img/ic-hierarchy.png");
+  background-repeat: no-repeat;
+}
+body main[role=main] .category-pill ul li .pill {
+  font-size: 0.875rem;
+  padding: 2px 15px;
+  display: inline-block;
+  border-radius: 4px;
+  background: #84b304;
+  color: #fff;
+  display: inline-block;
+}
+body main[role=main] .category-pill ul li .pill:hover {
+  background: #5f8103;
+  color: #fff;
+}
+body main[role=main] .category-pill ul li .pill:active {
+  background: #3a4f02;
+  color: #fff;
+}
+body main[role=main] .category-pill ul li .pill:hover, body main[role=main] .category-pill ul li .pill:active, body main[role=main] .category-pill ul li .pill:visited, body main[role=main] .category-pill ul li .pill:focus {
+  text-decoration: none;
+}
+body main[role=main] .category-pill ul li .pill:hover, body main[role=main] .category-pill ul li .pill:focus {
+  background: #84b304;
+}
+body main[role=main] .category-pill ul li .pill a {
+  color: #fff;
+}
+body main[role=main] .category-pill ul li > ul {
+  margin-left: 40px;
+}
+body main[role=main] .category-pill ul li > ul .pill {
+  background: #97CC04;
+}
+body main[role=main] .category-pill ul li > ul .pill:hover, body main[role=main] .category-pill ul li > ul .pill:focus {
+  background: #97CC04;
+}
+body main[role=main] .category-pill > ul {
+  margin-bottom: 5px;
+}
+body main[role=main] .category-pill:last-child {
+  border-bottom: 0px;
+}
+body footer {
+  margin: 50px 0 0 0;
+}
+body footer .top {
+  padding: 40px 0 30px 0;
+}
+body footer .logo img {
+  width: 35px;
+}
+body footer .bottomnav ul {
+  margin: 0;
+  padding: 0;
+}
+body footer .bottomnav ul li {
+  list-style: none;
+  display: inline-block;
+}
+body footer .bottomnav ul li {
+  margin: 0 15px;
+}
+body footer .bottomnav ul li a {
+  color: #21314D;
+  position: relative;
+}
+body footer .bottomnav ul li a:hover {
+  text-decoration: underline;
+  color: #121a29;
+}
+body footer .social ul {
+  margin: 0;
+  padding: 0;
+}
+body footer .social ul li {
+  list-style: none;
+  display: inline-block;
+}
+body footer .social ul li {
+  margin-left: 5px;
+}
+body footer .social ul li a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #F9A800;
+  color: #fff;
+  font-size: 20px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+body footer .social ul li a:hover {
+  background: #c68600;
+}
+body footer .bottom {
+  padding: 40px 0 40px 0;
+  text-align: center;
+  background: #21314D;
+  color: #fff;
+}
+body footer .bottom p {
+  margin-bottom: 0;
+}
+body .tooltip .tooltip-inner {
+  font-size: 0.813rem !important;
+  font-family: "Jost", "Avenir", "sans-serif";
+  background: #355FAA;
+}
+body .tooltip .tooltip-inner::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+body .tooltip .tooltip-inner .htmlpop .count {
+  font-size: 1.5rem;
+  display: block;
+  text-align: left;
+  float: left;
+  padding-left: 5px;
+}
+body .tooltip .tooltip-inner .htmlpop .count .label {
+  font-size: 0.813rem;
+  margin-left: 5px;
+}
+body .tooltip .tooltip-inner .htmlpop .detail {
+  display: block;
+  float: left;
+  text-align: left;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 3px;
+}
+body .tooltip.bs-tooltip-top .tooltip-arrow::before {
+  border-top-color: #355FAA;
+}
+body .tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+  border-bottom-color: #355FAA;
+}
+body .tooltip.bs-tooltip-start .tooltip-arrow::before {
+  border-left-color: #355FAA;
+}
+body .tooltip.bs-tooltip-end .tooltip-arrow::before {
+  border-right-color: #355FAA;
+  bottom: 8px;
+}
+
+@media (min-width: 2114px) {
+  body main[role=main] .maps {
+    text-align: left;
+    height: 750px;
+  }
+  body main[role=main] .maps svg {
+    width: 1154px;
+  }
+}
+@media (max-width: 1830px) {
+  body main[role=main] section.homepage .homepage-stat-trend {
+    margin: 470px 0 0 0;
+  }
+}
+@media (max-width: 1560px) {
+  body main[role=main] section.homepage .homepage-stat-trend {
+    margin: 400px 0 0 0;
+  }
+}
+@media (max-width: 1399.98px) {
+  body main[role=main] section.homepage .homepage-stat-trend {
+    margin: 330px 0 0 0;
+  }
+  body main[role=main] section.statistics .statistics-countries-list .country {
+    width: 25%;
+  }
+}
+@media (max-width: 1199.98px) {
+  body header .container nav.mainnav {
+    margin-left: 50px;
+  }
+  body header .container nav.mainnav ul li {
+    margin-right: 15px;
+  }
+  body header .container nav.actionnav ul li {
+    margin-left: 15px;
+  }
+  body header .container nav.actionnav ul li .button {
+    padding: 5px 20px;
+  }
+  body main[role=main] .inputaction button {
+    margin-bottom: 15px;
+  }
+  body main[role=main] .inputaction button.google {
+    margin-left: 0px;
+  }
+  body main[role=main] .inputaction button.delete {
+    float: none;
+    margin-left: 0px;
+    margin-top: 10px;
+  }
+  body main[role=main] .inputaction .note {
+    margin-right: 10px;
+  }
+  body main[role=main] .headingtext p.half {
+    width: 75%;
+  }
+  body main[role=main] .headingtext .counter li {
+    margin-right: 20px;
+  }
+  body main[role=main] .headingtext .counter li .count {
+    font-size: 2.5rem;
+  }
+  body main[role=main] .maps {
+    height: 550px;
+  }
+  body main[role=main] section.homepage .homepage-hero {
+    padding: 0;
+  }
+  body main[role=main] section.homepage .homepage-stat-region {
+    width: 100%;
+    padding: 0 20px 0 0;
+  }
+  body main[role=main] section.homepage .homepage-stat-trend {
+    margin-top: 300px;
+  }
+  body main[role=main] section.features {
+    margin-top: 60px;
+  }
+  body main[role=main] section.features .featuretext {
+    position: static;
+    padding-left: 20px;
+  }
+  body main[role=main] section.features .featuretext .features h3 {
+    margin-bottom: 0;
+  }
+  body main[role=main] section.features .featuretext .features div {
+    margin-bottom: 20px;
+  }
+  body main[role=main] section.about-highlight .box {
+    width: 80%;
+  }
+  body main[role=main] section.about-hero {
+    padding: 0;
+  }
+  body main[role=main] section.statisticsdetail .statisticsdetail-right {
+    padding-left: 40px;
+  }
+  body main[role=main] section.statisticsdetail .counter li {
+    margin-bottom: 20px;
+  }
+  body main[role=main] section.statisticsdetail .counter li .count {
+    font-size: 2.5rem;
+  }
+  body main[role=main] section.statisticsdetail .statisticsother ul li {
+    width: 50%;
+  }
+  body main[role=main] section.statisticsdetail .activitylist .headingtext {
+    width: 80%;
+  }
+  body main[role=main] section.statisticsdetail .activitylist ul li a {
+    display: block;
+    min-height: 130px;
+  }
+  body main[role=main] section.statisticsdetail .activitylist ul li a .text .counter {
+    margin-top: 0;
+  }
+  body main[role=main] section.statisticsdetail .activitylist .slick-arrow {
+    top: -95px;
+  }
+  body main[role=main] section.statisticsdetail .activitylist .slick-arrow.slick-prev {
+    right: 45px;
+  }
+  body main[role=main] section.statisticsdetail .activitylist .slick-arrow.slick-next {
+    right: 0;
+  }
+  body footer {
+    margin-top: 30px;
+  }
+}
+@media (max-width: 991.98px) {
+  body header {
+    position: fixed;
+    width: 100%;
+    height: 135px;
+    background: #fff;
+    z-index: 5;
+  }
+  body header.sign {
+    background: transparent;
+  }
+  body header.sign .container nav.actionnav ul li.sign a {
+    color: #fff;
+  }
+  body header .container nav.mainnav {
+    background: #355FAA;
+    position: absolute;
+    right: var(--bs-gutter-x, 0.75rem);
+    top: 99px;
+    z-index: 2;
+    width: 50%;
+    border-radius: 4px;
+  }
+  body header .container nav.mainnav ul li {
+    display: block;
+    margin-right: 0;
+    border-bottom: 1px solid #4b78c7;
+  }
+  body header .container nav.mainnav ul li a {
+    color: #fff;
+    padding: 10px 20px;
+    display: block;
+    text-align: right;
+    text-decoration: none;
+  }
+  body header .container nav.mainnav ul li a:hover {
+    background: #4b78c7;
+  }
+  body header .container nav.mainnav ul li:last-child {
+    border-bottom: 0;
+  }
+  body header .container nav.mainnav.collapse {
+    display: none;
+  }
+  body header .container nav.mainnav.show {
+    display: block;
+  }
+  body header .container nav.actionnav ul li.username > a {
+    padding: 5px 15px;
+    display: inline-block;
+    border-radius: 4px;
+    background: #21314D;
+    color: #fff;
+  }
+  body header .container nav.actionnav ul li.username > a:hover {
+    background: #121a29;
+    color: #fff;
+  }
+  body header .container nav.actionnav ul li.username > a:active {
+    background: #020406;
+    color: #fff;
+  }
+  body header .container nav.actionnav ul li.username > a:hover, body header .container nav.actionnav ul li.username > a:active, body header .container nav.actionnav ul li.username > a:visited, body header .container nav.actionnav ul li.username > a:focus {
+    text-decoration: none;
+  }
+  body header .container nav.actionnav ul li.username > a.show {
+    background: #355FAA;
+  }
+  body header .container nav.actionnav ul li .dropdown-item {
+    border-bottom: 1px solid #4b78c7;
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+  body header .container nav.actionnav ul li:last-child > .dropdown-item {
+    border-bottom: 0;
+  }
+  body header .container .navbar-toggler {
+    display: block;
+  }
+  body main[role=main] {
+    padding-top: 135px;
+  }
+  body main[role=main] .headingtext .counter li {
+    margin-bottom: 20px;
+  }
+  body main[role=main] section.statistics .statistics-countries-list .country {
+    width: 50%;
+  }
+  body main[role=main] .maps {
+    display: none;
+  }
+  body main[role=main] section.homepage .homepage-hero {
+    margin-top: 40px;
+  }
+  body main[role=main] section.homepage .homepage-stat-region {
+    margin-top: 50px;
+    padding: 0;
+  }
+  body main[role=main] section.homepage .homepage-stat-trend {
+    margin-top: 50px;
+    padding: 0;
+  }
+  body main[role=main] section.about-hero .headingtext {
+    padding-right: 30px;
+  }
+  body main[role=main] section.about-highlight .box {
+    width: 100%;
+  }
+  body main[role=main] section.about-highlight .box .contactwrap {
+    position: static;
+    padding: 0;
+    margin-bottom: 30px;
+  }
+  body main[role=main] section.about-highlight .box::after {
+    bottom: -10px;
+    right: -10px;
+  }
+  body main[role=main] section.two-columns .two-columns-sidebar {
+    display: none;
+  }
+  body main[role=main] section.two-columns .two-columns-content {
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+  }
+  body main[role=main] section.two-columns .two-columns-content .data-information {
+    padding-bottom: 0;
+  }
+  body main[role=main] section.two-columns .two-columns-content .table-section .slick-arrow {
+    right: -2px;
+  }
+  body main[role=main] section.two-columns .two-columns-content .table-section .slick-arrow.slick-prev {
+    right: 44px;
+  }
+  body main[role=main] section.two-columns .two-columns-content .table-section .slick-arrow.slick-disabled {
+    opacity: 1;
+    background: #7295d3;
+  }
+  body main[role=main] section.two-columns::after {
+    display: none;
+  }
+  body main[role=main] section.signs .sign-background {
+    position: fixed;
+    z-index: 2;
+  }
+  body main[role=main] section.signs .sign-background .side {
+    height: 140px;
+    min-height: auto !important;
+  }
+  body main[role=main] section.signs section.signcontent .signcontent-left {
+    display: none;
+  }
+  body main[role=main] section.signs section.signcontent .signcontent-right {
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-top: 50px;
+  }
+  body main[role=main] section.authentication .authentication-left {
+    padding-right: 50px;
+  }
+  body main[role=main] section.authentication .authentication-left .box {
+    padding: 50px 20px 50px 0;
+  }
+  body main[role=main] section.statisticsdetail .statisticsother {
+    display: none;
+  }
+  body main[role=main] section.statisticsdetail .statisticsdetail-right {
+    margin-top: 40px;
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+  }
+  body main[role=main] section.statisticsdetail .activitylist {
+    display: none;
+  }
+  body main[role=main] section.explore .explore-map {
+    display: none;
+  }
+  body main[role=main] section.explore .explore-controls .explore-controls-results {
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+  }
+  body main[role=main] section.explore .explore-controls .explore-controls-results .tab-content .accordion-heading .accordion-button::after {
+    right: -10px;
+  }
+  body main[role=main] section.explore .explore-controls .explore-controls-results .resultheading {
+    display: block;
+  }
+  body main[role=main] section.explore .explore-controls .sidebar {
+    margin-top: 20px;
+  }
+  body main[role=main] section.explore .explore-controls .sidebar .wraps {
+    border: 1px solid #CCD3DD;
+  }
+  body main[role=main] section.profile .profile-decor {
+    display: none;
+  }
+  body main[role=main] section.profile .profile-content {
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+  }
+  body main[role=main] section.companydetail .companydetail-left {
+    display: none;
+  }
+  body main[role=main] section.companydetail .companydetail-right {
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+  }
+  body footer .top {
+    display: block !important;
+    text-align: center;
+  }
+  body footer .top .logo {
+    margin-bottom: 25px;
+  }
+  body footer .bottomnav {
+    margin-bottom: 20px;
+  }
+  body footer .bottomnav ul li {
+    margin: 0 10px;
+  }
+  body .tooltip {
+    display: none !important;
+  }
+}
+@media (max-width: 767.98px) {
+  body main[role=main] .headingtext p.half {
+    width: 100%;
+  }
+  body main[role=main] section.statistics .statistics-countries-list .country {
+    width: 100%;
+  }
+  body main[role=main] section.statistics .statistics-countries-list .wrap ul {
+    margin-top: 15px;
+  }
+  body main[role=main] section.statistics .statistics-countries-list .wrap ul li {
+    width: auto;
+    margin-right: 10px;
+    font-size: 1rem;
+  }
+  body main[role=main] section.about-hero .decor {
+    display: none;
+  }
+  body main[role=main] section.two-columns .two-columns-content .partnerlist li .coordinator {
+    display: block;
+    margin-left: 0;
+    color: #355FAA;
+    padding: 0;
+    background: none;
+    font-weight: 500;
+    margin-top: 5px;
+  }
+  body main[role=main] section.authentication .authentication-left {
+    display: none;
+  }
+  body main[role=main] section.statisticsdetail .statisticstrend {
+    margin-top: 30px;
+  }
+  body main[role=main] section.statisticsdetail .statisticsmap {
+    display: none;
+  }
+  body main[role=main] section.statisticsdetail .statisticsother {
+    display: none;
+  }
+  body main[role=main] section.profile .profile-sidebar {
+    display: none;
+  }
+  body header .container nav.actionnav ul li.sign {
+    display: none;
+  }
+  body header .container .navbar-toggler {
+    margin-left: 10px;
+  }
+}
+@media (max-width: 575.98px) {
+  body header .container .logo {
+    width: 170px;
+  }
+  body main[role=main] section.features .decor {
+    display: none;
+  }
+  body main[role=main] section.statistics .statistics-countries-list .wrap {
+    margin-bottom: 15px;
+  }
+  body main[role=main] section.statistics .statistics-countries-list .wrap::after {
+    display: none;
+  }
+  body main[role=main] section.statistics .statistics-activity-list-wrap .slick-arrow {
+    top: -55px;
+  }
+  body main[role=main] section.statistics .statistics-activity-list-wrap .slick-arrow.slick-prev {
+    right: 66px;
+  }
+  body main[role=main] section.statistics .statistics-activity-list-wrap .slick-arrow.slick-next {
+    right: 20px;
+  }
+  body main[role=main] section.two-columns .two-columns-content .table-section .table-section-column, body main[role=main] section.two-columns .two-columns-content .table-section .table-section-data {
+    width: 50%;
+  }
+}

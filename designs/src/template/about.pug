@@ -1,0 +1,112 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "About"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/header.pug
+
+		// page main
+		main(role="main")
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item.active(aria-current="page") ABOUT
+
+			// container
+			section.about-hero 
+				.container 
+
+					// row
+					.row 
+
+						// column.col-sm-12.col-md-6.col-lg-3.col-xl-3
+						.col-sm-12.col-md-8.headingtext
+
+							// heading
+							h1 About STIRDATA
+							h3 Explore registered companies in Europe
+							p STIRData Action proposes the use of Linked Data and semantic technologies as the means to overcome the technical barriers that hamper the reuse of open data, namely, poor quality and limited availability of Open Data. In particular, the Action seeks to assist data providers through a set of data specifications, guidelines, and an accompanying harmonisation toolset for streamlining and facilitating the process of enriching and publishing company data as Linked Data.
+
+							// counter
+							ul.counter 
+								li
+									span.count 10
+									span.text 
+										| European 
+										br
+										| Countries
+								li
+									span.count 1,5M+
+									span.text
+										| Registered
+										br
+										| Companies
+								li
+									span.count 21
+									span.text 
+										| Business
+										br
+										| Activities
+							
+							// button nav
+							nav.heronav
+								ul
+									li
+										a.button( href="partners.html" ) View Partners
+
+						// column
+						.col-md-4.decor
+
+							// illustration
+							img( src="img/ic-illustration-wide.png" )
+
+
+			// highlight text
+			section.about-highlight 
+				.container 
+
+					// row
+					.box
+						.row 
+
+							// left .col-sm-12.col-md-6.col-lg-3.col-xl-3
+							.col-sm-12.col-md-5.contact
+
+								// icon
+								.contactwrap
+									img.decor(src="img/ic-remarks.png")
+									p Contact us for more information regarding STIRDATA
+
+									// button nav
+									nav.heronav
+										ul
+											li
+												a.button( href="#" ) Contact Us
+
+							// right
+							.col-sm-12.col-md-7.comment
+
+								// comment
+								.commentwrap
+									p The enhanced datasets will be also published to the national open data portals of Greece (data.gov.gr), Norway (data.norge.no), and Czechia (data.gov.cz) so that they can be harvested by the EDP. The overall STIRData approach, technical tools, and online services will be of a general purpose and can be uptaken to facilitate harmonisation and reusability of open data in other domains.
+									img.triangle( src="img/ic-triangle.png" )
+
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

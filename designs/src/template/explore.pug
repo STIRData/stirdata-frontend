@@ -1,0 +1,79 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "Explore"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/header.pug
+
+		// page main
+		main(role="main")
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item.active(aria-current="page") EXPLORE
+
+			// explore
+			section.explore 
+					
+				// page intro
+				.explore-intro
+					.container 
+
+						// heading
+						.headingtext
+							h1 Explore
+						
+				// explore map
+				.explore-map 
+					.container-fluid 
+
+						// maps, insert the map here
+						.explore-map-section#explore-map-section
+
+							// temp image of map, need to be replaced by amchart maps
+							// to be replaced with js maps
+							img.tmpmap( src="img/img-temp-map.png" )
+								
+								
+							
+							// notify
+							.maps-notify
+								i.fas.fa-info-circle 
+								| Click area on the map to select country or region
+
+				
+				// explore controls
+				.explore-controls 
+					.container 
+
+						// row
+						.row 
+
+							// sidebar
+							include ./includes/sidebar-explore-empty.pug
+
+							// sidebar
+							include ./includes/result-empty.pug
+
+							
+
+
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

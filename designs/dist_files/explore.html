@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- html head-->
+  <head>
+    <!-- meta-->
+    <title>STIRDATA</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="STIRDATA">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <!-- body-->
+  <body>
+    <!-- header-->
+    <header>
+      <!-- wrap-->
+      <div class="container d-flex align-items-center navbar">
+        <!-- logo--><a href="index.html"><img class="logo" src="img/ic-logo.png"></a>
+        <!-- navigation-->
+        <nav class="mainnav collapse" id="navbarCollapse">
+          <ul> 
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="statistics.html">Statistics</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="partners.html">Partners</a></li>
+            <li><a href="dataproviders.html">Data Providers</a></li>
+          </ul>
+        </nav>
+        <!-- navigation-->
+        <nav class="actionnav">
+          <ul> 
+            <li class="sign"><a href="signin.html">Sign in</a></li>
+            <li><a class="button" href="signup.html">Get Started</a></li>
+          </ul>
+        </nav>
+        <!-- hamburger-->
+        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      </div>
+    </header>
+    <!-- page main-->
+    <main role="main">
+      <!-- breadcrumb-->
+      <div class="container"> 
+        <nav class="bread" aria-label="breadcrumb">
+          <ol class="breadcrumb"> 
+            <li class="breadcrumb-item"><a href="index.html">HOME</a></li>
+            <li class="breadcrumb-item active" aria-current="page">EXPLORE</li>
+          </ol>
+        </nav>
+      </div>
+      <!-- explore-->
+      <section class="explore"> 
+        <!-- page intro-->
+        <div class="explore-intro">
+          <div class="container"> 
+            <!-- heading-->
+            <div class="headingtext">
+              <h1>Explore</h1>
+            </div>
+          </div>
+        </div>
+        <!-- explore map-->
+        <div class="explore-map"> 
+          <div class="container-fluid"> 
+            <!-- maps, insert the map here-->
+            <div class="explore-map-section" id="explore-map-section">
+              <!-- temp image of map, need to be replaced by amchart maps-->
+              <!-- to be replaced with js maps--><img class="tmpmap" src="img/img-temp-map.png">
+              <!-- notify-->
+              <div class="maps-notify"><i class="fas fa-info-circle"> </i>Click area on the map to select country or region</div>
+            </div>
+          </div>
+        </div>
+        <!-- explore controls-->
+        <div class="explore-controls"> 
+          <div class="container"> 
+            <!-- row-->
+            <div class="row"> 
+              <!-- sidebar-->
+              <!-- sidebar-->
+              <div class="col-lg-4 col-xl-4 explore-controls-sidebar"> 
+                <!-- sidemenu-->
+                <div class="sidebar" id="sidebar-accordion"> 
+                  <div class="wraps">
+                    <!-- saved view-->
+                    <div class="sidebar-savedview sidebar-section-wrap">
+                      <!-- heading-->
+                      <h3>Saved View </h3>
+                      <!-- input-->
+                      <select class="form-select">
+                        <option selected>Select Saved View</option>
+                        <option value="1">Belgium agriculture </option>
+                        <option value="2">Greece companies in IT</option>
+                        <option value="3">Manufacturing in Latvia</option>
+                      </select>
+                      <!-- add action--><a class="savefilter" href="#" data-filter-toggle="#saveview-form"><span class="add">+</span>Save current view</a>
+                      <!-- save filter form-->
+                      <div class="form collapse" id="saveview-form">
+                        <div class="inputform"><span class="label">View Title</span>
+                          <input type="text">
+                        </div>
+                        <div class="inputaction">
+                          <button type="button">Save</button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- countries-->
+                    <div class="sidebar-countries sidebar-section-wrap"> 
+                      <!-- heading-->
+                      <h3 id="heading-countries"><a class="accordion-button collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCountries" aria-expanded="true" aria-controls="collapseCountries">
+                           Countries &amp; Region</a></h3>
+                      <!-- content-->
+                      <div class="accordion-collapse collapse" id="collapseCountries" aria-labelledby="heading-countries" data-bs-parent="#sidebar-accordion">
+                        <!-- input-->
+                        <div class="input-wrap"><img class="search" src="img/ic-search.png">
+                          <input class="form-control" type="text" id="searchquery" placeholder="">
+                        </div>
+                        <!-- selection filter-->
+                        <div class="input-filter">
+                          <!-- unordered list for filter listing-->
+                          <ul>
+                            <!-- every country is represented with the first-level li element -->
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <!-- 
+                                actual checkbox - where the value will be retrieved by the logic
+                                note:
+                                	- make sure the name attribute on the input checkbox element is the same with the for attribute on the adjacent label element
+                                	- this will enable selecting checkbox by clicking on the label
+                                
+                                -->
+                                <input id="country-uk" type="checkbox" name="country-uk">
+                                <label for="country-uk">United Kingdom</label>
+                                <!--
+                                this anchor is to expand/hide the child selection
+                                works by setting the target div (ID) to the href link
+                                --><a href="#" data-filter-toggle="#unitedkingdom-region"> 
+                                  <!-- this is where the +/- image will appears--><span class="expand"></span></a>
+                              </div>
+                              <!-- 
+                              this is where we put the child list as a nested "ul" inside the parent "li" element
+                              need to set the target ID to the element, in this case is "unitedkingdom-region"
+                              need to set "hide" class to the "ul" element to hide the child content on document load
+                              you can also use lazy loading to append the child when the expand anchor link is clicked - better for performance
+                              -->
+                              <ul class="collapse" id="unitedkingdom-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-uk-east" type="checkbox" name="country-uk-east">
+                                    <label for="country-uk-east">East Midlands (England)</label><a href="#" data-filter-toggle="#eastmidlands-region"> <span class="expand"></span></a>
+                                  </div>
+                                  <ul class="collapse" id="eastmidlands-region">
+                                    <li>
+                                      <div class="check-wrap">
+                                        <input id="country-uk-east-derby" type="checkbox" name="country-uk-east-derby">
+                                        <label for="country-uk-east-derby">Derbyshire and Nottinghamshire</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="check-wrap">
+                                        <input id="country-uk-east-leicestershire" type="checkbox" name="country-uk-east-leicestershire">
+                                        <label for="country-uk-east-leicestershire">Leicestershire</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="check-wrap">
+                                        <input id="country-uk-east-lincolnshire" type="checkbox" name="country-uk-east-lincolnshire">
+                                        <label for="country-uk-east-lincolnshire">Lincolnshire</label><a href="#" data-filter-toggle="#lincolnshire-region"> <span class="expand"></span></a>
+                                      </div>
+                                      <ul class="collapse" id="lincolnshire-region"> 
+                                        <li>
+                                          <div class="check-wrap">
+                                            <input id="country-uk-east-lincolnshire-boston" type="checkbox" name="country-uk-east-lincolnshire-boston">
+                                            <label for="country-uk-east-lincolnshire-boston">Boston</label>
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="check-wrap">
+                                            <input id="country-uk-east-lincolnshire-east" type="checkbox" name="country-uk-east-lincolnshire-east">
+                                            <label for="country-uk-east-lincolnshire-east">East Lindsey</label>
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="check-wrap">
+                                            <input id="country-uk-east-lincolnshire-lincoln" type="checkbox" name="country-uk-east-lincolnshire-lincoln">
+                                            <label for="country-uk-east-lincolnshire-lincoln">Lincoln</label>
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="check-wrap">
+                                            <input id="country-uk-east-lincolnshire-north" type="checkbox" name="country-uk-east-lincolnshire-north">
+                                            <label for="country-uk-east-lincolnshire-north">North Kesteven</label>
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="check-wrap">
+                                            <input id="country-uk-east-lincolnshire-south" type="checkbox" name="country-uk-east-lincolnshire-south">
+                                            <label for="country-uk-east-lincolnshire-south">South Holland</label>
+                                          </div>
+                                        </li>
+                                      </ul>
+                                    </li>
+                                  </ul>
+                                </li>
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-uk-eastengland" type="checkbox" name="country-uk-eastengland">
+                                    <label for="country-uk-eastengland">East of England</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-uk-london" type="checkbox" name="country-uk-london">
+                                    <label for="country-uk-london">London</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="check-wrap">
+                                <input id="country-norway" type="checkbox" name="country-norway">
+                                <label for="country-norway">Norway</label><a href="#" data-filter-toggle="#norway-region"> <span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="norway-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="norway-region-oslo" type="checkbox" name="norway-region-oslo">
+                                    <label for="norway-region-oslo">Oslo og Viken</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="check-wrap">
+                                <input id="country-greece" type="checkbox" name="country-greece">
+                                <label for="country-greece">Greece</label><a href="#" data-filter-toggle="#greece-region"> <span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="greece-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-greece-attica" type="checkbox" name="country-greece-attica">
+                                    <label for="country-greece-attica">Attica</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="check-wrap">
+                                <input id="country-belgium" type="checkbox" name="country-belgium">
+                                <label for="country-belgium">Belgium</label><a href="#" data-filter-toggle="#belgium-region"> <span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="belgium-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-belgium-vlaams" type="checkbox" name="country-belgium-vlaams">
+                                    <label for="country-belgium-vlaams">Vlaams Gewest</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="check-wrap">
+                                <input id="country-czech" type="checkbox" name="country-czech">
+                                <label for="country-czech">Czech Republic</label><a href="#" data-filter-toggle="#czech-region"> <span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="czech-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-czech-praha" type="checkbox" name="country-czech-praha">
+                                    <label for="country-czech-praha">Praha</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="check-wrap">
+                                <input id="country-estonia" type="checkbox" name="country-estonia">
+                                <label for="country-estonia">Estonia</label><a href="#" data-filter-toggle="#estonia-region"> <span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="estonia-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-estonia-keesk" type="checkbox" name="country-estonia-keesk">
+                                    <label for="country-estonia-keesk">Keesk - Esti</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="check-wrap">
+                                <input id="country-latvia" type="checkbox" name="country-latvia">
+                                <label for="country-latvia">Latvia</label><a href="#" data-filter-toggle="#latvia-region"> <span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="latvia-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-latvia-latgale" type="checkbox" name="country-latvia-latgale">
+                                    <label for="country-latvia-latgale">Latgale</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="check-wrap">
+                                <input id="country-romania" type="checkbox" name="country-romania">
+                                <label for="country-romania">Romania</label><a href="#romania-region"> <span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="romania-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-romania-doi" type="checkbox" name="country-romania-doi">
+                                    <label for="country-romania-doi">Macroregiunea Doi</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="check-wrap">
+                                <input id="country-finland" type="checkbox" name="country-finland">
+                                <label for="country-finland">Finland</label><a href="#" data-filter-toggle="#finland-region"> <span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="finland-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-finland-manner" type="checkbox" name="country-finland-manner">
+                                    <label for="country-finland-manner">Manner-Suomi</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <div class="check-wrap">
+                                <input id="country-cyprus" type="checkbox" name="country-cyprus">
+                                <label for="country-cyprus">Cyprus</label><a href="#" data-filter-toggle="#cyprus-region"> <span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="cyprus-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="country-cyprus-ypsonas" type="checkbox" name="country-cyprus-ypsonas">
+                                    <label for="country-cyprus-ypsonas">Ypsonas</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- activities-->
+                    <div class="sidebar-activities sidebar-section-wrap">
+                      <!-- heading-->
+                      <h3 id="heading-activities"><a class="accordion-button collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseActivities" aria-expanded="true" aria-controls="collapseActivities">Business Activities</a></h3>
+                      <!-- content-->
+                      <div class="accordion-collapse collapse" id="collapseActivities" aria-labelledby="heading-activities" data-bs-parent="#sidebar-accordion">
+                        <!-- input-->
+                        <div class="input-wrap"><img class="search" src="img/ic-search.png">
+                          <input class="form-control" type="text" id="searchquery" placeholder="">
+                        </div>
+                        <!-- selection filter-->
+                        <div class="input-filter">
+                          <!-- unordered list for filter listing-->
+                          <ul>
+                            <!-- every country is represented with the first-level li element -->
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-agriculture" type="checkbox" name="activity-agriculture">
+                                <label for="activity-agriculture">Agriculture, Forestry and Fishing</label><a href="#" data-filter-toggle="#activity-agriculture-region"> 
+                                  <!-- this is where the +/- image will appears--><span class="expand"></span></a>
+                              </div>
+                              <ul class="collapse" id="activity-agriculture-region"> 
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="activity-agriculture-crop" type="checkbox" name="activity-agriculture-crop">
+                                    <label for="activity-agriculture-crop">Crop and animal production, hunting and related service activities</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="activity-agriculture-forestry" type="checkbox" name="activity-agriculture-forestry">
+                                    <label for="activity-agriculture-forestry">Forestry and logging</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="check-wrap">
+                                    <input id="activity-agriculture-fishing" type="checkbox" name="activity-agriculture-fishing">
+                                    <label for="activity-agriculture-fishing">Fishing and aquaculture</label>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-administrative" type="checkbox" name="activity-administrative">
+                                <label for="activity-administrative">Administrative and Support Service Activities</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-accommodation" type="checkbox" name="activity-accommodation">
+                                <label for="activity-accommodation">Accommodation and Food Service Activities</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-construction" type="checkbox" name="activity-construction">
+                                <label for="activity-construction">Construction</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-education" type="checkbox" name="activity-education">
+                                <label for="activity-education">Education</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-electricity" type="checkbox" name="activity-electricity">
+                                <label for="activity-electricity">Electricity, Gas, Steam and Air Conditioning Supply</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-arts" type="checkbox" name="activity-arts">
+                                <label for="activity-arts">Arts, Entertainment, and Recreation</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-financial" type="checkbox" name="activity-financial">
+                                <label for="activity-financial">Financial and Insurance Activities</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-social" type="checkbox" name="activity-social">
+                                <label for="activity-social">Human Health and Social Work Activity</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-household" type="checkbox" name="activity-household">
+                                <label for="activity-household">Activities of Household as Employers</label>
+                              </div>
+                            </li>
+                          </ul>
+                          <!--
+                          Additional business activities that are hidden
+                          for the sake of usability - limit information into half of full information
+                          showing using the more/less button below.	
+                          -->
+                          <ul class="collapse" id="activity-list-full">
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-information" type="checkbox" name="activity-information">
+                                <label for="activity-information">Information and Communication</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-manufacturing" type="checkbox" name="activity-manufacturing">
+                                <label for="activity-manufacturing">Manufacturing</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-extraterritorial" type="checkbox" name="activity-extraterritorial">
+                                <label for="activity-extraterritorial">Activities of Extraterritorial Organisations and Bodies</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-estate" type="checkbox" name="activity-estate">
+                                <label for="activity-estate">Real Estate Activities</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-professional" type="checkbox" name="activity-professional">
+                                <label for="activity-professional">Professional, Scientific and Technical Activities</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-other" type="checkbox" name="activity-other">
+                                <label for="activity-other">Other Service Activities</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-administration" type="checkbox" name="activity-administration">
+                                <label for="activity-administration">Public Administration and Defense</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-transportation" type="checkbox" name="activity-transportation">
+                                <label for="activity-transportation">Transportation and Storage</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-water" type="checkbox" name="activity-water">
+                                <label for="activity-water">Water Supply, Sewage, Waste Management</label>
+                              </div>
+                            </li>
+                            <li>
+                              <!-- wrap for custom checkbox element to provide absolute positioning for background image-->
+                              <div class="check-wrap">
+                                <input id="activity-wholesale" type="checkbox" name="activity-wholesale">
+                                <label for="activity-wholesale">Wholesale and Retail Trade</label>
+                              </div>
+                            </li>
+                          </ul>
+                          <!--
+                          Load more / show less button
+                          Works using the same function and expand/hide child filter
+                          -->
+                          <ul> 
+                            <li> <a class="moreless" href="#" data-filter-toggle="#activity-list-full"><span class="more">Load More</span><span class="less">Show Less</span></a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- registration-->
+                    <div class="sidebar-registration sidebar-section-wrap"> 
+                      <!-- heading-->
+                      <h3 id="heading-registration"><a class="accordion-button collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRegistration" aria-expanded="true" aria-controls="collapseRegistration">
+                           Registration Date</a></h3>
+                      <!-- content-->
+                      <div class="accordion-collapse collapse" id="collapseRegistration" aria-labelledby="heading-registration" data-bs-parent="#sidebar-accordion">
+                        <!-- form-->
+                        <div class="form registrationdate">
+                          <!-- group-->
+                          <div class="datepicker">
+                            <div class="label">After</div>
+                            <button class="icon" type="button"><i class="far fa-calendar"></i></button>
+                            <div class="dialog"> 
+                              <label> </label>
+                            </div>
+                          </div>
+                          <!-- group-->
+                          <div class="datepicker">
+                            <div class="label">Before </div>
+                            <button class="icon" type="button"><i class="far fa-calendar"></i></button>
+                            <div class="dialog"> 
+                              <label></label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- action-->
+                    <div class="sidebar-action sidebar-section-wrap">
+                      <div class="inputaction">
+                        <button type="button">Search</button><span class="note space"><a href="explore-search.html">Reset</a></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- sidebar-->
+              <!-- results-->
+              <div class="col-lg-8 col-xl-8 explore-controls-results"> 
+                <!-- empty-->
+                <div class="no-result"> 
+                  <h2>No Results Found </h2>
+                  <p>Use the filter or map to start exploring companies</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- footer-->
+    <footer>
+      <!-- wrap-->
+      <div class="container">
+        <!-- box top-->
+        <div class="d-flex justify-content-between top"> 
+          <!-- logo-->
+          <div class="logo"><a href="index.html"> <img src="img/ic-logo-small.png"></a></div>
+          <!-- bottom nav-->
+          <nav class="bottomnav"> 
+            <!-- navigation-->
+            <ul> 
+              <li><a href="index.html">Home</a></li>
+              <li><a href="explore.html">Explore</a></li>
+              <li><a href="statistics.html">Statistics</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="partners.html">Partners</a></li>
+              <li><a href="dataproviders.html">Data Providers</a></li>
+              <li><a href="signin.html">Sign In</a></li>
+              <li><a href="signup.html">Sign Up</a></li>
+            </ul>
+          </nav>
+          <!-- bottom nav-->
+          <nav class="social"> 
+            <!-- navigation-->
+            <ul> 
+              <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+              <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <!-- box bottom-->
+      <div class="bottom">
+        <div class="container">
+          <p>STIRDATA is co-financed by the Connecting Europe Facility Programme of the European Union, under GA n. INEA/CEF/ICT/A2019/2063078</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+  <!-- javascript-->
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/be64c81023.js" crossorigin="anonymous"></script>
+  <!-- amchart-->
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/geodata/continentsRussiaEuropeLow.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+  <!-- init-->
+  <script src="js/index.js"></script>
+</html>

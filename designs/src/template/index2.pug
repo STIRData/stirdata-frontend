@@ -1,0 +1,255 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "Homepage"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/header.pug
+
+		// page main
+		main(role="main")
+
+			// maps
+			.maps.homepagemap
+
+				// chart
+				//#chart-map.map-box
+				
+				// to be replaced with js maps
+				// header
+				include ./includes/map.pug
+
+	
+			// section
+			section.homepage
+				
+				// container
+				.container 
+					
+					// top 
+					.row
+
+						// left
+						.col-xl-6.col-lg-6
+
+							// hero text
+							.homepage-hero
+
+								// text
+								h1 
+									span Explore
+									|  registered
+									br 
+									| companies in Europe
+								p STIRDATA is an online platform for searching, navigating, synthetically analysing, and visualising company-related open data content.
+								
+								// navigation
+								nav.heronav
+									ul
+										li
+											a.button( href="about.html" ) Learn More
+										li
+											a( href="explore.html" )
+												span or 
+												| Start Exploring
+							
+							// stats region
+							.homepage-stat-region
+
+								// heading
+								h2 
+									| Statistics
+									br
+									| by Countries
+								
+								// line stats
+								.line-stats.chart-line-a 
+									ul 
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) United Kingdom
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="100" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Greece
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="90" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Norway
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="80" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Belgium
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="60" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Czech Republic
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="50" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Finland
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="45" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Estonia
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="35" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Latvia
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="25" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Cyprus
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="20" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Romania
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="10" )
+												span.plotter
+								
+									// action link
+									.action
+										a( href="explore.html" )
+											span.text Explore business activities
+											span.icon
+												i.fas.fa-angle-right
+
+						// right
+						.col-xl-6.col-lg-6
+
+							// trend
+							.homepage-stat-trend 
+								
+								// heading
+								h2 Established and Dissoluted Company Yearly Trend
+								p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+
+								// selector
+								ul.selector 
+									li 
+										a( href="statisticscountry.html" ) United Kingdom
+									li.active 
+										a( href="statisticscountry.html" ) Greece
+									li 
+										a( href="statisticscountry.html" ) Norway
+									li 
+										a( href="statisticscountry.html" ) Belgium
+									li 
+										a( href="statisticscountry.html" ) Czech Republic
+									li 
+										a( href="statisticscountry.html" ) Finland
+									li 
+										a( href="statisticscountry.html" ) Estonia
+									li 
+										a( href="statisticscountry.html" ) Latvia
+									li 
+										a( href="statisticscountry.html" ) Cyprus
+									li 
+										a( href="statisticscountry.html" ) Romania
+								
+								// trend chart
+								#trend-chart.trend-chart
+									img(src="img/ic-graph-home.png") 
+									
+
+			// features
+			section.features
+
+				// container
+				.container
+
+					// bottom
+					.row 
+
+						// icons
+						.col-xl-3.col-lg-4.col-md-4.d-sm-none.d-md-block
+							
+							// image
+							.decor
+								img( src="img/ic-illustration.png" )
+
+						// features
+						.col-xl-9.col-lg-8.col-md-8
+
+							// heading
+							.featuretext 
+
+								// heading
+								h2.separator STIRDATA Action
+								p STIRDATA Action proposes the use of Linked Data and semantic technologies as the means to overcome the technical barriers that hamper the reuse of open data, namely, poor quality and limited availability of Open Data.
+							
+								// features
+								.row.features
+									.col-xl-4 
+										h3 Target 
+										p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+									.col-xl-4 
+										h3 API 
+										p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+									.col-xl-4 
+										h3 Harvest 
+										p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug
