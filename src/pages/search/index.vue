@@ -755,7 +755,7 @@
 
   .filters-overview {
     width: 80%;
-    font-size: $font-size-small;
+    font-size: 0.875rem;
   }
 
   .subtitle {

@@ -30,6 +30,18 @@
           SEARCH
         </b-nav-item>
         <b-nav-item
+          class="my-2"
+          :to="{ name: 'about'}"
+        >
+          ABOUT
+        </b-nav-item>
+        <b-nav-item
+          class="my-2"
+          :to="{ name: 'partners'}"
+        >
+          PARTNERS
+        </b-nav-item>
+        <b-nav-item
         class="my-2"
           href="https://stirdata.eu/"
           target="_blank"
@@ -119,7 +131,7 @@
   @import '../assets/scss/variables.scss';
 
   .container-fluid {
-    background: $white;
+    background: #fff;
     height: 4rem;
     position: fixed;
     right: 0;
@@ -151,7 +163,7 @@
     }
 
     a.nav-link.nuxt-link-exact-active.nuxt-link-active {
-      color: $default;
+      color: #2b3595;
       font-weight: bold;
     }
   }
