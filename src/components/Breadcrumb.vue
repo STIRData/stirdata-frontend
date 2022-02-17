@@ -5,19 +5,20 @@
 </template>
 
 <script>
-export default {
-  name: "Breadcrumb",
+  export default {
+    name: "Breadcrumb",
 
-  props: {
-    breadcrumb_items: {
-      type: Array,
-      required: true,
+    props: {
+      breadcrumb_items: {
+        type: Array,
+        required: true,
+      },
     },
-  },
 
-  computed: {},
-};
+    computed: {}
+  };
 </script>
+
 <style lang="scss" scoped>
   .breadcrumb {
     background-color: transparent;

@@ -1,18 +1,19 @@
 <template>
   <div>
-    <PageHeader
-      keep-alive
-    />
+    <PageHeader keep-alive />
     <Nuxt />
+    <PageFooter keep-alive />
   </div>
 </template>
 
 <script>
   import PageHeader from '../components/PageHeader';
+  import PageFooter from '../components/PageFooter';
 
   export default {
     components: {
-      PageHeader
+      PageHeader,
+      PageFooter
     }
   }
 </script>
