@@ -14,7 +14,7 @@
             <li><b-link :to="{ name: 'statistics' }">Statistics</b-link></li>
             <li><b-link :to="{ name: 'about' }">About</b-link></li>
             <li><b-link :to="{ name: 'partners' }">Partners</b-link></li>
-            <li><b-link :to="{ name: 'data_providers' }">Data Providers</b-link></li>
+            <li><b-link :to="{ name: 'providers' }">Data Providers</b-link></li>
             <li><b-link :to="{ name: 'signin' }">Sign In</b-link></li>
             <li><b-link :to="{ name: 'signup' }">Sign Up</b-link></li>
           </ul>

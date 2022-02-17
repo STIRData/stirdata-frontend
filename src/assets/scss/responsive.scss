@@ -1,868 +1,759 @@
 // `xxl` applies to x-large devices (large desktops, less than 1400px)
 @media (min-width: 2114px) {
+  // body
+  body {
+    main[role=main] {
+      .maps {
+        text-align: left;
+        height: 750px;
 
-    // body
-    body {
-        main[role=main] {
-            .maps {
-                text-align: left;
-                height: 750px;
-                svg {
-                    width: 1154px;
-                }
-            }
+        svg {
+          width: 1154px;
         }
+      }
     }
+  }
 }
-
 // `xxl` applies to x-large devices (large desktops, less than 1400px)
 @media (max-width: 1830px) {
-
-    // body
-    body {
-        main[role=main] {
-
-            // homepage
-            section.homepage {
-                // trend
-                .homepage-stat-trend {
-                   margin: 470px 0 0 0;
-                }
-            }
+  // body
+  body {
+    main[role=main] {
+      // homepage
+      section.homepage {
+        // trend
+        .homepage-stat-trend {
+          margin: 470px 0 0;
         }
+      }
     }
+  }
 }
-
 // `xxl` applies to x-large devices (large desktops, less than 1400px)
 @media (max-width: 1560px) {
-
-    // body
-    body {
-        main[role=main] {
-
-            // homepage
-            section.homepage {
-                // trend
-                .homepage-stat-trend {
-                   margin: 400px 0 0 0;
-                }
-            }
-
-            section.statistics .statistics-countries-list {
-                .country {
-                    //width: 20%;
-                }
-            }
+  // body
+  body {
+    main[role=main] {
+      // homepage
+      section.homepage {
+        // trend
+        .homepage-stat-trend {
+          margin: 400px 0 0;
         }
-    }
-}
+      }
 
+      section.statistics .statistics-countries-list {
+        .country {
+          //width: 20%;
+        }
+      }
+    }
+  }
+}
 // `xxl` applies to x-large devices (large desktops, less than 1400px)
 @media (max-width: 1399.98px) {
-
-    // set column to 5
-    body main[role=main] section.statistics .statistics-countries-list {
-        .col-xl-3 {
-            //width: 20% !important;
-        }
+  // set column to 5
+  body main[role=main] section.statistics .statistics-countries-list {
+    .col-xl-3 {
+      //width: 20% !important;
     }
-
-    // body
-    body {
-        main[role=main] {
-
-            // homepage
-            section.homepage {
-
-
-                // trend
-                .homepage-stat-trend {
-                    margin: 330px 0 0 0;
-                }
-            }
-
-            section.statistics .statistics-countries-list {
-                .country {
-                    width: 25%;
-                }
-            }
+  }
+  // body
+  body {
+    main[role=main] {
+      // homepage
+      section.homepage {
+        // trend
+        .homepage-stat-trend {
+          margin: 330px 0 0;
         }
+      }
+
+      section.statistics .statistics-countries-list {
+        .country {
+          width: 25%;
+        }
+      }
     }
-    
+  }
 }
-
 // `xl` applies to large devices (desktops, less than 1200px)
 @media (max-width: 1199.98px) {
-
-    // body
-    body {
-
-        // header
-        header {
-
-            // container
-            .container {
-
-                // nav
-                nav {
-
-                    // main
-                    &.mainnav {
-                        margin-left: 50px;
-    
-                        // ul
-                        ul {
-                            li {
-                                margin-right: 15px;
-                            }
-                        }
-                    }
-
-                    // right
-                    &.actionnav {
-                        
-                        // ul
-                        ul {
-                            li {
-                                margin-left: 15px;
-
-                                // button
-                                .button {
-                                    padding: 5px 20px;
-                                }
-                            }
-                        }
-                    }
-                }
+  // body
+  body {
+    // header
+    header {
+      // container
+      .container {
+        // nav
+        nav {
+          // main
+          &.mainnav {
+            margin-left: 50px;
+            // ul
+            ul {
+              li {
+                margin-right: 15px;
+              }
             }
+          }
+          // right
+          &.actionnav {
+            // ul
+            ul {
+              li {
+                margin-left: 15px;
+                // button
+                .button {
+                  padding: 5px 20px;
+                }
+              }
+            }
+          }
         }
-
-        // main
-        main[ role="main" ] {
-
-            // input
-            .inputaction {
-                button {
-                    margin-bottom: 15px;
-                    &.google {
-                        margin-left: 0px;
-                    }
-                    &.delete {
-                        float: none;
-                        margin-left: 0px;
-                        margin-top: 10px;
-                    }
-                }
-                .note {
-                    margin-right: 10px;
-                }
-            }
-
-            // heading
-            .headingtext {
-                p.half {
-                    width: 75%;
-                }
-
-                // counter
-                .counter {
-                    li {
-                        margin-right: 20px;
-
-                        // count
-                        .count {
-                            font-size: 2.5rem;
-                        }
-                    }
-                }
-            }
-            
-            // maps
-            .maps {
-                height: 550px;
-            }
-
-            // homepage
-            section.homepage {
-
-                // hero
-                .homepage-hero {
-                    padding: 0;
-                }
-
-                // region stats
-                .homepage-stat-region {
-                    width: 100%;
-                    padding: 0 20px 0 0;
-                }
-
-                // trend
-                .homepage-stat-trend {
-                    margin-top: 300px;
-                }
-            }
-
-            // features
-            section.features {
-                margin-top: 60px;
-
-                // text
-                .featuretext {
-                    position: static;
-                    padding-left: 20px;
-
-                    // features
-                    .features {
-                        h3 {
-                            margin-bottom: 0;
-                        }
-                        div {
-                            margin-bottom: 20px;
-                        }
-                    }
-                }
-            }
-
-            // about
-            section.about-highlight {
-                // box
-                .box {
-                    width: 80%;
-                }
-            }
-
-            // about page
-            section.about-hero {
-                padding: 0;
-            }
-
-            // stats detail country
-            section.statisticsdetail {
-
-                // right
-                .statisticsdetail-right {
-                    padding-left: 40px;
-                }
-
-                // counter
-                .counter li {
-                    margin-bottom: 20px;
-                    .count {
-                        font-size: 2.5rem;
-                    }
-                }
-
-                // other countries
-                .statisticsother ul li {
-                    width: 50%;
-                }
-
-                //activity list
-                .activitylist {
-                    // heading
-                    .headingtext {
-                        width: 80%;
-                    }
-
-                    // ul
-                    ul {
-                        li {
-                            a {
-                                display: block;
-                                min-height: 130px;
-                                .text {
-                                    .counter {
-                                        margin-top: 0;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // arrow
-                    .slick-arrow {
-                        top: -95px;
-                        &.slick-prev {
-                            right: 45px;
-                        }
-                        &.slick-next {
-                            right: 0;
-                        }
-                    }
-                }
-            }
-
-           
-        }
-
-        // footer
-        footer {
-            margin-top: 30px;
-        }
-
-       
+      }
     }
-}
+    // main
+    main[role="main"] {
+      // input
+      .inputaction {
+        button {
+          margin-bottom: 15px;
 
+          &.google {
+            margin-left: 0;
+          }
+
+          &.delete {
+            float: none;
+            margin-left: 0;
+            margin-top: 10px;
+          }
+        }
+
+        .note {
+          margin-right: 10px;
+        }
+      }
+      // heading
+      .headingtext {
+        p.half {
+          width: 75%;
+        }
+        // counter
+        .counter {
+          li {
+            margin-right: 20px;
+            // count
+            .count {
+              font-size: 2.5rem;
+            }
+          }
+        }
+      }
+      // maps
+      .maps {
+        height: 550px;
+      }
+      // homepage
+      section.homepage {
+        // hero
+        .homepage-hero {
+          padding: 0;
+        }
+        // region stats
+        .homepage-stat-region {
+          width: 100%;
+          padding: 0 20px 0 0;
+        }
+        // trend
+        .homepage-stat-trend {
+          margin-top: 300px;
+        }
+      }
+      // features
+      section.features {
+        margin-top: 60px;
+        // text
+        .featuretext {
+          position: static;
+          padding-left: 20px;
+          // features
+          .features {
+            h3 {
+              margin-bottom: 0;
+            }
+
+            div {
+              margin-bottom: 20px;
+            }
+          }
+        }
+      }
+      // about
+      section.about-highlight {
+        // box
+        .box {
+          width: 80%;
+        }
+      }
+      // about page
+      section.about-hero {
+        padding: 0;
+      }
+      // stats detail country
+      section.statisticsdetail {
+        // right
+        .statisticsdetail-right {
+          padding-left: 40px;
+        }
+        // counter
+        .counter li {
+          margin-bottom: 20px;
+
+          .count {
+            font-size: 2.5rem;
+          }
+        }
+        // other countries
+        .statisticsother ul li {
+          width: 50%;
+        }
+        //activity list
+        .activitylist {
+          // heading
+          .headingtext {
+            width: 80%;
+          }
+          // ul
+          ul {
+            li {
+              a {
+                display: block;
+                min-height: 130px;
+
+                .text {
+                  .counter {
+                    margin-top: 0;
+                  }
+                }
+              }
+            }
+          }
+          // arrow
+          .slick-arrow {
+            top: -95px;
+
+            &.slick-prev {
+              right: 45px;
+            }
+
+            &.slick-next {
+              right: 0;
+            }
+          }
+        }
+      }
+    }
+    // footer
+    footer {
+      margin-top: 30px;
+    }
+  }
+}
 // `lg` applies to medium devices (tablets, less than 992px)
 @media (max-width: 991.98px) {
+  // body
+  body {
+    // header
+    header {
+      position: fixed;
+      width: 100%;
+      height: 135px;
+      background: #fff;
+      z-index: 5;
+      // only in signin page
+      &.sign {
+        background: transparent;
 
-    // body
-    body {
-
-        // header
-        header {
-            position: fixed;
-            width: 100%;
-            height: 135px;
-            background: #fff;
-            z-index: 5;
-
-            // only in signin page
-            &.sign {
-                background: transparent;
-
-                .container nav.actionnav ul li {
-                    &.sign {
-                        a {
-                            color: #fff;
-                        }
-                    }
-                }
+        .container nav.actionnav ul li {
+          &.sign {
+            a {
+              color: #fff;
             }
+          }
+        }
+      }
+      // container
+      .container {
+        // mainnav
+        nav.mainnav {
+          background: $accent-first-color;
+          position: absolute;
+          right: var(--bs-gutter-x,.75rem);
+          top: 99px;
+          z-index: 2;
+          width: 50%;
+          border-radius: 4px;
+          // default mobile style
+          ul {
+            li {
+              display: block;
+              margin-right: 0;
+              border-bottom: 1px solid lighten($accent-first-color, 10);
 
-            // container
-            .container {
-                // mainnav
+              a {
+                color: #fff;
+                padding: 10px 20px;
+                display: block;
+                text-align: right;
+                text-decoration: none;
 
-                nav.mainnav {
+                &:hover {
+                  background: lighten($accent-first-color,10);
+                }
+              }
+
+              &:last-child {
+                border-bottom: 0;
+              }
+            }
+          }
+          // interaction
+          &.collapse {
+            display: none;
+          }
+
+          &.show {
+            display: block;
+          }
+        }
+        // actionnav
+        nav.actionnav {
+          // ul
+          ul {
+            // li
+            li {
+              &.username {
+                > a {
+                  @include stirbutton($text-first-color, 5px 15px);
+
+                  &.show {
                     background: $accent-first-color;
-                    position: absolute;
-                    right: var(--bs-gutter-x,.75rem);
-                    top: 99px;
-                    z-index: 2;
-                    width: 50%;
-                    border-radius: 4px;
-
-                    // default mobile style
-                    ul {
-                        li {
-                            display: block;
-                            
-                            margin-right: 0;
-                            border-bottom: 1px solid lighten($accent-first-color, 10);
-                            a {
-                                color: #fff;
-                                padding: 10px 20px;
-                                display: block;
-                                text-align: right;
-                                text-decoration: none;
-                                &:hover {
-                                    background: lighten($accent-first-color,10);
-                                }
-                                
-                            }
-                            &:last-child {
-                                border-bottom: 0;
-                            }
-                        }
-                    }
-
-                    // interaction
-                    &.collapse {
-                        display: none;
-                    }
-                    &.show {
-                        display: block;
-                    }
+                  }
                 }
+              }
+              // dfropdown
+              .dropdown-item {
+                border-bottom: 1px solid lighten($accent-first-color, 10);
+                padding: 10px 20px;
+                font-size: 1rem;
+              }
 
-                // actionnav
-                nav.actionnav {
-
-                    // ul
-                    ul {
-
-                        // li
-                        li {
-                            &.username {
-                                
-                                > a {
-                                    @include stirbutton( $text-first-color, 5px 15px );
-                                    &.show {
-                                        background: $accent-first-color;
-                                    }
-                                }
-                            }
-
-                            // dfropdown
-                            .dropdown-item {
-                                border-bottom: 1px solid lighten($accent-first-color, 10);
-                                padding: 10px 20px;
-                                font-size: 1rem;
-                            }
-                            &:last-child {
-                                > .dropdown-item {
-                                    border-bottom: 0;
-                                }
-                            }
-                        }
-                    }
+              &:last-child {
+                > .dropdown-item {
+                  border-bottom: 0;
                 }
-
-                 // toggle
-                .navbar-toggler {
-                    display: block;
-                }
+              }
             }
+          }
         }
-
-        // main
-        main[ role="main" ] {
-            padding-top: 135px;
-
-            // heading
-            .headingtext {
-                // counter
-                .counter {
-                    li {
-                        margin-bottom: 20px;
-                    }
-                }
-            }
-
-            section.statistics .statistics-countries-list {
-                .country {
-                    width: 50%;
-                }
-            }
-            
-            // maps
-            .maps {
-                display: none;
-            }
-
-            // homepage
-            section.homepage {
-
-                // hero
-                .homepage-hero {
-                    margin-top: 40px;
-                }
-
-                // region stats
-                .homepage-stat-region {
-                    margin-top: 50px;
-                    padding: 0;
-                }
-
-                // trend
-                .homepage-stat-trend {
-                    margin-top: 50px;
-                    padding: 0;
-                }
-            }
-
-            // about page
-            section.about-hero {
-
-                // heading
-                .headingtext {
-                    padding-right: 30px;
-                }
-            }
-            section.about-highlight {
-                // box
-                .box {
-                    width: 100%;
-
-                    // contact
-                    .contactwrap {
-                        position: static;
-                        padding: 0;
-                        margin-bottom: 30px;
-                    }
-
-                    // after
-                    &::after {
-                        bottom: -10px;
-                        right: -10px;
-                    }
-                }
-            }
-
-            // partners
-            section.two-columns {
-
-                // sidebar
-                .two-columns-sidebar {
-                    display: none;
-                }
-                .two-columns-content {
-                    padding-left: calc(var(--bs-gutter-x) * .5);
-
-                    // data
-                    .data-information {
-                        padding-bottom: 0;
-                    }
-
-                    // table section
-                    .table-section {
-
-                        // slick
-                        .slick-arrow {
-                            right: -2px;
-                            &.slick-prev {
-                                right: 44px;
-                            }
-                            &.slick-disabled {
-                                opacity: 1;
-                                background: lighten($accent-first-color,20);
-                            }
-                        }
-                    }
-                }
-
-                // after
-                &::after {
-                    display: none;
-                }
-            }
-
-            //body main[role=main] section.signs section.signcontent .signcontent-right
-            section.signs {
-                section.signcontent {
-                    .signcontent-right {
-                       // padding-left: 100px;
-                    }
-                }
-
-            }
-
-            //body main[role=main] section.signs section.signcontent .signcontent-right
-            section.signs {
-                .sign-background {
-                    position: fixed;
-                    z-index: 2;
-                    .side {
-                        height: 140px;
-                        min-height: auto !important;
-                    }
-                }
-                section.signcontent {
-                    .signcontent-left {
-                        display: none;
-                    }
-                    .signcontent-right {
-                        padding-left: calc(var(--bs-gutter-x) * .5);
-                        margin-top: 50px;
-                    }
-                }
-
-            }
-
-            // authentication
-            section.authentication {
-
-                // left
-                .authentication-left {
-                    padding-right: 50px;
-
-                    // box
-                    .box {
-                        padding: 50px 20px 50px 0;
-                    }
-                }
-            }
-
-            // stats detail country
-            section.statisticsdetail {
-
-                // other countries
-                .statisticsother {
-                    display: none;
-                }
-
-                .statisticsdetail-right {
-                    margin-top: 40px;
-                    padding-left: calc(var(--bs-gutter-x) * .5);
-                }
-                //activity list
-                .activitylist {
-                    display: none;
-                }
-            }
-
-            // explore
-            section.explore {
-                .explore-map {
-                    display: none;
-                }
-                .explore-controls {
-                    .explore-controls-results {
-                        padding-left: calc(var(--bs-gutter-x) * .5);
-                        padding-right: calc(var(--bs-gutter-x) * .5);
-                        
-                        // yellow button
-                        .tab-content .accordion-heading .accordion-button::after {
-                            right: -10px;
-                        }
-                        .resultheading {
-                            display: block;
-                        }
-                    }
-                    .sidebar {
-                        margin-top: 20px;
-                        .wraps {
-                            border: 1px solid #CCD3DD;
-                        }
-                    }
-                    
-                }
-                
-            }
-
-            // profile
-            section.profile {
-                .profile-decor {
-                    display: none;
-                }
-                .profile-content {
-                    padding-left: calc(var(--bs-gutter-x) * .5);
-                    padding-right: calc(var(--bs-gutter-x) * .5);
-                }
-            }
-
-            // company detail
-            section.companydetail {
-                .companydetail-left {
-                    display: none;
-                }
-                .companydetail-right {
-                    padding-left: calc(var(--bs-gutter-x) * .5);
-                }
-            }
+        // toggle
+        .navbar-toggler {
+          display: block;
         }
-
-        // footer
-        footer {
-
-            // top
-            .top {
-                display: block !important;
-                text-align: center;
-
-                // logo
-                .logo {
-                    margin-bottom: 25px;
-                }
-            }
-
-            // bottom nav
-            .bottomnav {
-                margin-bottom: 20px;
-                ul {
-                    li {
-                        margin: 0 10px;
-                    }
-                }
-            }
-        }
-
-         // hide tooltip
-         .tooltip {
-            display: none !important;
-        }
+      }
     }
-}
+    // main
+    main[role="main"] {
+      padding-top: 135px;
+      // heading
+      .headingtext {
+        // counter
+        .counter {
+          li {
+            margin-bottom: 20px;
+          }
+        }
+      }
 
+      section.statistics .statistics-countries-list {
+        .country {
+          width: 50%;
+        }
+      }
+      // maps
+      .maps {
+        display: none;
+      }
+      // homepage
+      section.homepage {
+        // hero
+        .homepage-hero {
+          margin-top: 40px;
+        }
+        // region stats
+        .homepage-stat-region {
+          margin-top: 50px;
+          padding: 0;
+        }
+        // trend
+        .homepage-stat-trend {
+          margin-top: 50px;
+          padding: 0;
+        }
+      }
+      // about page
+      section.about-hero {
+        // heading
+        .headingtext {
+          padding-right: 30px;
+        }
+      }
+
+      section.about-highlight {
+        // box
+        .box {
+          width: 100%;
+          // contact
+          .contactwrap {
+            position: static;
+            padding: 0;
+            margin-bottom: 30px;
+          }
+          // after
+          &::after {
+            bottom: -10px;
+            right: -10px;
+          }
+        }
+      }
+      // partners
+      section.two-columns {
+        // sidebar
+        .two-columns-sidebar {
+          display: none;
+        }
+
+        .two-columns-content {
+          padding-left: calc(var(--bs-gutter-x) * .5);
+          // data
+          .data-information {
+            padding-bottom: 0;
+          }
+          // table section
+          .table-section {
+            // slick
+            .slick-arrow {
+              right: -2px;
+
+              &.slick-prev {
+                right: 44px;
+              }
+
+              &.slick-disabled {
+                opacity: 1;
+                background: lighten($accent-first-color,20);
+              }
+            }
+          }
+        }
+        // after
+        &::after {
+          display: none;
+        }
+      }
+      //body main[role=main] section.signs section.signcontent .signcontent-right
+      section.signs {
+        section.signcontent {
+          .signcontent-right {
+            // padding-left: 100px;
+          }
+        }
+      }
+      //body main[role=main] section.signs section.signcontent .signcontent-right
+      section.signs {
+        .sign-background {
+          position: fixed;
+          z-index: 2;
+
+          .side {
+            height: 140px;
+            min-height: auto !important;
+          }
+        }
+
+        section.signcontent {
+          .signcontent-left {
+            display: none;
+          }
+
+          .signcontent-right {
+            padding-left: calc(var(--bs-gutter-x) * .5);
+            margin-top: 50px;
+          }
+        }
+      }
+      // authentication
+      section.authentication {
+        // left
+        .authentication-left {
+          padding-right: 50px;
+          // box
+          .box {
+            padding: 50px 20px 50px 0;
+          }
+        }
+      }
+      // stats detail country
+      section.statisticsdetail {
+        // other countries
+        .statisticsother {
+          display: none;
+        }
+
+        .statisticsdetail-right {
+          margin-top: 40px;
+          padding-left: calc(var(--bs-gutter-x) * .5);
+        }
+        //activity list
+        .activitylist {
+          display: none;
+        }
+      }
+      // explore
+      section.explore {
+        .explore-map {
+          display: none;
+        }
+
+        .explore-controls {
+          .explore-controls-results {
+            padding-left: calc(var(--bs-gutter-x) * .5);
+            padding-right: calc(var(--bs-gutter-x) * .5);
+            // yellow button
+            .tab-content .accordion-heading .accordion-button::after {
+              right: -10px;
+            }
+
+            .resultheading {
+              display: block;
+            }
+          }
+
+          .sidebar {
+            margin-top: 20px;
+
+            .wraps {
+              border: 1px solid #CCD3DD;
+            }
+          }
+        }
+      }
+      // profile
+      section.profile {
+        .profile-decor {
+          display: none;
+        }
+
+        .profile-content {
+          padding-left: calc(var(--bs-gutter-x) * .5);
+          padding-right: calc(var(--bs-gutter-x) * .5);
+        }
+      }
+      // company detail
+      section.companydetail {
+        .companydetail-left {
+          display: none;
+        }
+
+        .companydetail-right {
+          padding-left: calc(var(--bs-gutter-x) * .5);
+        }
+      }
+    }
+    // footer
+    footer {
+      // top
+      .top {
+        display: block !important;
+        text-align: center;
+        // logo
+        .logo {
+          margin-bottom: 25px;
+        }
+      }
+      // bottom nav
+      .bottomnav {
+        margin-bottom: 20px;
+
+        ul {
+          li {
+            margin: 0 10px;
+          }
+        }
+      }
+    }
+    // hide tooltip
+    .tooltip {
+      display: none !important;
+    }
+  }
+}
 // `md` applies to small devices (landscape phones, less than 768px)
 @media (max-width: 767.98px) {
-    
-    // body
-    body {
-
-        main[role=main] {
-
-            // heading
-            .headingtext {
-                p.half {
-                    width: 100%;
-                }
-            }
-
-            // statistics
-            section.statistics {
-
-                // stats
-                .statistics-countries-list {
-                    .country {
-                        width: 100%;
-                    }
-                    .wrap {
-                        ul {
-                            margin-top: 15px;
-                            li {
-                                width: auto;
-                                margin-right: 10px;
-                                font-size: 1rem;
-                            }
-                        }
-                    }
-                }
-
-            }
-
-            // about page
-            section.about-hero {
-
-                // decor
-                .decor {
-                    display: none;
-                }
-            }
-
-            // partners
-            section.two-columns {
-                .two-columns-content {
-                    
-                    // partnerlist
-                    .partnerlist li .coordinator {
-                        display: block;
-                        margin-left: 0;
-                        color: $accent-first-color;
-                        padding: 0;
-                        background: none;
-                        font-weight: 500;
-                        margin-top: 5px;
-                    }
-                }
-            }
-
-            // authentication
-            section.authentication {
-
-                // left
-                .authentication-left {
-                   display: none;
-                }
-            }
-
-            // stats detail country
-            section.statisticsdetail {
-
-                // trend
-                .statisticstrend {
-                    margin-top: 30px;
-                }
-
-                // country
-                
-
-                // map
-                .statisticsmap {
-                    display: none;
-                }
-
-                // other countries
-                .statisticsother {
-                    display: none;
-                }
-            }
-
-            // profile
-            section.profile {
-                .profile-sidebar {
-                    display: none;
-                }
-            }
-
+  // body
+  body {
+    main[role=main] {
+      // heading
+      .headingtext {
+        p.half {
+          width: 100%;
         }
+      }
+      // statistics
+      section.statistics {
+        // stats
+        .statistics-countries-list {
+          .country {
+            width: 100%;
+          }
 
-        // header
-        header {
+          .wrap {
+            ul {
+              margin-top: 15px;
 
-            // container
-            .container {
-
-                // nav
-                nav.actionnav {
-                  
-                    // ul
-                    ul {
-                        li {
-                            &.sign {
-                                display: none;
-                            }
-                        }
-                    }
-                }
-
-                // toggle
-                .navbar-toggler {
-                    margin-left: 10px;
-                }
+              li {
+                width: auto;
+                margin-right: 10px;
+                font-size: 1rem;
+              }
             }
+          }
         }
-
-        
+      }
+      // about page
+      section.about-hero {
+        // decor
+        .decor {
+          display: none;
+        }
+      }
+      // partners
+      section.two-columns {
+        .two-columns-content {
+          // partnerlist
+          .partnerlist li .coordinator {
+            display: block;
+            margin-left: 0;
+            color: $accent-first-color;
+            padding: 0;
+            background: none;
+            font-weight: 500;
+            margin-top: 5px;
+          }
+        }
+      }
+      // authentication
+      section.authentication {
+        // left
+        .authentication-left {
+          display: none;
+        }
+      }
+      // stats detail country
+      section.statisticsdetail {
+        // trend
+        .statisticstrend {
+          margin-top: 30px;
+        }
+        // country
+        // map
+        .statisticsmap {
+          display: none;
+        }
+        // other countries
+        .statisticsother {
+          display: none;
+        }
+      }
+      // profile
+      section.profile {
+        .profile-sidebar {
+          display: none;
+        }
+      }
     }
+    // header
+    header {
+      // container
+      .container {
+        // nav
+        nav.actionnav {
+          // ul
+          ul {
+            li {
+              &.sign {
+                display: none;
+              }
+            }
+          }
+        }
+        // toggle
+        .navbar-toggler {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
 }
-
 // `sm` applies to x-small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {
-
-    // 
-    body {
-
-        // make logo smaller
-        header .container .logo {
-            width: 170px;
-        }
-
-        main[role=main] {
-
-            // features
-            section.features .decor {
-                display: none;
-            }
-
-            // statistics
-            section.statistics {
-                .statistics-countries-list .wrap {
-                    margin-bottom: 15px;
-                    &::after {
-                     display: none;
-                    }
-                }
-                .statistics-activity-list-wrap .slick-arrow {
-                    top: -55px;
-                    &.slick-prev {
-                        right: 66px;
-                    }
-                    &.slick-next {
-                        right: 20px;
-                    }
-                }
-            }
-            
-            // two column
-            section.two-columns {
-                .two-columns-content {
-                    .table-section {
-                        .table-section-column, .table-section-data {
-                            width: 50%;
-                        }
-                    }
-                }
-            }
-        }
+  //
+  body {
+    // make logo smaller
+    header .container .logo {
+      width: 170px;
     }
+
+    main[role=main] {
+      // features
+      section.features .decor {
+        display: none;
+      }
+      // statistics
+      section.statistics {
+        .statistics-countries-list .wrap {
+          margin-bottom: 15px;
+
+          &::after {
+            display: none;
+          }
+        }
+
+        .statistics-activity-list-wrap .slick-arrow {
+          top: -55px;
+
+          &.slick-prev {
+            right: 66px;
+          }
+
+          &.slick-next {
+            right: 20px;
+          }
+        }
+      }
+      // two column
+      section.two-columns {
+        .two-columns-content {
+          .table-section {
+            .table-section-column,
+            .table-section-data {
+              width: 50%;
+            }
+          }
+        }
+      }
+    }
+  }
 }
-
-
-
-
-
-
-

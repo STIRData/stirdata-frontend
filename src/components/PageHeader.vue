@@ -11,7 +11,7 @@
           <li><b-link :to="{ name: 'statistics' }">Statistics</b-link></li>
           <li><b-link :to="{ name: 'about' }">About</b-link></li>
           <li><b-link :to="{ name: 'partners' }">Partners</b-link></li>
-          <li><b-link :to="{ name: 'data_providers' }">Data Providers</b-link></li>
+          <li><b-link :to="{ name: 'providers' }">Data Providers</b-link></li>
         </ul>
       </nav>
       <!-- navigation-->
@@ -73,7 +73,7 @@
 
       isAuthenticated() {
         return this.$store.getters["isAuthenticated"];
-      },
+      }
     },
 
     mounted() {
@@ -109,8 +109,8 @@
             auth2.disconnect();
           })
           .then(this.$store.commit("setUser", null));
-      },
-    },
+      }
+    }
   };
 </script>
 

@@ -10,6 +10,9 @@ export default {
     },
     script: [
       {
+        src: 'https://code.jquery.com/jquery-3.5.1.min.js'
+      },
+      {
         src: 'https://apis.google.com/js/platform.js?onload=renderButton'
       }
     ],
@@ -42,10 +45,7 @@ export default {
   plugins: [
     '~/plugins/apis',
     '~/plugins/calls',
-    {
-      src: '~/plugins/amCharts.js',
-      ssr: false
-    }
+    { src: '~/plugins/amCharts.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -69,9 +69,9 @@ export default {
   axios: {
   },
 
-   // Build Configuration: https://go.nuxtjs.dev/config-build
+  // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
 
   srcDir: 'src/'
-}
+};

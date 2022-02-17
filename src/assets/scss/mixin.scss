@@ -1,552 +1,502 @@
 @mixin clearfix() {
-    &::after {
-        display: block;
-        clear: both;
-        content: "";
-    }
+  &::after {
+    display: block;
+    clear: both;
+    content: "";
+  }
 }
-
 // stylelint-disable declaration-no-important
 @mixin float-left {
-    float: left !important;
+  float: left !important;
 }
 @mixin float-right {
-    float: right !important;
+  float: right !important;
 }
 @mixin float-none {
-    float: none !important;
+  float: none !important;
 }
-
 @mixin transition($args...) {
-    -webkit-transition: $args;
-    -moz-transition: $args;
-    -ms-transition: $args;
-    -o-transition: $args;
-    transition: $args;
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
 }
-
 // button
 @mixin stirbutton($arg, $arg2) {
-	padding: $arg2;
-	display: inline-block;
-	border-radius: 4px;
-	background: $arg;
-	color: #fff;
+  padding: $arg2;
+  display: inline-block;
+  border-radius: 4px;
+  background: $arg;
+  color: #fff;
+  // hover
+  &:hover {
+    background: darken($arg, 10);
+    color: #fff;
+  }
+  // hover
+  &:active {
+    background: darken($arg, 20);
+    color: #fff;
+  }
 
-	// hover
-	&:hover {
-		background: darken($arg, 10);
-		color: #fff;
-	}
-
-    // hover
-	&:active {
-		background: darken($arg, 20);
-		color: #fff;
-	}
-
-    &:hover, &:active, &:visited, &:focus {
-        text-decoration:none;
-    }
+  &:active,
+  &:focus,
+  &:hover,
+  &:visited {
+    text-decoration: none;
+  }
 }
-
 @mixin list-inline() {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  // li
+  li {
+    list-style: none;
+    display: inline-block;
+  }
+}
+@mixin simple-anchor($textcolor) {
+  color: $textcolor;
+  // hover
+  &:hover {
+    text-decoration: underline;
+    color: darken($color:$textcolor, $amount: 10);
+  }
+}
+@mixin action-anchor() {
+  color: $text-second-color;
+  // span
+  span {
+    // text
+    &.text {
+      display: inline-block;
+      margin-right: 15px;
+    }
+    // icon
+    &.icon {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background: $accent-second-color;
+      border-radius: 50%;
+      padding-top: 6px;
+      text-align: center;
+      color: #fff;
+      font-size: 20px;
+      position: relative;
+      top: 3px;
+      @include transition(all 0.3s);
+    }
+  }
+  // hover
+  &:hover {
+    .text {
+      text-decoration: underline;
+    }
 
+    .icon {
+      background: darken($accent-second-color, 10);
+    }
+  }
+}
+@mixin text-highlight($backgroundcolor, $highlightheight) {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  // after
+  &::after {
+    width: 100%;
+    position: absolute;
+    bottom: calc($highlightheight - 3px);
+    left: 0;
+    height: $highlightheight;
+    content: "";
+    background-color: $backgroundcolor;
+    opacity: 30%;
+    z-index: -1;
+    @include transition(all 0.3s);
+  }
+}
+@mixin box-behind-decor($highlightcolor, $space, $width) {
+  &::after {
+    width: $width;
+    height: $width;
+    background: $highlightcolor;
+    border-radius: 4px;
+    content: "";
+    position: absolute;
+    bottom: $space;
+    right: $space;
+    z-index: -1;
+    @include transition(all 0.3s);
+  }
+}
+@mixin wave-line-decor() {
+  // after
+  &::after {
+    width: 100%;
+    height: 300px;
+    background-image: url("../img/bg-wave.png");
+    background-size: cover;
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    bottom: 40px;
+    opacity: 50%;
+  }
+}
+@mixin slick-arrow() {
+  position: absolute;
+  top: -22px;
+  right: -85px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  color: #fff;
+  border-radius: 50%;
+  background: $accent-first-color;
+  font-size: 20px;
+  @include transition(all 0.3s);
+  line-height: 0;
+
+  &.slick-prev {
+    right: -40px;
+  }
+
+  &:hover {
+    background: darken($accent-first-color,10);
+  }
+
+  &.slick-disabled {
+    opacity: 0.7;
+    cursor: default;
+  }
+}
+@mixin call-action-button() {
+  // ul
+  ul {
+    // inline
+    @include list-inline();
     // li
     li {
-        list-style: none;
-        display: inline-block;
-    }
-}
-
-@mixin simple-anchor($textcolor) {
-    color: $textcolor;
-
-    // hover
-    &:hover {
-        text-decoration: underline;
-        color: darken($color:$textcolor, $amount: 10);
-    }
-}
-
-@mixin action-anchor() {
-    color: $text-second-color;
-
-    // span
-    span {
-
-        // text
-        &.text {
-            display: inline-block;
-            margin-right: 15px;
+      margin-right: 10px;
+      // button
+      .button {
+        @include stirbutton($text-first-color, 5px 35px);
+      }
+      // anchor
+      a {
+        // simple
+        @include simple-anchor($text-first-color);
+        // middle
+        span {
+          font-style: italic;
+          color: lighten($text-second-color,20);
+          display: inline-block;
+          margin-right: 10px;
         }
-
-        // icon
-        &.icon {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background: $accent-second-color;
-            border-radius: 50%;
-            padding-top: 6px;
-            text-align: center;
-            color: #fff;
-            font-size: 20px;
-            position: relative;
-            top: 3px;
-            @include transition(all 0.3s);
-        }
+      }
     }
-
-    // hover
-    &:hover {
-        .text {
-            text-decoration: underline;
-        }
-        .icon {
-            background: darken($accent-second-color, 10);
-        }
-    }
+  }
 }
-
-@mixin  text-highlight($backgroundcolor, $highlightheight) {
-    display: inline-block;
-    position: relative;
-    z-index: 2;
-
-    // after
-    &::after {
-        width: 100%;
-        position: absolute;
-        bottom: calc($highlightheight - 3px);
-        left: 0;
-        height: $highlightheight;
-        content: "";
-        background-color: $backgroundcolor;
-        opacity: 30%;
-        z-index: -1;
-        @include transition(all 0.3s);
-    }
-}
-
-@mixin box-behind-decor($highlightcolor, $space, $width) {
-    &::after {
-        width: $width;
-        height: $width;
-        background:$highlightcolor;
-        border-radius: 4px;
-        content: "";
-        position: absolute;
-        bottom: $space;
-        right: $space;
-        z-index: -1;
-        @include transition(all 0.3s);
-    }
-}
-
-@mixin wave-line-decor() {
-    // after
-    &::after {
-        width: 100%;
-        height: 300px;
-        background-image: url('../img/bg-wave.png');
-        background-size: cover;
-        content: "";
-        position: absolute;
-        z-index: -1;
-        left: 0;
-        bottom: 40px;
-        opacity: 50%;
-    }
-}
-
-@mixin slick-arrow() {
-    position: absolute;
-    top: -22px;
-    right: -85px;
-    width: 40px;
-    height: 40px;
-    border: 0;
-    color: #fff;
-    border-radius: 50%;
-    background: $accent-first-color;
-    font-size: 20px;
-    @include transition(all 0.3s);
-    line-height: 0;
-    &.slick-prev {
-        right: -40px;
-    }
-    &:hover {
-        background: darken($accent-first-color,10);
-    }
-    &.slick-disabled {
-        opacity: 0.7;
-        cursor:default;
-    }
-}
-
-@mixin call-action-button() {
-    // ul
-    ul {
-
-        // inline
-        @include list-inline();
-
-        // li
-        li {
-            margin-right: 10px;
-
-            // button
-            .button {
-                @include stirbutton( $text-first-color, 5px 35px );
-            }
-
-            // anchor
-            a {
-                // simple
-                @include simple-anchor($text-first-color);
-
-                // middle
-                span {
-                    font-style: italic;
-                    color: lighten($text-second-color,20);
-                    display: inline-block;
-                    margin-right: 10px;
-                }
-            }
-        }
-    }
-}
-
 @mixin counter-stats() {
-    @include list-inline();
-    margin-top: 40px;
+  @include list-inline();
+  margin-top: 40px;
+  // span
+  li {
+    margin-right: 40px;
+    @include clearfix();
 
-    // span
-    li {
-        margin-right: 40px;
-        @include clearfix();
+    .count {
+      @include text-highlight($accent-second-color, 20px);
+      font-size: 3.125rem;
+      margin: 0 15px 0 0;
+      color: $accent-first-color;
+      font-weight: 500;
+      float: left;
+      line-height: 2.438rem;
 
-        .count {
-            @include text-highlight($accent-second-color, 20px);
-            font-size: 3.125rem;
-            margin: 0 15px 0 0;
-            color: $accent-first-color;
-            font-weight: 500;
-            float: left;
-            line-height: 2.438rem;
-            &::after {
-                bottom: -10px;
-            }
-        }
-        .text {
-            overflow: auto;
-            font-size: 0.875rem;
-            color: $text-second-color;
-            display: inline-block;
-            line-height: 1.313rem;
-        }
+      &::after {
+        bottom: -10px;
+      }
     }
-}
 
+    .text {
+      overflow: auto;
+      font-size: 0.875rem;
+      color: $text-second-color;
+      display: inline-block;
+      line-height: 1.313rem;
+    }
+  }
+}
 @mixin line-stats($highlightcolor) {
-
-    // ul
-    ul {
-        margin: 0;
-        padding: 0;
-
-        // li
-        li {
-            list-style: none;
-            margin: 11px 0;
-
-            // wrap
-            .wrap {
-                @include clearfix();
-            }
-
-            // subject
-            .subject {
-                float: left;
-                font-weight: 500;
-
-                // anchor
-                a {
-                    color: $text-first-color;
-                }
-            }
-            .stat {
-                float: right;
-                font-size: 0.933rem;
-                color: $text-second-color;
-
-                // span
-                span {
-                    margin-left: 15px;
-                }
-            }
-            .plot {
-                margin: 11px 0 0 0;
-                width: 100%;
-                height: 6px;
-                border-radius: 3px;
-                background: #D8D8D8;
-
-                // after
-                .plotter {
-                    display: inline-block;
-                    height: 6px;
-                    border-radius: 3px;
-                    width: 0%;
-                    background: $highlightcolor;
-                    position: relative;
-                    top: -14px;
-                }
-            }
-        }
-    }
-
-    // action
-    .action {
-        text-align: right;
-        padding: 20px 0 0 0;
-
+  // ul
+  ul {
+    margin: 0;
+    padding: 0;
+    // li
+    li {
+      list-style: none;
+      margin: 11px 0;
+      // wrap
+      .wrap {
+        @include clearfix();
+      }
+      // subject
+      .subject {
+        float: left;
+        font-weight: 500;
         // anchor
         a {
-
-            // anchor action
-            @include action-anchor();
+          color: $text-first-color;
         }
-    }
-}
+      }
 
+      .stat {
+        float: right;
+        font-size: 0.933rem;
+        color: $text-second-color;
+        // span
+        span {
+          margin-left: 15px;
+        }
+      }
+
+      .plot {
+        margin: 11px 0 0;
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #D8D8D8;
+        // after
+        .plotter {
+          display: inline-block;
+          height: 6px;
+          border-radius: 3px;
+          width: 0;
+          background: $highlightcolor;
+          position: relative;
+          top: -14px;
+        }
+      }
+    }
+  }
+  // action
+  .action {
+    text-align: right;
+    padding: 20px 0 0;
+    // anchor
+    a {
+      // anchor action
+      @include action-anchor();
+    }
+  }
+}
 @mixin line-stats-b($highlightcolor) {
-
-    // ul
-    ul {
-        margin: 0;
-        padding: 0;
-
-        // li
-        li {
-
-            // head
-            &.heading {
-                font-weight: 500;
-                border-bottom: 0;
-                padding: 5px 0 0 0;
-
-                // stats
-                .stat {
-                    color: $text-first-color;
-                    font-size: 1rem;
-                }
-                .plothead {
-                    text-align: right;
-                }
-            }
-            list-style: none;
-            margin: 0px 0;
-            border-bottom: 1px solid #E4E8EE;
-
-            // wrap
-            .wrap {
-                @include clearfix();
-                padding: 13px 0 13px 0;
-            }
-
-            // subject
-            .subject {
-                float: left;
-                width: 45%;
-
-                // anchor
-                a {
-                    color: $text-first-color;
-                }
-            }
-            .stat {
-                float: left;
-                width: 24%;
-                font-size: 0.933rem;
-                color: $text-second-color;
-                text-align: right;
-                padding: 0 30px 0 0;
-
-                // span
-                span {
-                    margin-left: 15px;
-                }
-            }
-            .scale {
-                float: left;
-                width: 31%;
-                @include clearfix();
-                font-size: 0.933rem;
-
-                .percentage {
-                    display: block;
-                    float: left;
-                    width: 30%;
-                    text-align: right;
-                    padding-right: 10px;
-                    color: $highlightcolor;
-                }
-
-                // scale
-                .plot {
-                    margin: 11px 0 0 0;
-                    height: 6px;
-                    border-radius: 3px;
-                    background: #D8D8D8;
-                    float: left;
-                    width: 70%;
-
-                    // after
-                    .plotter {
-                        display: inline-block;
-                        height: 6px;
-                        border-radius: 3px;
-                        width: 0%;
-                        background: $highlightcolor;
-                        position: relative;
-                        top: -14px;
-                    }
-                }
-            }
-
-            // last
-            &:last-child {
-                border-bottom: 0;
-            }
+  // ul
+  ul {
+    margin: 0;
+    padding: 0;
+    // li
+    li {
+      // head
+      &.heading {
+        font-weight: 500;
+        border-bottom: 0;
+        padding: 5px 0 0;
+        // stats
+        .stat {
+          color: $text-first-color;
+          font-size: 1rem;
         }
-    }
 
-    // action
-    .action {
-        text-align: right;
-        padding: 20px 0 0 0;
-
+        .plothead {
+          text-align: right;
+        }
+      }
+      list-style: none;
+      margin: 0;
+      border-bottom: 1px solid #E4E8EE;
+      // wrap
+      .wrap {
+        @include clearfix();
+        padding: 13px 0;
+      }
+      // subject
+      .subject {
+        float: left;
+        width: 45%;
         // anchor
         a {
-
-            // anchor action
-            @include action-anchor();
+          color: $text-first-color;
         }
+      }
+
+      .stat {
+        float: left;
+        width: 24%;
+        font-size: 0.933rem;
+        color: $text-second-color;
+        text-align: right;
+        padding: 0 30px 0 0;
+        // span
+        span {
+          margin-left: 15px;
+        }
+      }
+
+      .scale {
+        float: left;
+        width: 31%;
+        @include clearfix();
+        font-size: 0.933rem;
+
+        .percentage {
+          display: block;
+          float: left;
+          width: 30%;
+          text-align: right;
+          padding-right: 10px;
+          color: $highlightcolor;
+        }
+        // scale
+        .plot {
+          margin: 11px 0 0;
+          height: 6px;
+          border-radius: 3px;
+          background: #D8D8D8;
+          float: left;
+          width: 70%;
+          // after
+          .plotter {
+            display: inline-block;
+            height: 6px;
+            border-radius: 3px;
+            width: 0;
+            background: $highlightcolor;
+            position: relative;
+            top: -14px;
+          }
+        }
+      }
+      // last
+      &:last-child {
+        border-bottom: 0;
+      }
     }
+  }
+  // action
+  .action {
+    text-align: right;
+    padding: 20px 0 0;
+    // anchor
+    a {
+      // anchor action
+      @include action-anchor();
+    }
+  }
 }
-
 @mixin line-stats-c($highlightcolor) {
+  // graph
+  .graph {
+    margin: 30px 0 15px;
 
-    // graph
-    .graph {
-        margin: 30px 0 15px 0;
-        .base {
-            width: 100%;
-            height: 10px;
-            border-radius: 5px;
-            display: block;
-            background: #D8D8D8;
-            overflow: hidden;
-            @include clearfix();
+    .base {
+      width: 100%;
+      height: 10px;
+      border-radius: 5px;
+      display: block;
+      background: #D8D8D8;
+      overflow: hidden;
+      @include clearfix();
 
-            .item {
-                float: left;
-                height: 100%;
-            }
-        }
+      .item {
+        float: left;
+        height: 100%;
+      }
     }
-
-    // ul
-    ul {
-        margin: 0;
-        padding: 0;
-
-        // li
-        li {
-
-            // head
-            &.heading {
-                font-weight: 500;
-                border-bottom: 0;
-                padding: 5px 0 0 0;
-
-                // stats
-                .stat {
-                    color: $text-first-color;
-                    font-size: 1rem;
-                }
-            }
-            list-style: none;
-            margin: 0px 0;
-            border-bottom: 1px solid #E4E8EE;
-
-            // wrap
-            .wrap {
-                @include clearfix();
-                padding: 13px 0 13px 0;
-            }
-
-
-            // subject
-            .subject {
-                float: left;
-                width: 60%;
-
-                // anchor
-                a {
-                    color: $text-first-color;
-                }
-                .color {
-                    width: 10px;
-                    height: 10px;
-                    margin: 0 15px 0 0;
-                    border-radius: 50%;
-                    background-color: $highlightcolor;
-                    display: inline-block;
-                }
-            }
-            .stat {
-                float: left;
-                width: 25%;
-                font-size: 0.933rem;
-                color: $text-second-color;
-                text-align: right;
-                padding: 0 30px 0 0;
-
-                // span
-                span {
-                    margin-left: 15px;
-                }
-            }
-            .scale {
-                float: left;
-                width: 15%;
-                @include clearfix();
-                font-size: 0.933rem;
-                text-align: right;
-            }
-
-            // last
-            &:last-child {
-                border-bottom: 0;
-            }
+  }
+  // ul
+  ul {
+    margin: 0;
+    padding: 0;
+    // li
+    li {
+      // head
+      &.heading {
+        font-weight: 500;
+        border-bottom: 0;
+        padding: 5px 0 0;
+        // stats
+        .stat {
+          color: $text-first-color;
+          font-size: 1rem;
         }
-    }
-
-    // action
-    .action {
-        text-align: right;
-        padding: 20px 0 0 0;
-
+      }
+      list-style: none;
+      margin: 0;
+      border-bottom: 1px solid #E4E8EE;
+      // wrap
+      .wrap {
+        @include clearfix();
+        padding: 13px 0;
+      }
+      // subject
+      .subject {
+        float: left;
+        width: 60%;
         // anchor
         a {
-
-            // anchor action
-            @include action-anchor();
+          color: $text-first-color;
         }
+
+        .color {
+          width: 10px;
+          height: 10px;
+          margin: 0 15px 0 0;
+          border-radius: 50%;
+          background-color: $highlightcolor;
+          display: inline-block;
+        }
+      }
+
+      .stat {
+        float: left;
+        width: 25%;
+        font-size: 0.933rem;
+        color: $text-second-color;
+        text-align: right;
+        padding: 0 30px 0 0;
+        // span
+        span {
+          margin-left: 15px;
+        }
+      }
+
+      .scale {
+        float: left;
+        width: 15%;
+        @include clearfix();
+        font-size: 0.933rem;
+        text-align: right;
+      }
+      // last
+      &:last-child {
+        border-bottom: 0;
+      }
     }
+  }
+  // action
+  .action {
+    text-align: right;
+    padding: 20px 0 0;
+    // anchor
+    a {
+      // anchor action
+      @include action-anchor();
+    }
+  }
 }

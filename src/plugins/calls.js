@@ -1,21 +1,24 @@
-export function countryProperties(code, name){
-  let country = code.slice(0,2);
+export function countryProperties(code, name) {
+  let country = code.slice(0, 2);
   let response = new Object({
     id: code,
     name: `${code} - ${name}`,
-    CNTRY: "",
-    TYPE: "NUTS-REGION",
+    CNTRY: '',
+    TYPE: 'NUTS-REGION',
   });
-  if (country === 'BE') response.CNTRY = "Belgium";
-  if (country === 'CZ') response.CNTRY = "Czechia";
-  if (country === 'EL') response.CNTRY = "Greece";
-  if (country === 'NO') response.CNTRY = "Norway";
-  if (country === 'UK') response.CNTRY = "United Kingdom";
+  if (country === 'BE') response.CNTRY = 'Belgium';
+  if (country === 'CZ') response.CNTRY = 'Czechia';
+  if (country === 'EL') response.CNTRY = 'Greece';
+  if (country === 'NO') response.CNTRY = 'Norway';
+  if (country === 'UK') response.CNTRY = 'United Kingdom';
   return response;
 }
 
 export default (ctx, inject) => {
   const apiCalls = {
+    getProviders: () => {
+      return ctx.$api.get('datasets').then(response => response.data);
+    },
     getTopLevel: resource => {
       return ctx.$api.get(resource)
         .then(response => response.data.results.bindings.map(
