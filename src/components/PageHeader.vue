@@ -38,17 +38,18 @@
         </ul>
       </nav>
       <!-- hamburger-->
-      <button
-        class="navbar-toggler collapsed"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarCollapse"
-        aria-controls="navbarCollapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <b-navbar-toggle target="hamburger-menu">
         <span class="navbar-toggler-icon"></span>
-      </button>
+      </b-navbar-toggle>
+      <b-collapse id="hamburger-menu" is-nav>
+        <b-navbar-nav>
+          <b-nav-item :to="{ name: 'search' }">Explore</b-nav-item>
+          <b-nav-item :to="{ name: 'statistics' }">Statistics</b-nav-item>
+          <b-nav-item :to="{ name: 'about' }">About</b-nav-item>
+          <b-nav-item :to="{ name: 'partners' }">Partners</b-nav-item>
+          <b-nav-item :to="{ name: 'providers' }">Data Providers</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
     </b-container>
   </header>
 </template>
@@ -115,4 +116,25 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "../assets/scss/variables.scss";
+
+  #hamburger-menu {
+    background: $accent-first-color;
+    position: absolute;
+    right: var(--bs-gutter-x, 0.75rem);
+    top: 99px;
+    z-index: 2;
+    width: 50%;
+    border-radius: 4px;
+    ul li {
+      border-bottom: 1px solid #4b78c7;
+      a {
+        color: $background-color;
+        padding: 10px 20px;
+        display: block;
+        text-align: right;
+        text-decoration: none;
+      }
+    }
+  }
 </style>
