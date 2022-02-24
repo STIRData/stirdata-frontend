@@ -639,6 +639,9 @@ body {
 								text-decoration: underline;
 							}
 						}
+            .source {
+              height: 80px;
+            }
 					}
 
 					// column
@@ -805,7 +808,7 @@ body {
 						a {
 							@include clearfix();
 							display: flex;
-							align-items: flex-end;
+							align-items: flex-start;
 							text-decoration: none;
 
 							// icon

@@ -2,7 +2,7 @@
   <div>
     <PageHeader keep-alive />
     <Nuxt />
-    <PageFooter keep-alive />
+    <LazyPageFooter keep-alive />
   </div>
 </template>
 

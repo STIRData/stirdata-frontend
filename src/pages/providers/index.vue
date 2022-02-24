@@ -8,7 +8,9 @@
         <div class="headingtext">
           <h1>Data Providers</h1>
           <p class="half">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam.
           </p>
         </div>
       </b-container>
@@ -21,7 +23,9 @@
               <div class="ads-learn">
                 <img class="decor" src="../../assets/img/ic-ads.png" />
                 <p>
-                  STIRDATA is an online platform for searching, navigating, synthetically analyzing, and visualizing company related open data content
+                  STIRDATA is an online platform for searching, navigating,
+                  synthetically analyzing, and visualizing company related open
+                  data content
                 </p>
                 <nav class="heronav">
                   <ul>
@@ -34,7 +38,8 @@
               <div class="ads-explore">
                 <h2>Explore <br />Companies</h2>
                 <p>
-                  Search, Navigate, Analyze, and Visualizing Company related Open Data Content
+                  Search, Navigate, Analyze, and Visualizing Company related
+                  Open Data Content
                 </p>
                 <nav class="heronav">
                   <ul>
@@ -51,11 +56,14 @@
               <div class="headingtext">
                 <h2>Data Availability Mapping</h2>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat.
                 </p>
               </div>
               <div class="text-center" v-if="providers.length === 0">
-                <b-spinner label="Spinning" class="spinner-color"></b-spinner>
+                <Spinner />
               </div>
               <b-row class="table-section" v-else>
                 <b-col sm="5" md="3" lg="3" xl="3" class="table-section-column">
@@ -78,38 +86,26 @@
                       <li class="head">{{ provider.country.label }}</li>
                       <li><img src="../../assets/img/ic-check.png" /></li>
                       <li>
-                        <img
-                          v-if="'foundingDate' in provider"
-                          src="../../assets/img/ic-check.png"
-                        />
+                        <img v-if="'foundingDate' in provider" src="../../assets/img/ic-check.png" />
                       </li>
                       <li>
-                        <img
-                          v-if="'dissolutionDate' in provider"
-                          src="../../assets/img/ic-check.png"
-                        />
+                        <img v-if="'dissolutionDate' in provider" src="../../assets/img/ic-check.png" />
                       </li>
                       <li>
-                        <img
-                          v-if="'activityVocabularies' in provider"
-                          src="../../assets/img/ic-check.png"
-                        />
+                        <img v-if="'activityVocabularies' in provider" src="../../assets/img/ic-check.png" />
                       </li>
                       <li>
-                        <img
-                          v-if="'placeVocabularies' in provider"
-                          src="../../assets/img/ic-check.png"
-                        />
+                        <img v-if="'placeVocabularies' in provider" src="../../assets/img/ic-check.png" />
                       </li>
                     </ul>
                     <template #prevArrow="">
                       <button type="button" class="slick-prev">
-                        <i class="fa fa-angle-left"></i>
+                        <font-awesome-icon :icon="['fas', 'angle-left']" />
                       </button>
                     </template>
                     <template #nextArrow="">
                       <button type="button" class="slick-next">
-                        <i class="fa fa-angle-right"></i>
+                        <font-awesome-icon :icon="['fas', 'angle-right']" />
                       </button>
                     </template>
                   </VueSlickCarousel>
@@ -120,30 +116,28 @@
               <div class="headingtext">
                 <h2>Data Information</h2>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat.
                 </p>
               </div>
               <div class="text-center" v-if="providers.length === 0">
-                <b-spinner label="Spinning" class="spinner-color"></b-spinner>
+                <Spinner />
               </div>
               <b-row class="table-section" v-else>
-                <b-col
-                  xs="6" sm="5" md="3" lg="4" xl="3"
-                  class="table-section-column"
-                >
+                <b-col xs="6" sm="5" md="3" lg="4" xl="3" class="table-section-column">
                   <ul class="table-section-label countrylabel">
                     <li class="head">Information</li>
                     <li>Last Updated</li>
-                    <li>Update Frequency</li>
-                    <li>Link to API</li>
+                    <!-- <li>Update Frequency</li> -->
+                    <li>SPARQL Endpoint</li>
                     <li>Number of Entries</li>
-                    <li>License</li>
+                    <li class="source">Source</li>
+                    <!-- <li>License</li> -->
                   </ul>
                 </b-col>
-                <b-col
-                  xs="6" sm="7" md="9" lg="8" xl="9"
-                  class="table-section-data"
-                >
+                <b-col xs="6" sm="7" md="9" lg="8" xl="9" class="table-section-data">
                   <VueSlickCarousel v-bind="carouselSettings">
                     <ul
                       class="country"
@@ -151,27 +145,38 @@
                       :key="provider.country.code"
                     >
                       <li class="head">{{ provider.country.label }}</li>
-                      <li>22 Nov 2021</li>
-                      <li>Monthly</li>
                       <li>
-                        <a
-                          :href="provider.sparqlEndpoint"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          >Link</a
-                        >
+                        <span v-if="'lastUpdated' in provider">{{
+                          provider.lastUpdated | formatDate
+                        }}</span>
                       </li>
-                      <li>{{ provider.legalEntityCount }}</li>
-                      <li>CC BY-SA</li>
+                      <!-- <li>Monthly</li> -->
+                      <li>
+                        <a :href="provider.sparqlEndpoint" target="_blank" rel="noopener noreferrer">
+                          {{ provider.country.label }}
+                        </a>
+                      </li>
+                      <li>
+                        {{ Number(provider.legalEntityCount).toLocaleString() }}
+                      </li>
+                      <li class="source">
+                        <a
+                          v-if="'source' in provider && 'label' in provider.source"
+                          :href="provider.source.uri" target="_blank" rel="noopener noreferrer"
+                        >
+                          {{ provider.source.label }}
+                        </a>
+                      </li>
+                      <!-- <li>CC BY-SA</li> -->
                     </ul>
                     <template #prevArrow="">
                       <button type="button" class="slick-prev">
-                        <i class="fa fa-angle-left"></i>
+                        <font-awesome-icon :icon="['fas', 'angle-left']" />
                       </button>
                     </template>
                     <template #nextArrow="">
                       <button type="button" class="slick-next">
-                        <i class="fa fa-angle-right"></i>
+                        <font-awesome-icon :icon="['fas', 'angle-right']" />
                       </button>
                     </template>
                   </VueSlickCarousel>
@@ -186,66 +191,67 @@
 </template>
 
 <script>
-  import VueSlickCarousel from 'vue-slick-carousel';
-  import 'vue-slick-carousel/dist/vue-slick-carousel.css';
+import VueSlickCarousel from "vue-slick-carousel";
+import "vue-slick-carousel/dist/vue-slick-carousel.css";
 
-  export default {
-    components: {
-      Breadcrumb: () => import("../../components/Breadcrumb"),
-      VueSlickCarousel
-    },
+export default {
+  components: {
+    Breadcrumb: () => import("../../components/Breadcrumb"),
+    Spinner: () => import("../../components/Spinner"),
+    VueSlickCarousel,
+  },
 
-    data() {
-      return {
-        breadcrumb_items: [
+  data() {
+    return {
+      breadcrumb_items: [
+        {
+          text: "HOME",
+          to: { name: "index" },
+        },
+        {
+          text: "DATA PROVIDERS",
+          active: true,
+        },
+      ],
+      carouselSettings: {
+        dots: false,
+        edgeFriction: 0.35,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 2,
+        responsive: [
           {
-            text: "HOME",
-            to: { name: "index" },
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 1,
+            },
           },
           {
-            text: "DATA PROVIDERS",
-            active: true,
+            breakpoint: 760,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 1,
+            },
+          },
+          {
+            breakpoint: 520,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+            },
           },
         ],
-        carouselSettings: {
-          dots: false,
-          edgeFriction: 0.35,
-          infinite: false,
-          speed: 500,
-          slidesToShow: 4,
-          slidesToScroll: 2,
-          responsive: [
-            {
-              breakpoint: 1024,
-              settings: {
-                slidesToShow: 3,
-                slidesToScroll: 1,
-              },
-            },
-            {
-              breakpoint: 760,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1,
-              },
-            },
-            {
-              breakpoint: 520,
-              settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1,
-              },
-            },
-          ],
-        },
-        providers: [],
-      };
-    },
-    async mounted() {
-      this.providers = await this.$calls.getProviders();
-    },
-    methods: {},
-  };
+      },
+      providers: [],
+    };
+  },
+  async mounted() {
+    this.providers = await this.$calls.getProviders();
+  },
+  methods: {},
+};
 </script>
 
 <style lang="scss" scoped>
@@ -254,10 +260,6 @@
 
   .slick-slider {
     position: initial;
-  }
-
-  .spinner-color {
-    color: #355faa;
   }
 
   .table-section-data {

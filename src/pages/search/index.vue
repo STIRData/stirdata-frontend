@@ -360,24 +360,16 @@
       let nuts0 = [];
       let nace0 = [];
 
-      let nutsZeroResponse = await this.$api.get("nuts");
-      nutsZeroResponse.data.results.bindings.forEach((item) => {
-        nuts0.push({
-          value: item.code.value,
-          text: `${item.code.value.split("/").pop()} - ${item.label.value}`,
-        });
-        this.endpoints[item.code.value.split("/").pop()] = [];
+      let nutsZeroResponse = await this.$calls.getTopLevel("nuts?top=stirdata");
+      nutsZeroResponse.forEach((item) => {
+        nuts0.push(item);
+        this.endpoints[item.value.split("/").pop()] = [];
       });
       this.nutsOptions.push(nuts0);
 
-      let naceZeroResponse = await this.$api.get("nace");
-      naceZeroResponse.data.results.bindings.forEach((item) => {
-        if (item.code.value.includes("nace-rev2")) {
-          nace0.push({
-            value: item.code.value,
-            text: `${item.code.value.split("/").pop()} - ${item.label.value}`,
-          });
-        }
+      let naceZeroResponse = await this.$calls.getTopLevel("nace");
+      naceZeroResponse.forEach((item) => {
+        nace0.push(item);
       });
       this.naceOptions.push(nace0);
     },

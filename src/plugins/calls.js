@@ -20,13 +20,13 @@ export default (ctx, inject) => {
       return ctx.$api.get('datasets').then(response => response.data);
     },
     getTopLevel: resource => {
+      let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
+      let type = (resource === 'nace') ? 'activity' : 'place';
       return ctx.$api.get(resource)
-        .then(response => response.data.results.bindings.map(
-          (item) => new Object({
-            value: item.code.value,
-            text: `${item.code.value.split("/").pop()} - ${item.label.value}`
-          })
-        ));
+        .then(response => response.data[grouping].map(item => new Object({value: item[type].code.split(':')[1], text: `${item[type].code.split(':')[1]} - ${item[type].label}` })));
+    },
+    getStatistics: () => {
+      return ctx.$api.get(`statistics?dimension=place,activity`).then(response => response.data)
     },
 
     getSubRegions: uri => {

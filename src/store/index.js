@@ -42,7 +42,7 @@ export default {
 
   actions: {
     fetchTopLevelNuts({ dispatch, commit }) {
-      return this.$calls.getTopLevel('nuts')
+      return this.$calls.getTopLevel('nuts') // ?top=stirdata for countries with data
         .then(nuts => commit('setTopLevelNuts', nuts));
     },
     fetchTopLevelNace({ dispatch, commit }) {

@@ -45,6 +45,7 @@ export default {
   plugins: [
     '~/plugins/apis',
     '~/plugins/calls',
+    '~plugins/filters',
     { src: '~/plugins/amCharts.js', ssr: false }
   ],
 
@@ -55,7 +56,15 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     // '@nuxtjs/eslint-module'
+    '@nuxtjs/fontawesome'
   ],
+
+  fontawesome: {
+    icons: {
+      solid: true,
+      brands: true
+    }
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
