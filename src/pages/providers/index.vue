@@ -193,14 +193,12 @@
 <script>
 import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default {
   components: {
     Breadcrumb: () => import("../../components/Breadcrumb"),
     Spinner: () => import("../../components/Spinner"),
     VueSlickCarousel,
-    FontAwesomeIcon
   },
 
   data() {
