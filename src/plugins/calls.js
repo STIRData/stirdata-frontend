@@ -28,7 +28,28 @@ export default (ctx, inject) => {
     getStatistics: () => {
       return ctx.$api.get(`statistics?dimension=place,activity`).then(response => response.data)
     },
-
+    getAllPlaces: () => {
+      return ctx.$api.get(`statistics?dimension=place`).then(response => response.data)
+    },
+    getAllActivities: () => {
+      return ctx.$api.get(`statistics?dimension=activity`).then(response => response.data)
+    },
+    getRegionStatistics: regionCode => {
+      let code = regionCode.includes(':') ? regionCode : `nuts:${regionCode}`
+      return ctx.$api.get(`statistics?place=${code}&dimension=place,activity,foundingDate,dissolutionDate`).then(response => response.data)
+    },
+    getActivityStatistics: activityCode => {
+      let code = activityCode.includes(':') ? activityCode : `nace-rev2:${activityCode}`
+      return ctx.$api.get(`statistics?activity=${code}&dimension=place,activity`).then(response => response.data)
+    },
+    getRegionData: regionCode => {
+      let code = regionCode.includes(':') ? regionCode : `nuts:${regionCode}`
+      return ctx.$api.get(`statistics?place=${code}`).then(response => response.data)
+    },
+    getActivityData: activityCode => {
+      let code = activityCode.includes(':') ? activityCode : `nace-rev2:${activityCode}`
+      return ctx.$api.get(`statistics?activity=${code}`).then(response => response.data)
+    },
     getSubRegions: uri => {
       return ctx.$api.get(`nuts?parent=${uri}`)
         .then(response => new Object({

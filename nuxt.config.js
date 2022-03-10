@@ -46,6 +46,7 @@ export default {
     '~/plugins/apis',
     '~/plugins/calls',
     '~plugins/filters',
+    {src: '~/plugins/chart.js', mode: 'client'},
     { src: '~/plugins/amCharts.js', ssr: false }
   ],
 
