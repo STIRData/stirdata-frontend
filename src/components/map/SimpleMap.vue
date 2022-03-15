@@ -6,21 +6,20 @@
   export default {
     name: 'SimpleMap',
 
+    props: {
+      regionCode: {
+        type: String,
+        required: true
+      }
+    },
+
     data() {
       return {
-        selectedCountry: null,
-        countries: [
-          { id: "BE", name: "Belgium",        fill: "#454ea0", hasInfo: true },
-          { id: "UK", name: "United Kingdom", fill: "#454ea0", hasInfo: true },
-          { id: "CZ", name: "Czechia",        fill: "#454ea0", hasInfo: true },
-          { id: "GR", name: "Greece",         fill: "#454ea0", hasInfo: true },
-          { id: "CY", name: "Cyprus",         fill: "#454ea0", hasInfo: true },
-          { id: "FI", name: "Finland",        fill: "#454ea0", hasInfo: true },
-          { id: "EE", name: "Estonia",        fill: "#454ea0", hasInfo: true },
-          { id: "LV", name: "Latvia",         fill: "#454ea0", hasInfo: true },
-          { id: "NO", name: "Norway",         fill: "#454ea0", hasInfo: true },
-          { id: "RO", name: "Romania",        fill: "#454ea0", hasInfo: true }
-        ]
+        hasLauSubregions: false,
+        customGeodata: {
+          features: [],
+          type: 'FeatureCollection'
+        }
       };
     },
 
@@ -29,7 +28,27 @@
       this.am4maps = this.$am4core().am4maps;
       this.europeHigh = this.$am4core().europeHigh;
 
-      this.initializeMap();
+      const code = this.regionCode.includes(':') ? this.regionCode : `nuts:${this.regionCode}`;
+      const resolution = code.split(':')[1].length < 5 ? '3M' : '1M';
+      this.hasLauSubregions = code.split(':')[1].length < 5 ? false : true;
+
+      this.$calls.getRegionGeoJSON(this.regionCode, resolution)
+        .then(response => {
+          response.forEach(region => {
+            this.customGeodata.features.push({
+              geometry: JSON.parse(region.place.geometry),
+              id: region.place.code,
+              properties: {
+                name: region.place.label,
+                id: region.place.code,
+                Continent: 'Europe'
+              },
+              type: 'Feature'
+            });
+          });
+          this.initializeMap();
+        })
+        .catch(error => console.error(error));
     },
 
     methods: {
@@ -38,74 +57,39 @@
         this.mapChart = this.am4core.create("simpleMap", this.am4maps.MapChart);
 
         var chart = this.mapChart;
-        chart.geodata = this.europeHigh;                          // Set map definition
+        chart.geodata = this.customGeodata;                       // Set map definition
         chart.projection = new this.am4maps.projections.Miller(); // Set projection
         chart.panBehavior = "none";                               // Disable map panning
-
-        // Configure home button
-        var homeButton = new this.am4core.Button();
-        homeButton.tooltip = new this.am4core.Tooltip();
-        homeButton.icon = new this.am4core.Sprite();
-        homeButton.background.fill = this.am4core.color("#2b3595");
-        homeButton.fill = this.am4core.color("#FFF");
-        homeButton.tooltip.pointerOrientation = "left";
-        homeButton.tooltip.dx = 16;
-        homeButton.tooltip.dy = 13;
-        homeButton.tooltipText = "Return to Europe";
-        homeButton.tooltipColorSource = this.am4core.color("#2b3595");
-        homeButton.padding(7, 5, 23, 5);
-        homeButton.height = 40;
-        homeButton.width = 40;
-        homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
-        homeButton.dx = 8;
-        homeButton.dy = 8;
-        homeButton.parent = chart;
+        chart.chartContainer.wheelable = false;                   // Disable map zooming
+        chart.seriesContainer.events.disableType("doublehit");
+        chart.chartContainer.background.events.disableType("doublehit");
 
         // Create map polygon series
         var polygonSeries = chart.series.push(new this.am4maps.MapPolygonSeries());
         polygonSeries.useGeodata = true;     // Make map load polygon (like country names) data from GeoJSON
-        polygonSeries.data = this.countries; // Load countries data
 
         // Configure series
         var polygonTemplate = polygonSeries.mapPolygons.template;
         polygonTemplate.propertyFields.fill = "fill";
+        polygonTemplate.fill = this.am4core.color("#C4CEDD");
         polygonTemplate.tooltipText = "{name}";
-        polygonTemplate.fill = this.am4core.color("#a6a6a6");
+        polygonSeries.tooltip.getFillFromObject = false;
+        polygonSeries.tooltip.background.fill = this.am4core.color("#0056b3");
 
         // Create hover state and set alternative fill color
+        polygonTemplate.cursorOverStyle = this.hasLauSubregions ? this.am4core.MouseCursorStyle.default : this.am4core.MouseCursorStyle.pointer;
         var hs = polygonTemplate.states.create("hover");
-        hs.properties.fill = this.am4core.color("#0c145c");
-        var ss = polygonTemplate.states.create("active");
-        ss.properties.fill = this.am4core.color("#0c145c");
+        hs.properties.fill = this.am4core.color("#f9a800");
 
         // Add event listeners
-        homeButton.events.on("hit", () => this.goMapHome());
-        polygonTemplate.events.on("hit", (ev) => this.handleZoomIn(ev));
+        polygonTemplate.events.on("hit", (ev) => this.handleRegionClick(ev.target.dataItem.dataContext.id));
       },
 
-      handleZoomIn(ev) {
-        var hasCountryInfo = this.countries.findIndex(c => c.hasOwnProperty("hasInfo") && c.name === ev.target.dataItem.dataContext.name) > -1;
-
-        if (!hasCountryInfo) {
-          this.$emit('toast-warning', `There is no data available for ${ev.target.dataItem.dataContext.name}`);
+      handleRegionClick(id) {
+        if (id.includes('lau')) {
           return;
         }
-
-        if (this.selectedCountry) {
-          this.selectedCountry.isActive = false;
-        }
-        this.selectedCountry = ev.target;
-        this.selectedCountry.isActive = true;
-        this.mapChart.zoomToMapObject(this.selectedCountry);
-
-        // TODO: Also render chart with country-stats, next to the map
-      },
-
-      goMapHome() {
-        if (this.selectedCountry) {
-          this.selectedCountry.isActive = false;
-        }
-        this.mapChart.goHome();
+        this.$router.push({ name: 'statistics-region-region', params: { region: id } });
       }
     },
 
@@ -118,7 +102,6 @@
 
 <style lang="scss" scoped>
   #simpleMap {
-    height: calc(100vh - 160px);
-    background-color: white;
+    height: inherit;
   }
 </style>

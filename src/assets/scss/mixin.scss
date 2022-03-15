@@ -72,6 +72,8 @@
     &.text {
       display: inline-block;
       margin-right: 15px;
+      text-align: left;
+
     }
     // icon
     &.icon {
@@ -83,9 +85,10 @@
       padding-top: 6px;
       text-align: center;
       color: #fff;
+      float: right;
       font-size: 20px;
       position: relative;
-      top: 3px;
+      top: -3px;
       @include transition(all 0.3s);
     }
   }
@@ -353,7 +356,57 @@
         width: 31%;
         @include clearfix();
         font-size: 0.933rem;
+        .progress {
+          height: 6px;
+          position: relative;
+          top: 12px;
+        }
 
+        .progress-bar {
+          background-color: #f9a800 !important;
+        }
+        .percentage {
+          display: block;
+          float: left;
+          width: 30%;
+          text-align: right;
+          padding-right: 10px;
+          color: $highlightcolor;
+        }
+        // scale
+        .plot {
+          margin: 11px 0 0;
+          height: 6px;
+          border-radius: 3px;
+          background: #D8D8D8;
+          float: left;
+          width: 70%;
+          // after
+          .plotter {
+            display: inline-block;
+            height: 6px;
+            border-radius: 3px;
+            width: 0;
+            background: $highlightcolor;
+            position: relative;
+            top: -14px;
+          }
+        }
+      }
+      .scale-activity {
+        float: left;
+        width: 31%;
+        @include clearfix();
+        font-size: 0.933rem;
+        .progress {
+          height: 6px;
+          position: relative;
+          top: 12px;
+        }
+
+        .progress-bar {
+          background-color: #355FAA !important;
+        }
         .percentage {
           display: block;
           float: left;
@@ -400,6 +453,13 @@
   }
 }
 @mixin line-stats-c($highlightcolor) {
+  .progress {
+    height: 10px;
+    position: relative;
+    top: 12px;
+    margin: 30px 0 15px;
+    background: #D8D8D8;
+  }
   // graph
   .graph {
     margin: 30px 0 15px;
