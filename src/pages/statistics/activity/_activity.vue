@@ -189,10 +189,17 @@
                         >
                         </div>
                         <b-link
+                          :id="country.country.code+'-label'"
                           :to="{ name: 'statistics-region-region', params: { region: country.country.code } }"
                         >
                           {{ country.country.label }}
                         </b-link>
+                        <b-tooltip
+                          :target="country.country.code+'-label'"
+                          triggers="hover"
+                        >
+                          {{ country.country.label }}
+                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="count">
@@ -225,6 +232,7 @@
 <script>
 import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -276,7 +284,6 @@ export default {
       breadcrumb_items: [],
       currentActivity: {},
       loading: true,
-      activities: [],
       subactivities: [],
       countries: []
     };
@@ -302,8 +309,9 @@ export default {
         this.countries.sort(sortByCount);
     });
 
-    this.activities = await this.$calls.getAllActivities()
-      .then(response => response.activityGroups);
+    if (this.activities.length === 0) {
+      await this.$store.dispatch('fetchTopLevelStatistics');
+    }
     this.currentActivity = await this.$calls.getActivityData(nace)
       .then(response => response.selection);
     this.addActivityInBreadcrumb;
@@ -311,6 +319,9 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      activities: state => state.activitiesStatistics
+    }),
     activityNumberOfTriads: function () {
       return Math.ceil(this.activities.length / 3);
     },

@@ -57,7 +57,6 @@ body {
 	header {
 		height: 140px;
 		position: relative;
-		z-index: 2;
 
 		// wrap
 		.container {
@@ -79,6 +78,7 @@ body {
 
 					// li
 					li {
+            z-index: 2;
 
 						// anchor
 						a {
@@ -93,6 +93,7 @@ body {
 				// main nav
 				&.mainnav {
 					margin: 0 0 0 100px;
+          z-index: 2;
 
 					// reset
 					&.collapse {
@@ -138,6 +139,7 @@ body {
 				// action nav
 				&.actionnav {
 					margin-left: auto;
+          z-index: 2;
 
 					// ul
 					ul {

@@ -1,0 +1,105 @@
+<template>
+  <svg
+    v-if="!loading"
+    id="homepagemap"
+    baseprofile="tiny"
+    fill="#E4E8EE"
+    stroke="#ffffff"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="1"
+    version="1.2"
+    viewBox="100,100,900,800"
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <template v-for="code of Object.keys(regions)">
+      <!-- Countries with no data -->
+      <path
+        v-if="!countryCounts[code]"
+        :key="'country-' + code"
+        :id="code"
+        :name="regions[code].name"
+        :d="regions[code].coordinates"
+      >
+      </path>
+      <!-- Countries with data -->
+      <template
+        v-else
+      >
+        <b-link
+          :id="code + 'pop'"
+          :to="{ name: 'statistics-region-region', params: { region: code } }"
+          :key="'link-' + code"
+        >
+          <path
+            :id="code"
+            :name="regions[code].name"
+            :d="regions[code].coordinates"
+          >
+          </path>
+        </b-link>
+        <b-tooltip
+          :target="code + 'pop'"
+          triggers="hover"
+          :key="'tooltip-' + code"
+        >
+          <div class='htmlpop'>
+            <span class='count'>
+              {{ regions[code].name }}
+              <span class='label'></span>
+            </span>
+            <br/>
+            <span v-if="!loading" class='detail'>
+              {{ countryCounts[code].toLocaleString() }} Companies
+            </span>
+          </div>
+        </b-tooltip>
+      </template>
+    </template>
+    <!-- <circle cx="399.9" cy="390.8" id="0"></circle>
+    <circle cx="575.4" cy="412" id="1"></circle>
+    <circle cx="521" cy="266.6" id="2"></circle> -->
+  </svg>
+</template>
+
+<script>
+  import regions from '../../../data/regions.json';
+
+  export default {
+    name: 'SvgMap',
+
+    data() {
+      return {
+        loading: true,
+        countryCounts: {},
+        regions: {}
+      };
+    },
+
+    mounted() {
+      this.loading = true;
+      this.regions = regions;
+      this.$calls.getStatistics()
+        .then(response => {
+          response.placeGroups.forEach(entry => {
+            this.countryCounts[entry.country.code] = entry.count;
+          });
+          this.loading = false;
+        })
+        .catch(error => {
+          console.error(error);
+          this.loading = false;
+        });
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  @import "../../assets/scss/variables.scss";
+
+  ::v-deep .arrow::before {
+    border-top-color: $accent-first-color;
+    border-bottom-color: $accent-first-color;
+  }
+</style>

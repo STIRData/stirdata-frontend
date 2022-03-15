@@ -80,12 +80,12 @@
               </ul>
               <template #prevArrow="">
                 <button type="button" class="slick-prev">
-                  <font-awesome-icon :icon="['fas', 'angle-left']" />
+                  <font-awesome-icon :icon="['fa', 'angle-left']" />
                 </button>
               </template>
               <template #nextArrow="">
                 <button type="button" class="slick-next">
-                  <font-awesome-icon :icon="['fas', 'angle-right']" />
+                  <font-awesome-icon :icon="['fa', 'angle-right']" />
                 </button>
               </template>
             </VueSlickCarousel>
@@ -99,6 +99,7 @@
 <script>
 import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -110,8 +111,6 @@ export default {
   data() {
     return {
       loading: true,
-      activities: [],
-      countries: [],
       breadcrumb_items: [
         {
           text: "HOME",
@@ -159,14 +158,19 @@ export default {
 
   async mounted() {
     this.loading = true;
-    this.$calls.getStatistics().then((response) => {
-      this.countries = response.placeGroups;
-      this.activities = response.activityGroups;
+    if (this.countries.length) {
       this.loading = false;
-    });
+      return;
+    }
+    await this.$store.dispatch('fetchTopLevelStatistics');
+    this.loading = false
   },
 
   computed: {
+    ...mapState({
+        countries: state => state.countriesStatistics,
+        activities: state => state.activitiesStatistics,
+    }),
     activityNumberOfTriads: function () {
       return Math.ceil(this.activities.length / 3);
     }

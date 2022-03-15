@@ -34,14 +34,11 @@
             </ul>
             <div class="statisticsmap">
               <div class="statisticsmap-section">
-                <!-- temp image of map, need to be replaced by amchart maps-->
-                <!-- to be replaced with js maps-->
-                <img
-                  class="tmpmap"
-                  src="../../../assets/img/img-temp-map.png"
+                <SimpleMap
+                  :regionCode=regionCode
                 />
-                <div class="maps-notify">
-                  <i class="fa fa-info-circle"> </i>Click area on the map to select country and region
+                <div class="maps-notify py-1" v-if="!hasLauSubregions">
+                  <i class="fa fa-info-circle"> </i>Click an area on the map to select a subregion
                 </div>
               </div>
             </div>
@@ -54,15 +51,11 @@
                   Established and Dissoluted Companies Trend in {{ regionLabel }}
                 </h2>
               </div>
-              <div class="chart">
-                <client-only>
-                  <line-chart
-                    :data="chartData"
-                    :options="chartOptions"
-                  >
-                  </line-chart>
-                </client-only>
-              </div>
+              <DateChart
+                :key="regionCode"
+                :countryCode="regionCode"
+                :countryDates="{foundingDates, dissolutionDates}"
+              />
             </div>
             <div class="statisticsother">
               <div class="headingtext">
@@ -110,10 +103,17 @@
                       <div class="subject">
                         <b-link
                           class="wrap"
-                          :to="{ name: 'statistics-region-region', params: { region: reg.place.code } }"
+                          :id="reg.place.code+'-label'"
+                          :to="!hasLauSubregions ? { name: 'statistics-region-region', params: { region: reg.place.code } } : {}"
                         >
                           {{ reg.place.label }}
                         </b-link>
+                        <b-tooltip
+                          :target="reg.place.code+'-label'"
+                          triggers="hover"
+                        >
+                          {{ reg.place.label }}
+                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="detail-a">
@@ -200,10 +200,17 @@
                         >
                         </div>
                         <b-link
+                          :id="activity.activity.code+'-label'"
                           :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity.code.split(':')[1] } }"
                         >
                           {{ capitalizeTheFirstLetterOfEachWord(activity.activity.label) }}
                         </b-link>
+                        <b-tooltip
+                          :target="activity.activity.code+'-label'"
+                          triggers="hover"
+                        >
+                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity.label) }}
+                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="count">
@@ -254,40 +261,18 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   components: {
-    Breadcrumb: () => import("../../../components/Breadcrumb")
+    Breadcrumb: () => import("../../../components/Breadcrumb"),
+    DateChart: () => import("../../../components/chart/DateChart"),
+    SimpleMap: () => import("../../../components/map/SimpleMap")
   },
 
   data() {
     return {
-      chartData: {
-        labels: [],
-        datasets: []
-      },
-      chartOptions: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              gridLines: {
-                display: false,
-              },
-            },
-          ]
-        },
-        legend: {
-          align: "end",
-          labels: {
-            boxWidth: 7,
-            padding: 16,
-            fontSize: 14,
-            fontFamily: "'Jost','Avenir','sans-serif'",
-            usePointStyle: true
-          }
-        }
-      },
+      regionCode: '',
       breadcrumb_items: [],
       colors: [
         "#75A1F3",
@@ -304,12 +289,18 @@ export default {
       regionTotalCount: 0,
       regionLabel: "",
       loading: true,
-      allCountries: [],
       subregionTemplate: false,
       country: {}
     };
   },
   computed: {
+    ...mapState({
+      allCountries: state => state.countriesStatistics
+    }),
+    hasLauSubregions: function () {
+      const code = this.regionCode.includes(':') ? this.regionCode : `nuts:${this.regionCode}`;
+      return code.split(':')[1].length < 5 ? false : true;
+    },
     subregionsCount: function () {
       return this.subregions.length;
     },
@@ -361,51 +352,6 @@ export default {
         ];
       }
     },
-    foundingChartData: function () {
-      this.chartData.labels = this.foundingDates.map((date) => {
-        return new Date(date.foundingDate.from).getFullYear();
-      });
-      this.chartData.datasets.push({
-        label: "Established",
-        data: this.foundingDates.map((date) => {
-          return {
-            x: new Date(date.foundingDate.from).getFullYear(),
-            y: date.count
-          };
-        }),
-        backgroundColor: ["rgba(175, 240, 175, 0.2)"],
-        borderColor: "green",
-        borderWidth: 1
-      });
-    },
-    dissolutionChartData: function () {
-      this.dissolutionDates.forEach((date) => {
-        let disYear = new Date(date.dissolutionDate.from).getFullYear();
-        if (!this.chartData.labels.includes(disYear)) {
-          this.chartData.labels.push(disYear);
-          this.chartData.labels.sort();
-        }
-      });
-      this.chartData.datasets.push({
-        label: "Dissoluted",
-        data: this.dissolutionDates.map((date) => {
-          return {
-            x: new Date(date.dissolutionDate.from).getFullYear(),
-            y: date.count,
-          };
-        }),
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: "red",
-        borderWidth: 1
-      });
-    },
     activitiesOtherCount: function () {
       let sum = 0;
       this.activities.slice(0, 5).forEach((activity) => {
@@ -419,6 +365,8 @@ export default {
       .then(response => {
         this.subregions = response.placeGroups ? response.placeGroups : [];
         this.activities = response.activityGroups ? response.activityGroups : [];
+        // Update the code and the dates in order to render the chart
+        this.regionCode = this.$route.params.region;
         this.foundingDates = response.foundingDateGroups ? response.foundingDateGroups : [];
         this.dissolutionDates = response.dissolutionDateGroups ? response.dissolutionDateGroups : [];
 
@@ -433,8 +381,6 @@ export default {
         }
         this.subregions.sort(sortByCount);
         this.activities.sort(sortByCount);
-        if (this.foundingDates.length) this.foundingChartData;
-        if (this.dissolutionDates.length) this.dissolutionChartData;
       });
     await this.$calls.getRegionData(this.$route.params.region)
       .then(response => {
@@ -444,10 +390,9 @@ export default {
         this.country = response.selection.country;
         this.addCountryNameInBreadcrumb;
       });
-    this.allCountries = await this.$calls.getAllPlaces()
-      .then(response => {
-        return response.placeGroups;
-      });
+    if (this.allCountries.length === 0) {
+      await this.$store.dispatch('fetchTopLevelStatistics');
+    }
     this.loading = false;
   },
 
@@ -476,8 +421,29 @@ export default {
 <style lang="scss" scoped>
   @import "../../../assets/scss/variables.scss";
 
+  .subject {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   ::v-deep .arrow::before {
     border-top-color: $accent-first-color;
     border-bottom-color: $accent-first-color;
+  }
+
+  body main[role=main] .chart-line-b .action a,
+  body main[role=main] .chart-line-c .action a {
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+
+    span.text {
+      width: 90%;
+      text-align: end;
+    }
+    span.icon {
+      top: 0;
+    }
   }
 </style>
