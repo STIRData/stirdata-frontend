@@ -59,7 +59,7 @@ export default {
     },
     fetchTopLevelNace({ dispatch, commit }) {
       return this.$calls.getTopLevel('nace')
-        .then(nace => commit('setTopLevelNace', nace.filter(item => item.value.includes("nace-rev2"))));
+        .then(nace => commit('setTopLevelNace', nace.filter(item => item.value.includes('nace-rev2'))));
     },
     fetchTopLevelStatistics({ dispatch, commit }) {
       return this.$calls.getStatistics()
@@ -67,7 +67,7 @@ export default {
           commit('setTotalCompanies', response.placeGroups.reduce((previous, current) => previous + current.count, 0));
           commit('setActivitiesStatistics', response.activityGroups);
           commit('setCountriesStatistics', response.placeGroups);
-        })
+        });
     }
     // fetchCountryRegions({ dispatch, commit }, uri) {
     //   return this.$calls.getCountryRegions(uri)
@@ -78,4 +78,4 @@ export default {
     //     .then(geoJSON => commit('setCountryGeoJSON', geoJSON));
     // }
   }
-}
+};

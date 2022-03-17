@@ -14,6 +14,7 @@
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "npm run lint:js",
+    "lint:fix": "eslint --fix --ext .js,.vue .",
     "test:e2e": "nightwatch"
   },
   "dependencies": {
@@ -33,9 +34,12 @@
     "hchs-vue-charts": "^1.2.8",
     "jquery": "^3.6.0",
     "nuxt": "^2.15.3",
+    "rdf-namespaces": "^1.9.2",
+    "tripledoc": "^4.4.0",
     "vue-chartjs": "^3.5.1",
     "vue-scrollto": "^2.20.0",
     "vue-slick-carousel": "^1.0.6",
+    "vue-solid-plugin": "^0.6.0",
     "vuex": "^3.6.2",
     "webpack": "^4.46.0"
   },

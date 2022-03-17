@@ -9,7 +9,7 @@ export default function({ $axios }, inject) {
     if (response.status === 404) {
       console.log('404 error');
     }
-  })
+  });
 
   inject('api', backendApi);
 }

@@ -9,9 +9,9 @@ export default {
       lang: 'en'
     },
     script: [
-      {
+      /* {
         src: 'https://code.jquery.com/jquery-3.5.1.min.js'
-      },
+      },*/
       {
         src: 'https://apis.google.com/js/platform.js?onload=renderButton'
       }
@@ -39,17 +39,18 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['./assets/scss/style'],
+  css: ['./assets/scss/style', 'vue-slick-carousel/dist/vue-slick-carousel.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/apis',
     '~/plugins/calls',
     '~plugins/filters',
-    {src: '~/plugins/chart.js', mode: 'client'},
-    { src: '~/plugins/amCharts.js', ssr: false }
+    { src: '~/plugins/chart.js', mode: 'client' },
+    { src: '~/plugins/amCharts.js', ssr: false },
+    { src: '~/plugins/vue-slick-carousel.js', ssr: false },
+    { src: '~/plugins/solidLogin.js' }
   ],
-
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 

@@ -1,18 +1,21 @@
 <template>
-  <nav class="bread" aria-label="breadcrumb">
-    <b-breadcrumb :items="breadcrumb_items"></b-breadcrumb>
+  <nav
+    class="bread"
+    aria-label="breadcrumb"
+  >
+    <b-breadcrumb :items="breadcrumb_items" />
   </nav>
 </template>
 
 <script>
   export default {
-    name: "Breadcrumb",
+    name: 'Breadcrumb',
 
     props: {
       breadcrumb_items: {
         type: Array,
-        required: true,
-      },
+        required: true
+      }
     },
 
     computed: {}

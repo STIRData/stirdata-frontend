@@ -15,7 +15,7 @@
       PageHeader,
       PageFooter
     }
-  }
+  };
 </script>
 
 <style type="text/css">

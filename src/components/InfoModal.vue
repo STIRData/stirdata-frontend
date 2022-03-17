@@ -35,8 +35,8 @@
           'date': this.item['registration_date'],
           'activityCode': this.item.activity ? this.item.activity[0].code.split('/').pop() : '',
           'activityLabel': this.item.activity ? this.item.activity[0].label : ''
-        }
+        };
       }
     }
-  }
+  };
 </script>

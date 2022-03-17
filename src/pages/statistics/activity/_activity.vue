@@ -1,8 +1,14 @@
 <template>
-  <div v-if="loading" class="text-center">
+  <div
+    v-if="loading"
+    class="text-center"
+  >
     <Spinner />
   </div>
-  <main role="main" v-else>
+  <main
+    v-else
+    role="main"
+  >
     <b-container>
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>
@@ -16,22 +22,26 @@
     <section class="statisticsdetail">
       <b-container>
         <b-row>
-          <b-col lg="6" xl="7" class="statisticsdetail-left">
+          <b-col
+            lg="6"
+            xl="7"
+            class="statisticsdetail-left"
+          >
             <ul class="counter">
               <li v-if="countries.length">
                 <span class="count">{{ countries.length }}</span>
-                <span class="text"> European <br />Countries</span>
+                <span class="text"> European <br>Countries</span>
               </li>
               <li>
                 <span class="count">
                   {{ Number(currentActivity.count).toLocaleString() }}
                 </span>
-                <span class="text">Registered<br />Companies</span>
+                <span class="text">Registered<br>Companies</span>
               </li>
             </ul>
             <!-- TODO: to be replaced with activity specific image -->
             <div class="activityimage">
-              <img src="../../../assets/img/icons/activity/manufacturing.jpg" />
+              <img src="../../../assets/img/icons/activity/manufacturing.jpg">
             </div>
             <div class="activitylist">
               <div class="headingtext">
@@ -39,10 +49,13 @@
               </div>
               <div>
                 <VueSlickCarousel
-                  v-bind="activityCarouselSettings"
                   v-if="!loading"
+                  v-bind="activityCarouselSettings"
                 >
-                  <ul v-for="index in activityNumberOfTriads" :key="index">
+                  <ul
+                    v-for="index in activityNumberOfTriads"
+                    :key="index"
+                  >
                     <li
                       v-for="activity in arraySlice(index - 1, index)"
                       :key="activity.activity.code"
@@ -52,7 +65,7 @@
                         :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity.code.split(':')[1] } }"
                       >
                         <div class="icon">
-                          <img :src="getImagePath(activity)" />
+                          <img :src="getImagePath(activity)">
                         </div>
                         <div class="text">
                           <div class="counter">
@@ -66,12 +79,18 @@
                     </li>
                   </ul>
                   <template #prevArrow="">
-                    <button type="button" class="slick-prev">
+                    <button
+                      type="button"
+                      class="slick-prev"
+                    >
                       <font-awesome-icon :icon="['fas', 'angle-left']" />
                     </button>
                   </template>
                   <template #nextArrow="">
-                    <button type="button" class="slick-next">
+                    <button
+                      type="button"
+                      class="slick-next"
+                    >
                       <font-awesome-icon :icon="['fas', 'angle-right']" />
                     </button>
                   </template>
@@ -79,8 +98,15 @@
               </div>
             </div>
           </b-col>
-          <b-col lg="6" xl="5" class="statisticsdetail-right">
-            <div class="regionstats" v-if="subactivities.length">
+          <b-col
+            lg="6"
+            xl="5"
+            class="statisticsdetail-right"
+          >
+            <div
+              v-if="subactivities.length"
+              class="regionstats"
+            >
               <div class="headingtext">
                 <h2>
                   Statistics by {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity.label) }} Business Activity
@@ -91,9 +117,15 @@
                 <ul>
                   <li class="heading">
                     <div class="wrap">
-                      <div class="subject">Activity</div>
-                      <div class="stat">Companies</div>
-                      <div class="plothead">Percentage</div>
+                      <div class="subject">
+                        Activity
+                      </div>
+                      <div class="stat">
+                        Companies
+                      </div>
+                      <div class="plothead">
+                        Percentage
+                      </div>
                     </div>
                   </li>
                   <li
@@ -103,8 +135,8 @@
                     <div class="wrap">
                       <div class="subject">
                         <b-link
-                          :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity.code.split(':')[1] } }"
                           :id="activity.activity.code+'-label'"
+                          :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity.code.split(':')[1] } }"
                         >
                           {{ capitalizeTheFirstLetterOfEachWord(activity.activity.label) }}
                         </b-link>
@@ -127,8 +159,7 @@
                         <b-progress
                           :value="activity.count"
                           :max="subactivities[0].count"
-                        >
-                        </b-progress>
+                        />
                       </div>
                     </div>
                   </li>
@@ -138,28 +169,32 @@
                     <span class="text">
                       Explore all companies for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity.label) }} Business Activity
                     </span>
-                    <span class="icon"><i class="fa fa-angle-right"></i></span
-                  >
+                    <span class="icon"><i class="fa fa-angle-right" /></span>
                   </b-link>
                 </div>
               </div>
             </div>
-            <div class="activitystats" v-if="countries.length">
+            <div
+              v-if="countries.length"
+              class="activitystats"
+            >
               <div class="headingtext">
                 <h2>
                   Top 5 countries by companies amount in {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity.label) }}
                 </h2>
               </div>
               <div class="chart-line-c line-stats-dynamic">
-                <b-progress class="mt-2" :max="100">
+                <b-progress
+                  class="mt-2"
+                  :max="100"
+                >
                   <b-progress-bar
                     v-for="(country, index) in countries.slice(0, 5)"
+                    :id="country.country.code"
                     :key="index"
                     :value="percentage(country.count)"
                     :style="{ 'background-color': colors[index] }"
-                    :id="country.country.code"
-                  >
-                  </b-progress-bar>
+                  />
                   <b-tooltip
                     v-for="country in countries.slice(0, 5)"
                     :key="country.country.code"
@@ -172,9 +207,15 @@
                 <ul>
                   <li class="heading">
                     <div class="wrap">
-                      <div class="subject">Country</div>
-                      <div class="stat">Companies</div>
-                      <div class="scale">Percentage</div>
+                      <div class="subject">
+                        Country
+                      </div>
+                      <div class="stat">
+                        Companies
+                      </div>
+                      <div class="scale">
+                        Percentage
+                      </div>
                     </div>
                   </li>
                   <li
@@ -186,8 +227,7 @@
                         <div
                           class="color"
                           :style="{ 'background-color': colors[index] }"
-                        >
-                        </div>
+                        />
                         <b-link
                           :id="country.country.code+'-label'"
                           :to="{ name: 'statistics-region-region', params: { region: country.country.code } }"
@@ -217,7 +257,7 @@
                     <span class="text">
                       Explore all countries for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity.label) }} Business Activity
                     </span>
-                    <span class="icon"><i class="fa fa-angle-right"></i></span>
+                    <span class="icon"><i class="fa fa-angle-right" /></span>
                   </b-link>
                 </div>
               </div>
@@ -230,148 +270,148 @@
 </template>
 
 <script>
-import VueSlickCarousel from "vue-slick-carousel";
-import "vue-slick-carousel/dist/vue-slick-carousel.css";
-import { mapState } from "vuex";
+  import VueSlickCarousel from 'vue-slick-carousel';
+  import 'vue-slick-carousel/dist/vue-slick-carousel.css';
+  import { mapState } from 'vuex';
 
-export default {
-  components: {
-    Breadcrumb: () => import("../../../components/Breadcrumb"),
-    VueSlickCarousel
-  },
+  export default {
+    components: {
+      Breadcrumb: () => import('../../../components/Breadcrumb'),
+      VueSlickCarousel
+    },
 
-  data() {
-    return {
-      activityCarouselSettings: {
-        dots: false,
-        edgeFriction: 0.35,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        responsive: [
-          {
-            breakpoint: 1024,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 1
+    data() {
+      return {
+        activityCarouselSettings: {
+          dots: false,
+          edgeFriction: 0.35,
+          infinite: false,
+          speed: 500,
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1
+              }
+            },
+            {
+              breakpoint: 760,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1
+              }
+            },
+            {
+              breakpoint: 520,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+              }
             }
-          },
-          {
-            breakpoint: 760,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 1
+          ]
+        },
+        colors: [
+          '#75A1F3',
+          '#FFBC6D',
+          '#F86DFF',
+          '#FF4A4A',
+          '#97CC04',
+          '#D8D8D8'
+        ],
+        breadcrumb_items: [],
+        currentActivity: {},
+        loading: true,
+        subactivities: [],
+        countries: []
+      };
+    },
+
+    async mounted() {
+      let nace = this.$route.params.activity;
+      await this.$calls.getActivityStatistics(nace)
+        .then(response => {
+          this.subactivities = response.activityGroups ? response.activityGroups : [];
+          this.countries = response.placeGroups ? response.placeGroups : [];
+
+          function sortByCount(a, b) {
+            if (a.count < b.count) {
+              return 1;
             }
-          },
-          {
-            breakpoint: 520,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1
+            if (a.count > b.count) {
+              return -1;
             }
+            return 0;
           }
-        ]
-      },
-      colors: [
-        "#75A1F3",
-        "#FFBC6D",
-        "#F86DFF",
-        "#FF4A4A",
-        "#97CC04",
-        "#D8D8D8"
-      ],
-      breadcrumb_items: [],
-      currentActivity: {},
-      loading: true,
-      subactivities: [],
-      countries: []
-    };
-  },
+          this.subactivities.sort(sortByCount);
+          this.countries.sort(sortByCount);
+        });
 
-  async mounted() {
-    let nace = this.$route.params.activity;
-    await this.$calls.getActivityStatistics(nace)
-      .then(response => {
-        this.subactivities = response.activityGroups ? response.activityGroups : [];
-        this.countries = response.placeGroups ? response.placeGroups : [];
+      if (this.activities.length === 0) {
+        await this.$store.dispatch('fetchTopLevelStatistics');
+      }
+      this.currentActivity = await this.$calls.getActivityData(nace)
+        .then(response => response.selection);
+      this.addActivityInBreadcrumb;
+      this.loading = false;
+    },
 
-        function sortByCount(a, b) {
-          if (a.count < b.count) {
-            return 1;
-          }
-          if (a.count > b.count) {
-            return -1;
-          }
-          return 0;
-        }
-        this.subactivities.sort(sortByCount);
-        this.countries.sort(sortByCount);
-    });
-
-    if (this.activities.length === 0) {
-      await this.$store.dispatch('fetchTopLevelStatistics');
-    }
-    this.currentActivity = await this.$calls.getActivityData(nace)
-      .then(response => response.selection);
-    this.addActivityInBreadcrumb;
-    this.loading = false;
-  },
-
-  computed: {
+    computed: {
     ...mapState({
       activities: state => state.activitiesStatistics
     }),
-    activityNumberOfTriads: function () {
+    activityNumberOfTriads() {
       return Math.ceil(this.activities.length / 3);
     },
-    addActivityInBreadcrumb: function () {
+    addActivityInBreadcrumb() {
       if (!this.subregionTemplate) {
         this.breadcrumb_items = [
           {
-            text: "HOME",
-            to: { name: "index" },
+            text: 'HOME',
+            to: { name: 'index' }
           },
           {
-            text: "STATISTICS",
-            to: { name: "statistics" },
+            text: 'STATISTICS',
+            to: { name: 'statistics' }
           },
           {
-            text: "ACTIVITY",
-            active: true,
+            text: 'ACTIVITY',
+            active: true
           },
           {
             text: this.currentActivity.activity.label.toUpperCase(),
-            active: true,
+            active: true
           }
         ];
       }
     }
-  },
+    },
 
-  methods: {
-    percentage: function (count) {
-      return ((count / this.currentActivity.count) * 100).toFixed(1) === "0.0" ? 0.1 : Number(((count / this.currentActivity.count) * 100).toFixed(1));
-    },
-    arraySlice: function (start, end) {
-      return this.activities.slice(start * 3, 3 * end);
-    },
-    capitalizeTheFirstLetterOfEachWord: function (words) {
-      var separateWord = words.toLowerCase().split(" ");
-      for (var i = 0; i < separateWord.length; i++) {
-        separateWord[i] = separateWord[i].charAt(0).toUpperCase() + separateWord[i].substring(1);
+    methods: {
+      percentage(count) {
+        return ((count / this.currentActivity.count) * 100).toFixed(1) === '0.0' ? 0.1 : Number(((count / this.currentActivity.count) * 100).toFixed(1));
+      },
+      arraySlice(start, end) {
+        return this.activities.slice(start * 3, 3 * end);
+      },
+      capitalizeTheFirstLetterOfEachWord(words) {
+        let separateWord = words.toLowerCase().split(' ');
+        for (let i = 0; i < separateWord.length; i++) {
+          separateWord[i] = separateWord[i].charAt(0).toUpperCase() + separateWord[i].substring(1);
+        }
+        separateWord = separateWord.join(' ');
+        if (separateWord.length > 75) {
+          separateWord = separateWord.slice(0, 75) + '...';
+        }
+        return separateWord;
+      },
+      getImagePath(activity) {
+        return require(`../../../assets/img/icons/ic-${activity.activity.code.split(':')[1]}.png`);
       }
-      separateWord = separateWord.join(" ");
-      if (separateWord.length > 75) {
-        separateWord = separateWord.slice(0, 75) + "...";
-      }
-      return separateWord;
-    },
-    getImagePath: function (activity) {
-      return require(`../../../assets/img/icons/ic-${activity.activity.code.split(":")[1]}.png`);
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss" scoped>

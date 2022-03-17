@@ -16,10 +16,17 @@
     <section class="two-columns">
       <b-container>
         <b-row>
-          <b-col lg="3" xl="3" class="two-columns-sidebar">
+          <b-col
+            lg="3"
+            xl="3"
+            class="two-columns-sidebar"
+          >
             <div class="ads">
               <div class="ads-learn">
-                <img class="decor" src="../../assets/img/ic-ads.png" />
+                <img
+                  class="decor"
+                  src="../../assets/img/ic-ads.png"
+                >
                 <p>
                   STIRDATA is an online platform for searching, navigating,
                   synthetically analyzing, and visualizing company related open
@@ -28,13 +35,18 @@
                 <nav class="heronav">
                   <ul>
                     <li>
-                      <b-link class="button" :to="{ name: 'about' }">Learn More</b-link>
+                      <b-link
+                        class="button"
+                        :to="{ name: 'about' }"
+                      >
+                        Learn More
+                      </b-link>
                     </li>
                   </ul>
                 </nav>
               </div>
               <div class="ads-explore">
-                <h2>Explore <br />Companies</h2>
+                <h2>Explore <br>Companies</h2>
                 <p>
                   Search, Navigate, Analyze, and Visualizing Company related
                   Open Data Content
@@ -42,17 +54,32 @@
                 <nav class="heronav">
                   <ul>
                     <li>
-                      <b-link class="button" :to="{ name: 'search' }">Explore Now</b-link>
+                      <b-link
+                        class="button"
+                        :to="{ name: 'search' }"
+                      >
+                        Explore Now
+                      </b-link>
                     </li>
                   </ul>
                 </nav>
               </div>
             </div>
           </b-col>
-          <b-col lg="9" xl="9" class="two-columns-content">
+          <b-col
+            lg="9"
+            xl="9"
+            class="two-columns-content"
+          >
             <ul class="partnerlist">
               <li>
-                <a href="https://www.ntua.gr/" target="_blank"><img class="logos" src="../../assets/img/logo-ntua.png" /></a>
+                <a
+                  href="https://www.ntua.gr/"
+                  target="_blank"
+                ><img
+                  class="logos"
+                  src="../../assets/img/logo-ntua.png"
+                ></a>
                 <h2>
                   National Technical University of Athens<span class="coordinator">COORDINATOR</span>
                 </h2>
@@ -66,7 +93,13 @@
                 </p>
               </li>
               <li>
-                <a href="https://www.mff.cuni.cz/en" target="_blank"><img class="logos" src="../../assets/img/logo-karlova.jpeg" /></a>
+                <a
+                  href="https://www.mff.cuni.cz/en"
+                  target="_blank"
+                ><img
+                  class="logos"
+                  src="../../assets/img/logo-karlova.jpeg"
+                ></a>
                 <h2>Univerzita Karlova</h2>
                 <p>
                   The School of Computer Science at the Faculty of Mathematics and Physics at Charles University brings its expertise with linked and open data, data interoperability, semantic data
@@ -75,17 +108,32 @@
                 </p>
               </li>
               <li>
-                <a href="https://www.law.muni.cz/content/en" target="_blank"><img class="logos" src="../../assets/img/logo-masarykova.jpeg" /></a>
+                <a
+                  href="https://www.law.muni.cz/content/en"
+                  target="_blank"
+                ><img
+                  class="logos"
+                  src="../../assets/img/logo-masarykova.jpeg"
+                ></a>
                 <h2>Masarykova Univerzita</h2>
                 <p>
-                  Masaryk University is the second-largest public university in the Czech Republic. The <a href="http://cyber.law.muni.cz/" target="_blank">Institute of Law and Technology</a> is an
+                  Masaryk University is the second-largest public university in the Czech Republic. The <a
+                    href="http://cyber.law.muni.cz/"
+                    target="_blank"
+                  >Institute of Law and Technology</a> is an
                   academic institute of the Faculty of Law of Masaryk University and the first academic centre in the Czech Republic that focuses on technology law. For over ten years, the Institute
                   of Law and Technology team has been involved in research and teaching of topics relating to technology law, such as copyright, personal data protection, e-government, PSI,
                   cybercrime, cyber security, legal informatics and others.
                 </p>
               </li>
               <li>
-                <a href="https://www.digdir.no/887" target="_blank"><img class="logos" src="../../assets/img/logo-digdir.jpeg" /></a>
+                <a
+                  href="https://www.digdir.no/887"
+                  target="_blank"
+                ><img
+                  class="logos"
+                  src="../../assets/img/logo-digdir.jpeg"
+                ></a>
                 <h2>DIGITALISERINGSDIREKTORATET</h2>
                 <p>
                   The Norwegian Digitalisation Agency is the Norwegian government’s foremost tool for faster and more coordinated digitalisation of the Norwegian public sector. The Norwegian Digitalisation
@@ -94,7 +142,13 @@
                 </p>
               </li>
               <li>
-                <a href="https://www.brreg.no/" target="_blank"><img class="logos" src="../../assets/img/logo-bronnoysundregistrene.jpeg" /></a>
+                <a
+                  href="https://www.brreg.no/"
+                  target="_blank"
+                ><img
+                  class="logos"
+                  src="../../assets/img/logo-bronnoysundregistrene.jpeg"
+                ></a>
                 <h2>Registerenheten I Bronnoysund</h2>
                 <p>
                   The Brønnøysund Register Centre develops and operates many of the nation’s most important business registers and provides national guidance and services for businesses. The Brønnøysund
@@ -104,7 +158,13 @@
                 </p>
               </li>
               <li>
-                <a href="https://mindigital.gr/" target="_blank"><img class="logos" src="../../assets/img/logo-mindigital.jpeg" /></a>
+                <a
+                  href="https://mindigital.gr/"
+                  target="_blank"
+                ><img
+                  class="logos"
+                  src="../../assets/img/logo-mindigital.jpeg"
+                ></a>
                 <h2>Ministry of Digital Government</h2>
                 <p>
                   The Ministry of Digital Governance is a new unit of public administration which for the first time brings together all the critical IT and telecommunications structures related to
@@ -116,7 +176,13 @@
                 </p>
               </li>
               <li>
-                <a href="https://www.acci.gr/" target="_blank"><img class="logos" src="../../assets/img/logo-acci.jpeg" /></a>
+                <a
+                  href="https://www.acci.gr/"
+                  target="_blank"
+                ><img
+                  class="logos"
+                  src="../../assets/img/logo-acci.jpeg"
+                ></a>
                 <h2>Athens Chamber of Commerce and Industry</h2>
                 <p>
                   The Athens Chamber of Commerce and Industry (ACCI) is a public agency founded in 1919. It promotes trade by acting as an advisor to the Greek Government, offering educational services
@@ -126,7 +192,13 @@
                 </p>
               </li>
               <li>
-                <a href="http://think-code.io/" target="_blank"><img class="logos" src="../../assets/img/logo-thinkcode.jpeg" /></a>
+                <a
+                  href="http://think-code.io/"
+                  target="_blank"
+                ><img
+                  class="logos"
+                  src="../../assets/img/logo-thinkcode.jpeg"
+                ></a>
                 <h2>Thinkcode Ltd.</h2>
                 <p>
                   ThinkCode is a start-up company that designs and develops custom intelligent solutions and high-end software products by adopting and applying cutting-edge Artificial Intelligence
@@ -146,21 +218,21 @@
 <script>
   export default {
     components: {
-      Breadcrumb: () => import("../../components/Breadcrumb"),
+      Breadcrumb: () => import('../../components/Breadcrumb')
     },
 
     data() {
       return {
         breadcrumb_items: [
           {
-            text: "HOME",
-            to: { name: "index" },
+            text: 'HOME',
+            to: { name: 'index' }
           },
           {
-            text: "PARTNERS",
-            active: true,
-          },
-        ],
+            text: 'PARTNERS',
+            active: true
+          }
+        ]
       };
     },
 

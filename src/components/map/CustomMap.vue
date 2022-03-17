@@ -9,49 +9,49 @@
     data() {
       return {
         countries: [
-          { id: "BE", name: "Belgium",        fill: "#2b3595", hasInfo: true },
-          { id: "GB", name: "United Kingdom", fill: "#2b3595", hasInfo: true },
-          { id: "CZ", name: "Czechia",        fill: "#2b3595", hasInfo: true },
-          { id: "GR", name: "Greece",         fill: "#2b3595", hasInfo: true },
-          { id: "NO", name: "Norway",         fill: "#2b3595", hasInfo: true }
+          { id: 'BE', name: 'Belgium',        fill: '#2b3595', hasInfo: true },
+          { id: 'GB', name: 'United Kingdom', fill: '#2b3595', hasInfo: true },
+          { id: 'CZ', name: 'Czechia',        fill: '#2b3595', hasInfo: true },
+          { id: 'GR', name: 'Greece',         fill: '#2b3595', hasInfo: true },
+          { id: 'NO', name: 'Norway',         fill: '#2b3595', hasInfo: true }
         ]
       };
     },
 
     mounted() {
       let { am4core, am4maps, europeHigh, am4charts } = this.$am4core();
-      let nutsFocus = "";
+      let nutsFocus = '';
       // Create map instance
-      var chart = am4core.create("detailedMap", am4maps.MapChart);
+      let chart = am4core.create('detailedMap', am4maps.MapChart);
       // Set map definition
       chart.geodata = europeHigh;
       // Set projection
       chart.projection = new am4maps.projections.Miller();
       // Create map polygon series
-      var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+      let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
 
       chart.zoomControl = new am4maps.ZoomControl();
-      chart.zoomControl.plusButton.background.fill = am4core.color("#5C5CFE");
-      chart.zoomControl.plusButton.fill = am4core.color("#dbd3d3");
-      chart.zoomControl.minusButton.background.fill = am4core.color("#5C5CFE");
-      chart.zoomControl.minusButton.fill = am4core.color("#dbd3d3");
+      chart.zoomControl.plusButton.background.fill = am4core.color('#5C5CFE');
+      chart.zoomControl.plusButton.fill = am4core.color('#dbd3d3');
+      chart.zoomControl.minusButton.background.fill = am4core.color('#5C5CFE');
+      chart.zoomControl.minusButton.fill = am4core.color('#dbd3d3');
 
-      var homeButton = new am4core.Button();
-      homeButton.background.fill = am4core.color("#5C5CFE");
-      homeButton.fill = am4core.color("#dbd3d3");
-      homeButton.tooltipText = "Zoom back to Europe";
-      homeButton.tooltipColorSource = am4core.color("#5C5CFE");
-      homeButton.events.on("hit", function () {
-        if (nutsFocus.includes("EL")) {
+      let homeButton = new am4core.Button();
+      homeButton.background.fill = am4core.color('#5C5CFE');
+      homeButton.fill = am4core.color('#dbd3d3');
+      homeButton.tooltipText = 'Zoom back to Europe';
+      homeButton.tooltipColorSource = am4core.color('#5C5CFE');
+      homeButton.events.on('hit', () => {
+        if (nutsFocus.includes('EL')) {
           regionSeries.hide();
-          nutsFocus = "GR";
-          chart.zoomToMapObject( polygonSeries.getPolygonById("GR"))
+          nutsFocus = 'GR';
+          chart.zoomToMapObject(polygonSeries.getPolygonById('GR'));
           return;
-        } else if (nutsFocus !== "") {
+        } else if (nutsFocus !== '') {
           countrySeries.hide();
-          polygonSeries.getPolygonById("GR").show();
+          polygonSeries.getPolygonById('GR').show();
 
-          nutsFocus = "";
+          nutsFocus = '';
         }
         chart.goHome();
       });
@@ -59,56 +59,56 @@
       homeButton.padding(7, 5, 7, 5);
       homeButton.width = 30;
       homeButton.icon.path =
-        "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+        'M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8';
       homeButton.marginBottom = 10;
       homeButton.parent = chart.zoomControl;
       homeButton.insertBefore(chart.zoomControl.plusButton);
       // Make map load polygon (like country names) data from GeoJSON
       polygonSeries.useGeodata = true;
       // Configure series
-      var polygonTemplate = polygonSeries.mapPolygons.template;
-      polygonTemplate.tooltipText = "{name}";
-      polygonTemplate.fill = am4core.color("#4f4f4f");
+      let polygonTemplate = polygonSeries.mapPolygons.template;
+      polygonTemplate.tooltipText = '{name}';
+      polygonTemplate.fill = am4core.color('#4f4f4f');
       // Create country specific series (but hide it for now)
       var countrySeries = chart.series.push(new am4maps.MapPolygonSeries());
       countrySeries.useGeodata = true;
       countrySeries.hide();
 
-      var countryPolygon = countrySeries.mapPolygons.template;
-      countryPolygon.tooltipText = "{name}";
+      let countryPolygon = countrySeries.mapPolygons.template;
+      countryPolygon.tooltipText = '{name}';
       countryPolygon.nonScalingStroke = true;
       countryPolygon.strokeOpacity = 0.5;
-      countryPolygon.fill = am4core.color("#5C5CFE");
+      countryPolygon.fill = am4core.color('#5C5CFE');
 
-      var hs = countryPolygon.states.create("hover");
+      var hs = countryPolygon.states.create('hover');
       hs.properties.fill = chart.colors.getIndex(5);
 
       var regionSeries = chart.series.push(new am4maps.MapPolygonSeries());
       regionSeries.useGeodata = true;
       regionSeries.hide();
 
-      var regionPolygon = regionSeries.mapPolygons.template;
-      regionPolygon.tooltipText = "{name}";
+      let regionPolygon = regionSeries.mapPolygons.template;
+      regionPolygon.tooltipText = '{name}';
       regionPolygon.nonScalingStroke = true;
       regionPolygon.strokeOpacity = 0.5;
-      regionPolygon.fill = am4core.color("#f67444");
+      regionPolygon.fill = am4core.color('#f67444');
 
-      var hrs = regionPolygon.states.create("hover");
+      let hrs = regionPolygon.states.create('hover');
       hrs.properties.fill = chart.colors.getIndex(4);
-      var el3Nuts, el4Nuts, el5Nuts, el6Nuts;
+      let el3Nuts, el4Nuts, el5Nuts, el6Nuts;
 
-      countryPolygon.events.on("hit", function (ev) {
+      countryPolygon.events.on('hit', (ev) => {
         ev.target.series.chart.zoomToMapObject(ev.target);
-        var id = ev.target.dataItem.dataContext.id;
+        let id = ev.target.dataItem.dataContext.id;
 
-        if (id.includes("EL3")) {
+        if (id.includes('EL3')) {
           el3Nuts = {
-            type: "FeatureCollection",
+            type: 'FeatureCollection',
             features: [
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -159,8 +159,8 @@
                         [24.03208, 37.66481],
                         [23.9499, 37.66342],
                         [23.88524, 37.77298],
-                        [23.74359, 37.85381],
-                      ],
+                        [23.74359, 37.85381]
+                      ]
                     ],
                     [
                       [
@@ -171,8 +171,8 @@
                         [23.41588, 37.76177],
                         [23.48549, 37.77571],
                         [23.56725, 37.76681],
-                        [23.5216, 37.7006],
-                      ],
+                        [23.5216, 37.7006]
+                      ]
                     ],
                     [
                       [
@@ -184,8 +184,8 @@
                         [23.54054, 37.35225],
                         [23.50661, 37.34256],
                         [23.50094, 37.31856],
-                        [23.44681, 37.3153],
-                      ],
+                        [23.44681, 37.3153]
+                      ]
                     ],
                     [
                       [
@@ -206,8 +206,8 @@
                         [23.50202, 37.51952],
                         [23.4775, 37.49013],
                         [23.50368, 37.4373],
-                        [23.42442, 37.4117],
-                      ],
+                        [23.42442, 37.4117]
+                      ]
                     ],
                     [
                       [
@@ -216,8 +216,8 @@
                         [23.31399, 37.68235],
                         [23.33883, 37.71646],
                         [23.37177, 37.71619],
-                        [23.3809, 37.69399],
-                      ],
+                        [23.3809, 37.69399]
+                      ]
                     ],
                     [
                       [
@@ -225,8 +225,8 @@
                         [23.28735, 37.31109],
                         [23.27734, 37.33077],
                         [23.33177, 37.36185],
-                        [23.34384, 37.31593],
-                      ],
+                        [23.34384, 37.31593]
+                      ]
                     ],
                     [
                       [
@@ -234,8 +234,8 @@
                         [23.31074, 35.82921],
                         [23.27339, 35.87639],
                         [23.3175, 35.89177],
-                        [23.33502, 35.84996],
-                      ],
+                        [23.33502, 35.84996]
+                      ]
                     ],
                     [
                       [
@@ -244,8 +244,8 @@
                         [23.12116, 37.23809],
                         [23.10464, 37.26204],
                         [23.10976, 37.28408],
-                        [23.165, 37.26551],
-                      ],
+                        [23.165, 37.26551]
+                      ]
                     ],
                     [
                       [
@@ -265,33 +265,32 @@
                         [22.95121, 36.38107],
                         [23.00181, 36.3091],
                         [23.04793, 36.2872],
-                        [23.11534, 36.23557],
-                      ],
-                    ],
-                  ],
+                        [23.11534, 36.23557]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL30",
-                  id: "EL30",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL30',
+                  id: 'EL30',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL30",
+                id: 'EL30'
               }
-            ],
+            ]
           };
           regionSeries.geodata = el3Nuts;
-          nutsFocus = "EL3";
+          nutsFocus = 'EL3';
           regionSeries.show();
-        }
-        else if (id.includes("EL4")) {
+        } else if (id.includes('EL4')) {
           el4Nuts = {
-            type: "FeatureCollection",
+            type: 'FeatureCollection',
             features: [
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -304,8 +303,8 @@
                         [26.7317, 37.80935],
                         [27.02543, 37.77561],
                         [27.05128, 37.71014],
-                        [27.02543, 37.70611],
-                      ],
+                        [27.02543, 37.70611]
+                      ]
                     ],
                     [
                       [
@@ -323,8 +322,8 @@
                         [26.4073, 39.33318],
                         [26.38175, 39.27249],
                         [26.52981, 39.16467],
-                        [26.60348, 39.01879],
-                      ],
+                        [26.60348, 39.01879]
+                      ]
                     ],
                     [
                       [
@@ -332,8 +331,8 @@
                         [26.51925, 37.59281],
                         [26.49434, 37.63148],
                         [26.51233, 37.65881],
-                        [26.55854, 37.60219],
-                      ],
+                        [26.55854, 37.60219]
+                      ]
                     ],
                     [
                       [
@@ -341,8 +340,8 @@
                         [26.49089, 37.55517],
                         [26.42957, 37.56517],
                         [26.42195, 37.59028],
-                        [26.50699, 37.58695],
-                      ],
+                        [26.50699, 37.58695]
+                      ]
                     ],
                     [
                       [
@@ -358,8 +357,8 @@
                         [26.20063, 37.62796],
                         [26.2984, 37.68074],
                         [26.34452, 37.6835],
-                        [26.34095, 37.65545],
-                      ],
+                        [26.34095, 37.65545]
+                      ]
                     ],
                     [
                       [
@@ -368,8 +367,8 @@
                         [26.18916, 38.53219],
                         [26.20728, 38.54717],
                         [26.25047, 38.54135],
-                        [26.25598, 38.5168],
-                      ],
+                        [26.25598, 38.5168]
+                      ]
                     ],
                     [
                       [
@@ -401,8 +400,8 @@
                         [25.83276, 38.54296],
                         [25.85106, 38.57368],
                         [26.0033, 38.60344],
-                        [26.06291, 38.5913],
-                      ],
+                        [26.06291, 38.5913]
+                      ]
                     ],
                     [
                       [
@@ -411,8 +410,8 @@
                         [25.56725, 38.54408],
                         [25.54138, 38.58626],
                         [25.59085, 38.60958],
-                        [25.62085, 38.58875],
-                      ],
+                        [25.62085, 38.58875]
+                      ]
                     ],
                     [
                       [
@@ -440,8 +439,8 @@
                         [25.36869, 40.00183],
                         [25.42422, 40.02433],
                         [25.44349, 39.98117],
-                        [25.41722, 39.96898],
-                      ],
+                        [25.41722, 39.96898]
+                      ]
                     ],
                     [
                       [
@@ -450,24 +449,24 @@
                         [24.9707, 39.50314],
                         [24.97763, 39.53505],
                         [25.00602, 39.56206],
-                        [25.05695, 39.53105],
-                      ],
-                    ],
-                  ],
+                        [25.05695, 39.53105]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL41",
-                  id: "EL41",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL41',
+                  id: 'EL41',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL41",
+                id: 'EL41'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -476,8 +475,8 @@
                         [29.55394, 36.13053],
                         [29.56395, 36.16803],
                         [29.58638, 36.17081],
-                        [29.60853, 36.142],
-                      ],
+                        [29.60853, 36.142]
+                      ]
                     ],
                     [
                       [
@@ -510,8 +509,8 @@
                         [28.13743, 36.18748],
                         [28.09879, 36.17617],
                         [28.06955, 36.10628],
-                        [28.09832, 36.10392],
-                      ],
+                        [28.09832, 36.10392]
+                      ]
                     ],
                     [
                       [
@@ -521,8 +520,8 @@
                         [27.79539, 36.56609],
                         [27.78953, 36.61634],
                         [27.82418, 36.64385],
-                        [27.86922, 36.60146],
-                      ],
+                        [27.86922, 36.60146]
+                      ]
                     ],
                     [
                       [
@@ -530,8 +529,8 @@
                         [27.63105, 36.21256],
                         [27.56317, 36.21551],
                         [27.55409, 36.2263],
-                        [27.61221, 36.25919],
-                      ],
+                        [27.61221, 36.25919]
+                      ]
                     ],
                     [
                       [
@@ -542,8 +541,8 @@
                         [27.31999, 36.41376],
                         [27.29372, 36.43342],
                         [27.30078, 36.45967],
-                        [27.35913, 36.48017],
-                      ],
+                        [27.35913, 36.48017]
+                      ]
                     ],
                     [
                       [
@@ -557,8 +556,8 @@
                         [27.13355, 36.87449],
                         [27.26424, 36.9068],
                         [27.32711, 36.87897],
-                        [27.32713, 36.86252],
-                      ],
+                        [27.32713, 36.86252]
+                      ]
                     ],
                     [
                       [
@@ -587,8 +586,8 @@
                         [27.21834, 35.54388],
                         [27.20891, 35.50861],
                         [27.24118, 35.49417],
-                        [27.17213, 35.45786],
-                      ],
+                        [27.17213, 35.45786]
+                      ]
                     ],
                     [
                       [
@@ -597,8 +596,8 @@
                         [27.13246, 36.56592],
                         [27.13089, 36.60747],
                         [27.17679, 36.61992],
-                        [27.20837, 36.58623],
-                      ],
+                        [27.20837, 36.58623]
+                      ]
                     ],
                     [
                       [
@@ -607,8 +606,8 @@
                         [27.11151, 36.9485],
                         [27.12823, 36.96357],
                         [27.17984, 36.95366],
-                        [27.15737, 36.91885],
-                      ],
+                        [27.15737, 36.91885]
+                      ]
                     ],
                     [
                       [
@@ -618,8 +617,8 @@
                         [26.9301, 37.05759],
                         [27.03711, 37.0096],
                         [27.04796, 36.99559],
-                        [27.01969, 36.94725],
-                      ],
+                        [27.01969, 36.94725]
+                      ]
                     ],
                     [
                       [
@@ -628,8 +627,8 @@
                         [26.94516, 37.45278],
                         [26.92594, 37.47474],
                         [26.97732, 37.48902],
-                        [27.00447, 37.47947],
-                      ],
+                        [27.00447, 37.47947]
+                      ]
                     ],
                     [
                       [
@@ -638,8 +637,8 @@
                         [26.84806, 35.3587],
                         [26.90049, 35.41764],
                         [26.97673, 35.42879],
-                        [26.97283, 35.39369],
-                      ],
+                        [26.97283, 35.39369]
+                      ]
                     ],
                     [
                       [
@@ -652,8 +651,8 @@
                         [26.82116, 37.20075],
                         [26.84958, 37.18679],
                         [26.85338, 37.1617],
-                        [26.88698, 37.10157],
-                      ],
+                        [26.88698, 37.10157]
+                      ]
                     ],
                     [
                       [
@@ -662,8 +661,8 @@
                         [26.71628, 37.297],
                         [26.70864, 37.32002],
                         [26.72174, 37.32904],
-                        [26.78988, 37.30194],
-                      ],
+                        [26.78988, 37.30194]
+                      ]
                     ],
                     [
                       [
@@ -671,8 +670,8 @@
                         [26.75235, 37.35134],
                         [26.70523, 37.37507],
                         [26.72306, 37.40865],
-                        [26.77719, 37.37201],
-                      ],
+                        [26.77719, 37.37201]
+                      ]
                     ],
                     [
                       [
@@ -680,8 +679,8 @@
                         [26.66882, 36.31433],
                         [26.63969, 36.35834],
                         [26.6894, 36.37069],
-                        [26.70305, 36.33583],
-                      ],
+                        [26.70305, 36.33583]
+                      ]
                     ],
                     [
                       [
@@ -692,8 +691,8 @@
                         [26.5728, 37.37268],
                         [26.59162, 37.35825],
                         [26.56963, 37.32262],
-                        [26.5755, 37.27857],
-                      ],
+                        [26.5755, 37.27857]
+                      ]
                     ],
                     [
                       [
@@ -701,8 +700,8 @@
                         [26.38959, 36.5664],
                         [26.39174, 36.63639],
                         [26.44705, 36.60042],
-                        [26.40366, 36.5664],
-                      ],
+                        [26.40366, 36.5664]
+                      ]
                     ],
                     [
                       [
@@ -711,8 +710,8 @@
                         [26.29307, 36.5218],
                         [26.26936, 36.58319],
                         [26.29175, 36.59787],
-                        [26.36771, 36.56685],
-                      ],
+                        [26.36771, 36.56685]
+                      ]
                     ],
                     [
                       [
@@ -729,8 +728,8 @@
                         [26.04724, 36.89977],
                         [25.97655, 36.87979],
                         [25.93645, 36.85316],
-                        [25.87062, 36.78969],
-                      ],
+                        [25.87062, 36.78969]
+                      ]
                     ],
                     [
                       [
@@ -738,8 +737,8 @@
                         [25.83302, 37.07915],
                         [25.78082, 37.10458],
                         [25.80786, 37.13098],
-                        [25.84619, 37.13029],
-                      ],
+                        [25.84619, 37.13029]
+                      ]
                     ],
                     [
                       [
@@ -748,8 +747,8 @@
                         [25.72605, 36.36585],
                         [25.76572, 36.40491],
                         [25.82609, 36.37137],
-                        [25.82675, 36.35508],
-                      ],
+                        [25.82675, 36.35508]
+                      ]
                     ],
                     [
                       [
@@ -758,8 +757,8 @@
                         [25.62913, 36.87047],
                         [25.61906, 36.89326],
                         [25.64564, 36.91645],
-                        [25.68053, 36.90443],
-                      ],
+                        [25.68053, 36.90443]
+                      ]
                     ],
                     [
                       [
@@ -771,8 +770,8 @@
                         [25.51677, 37.18515],
                         [25.53935, 37.1617],
                         [25.59609, 37.10276],
-                        [25.54363, 36.96506],
-                      ],
+                        [25.54363, 36.96506]
+                      ]
                     ],
                     [
                       [
@@ -782,8 +781,8 @@
                         [25.4955, 36.87846],
                         [25.49965, 36.89936],
                         [25.52531, 36.90916],
-                        [25.54416, 36.86788],
-                      ],
+                        [25.54416, 36.86788]
+                      ]
                     ],
                     [
                       [
@@ -794,8 +793,8 @@
                         [25.41433, 36.43082],
                         [25.43735, 36.454],
                         [25.4873, 36.40503],
-                        [25.48616, 36.36049],
-                      ],
+                        [25.48616, 36.36049]
+                      ]
                     ],
                     [
                       [
@@ -803,8 +802,8 @@
                         [25.43216, 36.81801],
                         [25.42688, 36.84634],
                         [25.47551, 36.87607],
-                        [25.48306, 36.8285],
-                      ],
+                        [25.48306, 36.8285]
+                      ]
                     ],
                     [
                       [
@@ -816,8 +815,8 @@
                         [25.46001, 37.4735],
                         [25.45747, 37.44524],
                         [25.42472, 37.44141],
-                        [25.40031, 37.41534],
-                      ],
+                        [25.40031, 37.41534]
+                      ]
                     ],
                     [
                       [
@@ -828,8 +827,8 @@
                         [25.32009, 36.42017],
                         [25.33765, 36.46503],
                         [25.36743, 36.48678],
-                        [25.43047, 36.47783],
-                      ],
+                        [25.43047, 36.47783]
+                      ]
                     ],
                     [
                       [
@@ -841,8 +840,8 @@
                         [25.33062, 36.75549],
                         [25.40258, 36.71368],
                         [25.3838, 36.69515],
-                        [25.38662, 36.65489],
-                      ],
+                        [25.38662, 36.65489]
+                      ]
                     ],
                     [
                       [
@@ -858,8 +857,8 @@
                         [25.21934, 37.14017],
                         [25.25554, 37.1284],
                         [25.2658, 37.15851],
-                        [25.2923, 37.14138],
-                      ],
+                        [25.2923, 37.14138]
+                      ]
                     ],
                     [
                       [
@@ -872,8 +871,8 @@
                         [25.07964, 37.64335],
                         [25.20694, 37.63408],
                         [25.25423, 37.61023],
-                        [25.23476, 37.53636],
-                      ],
+                        [25.23476, 37.53636]
+                      ]
                     ],
                     [
                       [
@@ -882,8 +881,8 @@
                         [25.20186, 37.39737],
                         [25.20141, 37.41762],
                         [25.22109, 37.45531],
-                        [25.25032, 37.42286],
-                      ],
+                        [25.25032, 37.42286]
+                      ]
                     ],
                     [
                       [
@@ -892,8 +891,8 @@
                         [25.09049, 36.69335],
                         [25.14149, 36.71938],
                         [25.17562, 36.70182],
-                        [25.13207, 36.65731],
-                      ],
+                        [25.13207, 36.65731]
+                      ]
                     ],
                     [
                       [
@@ -903,8 +902,8 @@
                         [25.01978, 37.0078],
                         [25.05492, 37.03883],
                         [25.08053, 37.0377],
-                        [25.07344, 36.98427],
-                      ],
+                        [25.07344, 36.98427]
+                      ]
                     ],
                     [
                       [
@@ -918,8 +917,8 @@
                         [24.82379, 37.95674],
                         [24.83892, 37.91881],
                         [24.94568, 37.88966],
-                        [24.98795, 37.76034],
-                      ],
+                        [24.98795, 37.76034]
+                      ]
                     ],
                     [
                       [
@@ -934,8 +933,8 @@
                         [24.94443, 37.48734],
                         [24.93722, 37.43294],
                         [24.97363, 37.43037],
-                        [24.97224, 37.40116],
-                      ],
+                        [24.97224, 37.40116]
+                      ]
                     ],
                     [
                       [
@@ -943,8 +942,8 @@
                         [24.95495, 36.58546],
                         [24.91156, 36.59189],
                         [24.89075, 36.62751],
-                        [24.95833, 36.62411],
-                      ],
+                        [24.95833, 36.62411]
+                      ]
                     ],
                     [
                       [
@@ -952,8 +951,8 @@
                         [24.86145, 36.61833],
                         [24.82143, 36.66439],
                         [24.85468, 36.67992],
-                        [24.89322, 36.64718],
-                      ],
+                        [24.89322, 36.64718]
+                      ]
                     ],
                     [
                       [
@@ -965,8 +964,8 @@
                         [24.698, 37.02671],
                         [24.75194, 36.96506],
                         [24.76577, 36.94925],
-                        [24.72765, 36.91036],
-                      ],
+                        [24.72765, 36.91036]
+                      ]
                     ],
                     [
                       [
@@ -974,8 +973,8 @@
                         [24.74732, 37.58932],
                         [24.68486, 37.6066],
                         [24.70471, 37.63365],
-                        [24.74743, 37.63619],
-                      ],
+                        [24.74743, 37.63619]
+                      ]
                     ],
                     [
                       [
@@ -983,8 +982,8 @@
                         [24.65829, 36.74896],
                         [24.60871, 36.74907],
                         [24.59345, 36.7833],
-                        [24.63998, 36.79474],
-                      ],
+                        [24.63998, 36.79474]
+                      ]
                     ],
                     [
                       [
@@ -1009,8 +1008,8 @@
                         [24.55702, 36.84122],
                         [24.59875, 36.82491],
                         [24.58508, 36.78977],
-                        [24.55171, 36.77589],
-                      ],
+                        [24.55171, 36.77589]
+                      ]
                     ],
                     [
                       [
@@ -1022,8 +1021,8 @@
                         [24.51121, 37.20709],
                         [24.53358, 37.19361],
                         [24.53305, 37.1617],
-                        [24.53248, 37.12761],
-                      ],
+                        [24.53248, 37.12761]
+                      ]
                     ],
                     [
                       [
@@ -1038,8 +1037,8 @@
                         [24.42796, 37.44322],
                         [24.46826, 37.42512],
                         [24.4834, 37.40086],
-                        [24.42834, 37.33548],
-                      ],
+                        [24.42834, 37.33548]
+                      ]
                     ],
                     [
                       [
@@ -1053,8 +1052,8 @@
                         [24.41092, 37.6554],
                         [24.38836, 37.60702],
                         [24.3268, 37.55244],
-                        [24.29405, 37.52341],
-                      ],
+                        [24.29405, 37.52341]
+                      ]
                     ],
                     [
                       [
@@ -1062,8 +1061,8 @@
                         [24.24504, 36.75291],
                         [24.2062, 36.79885],
                         [24.23384, 36.81805],
-                        [24.26854, 36.7966],
-                      ],
+                        [24.26854, 36.7966]
+                      ]
                     ],
                     [
                       [
@@ -1071,24 +1070,24 @@
                         [24.13312, 37.68479],
                         [24.10769, 37.69438],
                         [24.14632, 37.77158],
-                        [24.162, 37.74578],
-                      ],
-                    ],
-                  ],
+                        [24.162, 37.74578]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL42",
-                  id: "EL42",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL42',
+                  id: 'EL42',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL42",
+                id: 'EL42'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -1136,8 +1135,8 @@
                         [24.17313, 35.53633],
                         [24.14477, 35.48545],
                         [24.22869, 35.4557],
-                        [24.31741, 35.35377],
-                      ],
+                        [24.31741, 35.35377]
+                      ]
                     ],
                     [
                       [
@@ -1145,8 +1144,8 @@
                         [26.19418, 35.30395],
                         [26.14429, 35.33051],
                         [26.16993, 35.36549],
-                        [26.1995, 35.3568],
-                      ],
+                        [26.1995, 35.3568]
+                      ]
                     ],
                     [
                       [
@@ -1154,8 +1153,8 @@
                         [25.24779, 35.41806],
                         [25.18837, 35.44706],
                         [25.21144, 35.47656],
-                        [25.2529, 35.4542],
-                      ],
+                        [25.2529, 35.4542]
+                      ]
                     ],
                     [
                       [
@@ -1164,33 +1163,32 @@
                         [24.07261, 34.82483],
                         [24.04278, 34.85371],
                         [24.07261, 34.87158],
-                        [24.11839, 34.85153],
-                      ],
-                    ],
-                  ],
+                        [24.11839, 34.85153]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL43",
-                  id: "EL43",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL43',
+                  id: 'EL43',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL43",
+                id: 'EL43'
               }
-            ],
+            ]
           };
           regionSeries.geodata = el4Nuts;
-          nutsFocus = "EL4";
+          nutsFocus = 'EL4';
           regionSeries.show();
-        }
-        else if (id.includes("EL5")) {
+        } else if (id.includes('EL5')) {
           el5Nuts = {
-            type: "FeatureCollection",
+            type: 'FeatureCollection',
             features: [
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -1261,8 +1259,8 @@
                         [26.34274, 40.94879],
                         [26.2377, 40.88653],
                         [26.12118, 40.75153],
-                        [26.03276, 40.73026],
-                      ],
+                        [26.03276, 40.73026]
+                      ]
                     ],
                     [
                       [
@@ -1274,8 +1272,8 @@
                         [25.56513, 40.51042],
                         [25.65747, 40.49345],
                         [25.69971, 40.46409],
-                        [25.69694, 40.42256],
-                      ],
+                        [25.69694, 40.42256]
+                      ]
                     ],
                     [
                       [
@@ -1288,24 +1286,24 @@
                         [24.568, 40.76024],
                         [24.64716, 40.79437],
                         [24.75108, 40.75186],
-                        [24.77701, 40.61676],
-                      ],
-                    ],
-                  ],
+                        [24.77701, 40.61676]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL51",
-                  id: "EL51",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL51',
+                  id: 'EL51',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL51",
+                id: 'EL51'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -1397,8 +1395,8 @@
                         [23.29336, 41.39755],
                         [23.34654, 41.37369],
                         [23.49636, 41.40399],
-                        [23.62422, 41.37573],
-                      ],
+                        [23.62422, 41.37573]
+                      ]
                     ],
                     [
                       [
@@ -1422,24 +1420,24 @@
                         [23.49289, 40.03507],
                         [23.53286, 40.01691],
                         [23.67453, 39.97326],
-                        [23.68003, 39.97157],
-                      ],
-                    ],
-                  ],
+                        [23.68003, 39.97157]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL52",
-                  id: "EL52",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL52',
+                  id: 'EL52',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL52",
+                id: 'EL52'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "Polygon",
+                  type: 'Polygon',
                   coordinates: [
                     [
                       [21.82179, 40.69669],
@@ -1482,23 +1480,23 @@
                       [21.78738, 40.93113],
                       [21.80408, 40.88637],
                       [21.71607, 40.85466],
-                      [21.82179, 40.69669],
-                    ],
-                  ],
+                      [21.82179, 40.69669]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL53",
-                  id: "EL53",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL53',
+                  id: 'EL53',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL53",
+                id: 'EL53'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "Polygon",
+                  type: 'Polygon',
                   coordinates: [
                     [
                       [21.2956, 39.85746],
@@ -1559,32 +1557,31 @@
                       [21.06185, 39.97741],
                       [21.10115, 39.89377],
                       [21.13539, 39.88738],
-                      [21.2956, 39.85746],
-                    ],
-                  ],
+                      [21.2956, 39.85746]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL54",
-                  id: "EL54",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL54',
+                  id: 'EL54',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL54",
+                id: 'EL54'
               }
-            ],
+            ]
           };
           regionSeries.geodata = el5Nuts;
-          nutsFocus = "EL5";
+          nutsFocus = 'EL5';
           regionSeries.show();
-        }
-        else if (id.includes("EL6")) {
+        } else if (id.includes('EL6')) {
           el6Nuts = {
-            type: "FeatureCollection",
+            type: 'FeatureCollection',
             features: [
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -1592,8 +1589,8 @@
                         [24.18249, 39.36192],
                         [24.13829, 39.38798],
                         [24.14595, 39.41969],
-                        [24.19928, 39.40197],
-                      ],
+                        [24.19928, 39.40197]
+                      ]
                     ],
                     [
                       [
@@ -1601,8 +1598,8 @@
                         [24.09076, 39.03625],
                         [24.06887, 39.06863],
                         [24.10435, 39.09777],
-                        [24.13608, 39.07599],
-                      ],
+                        [24.13608, 39.07599]
+                      ]
                     ],
                     [
                       [
@@ -1611,8 +1608,8 @@
                         [24.04002, 39.3235],
                         [24.05188, 39.3527],
                         [24.09842, 39.34842],
-                        [24.096, 39.31232],
-                      ],
+                        [24.096, 39.31232]
+                      ]
                     ],
                     [
                       [
@@ -1622,8 +1619,8 @@
                         [23.92322, 39.18209],
                         [23.88086, 39.1855],
                         [23.93449, 39.27341],
-                        [23.96267, 39.27341],
-                      ],
+                        [23.96267, 39.27341]
+                      ]
                     ],
                     [
                       [
@@ -1637,8 +1634,8 @@
                         [23.59562, 39.19354],
                         [23.6166, 39.19485],
                         [23.67453, 39.16114],
-                        [23.72105, 39.14571],
-                      ],
+                        [23.72105, 39.14571]
+                      ]
                     ],
                     [
                       [
@@ -1650,8 +1647,8 @@
                         [23.39089, 39.15853],
                         [23.44305, 39.18234],
                         [23.45912, 39.21069],
-                        [23.50659, 39.19351],
-                      ],
+                        [23.50659, 39.19351]
+                      ]
                     ],
                     [
                       [
@@ -1722,24 +1719,24 @@
                         [22.36283, 40.05668],
                         [22.47475, 40.0166],
                         [22.52425, 39.95551],
-                        [22.66458, 39.97476],
-                      ],
-                    ],
-                  ],
+                        [22.66458, 39.97476]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL61",
-                  id: "EL61",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL61',
+                  id: 'EL61',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL61",
+                id: 'EL61'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -1748,8 +1745,8 @@
                         [20.99299, 38.47148],
                         [21.00807, 38.49969],
                         [21.03861, 38.50823],
-                        [21.04317, 38.45952],
-                      ],
+                        [21.04317, 38.45952]
+                      ]
                     ],
                     [
                       [
@@ -1763,8 +1760,8 @@
                         [20.6954, 37.92171],
                         [20.75441, 37.85384],
                         [20.82813, 37.83521],
-                        [20.95867, 37.73484],
-                      ],
+                        [20.95867, 37.73484]
+                      ]
                     ],
                     [
                       [
@@ -1772,8 +1769,8 @@
                         [20.87108, 38.60687],
                         [20.89092, 38.64411],
                         [20.93924, 38.65604],
-                        [20.93496, 38.61353],
-                      ],
+                        [20.93496, 38.61353]
+                      ]
                     ],
                     [
                       [
@@ -1809,8 +1806,8 @@
                         [20.58208, 38.46512],
                         [20.59668, 38.40504],
                         [20.61049, 38.40194],
-                        [20.62833, 38.32628],
-                      ],
+                        [20.62833, 38.32628]
+                      ]
                     ],
                     [
                       [
@@ -1832,8 +1829,8 @@
                         [20.72571, 38.80366],
                         [20.72063, 38.75135],
                         [20.75061, 38.69316],
-                        [20.72448, 38.68576],
-                      ],
+                        [20.72448, 38.68576]
+                      ]
                     ],
                     [
                       [
@@ -1844,8 +1841,8 @@
                         [20.71644, 38.3682],
                         [20.72327, 38.39004],
                         [20.75027, 38.3697],
-                        [20.7545, 38.32029],
-                      ],
+                        [20.7545, 38.32029]
+                      ]
                     ],
                     [
                       [
@@ -1853,8 +1850,8 @@
                         [20.70826, 38.52437],
                         [20.68223, 38.54941],
                         [20.68945, 38.5829],
-                        [20.74465, 38.56967],
-                      ],
+                        [20.74465, 38.56967]
+                      ]
                     ],
                     [
                       [
@@ -1865,8 +1862,8 @@
                         [20.66235, 38.48784],
                         [20.66778, 38.4628],
                         [20.71236, 38.43654],
-                        [20.68027, 38.37847],
-                      ],
+                        [20.68027, 38.37847]
+                      ]
                     ],
                     [
                       [
@@ -1874,8 +1871,8 @@
                         [20.1645, 39.17812],
                         [20.12264, 39.23366],
                         [20.13752, 39.24173],
-                        [20.20186, 39.19644],
-                      ],
+                        [20.20186, 39.19644]
+                      ]
                     ],
                     [
                       [
@@ -1909,8 +1906,8 @@
                         [19.67373, 39.79353],
                         [19.79664, 39.79028],
                         [19.85022, 39.81925],
-                        [19.88327, 39.79963],
-                      ],
+                        [19.88327, 39.79963]
+                      ]
                     ],
                     [
                       [
@@ -1919,24 +1916,24 @@
                         [19.36311, 39.85213],
                         [19.3753, 39.87777],
                         [19.42494, 39.85995],
-                        [19.41895, 39.83293],
-                      ],
-                    ],
-                  ],
+                        [19.41895, 39.83293]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL62",
-                  id: "EL62",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL62',
+                  id: 'EL62',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL62",
+                id: 'EL62'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -1974,8 +1971,8 @@
                         [21.85565, 38.33128],
                         [21.99403, 38.31567],
                         [22.20351, 38.18896],
-                        [22.37297, 38.14222],
-                      ],
+                        [22.37297, 38.14222]
+                      ]
                     ],
                     [
                       [
@@ -2023,24 +2020,24 @@
                         [21.58723, 38.74217],
                         [21.78679, 38.69459],
                         [21.91732, 38.74149],
-                        [21.946, 38.784],
-                      ],
-                    ],
-                  ],
+                        [21.946, 38.784]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL63",
-                  id: "EL63",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL63',
+                  id: 'EL63',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL63",
+                id: 'EL63'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -2060,8 +2057,8 @@
                         [24.57706, 38.92736],
                         [24.57329, 38.87126],
                         [24.65762, 38.82991],
-                        [24.68638, 38.79188],
-                      ],
+                        [24.68638, 38.79188]
+                      ]
                     ],
                     [
                       [
@@ -2180,8 +2177,8 @@
                         [22.70356, 39.03693],
                         [22.77433, 39.01655],
                         [22.92218, 38.97396],
-                        [23.01702, 39.00317],
-                      ],
+                        [23.01702, 39.00317]
+                      ]
                     ],
                     [
                       [
@@ -2189,24 +2186,24 @@
                         [24.27977, 37.97806],
                         [24.22686, 37.98453],
                         [24.25201, 38.0354],
-                        [24.27516, 38.03102],
-                      ],
-                    ],
-                  ],
+                        [24.27516, 38.03102]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL64",
-                  id: "EL64",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL64',
+                  id: 'EL64',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL64",
+                id: 'EL64'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -2292,8 +2289,8 @@
                         [22.94934, 37.96701],
                         [22.89605, 38.02393],
                         [22.91302, 38.05484],
-                        [23.11753, 38.06065],
-                      ],
+                        [23.11753, 38.06065]
+                      ]
                     ],
                     [
                       [
@@ -2302,41 +2299,40 @@
                         [21.75451, 36.71122],
                         [21.72833, 36.76494],
                         [21.761, 36.76597],
-                        [21.78443, 36.74546],
-                      ],
-                    ],
-                  ],
+                        [21.78443, 36.74546]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL65",
-                  id: "EL65",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL65',
+                  id: 'EL65',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL65",
-              },
-            ],
+                id: 'EL65'
+              }
+            ]
           };
           regionSeries.geodata = el6Nuts;
-          nutsFocus = "EL6";
+          nutsFocus = 'EL6';
           regionSeries.show();
         }
       });
 
       // Set up click events
-      polygonTemplate.events.on("hit", function (ev) {
+      polygonTemplate.events.on('hit', (ev) => {
+        let id = ev.target.dataItem.dataContext.id;
 
-        var id = ev.target.dataItem.dataContext.id;
-
-        if (id === "GR") {
+        if (id === 'GR') {
           ev.target.series.chart.zoomToMapObject(ev.target);
-          var greecejson = {
-            type: "FeatureCollection",
+          let greecejson = {
+            type: 'FeatureCollection',
             features: [
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -2387,8 +2383,8 @@
                         [24.03208, 37.66481],
                         [23.9499, 37.66342],
                         [23.88524, 37.77298],
-                        [23.74359, 37.85381],
-                      ],
+                        [23.74359, 37.85381]
+                      ]
                     ],
                     [
                       [
@@ -2399,8 +2395,8 @@
                         [23.41588, 37.76177],
                         [23.48549, 37.77571],
                         [23.56725, 37.76681],
-                        [23.5216, 37.7006],
-                      ],
+                        [23.5216, 37.7006]
+                      ]
                     ],
                     [
                       [
@@ -2412,8 +2408,8 @@
                         [23.54054, 37.35225],
                         [23.50661, 37.34256],
                         [23.50094, 37.31856],
-                        [23.44681, 37.3153],
-                      ],
+                        [23.44681, 37.3153]
+                      ]
                     ],
                     [
                       [
@@ -2434,8 +2430,8 @@
                         [23.50202, 37.51952],
                         [23.4775, 37.49013],
                         [23.50368, 37.4373],
-                        [23.42442, 37.4117],
-                      ],
+                        [23.42442, 37.4117]
+                      ]
                     ],
                     [
                       [
@@ -2444,8 +2440,8 @@
                         [23.31399, 37.68235],
                         [23.33883, 37.71646],
                         [23.37177, 37.71619],
-                        [23.3809, 37.69399],
-                      ],
+                        [23.3809, 37.69399]
+                      ]
                     ],
                     [
                       [
@@ -2453,8 +2449,8 @@
                         [23.28735, 37.31109],
                         [23.27734, 37.33077],
                         [23.33177, 37.36185],
-                        [23.34384, 37.31593],
-                      ],
+                        [23.34384, 37.31593]
+                      ]
                     ],
                     [
                       [
@@ -2462,8 +2458,8 @@
                         [23.31074, 35.82921],
                         [23.27339, 35.87639],
                         [23.3175, 35.89177],
-                        [23.33502, 35.84996],
-                      ],
+                        [23.33502, 35.84996]
+                      ]
                     ],
                     [
                       [
@@ -2472,8 +2468,8 @@
                         [23.12116, 37.23809],
                         [23.10464, 37.26204],
                         [23.10976, 37.28408],
-                        [23.165, 37.26551],
-                      ],
+                        [23.165, 37.26551]
+                      ]
                     ],
                     [
                       [
@@ -2493,24 +2489,24 @@
                         [22.95121, 36.38107],
                         [23.00181, 36.3091],
                         [23.04793, 36.2872],
-                        [23.11534, 36.23557],
-                      ],
-                    ],
-                  ],
+                        [23.11534, 36.23557]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL3",
-                  id: "EL3",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL3',
+                  id: 'EL3',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL3",
+                id: 'EL3'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -2519,8 +2515,8 @@
                         [29.55394, 36.13053],
                         [29.56395, 36.16803],
                         [29.58638, 36.17081],
-                        [29.60853, 36.142],
-                      ],
+                        [29.60853, 36.142]
+                      ]
                     ],
                     [
                       [
@@ -2553,8 +2549,8 @@
                         [28.13743, 36.18748],
                         [28.09879, 36.17617],
                         [28.06955, 36.10628],
-                        [28.09832, 36.10392],
-                      ],
+                        [28.09832, 36.10392]
+                      ]
                     ],
                     [
                       [
@@ -2564,8 +2560,8 @@
                         [27.79539, 36.56609],
                         [27.78953, 36.61634],
                         [27.82418, 36.64385],
-                        [27.86922, 36.60146],
-                      ],
+                        [27.86922, 36.60146]
+                      ]
                     ],
                     [
                       [
@@ -2573,8 +2569,8 @@
                         [27.63105, 36.21256],
                         [27.56317, 36.21551],
                         [27.55409, 36.2263],
-                        [27.61221, 36.25919],
-                      ],
+                        [27.61221, 36.25919]
+                      ]
                     ],
                     [
                       [
@@ -2585,8 +2581,8 @@
                         [27.31999, 36.41376],
                         [27.29372, 36.43342],
                         [27.30078, 36.45967],
-                        [27.35913, 36.48017],
-                      ],
+                        [27.35913, 36.48017]
+                      ]
                     ],
                     [
                       [
@@ -2600,8 +2596,8 @@
                         [27.13355, 36.87449],
                         [27.26424, 36.9068],
                         [27.32711, 36.87897],
-                        [27.32713, 36.86252],
-                      ],
+                        [27.32713, 36.86252]
+                      ]
                     ],
                     [
                       [
@@ -2630,8 +2626,8 @@
                         [27.21834, 35.54388],
                         [27.20891, 35.50861],
                         [27.24118, 35.49417],
-                        [27.17213, 35.45786],
-                      ],
+                        [27.17213, 35.45786]
+                      ]
                     ],
                     [
                       [
@@ -2640,8 +2636,8 @@
                         [27.13246, 36.56592],
                         [27.13089, 36.60747],
                         [27.17679, 36.61992],
-                        [27.20837, 36.58623],
-                      ],
+                        [27.20837, 36.58623]
+                      ]
                     ],
                     [
                       [
@@ -2650,8 +2646,8 @@
                         [27.11151, 36.9485],
                         [27.12823, 36.96357],
                         [27.17984, 36.95366],
-                        [27.15737, 36.91885],
-                      ],
+                        [27.15737, 36.91885]
+                      ]
                     ],
                     [
                       [
@@ -2664,8 +2660,8 @@
                         [26.7317, 37.80935],
                         [27.02543, 37.77561],
                         [27.05128, 37.71014],
-                        [27.02543, 37.70611],
-                      ],
+                        [27.02543, 37.70611]
+                      ]
                     ],
                     [
                       [
@@ -2675,8 +2671,8 @@
                         [26.9301, 37.05759],
                         [27.03711, 37.0096],
                         [27.04796, 36.99559],
-                        [27.01969, 36.94725],
-                      ],
+                        [27.01969, 36.94725]
+                      ]
                     ],
                     [
                       [
@@ -2685,8 +2681,8 @@
                         [26.94516, 37.45278],
                         [26.92594, 37.47474],
                         [26.97732, 37.48902],
-                        [27.00447, 37.47947],
-                      ],
+                        [27.00447, 37.47947]
+                      ]
                     ],
                     [
                       [
@@ -2695,8 +2691,8 @@
                         [26.84806, 35.3587],
                         [26.90049, 35.41764],
                         [26.97673, 35.42879],
-                        [26.97283, 35.39369],
-                      ],
+                        [26.97283, 35.39369]
+                      ]
                     ],
                     [
                       [
@@ -2709,8 +2705,8 @@
                         [26.82116, 37.20075],
                         [26.84958, 37.18679],
                         [26.85338, 37.1617],
-                        [26.88698, 37.10157],
-                      ],
+                        [26.88698, 37.10157]
+                      ]
                     ],
                     [
                       [
@@ -2719,8 +2715,8 @@
                         [26.71628, 37.297],
                         [26.70864, 37.32002],
                         [26.72174, 37.32904],
-                        [26.78988, 37.30194],
-                      ],
+                        [26.78988, 37.30194]
+                      ]
                     ],
                     [
                       [
@@ -2728,8 +2724,8 @@
                         [26.75235, 37.35134],
                         [26.70523, 37.37507],
                         [26.72306, 37.40865],
-                        [26.77719, 37.37201],
-                      ],
+                        [26.77719, 37.37201]
+                      ]
                     ],
                     [
                       [
@@ -2737,8 +2733,8 @@
                         [26.66882, 36.31433],
                         [26.63969, 36.35834],
                         [26.6894, 36.37069],
-                        [26.70305, 36.33583],
-                      ],
+                        [26.70305, 36.33583]
+                      ]
                     ],
                     [
                       [
@@ -2756,8 +2752,8 @@
                         [26.4073, 39.33318],
                         [26.38175, 39.27249],
                         [26.52981, 39.16467],
-                        [26.60348, 39.01879],
-                      ],
+                        [26.60348, 39.01879]
+                      ]
                     ],
                     [
                       [
@@ -2768,8 +2764,8 @@
                         [26.5728, 37.37268],
                         [26.59162, 37.35825],
                         [26.56963, 37.32262],
-                        [26.5755, 37.27857],
-                      ],
+                        [26.5755, 37.27857]
+                      ]
                     ],
                     [
                       [
@@ -2777,8 +2773,8 @@
                         [26.51925, 37.59281],
                         [26.49434, 37.63148],
                         [26.51233, 37.65881],
-                        [26.55854, 37.60219],
-                      ],
+                        [26.55854, 37.60219]
+                      ]
                     ],
                     [
                       [
@@ -2786,8 +2782,8 @@
                         [26.49089, 37.55517],
                         [26.42957, 37.56517],
                         [26.42195, 37.59028],
-                        [26.50699, 37.58695],
-                      ],
+                        [26.50699, 37.58695]
+                      ]
                     ],
                     [
                       [
@@ -2795,8 +2791,8 @@
                         [26.38959, 36.5664],
                         [26.39174, 36.63639],
                         [26.44705, 36.60042],
-                        [26.40366, 36.5664],
-                      ],
+                        [26.40366, 36.5664]
+                      ]
                     ],
                     [
                       [
@@ -2805,8 +2801,8 @@
                         [26.29307, 36.5218],
                         [26.26936, 36.58319],
                         [26.29175, 36.59787],
-                        [26.36771, 36.56685],
-                      ],
+                        [26.36771, 36.56685]
+                      ]
                     ],
                     [
                       [
@@ -2822,8 +2818,8 @@
                         [26.20063, 37.62796],
                         [26.2984, 37.68074],
                         [26.34452, 37.6835],
-                        [26.34095, 37.65545],
-                      ],
+                        [26.34095, 37.65545]
+                      ]
                     ],
                     [
                       [
@@ -2871,8 +2867,8 @@
                         [24.17313, 35.53633],
                         [24.14477, 35.48545],
                         [24.22869, 35.4557],
-                        [24.31741, 35.35377],
-                      ],
+                        [24.31741, 35.35377]
+                      ]
                     ],
                     [
                       [
@@ -2881,8 +2877,8 @@
                         [26.18916, 38.53219],
                         [26.20728, 38.54717],
                         [26.25047, 38.54135],
-                        [26.25598, 38.5168],
-                      ],
+                        [26.25598, 38.5168]
+                      ]
                     ],
                     [
                       [
@@ -2890,8 +2886,8 @@
                         [26.19418, 35.30395],
                         [26.14429, 35.33051],
                         [26.16993, 35.36549],
-                        [26.1995, 35.3568],
-                      ],
+                        [26.1995, 35.3568]
+                      ]
                     ],
                     [
                       [
@@ -2923,8 +2919,8 @@
                         [25.83276, 38.54296],
                         [25.85106, 38.57368],
                         [26.0033, 38.60344],
-                        [26.06291, 38.5913],
-                      ],
+                        [26.06291, 38.5913]
+                      ]
                     ],
                     [
                       [
@@ -2941,8 +2937,8 @@
                         [26.04724, 36.89977],
                         [25.97655, 36.87979],
                         [25.93645, 36.85316],
-                        [25.87062, 36.78969],
-                      ],
+                        [25.87062, 36.78969]
+                      ]
                     ],
                     [
                       [
@@ -2950,8 +2946,8 @@
                         [25.83302, 37.07915],
                         [25.78082, 37.10458],
                         [25.80786, 37.13098],
-                        [25.84619, 37.13029],
-                      ],
+                        [25.84619, 37.13029]
+                      ]
                     ],
                     [
                       [
@@ -2960,8 +2956,8 @@
                         [25.72605, 36.36585],
                         [25.76572, 36.40491],
                         [25.82609, 36.37137],
-                        [25.82675, 36.35508],
-                      ],
+                        [25.82675, 36.35508]
+                      ]
                     ],
                     [
                       [
@@ -2970,8 +2966,8 @@
                         [25.62913, 36.87047],
                         [25.61906, 36.89326],
                         [25.64564, 36.91645],
-                        [25.68053, 36.90443],
-                      ],
+                        [25.68053, 36.90443]
+                      ]
                     ],
                     [
                       [
@@ -2980,8 +2976,8 @@
                         [25.56725, 38.54408],
                         [25.54138, 38.58626],
                         [25.59085, 38.60958],
-                        [25.62085, 38.58875],
-                      ],
+                        [25.62085, 38.58875]
+                      ]
                     ],
                     [
                       [
@@ -2993,8 +2989,8 @@
                         [25.51677, 37.18515],
                         [25.53935, 37.1617],
                         [25.59609, 37.10276],
-                        [25.54363, 36.96506],
-                      ],
+                        [25.54363, 36.96506]
+                      ]
                     ],
                     [
                       [
@@ -3004,8 +3000,8 @@
                         [25.4955, 36.87846],
                         [25.49965, 36.89936],
                         [25.52531, 36.90916],
-                        [25.54416, 36.86788],
-                      ],
+                        [25.54416, 36.86788]
+                      ]
                     ],
                     [
                       [
@@ -3016,8 +3012,8 @@
                         [25.41433, 36.43082],
                         [25.43735, 36.454],
                         [25.4873, 36.40503],
-                        [25.48616, 36.36049],
-                      ],
+                        [25.48616, 36.36049]
+                      ]
                     ],
                     [
                       [
@@ -3025,8 +3021,8 @@
                         [25.43216, 36.81801],
                         [25.42688, 36.84634],
                         [25.47551, 36.87607],
-                        [25.48306, 36.8285],
-                      ],
+                        [25.48306, 36.8285]
+                      ]
                     ],
                     [
                       [
@@ -3038,8 +3034,8 @@
                         [25.46001, 37.4735],
                         [25.45747, 37.44524],
                         [25.42472, 37.44141],
-                        [25.40031, 37.41534],
-                      ],
+                        [25.40031, 37.41534]
+                      ]
                     ],
                     [
                       [
@@ -3067,8 +3063,8 @@
                         [25.36869, 40.00183],
                         [25.42422, 40.02433],
                         [25.44349, 39.98117],
-                        [25.41722, 39.96898],
-                      ],
+                        [25.41722, 39.96898]
+                      ]
                     ],
                     [
                       [
@@ -3079,8 +3075,8 @@
                         [25.32009, 36.42017],
                         [25.33765, 36.46503],
                         [25.36743, 36.48678],
-                        [25.43047, 36.47783],
-                      ],
+                        [25.43047, 36.47783]
+                      ]
                     ],
                     [
                       [
@@ -3092,8 +3088,8 @@
                         [25.33062, 36.75549],
                         [25.40258, 36.71368],
                         [25.3838, 36.69515],
-                        [25.38662, 36.65489],
-                      ],
+                        [25.38662, 36.65489]
+                      ]
                     ],
                     [
                       [
@@ -3109,8 +3105,8 @@
                         [25.21934, 37.14017],
                         [25.25554, 37.1284],
                         [25.2658, 37.15851],
-                        [25.2923, 37.14138],
-                      ],
+                        [25.2923, 37.14138]
+                      ]
                     ],
                     [
                       [
@@ -3123,8 +3119,8 @@
                         [25.07964, 37.64335],
                         [25.20694, 37.63408],
                         [25.25423, 37.61023],
-                        [25.23476, 37.53636],
-                      ],
+                        [25.23476, 37.53636]
+                      ]
                     ],
                     [
                       [
@@ -3132,8 +3128,8 @@
                         [25.24779, 35.41806],
                         [25.18837, 35.44706],
                         [25.21144, 35.47656],
-                        [25.2529, 35.4542],
-                      ],
+                        [25.2529, 35.4542]
+                      ]
                     ],
                     [
                       [
@@ -3142,8 +3138,8 @@
                         [25.20186, 37.39737],
                         [25.20141, 37.41762],
                         [25.22109, 37.45531],
-                        [25.25032, 37.42286],
-                      ],
+                        [25.25032, 37.42286]
+                      ]
                     ],
                     [
                       [
@@ -3152,8 +3148,8 @@
                         [25.09049, 36.69335],
                         [25.14149, 36.71938],
                         [25.17562, 36.70182],
-                        [25.13207, 36.65731],
-                      ],
+                        [25.13207, 36.65731]
+                      ]
                     ],
                     [
                       [
@@ -3163,8 +3159,8 @@
                         [25.01978, 37.0078],
                         [25.05492, 37.03883],
                         [25.08053, 37.0377],
-                        [25.07344, 36.98427],
-                      ],
+                        [25.07344, 36.98427]
+                      ]
                     ],
                     [
                       [
@@ -3173,8 +3169,8 @@
                         [24.9707, 39.50314],
                         [24.97763, 39.53505],
                         [25.00602, 39.56206],
-                        [25.05695, 39.53105],
-                      ],
+                        [25.05695, 39.53105]
+                      ]
                     ],
                     [
                       [
@@ -3188,8 +3184,8 @@
                         [24.82379, 37.95674],
                         [24.83892, 37.91881],
                         [24.94568, 37.88966],
-                        [24.98795, 37.76034],
-                      ],
+                        [24.98795, 37.76034]
+                      ]
                     ],
                     [
                       [
@@ -3204,8 +3200,8 @@
                         [24.94443, 37.48734],
                         [24.93722, 37.43294],
                         [24.97363, 37.43037],
-                        [24.97224, 37.40116],
-                      ],
+                        [24.97224, 37.40116]
+                      ]
                     ],
                     [
                       [
@@ -3213,8 +3209,8 @@
                         [24.95495, 36.58546],
                         [24.91156, 36.59189],
                         [24.89075, 36.62751],
-                        [24.95833, 36.62411],
-                      ],
+                        [24.95833, 36.62411]
+                      ]
                     ],
                     [
                       [
@@ -3222,8 +3218,8 @@
                         [24.86145, 36.61833],
                         [24.82143, 36.66439],
                         [24.85468, 36.67992],
-                        [24.89322, 36.64718],
-                      ],
+                        [24.89322, 36.64718]
+                      ]
                     ],
                     [
                       [
@@ -3235,8 +3231,8 @@
                         [24.698, 37.02671],
                         [24.75194, 36.96506],
                         [24.76577, 36.94925],
-                        [24.72765, 36.91036],
-                      ],
+                        [24.72765, 36.91036]
+                      ]
                     ],
                     [
                       [
@@ -3244,8 +3240,8 @@
                         [24.74732, 37.58932],
                         [24.68486, 37.6066],
                         [24.70471, 37.63365],
-                        [24.74743, 37.63619],
-                      ],
+                        [24.74743, 37.63619]
+                      ]
                     ],
                     [
                       [
@@ -3253,8 +3249,8 @@
                         [24.65829, 36.74896],
                         [24.60871, 36.74907],
                         [24.59345, 36.7833],
-                        [24.63998, 36.79474],
-                      ],
+                        [24.63998, 36.79474]
+                      ]
                     ],
                     [
                       [
@@ -3279,8 +3275,8 @@
                         [24.55702, 36.84122],
                         [24.59875, 36.82491],
                         [24.58508, 36.78977],
-                        [24.55171, 36.77589],
-                      ],
+                        [24.55171, 36.77589]
+                      ]
                     ],
                     [
                       [
@@ -3292,8 +3288,8 @@
                         [24.51121, 37.20709],
                         [24.53358, 37.19361],
                         [24.53305, 37.1617],
-                        [24.53248, 37.12761],
-                      ],
+                        [24.53248, 37.12761]
+                      ]
                     ],
                     [
                       [
@@ -3308,8 +3304,8 @@
                         [24.42796, 37.44322],
                         [24.46826, 37.42512],
                         [24.4834, 37.40086],
-                        [24.42834, 37.33548],
-                      ],
+                        [24.42834, 37.33548]
+                      ]
                     ],
                     [
                       [
@@ -3323,8 +3319,8 @@
                         [24.41092, 37.6554],
                         [24.38836, 37.60702],
                         [24.3268, 37.55244],
-                        [24.29405, 37.52341],
-                      ],
+                        [24.29405, 37.52341]
+                      ]
                     ],
                     [
                       [
@@ -3332,8 +3328,8 @@
                         [24.24504, 36.75291],
                         [24.2062, 36.79885],
                         [24.23384, 36.81805],
-                        [24.26854, 36.7966],
-                      ],
+                        [24.26854, 36.7966]
+                      ]
                     ],
                     [
                       [
@@ -3341,8 +3337,8 @@
                         [24.13312, 37.68479],
                         [24.10769, 37.69438],
                         [24.14632, 37.77158],
-                        [24.162, 37.74578],
-                      ],
+                        [24.162, 37.74578]
+                      ]
                     ],
                     [
                       [
@@ -3351,24 +3347,24 @@
                         [24.07261, 34.82483],
                         [24.04278, 34.85371],
                         [24.07261, 34.87158],
-                        [24.11839, 34.85153],
-                      ],
-                    ],
-                  ],
+                        [24.11839, 34.85153]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL4",
-                  id: "EL4",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL4',
+                  id: 'EL4',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL4",
+                id: 'EL4'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -3571,8 +3567,8 @@
                         [26.34274, 40.94879],
                         [26.2377, 40.88653],
                         [26.12118, 40.75153],
-                        [26.03276, 40.73026],
-                      ],
+                        [26.03276, 40.73026]
+                      ]
                     ],
                     [
                       [
@@ -3584,8 +3580,8 @@
                         [25.56513, 40.51042],
                         [25.65747, 40.49345],
                         [25.69971, 40.46409],
-                        [25.69694, 40.42256],
-                      ],
+                        [25.69694, 40.42256]
+                      ]
                     ],
                     [
                       [
@@ -3598,8 +3594,8 @@
                         [24.568, 40.76024],
                         [24.64716, 40.79437],
                         [24.75108, 40.75186],
-                        [24.77701, 40.61676],
-                      ],
+                        [24.77701, 40.61676]
+                      ]
                     ],
                     [
                       [
@@ -3623,24 +3619,24 @@
                         [23.49289, 40.03507],
                         [23.53286, 40.01691],
                         [23.67453, 39.97326],
-                        [23.68003, 39.97157],
-                      ],
-                    ],
-                  ],
+                        [23.68003, 39.97157]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL5",
-                  id: "EL5",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL5',
+                  id: 'EL5',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL5",
+                id: 'EL5'
               },
 
               {
-                type: "Feature",
+                type: 'Feature',
                 geometry: {
-                  type: "MultiPolygon",
+                  type: 'MultiPolygon',
                   coordinates: [
                     [
                       [
@@ -3660,8 +3656,8 @@
                         [24.57706, 38.92736],
                         [24.57329, 38.87126],
                         [24.65762, 38.82991],
-                        [24.68638, 38.79188],
-                      ],
+                        [24.68638, 38.79188]
+                      ]
                     ],
                     [
                       [
@@ -3821,8 +3817,8 @@
                         [22.36283, 40.05668],
                         [22.47475, 40.0166],
                         [22.52425, 39.95551],
-                        [22.66458, 39.97476],
-                      ],
+                        [22.66458, 39.97476]
+                      ]
                     ],
                     [
                       [
@@ -3830,8 +3826,8 @@
                         [24.27977, 37.97806],
                         [24.22686, 37.98453],
                         [24.25201, 38.0354],
-                        [24.27516, 38.03102],
-                      ],
+                        [24.27516, 38.03102]
+                      ]
                     ],
                     [
                       [
@@ -3839,8 +3835,8 @@
                         [24.18249, 39.36192],
                         [24.13829, 39.38798],
                         [24.14595, 39.41969],
-                        [24.19928, 39.40197],
-                      ],
+                        [24.19928, 39.40197]
+                      ]
                     ],
                     [
                       [
@@ -3848,8 +3844,8 @@
                         [24.09076, 39.03625],
                         [24.06887, 39.06863],
                         [24.10435, 39.09777],
-                        [24.13608, 39.07599],
-                      ],
+                        [24.13608, 39.07599]
+                      ]
                     ],
                     [
                       [
@@ -3858,8 +3854,8 @@
                         [24.04002, 39.3235],
                         [24.05188, 39.3527],
                         [24.09842, 39.34842],
-                        [24.096, 39.31232],
-                      ],
+                        [24.096, 39.31232]
+                      ]
                     ],
                     [
                       [
@@ -3869,8 +3865,8 @@
                         [23.92322, 39.18209],
                         [23.88086, 39.1855],
                         [23.93449, 39.27341],
-                        [23.96267, 39.27341],
-                      ],
+                        [23.96267, 39.27341]
+                      ]
                     ],
                     [
                       [
@@ -3884,8 +3880,8 @@
                         [23.59562, 39.19354],
                         [23.6166, 39.19485],
                         [23.67453, 39.16114],
-                        [23.72105, 39.14571],
-                      ],
+                        [23.72105, 39.14571]
+                      ]
                     ],
                     [
                       [
@@ -3897,8 +3893,8 @@
                         [23.39089, 39.15853],
                         [23.44305, 39.18234],
                         [23.45912, 39.21069],
-                        [23.50659, 39.19351],
-                      ],
+                        [23.50659, 39.19351]
+                      ]
                     ],
                     [
                       [
@@ -3982,8 +3978,8 @@
                         [21.85565, 38.33128],
                         [21.99403, 38.31567],
                         [22.20351, 38.18896],
-                        [22.37297, 38.14222],
-                      ],
+                        [22.37297, 38.14222]
+                      ]
                     ],
                     [
                       [
@@ -3992,8 +3988,8 @@
                         [21.75451, 36.71122],
                         [21.72833, 36.76494],
                         [21.761, 36.76597],
-                        [21.78443, 36.74546],
-                      ],
+                        [21.78443, 36.74546]
+                      ]
                     ],
                     [
                       [
@@ -4002,8 +3998,8 @@
                         [20.99299, 38.47148],
                         [21.00807, 38.49969],
                         [21.03861, 38.50823],
-                        [21.04317, 38.45952],
-                      ],
+                        [21.04317, 38.45952]
+                      ]
                     ],
                     [
                       [
@@ -4017,8 +4013,8 @@
                         [20.6954, 37.92171],
                         [20.75441, 37.85384],
                         [20.82813, 37.83521],
-                        [20.95867, 37.73484],
-                      ],
+                        [20.95867, 37.73484]
+                      ]
                     ],
                     [
                       [
@@ -4026,8 +4022,8 @@
                         [20.87108, 38.60687],
                         [20.89092, 38.64411],
                         [20.93924, 38.65604],
-                        [20.93496, 38.61353],
-                      ],
+                        [20.93496, 38.61353]
+                      ]
                     ],
                     [
                       [
@@ -4063,8 +4059,8 @@
                         [20.58208, 38.46512],
                         [20.59668, 38.40504],
                         [20.61049, 38.40194],
-                        [20.62833, 38.32628],
-                      ],
+                        [20.62833, 38.32628]
+                      ]
                     ],
                     [
                       [
@@ -4086,8 +4082,8 @@
                         [20.72571, 38.80366],
                         [20.72063, 38.75135],
                         [20.75061, 38.69316],
-                        [20.72448, 38.68576],
-                      ],
+                        [20.72448, 38.68576]
+                      ]
                     ],
                     [
                       [
@@ -4098,8 +4094,8 @@
                         [20.71644, 38.3682],
                         [20.72327, 38.39004],
                         [20.75027, 38.3697],
-                        [20.7545, 38.32029],
-                      ],
+                        [20.7545, 38.32029]
+                      ]
                     ],
                     [
                       [
@@ -4107,8 +4103,8 @@
                         [20.70826, 38.52437],
                         [20.68223, 38.54941],
                         [20.68945, 38.5829],
-                        [20.74465, 38.56967],
-                      ],
+                        [20.74465, 38.56967]
+                      ]
                     ],
                     [
                       [
@@ -4119,8 +4115,8 @@
                         [20.66235, 38.48784],
                         [20.66778, 38.4628],
                         [20.71236, 38.43654],
-                        [20.68027, 38.37847],
-                      ],
+                        [20.68027, 38.37847]
+                      ]
                     ],
                     [
                       [
@@ -4128,8 +4124,8 @@
                         [20.1645, 39.17812],
                         [20.12264, 39.23366],
                         [20.13752, 39.24173],
-                        [20.20186, 39.19644],
-                      ],
+                        [20.20186, 39.19644]
+                      ]
                     ],
                     [
                       [
@@ -4163,8 +4159,8 @@
                         [19.67373, 39.79353],
                         [19.79664, 39.79028],
                         [19.85022, 39.81925],
-                        [19.88327, 39.79963],
-                      ],
+                        [19.88327, 39.79963]
+                      ]
                     ],
                     [
                       [
@@ -4173,33 +4169,33 @@
                         [19.36311, 39.85213],
                         [19.3753, 39.87777],
                         [19.42494, 39.85995],
-                        [19.41895, 39.83293],
-                      ],
-                    ],
-                  ],
+                        [19.41895, 39.83293]
+                      ]
+                    ]
+                  ]
                 },
                 properties: {
-                  name: "EL6",
-                  id: "EL6",
-                  CNTRY: "Greece",
-                  TYPE: "NUTS-REGION",
+                  name: 'EL6',
+                  id: 'EL6',
+                  CNTRY: 'Greece',
+                  TYPE: 'NUTS-REGION'
                 },
-                id: "EL6",
-              },
-            ],
+                id: 'EL6'
+              }
+            ]
           };
-          polygonSeries.getPolygonById("GR").hide();
+          polygonSeries.getPolygonById('GR').hide();
           countrySeries.geodata = greecejson;
-          nutsFocus = "GR";
+          nutsFocus = 'GR';
           // countrySeries.geodataSource.load();
           // polygonSeries.hide();
           countrySeries.show();
         } else {
-          var hasInfoBool = false;
+          let hasInfoBool = false;
           for (let country of polygonSeries.data) {
             // Check if the country that was clicked is in the countries that we added with separate colors which have info
             if (
-              country.hasOwnProperty("hasInfo") &&
+              country.hasOwnProperty('hasInfo') &&
               country.name === ev.target.dataItem.dataContext.name
             ) {
               hasInfoBool = true;
@@ -4207,20 +4203,20 @@
               break;
             }
           }
-          //if we do not have info for the clicked country do not show piechart
+          // if we do not have info for the clicked country do not show piechart
           if (!hasInfoBool) {
-            //Toast with appropriate message to inform about no available info
+            // Toast with appropriate message to inform about no available info
             regionSeries.hide();
             countrySeries.hide();
-            polygonSeries.getPolygonById("GR").show();
-            nutsFocus = "";
+            polygonSeries.getPolygonById('GR').show();
+            nutsFocus = '';
             chart.goHome();
             $nuxt.$emit(
-              "toast-warning",
+              'toast-warning',
               `There is no data available for ${ev.target.dataItem.dataContext.name}`
             );
           } else {
-            var lastSelected;
+            let lastSelected;
 
             if (lastSelected) {
               lastSelected.isActive = false;
@@ -4231,51 +4227,51 @@
       });
 
       /* Create selected and hover states and set alternative fill color */
-      var ss = polygonTemplate.states.create("active");
+      let ss = polygonTemplate.states.create('active');
       ss.properties.fill = chart.colors.getIndex(2);
 
       // Create hover state and set alternative fill color
-      var hs = polygonTemplate.states.create("hover");
-      hs.properties.fill = am4core.color("#9c0303");
+      var hs = polygonTemplate.states.create('hover');
+      hs.properties.fill = am4core.color('#9c0303');
 
       polygonSeries.data = [
         {
-          id: "BE",
-          name: "Belgium",
-          fill: am4core.color("#5C5CFF"),
-          hasInfo: true,
+          id: 'BE',
+          name: 'Belgium',
+          fill: am4core.color('#5C5CFF'),
+          hasInfo: true
         },
         {
-          id: "GB",
-          name: "United Kingdom",
-          fill: am4core.color("#5C5CFF"),
-          hasInfo: true,
+          id: 'GB',
+          name: 'United Kingdom',
+          fill: am4core.color('#5C5CFF'),
+          hasInfo: true
         },
         {
-          id: "CZ",
-          name: "Czechia",
-          fill: am4core.color("#5C5CFF"),
-          hasInfo: true,
+          id: 'CZ',
+          name: 'Czechia',
+          fill: am4core.color('#5C5CFF'),
+          hasInfo: true
         },
         {
-          id: "GR",
-          name: "Greece",
-          fill: am4core.color("#5C5CFF"),
-          hasInfo: true,
+          id: 'GR',
+          name: 'Greece',
+          fill: am4core.color('#5C5CFF'),
+          hasInfo: true
         },
         {
-          id: "NO",
-          name: "Norway",
-          fill: am4core.color("#5C5CFF"),
-          hasInfo: true,
-        },
+          id: 'NO',
+          name: 'Norway',
+          fill: am4core.color('#5C5CFF'),
+          hasInfo: true
+        }
       ];
-      polygonTemplate.propertyFields.fill = "fill";
+      polygonTemplate.propertyFields.fill = 'fill';
 
       function zoomToCountry(polygon) {
-        var zoomAnimation = chart.zoomToMapObject(polygon);
+        let zoomAnimation = chart.zoomToMapObject(polygon);
         if (zoomAnimation) {
-          zoomAnimation.events.on("animationended", function () {
+          zoomAnimation.events.on('animationended', () => {
             // showPieChart(polygon);
           });
         } else {
@@ -4285,7 +4281,7 @@
 
       console.log(europeHigh, countrySeries, polygonSeries, regionSeries);
     }
-  }
+  };
 </script>
 
 <style lang="scss" scoped>
