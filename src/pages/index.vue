@@ -1,6 +1,6 @@
 <template>
   <main role="main">
-    <div class="maps homepagemap">
+    <div v-if="fetched" class="maps homepagemap">
       <SvgMap />
     </div>
     <section class="homepage">
@@ -85,6 +85,7 @@
                 </li>
               </ul>
               <div
+                v-if="fetched"
                 id="trend-chart"
                 class="trend-chart"
               >
@@ -158,7 +159,7 @@
       };
     },
 
-    async fetch() {
+    async mounted() {
       await this.$store.dispatch('fetchTopLevelStatistics');
       this.fetched = true;
       this.selectedCountryCode = this.countriesStatistics[0].country.code;

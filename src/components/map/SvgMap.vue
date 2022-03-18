@@ -65,6 +65,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import regions from '../../../data/regions.json';
 
   export default {
@@ -78,20 +79,22 @@
       };
     },
 
-    mounted() {
-      this.loading = true;
+    computed: {
+      ...mapState({
+        countriesStatistics: state => state.countriesStatistics
+      })
+    },
+
+    async mounted() {
       this.regions = regions;
-      this.$calls.getStatistics()
-        .then(response => {
-          response.placeGroups.forEach(entry => {
-            this.countryCounts[entry.country.code] = entry.count;
-          });
-          this.loading = false;
-        })
-        .catch(error => {
-          console.error(error);
-          this.loading = false;
-        });
+      if (this.countriesStatistics.length == 0) {
+        this.loading = true;
+        await this.$store.dispatch('fetchTopLevelStatistics');
+      }
+      this.countriesStatistics.forEach(entry => {
+        this.countryCounts[entry.country.code] = entry.count;
+      });
+      this.loading = false;
     }
   };
 </script>
