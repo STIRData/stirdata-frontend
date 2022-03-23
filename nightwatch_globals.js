@@ -76,4 +76,4 @@ module.exports = {
   // reporter(results, cb) {
   //   cb();
   // }
-}
+};

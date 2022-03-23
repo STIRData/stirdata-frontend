@@ -1,23 +1,21 @@
 // on ready
-$(document).ready(function(){
+$(document).ready(() => {
+  // show belgium popover
+  if ($('#homepagemap').length) {
+    setTimeout(() => {
+      $('#belgiumPop').tooltip('show');
+      $('#romaniaPop').tooltip('show');
+      $('#belgiumPop').addClass('highlight');
+      $('#romaniaPop').addClass('highlight');
+      setTimeout(() => {
+        $('#belgiumPop').tooltip('hide');
+        $('#romaniaPop').tooltip('hide');
+        $('#belgiumPop').removeClass('highlight');
+        $('#romaniaPop').removeClass('highlight');
+      }, 5000);
+    }, 1500);
 
-    // show belgium popover
-    if($('#homepagemap').length) {
-        
-        setTimeout(function(){
-            $('#belgiumPop').tooltip("show");
-            $('#romaniaPop').tooltip("show");
-            $('#belgiumPop').addClass('highlight');
-            $('#romaniaPop').addClass('highlight');
-            setTimeout(function(){
-                $('#belgiumPop').tooltip("hide");
-                $('#romaniaPop').tooltip("hide");
-                $('#belgiumPop').removeClass('highlight');
-                $('#romaniaPop').removeClass('highlight');
-            },5000);
-        }, 1500);
-
-        /* 
+    /*
         var first = true;
         $('#homepagemap path').hover(function(){
             if(first) {
@@ -30,11 +28,9 @@ $(document).ready(function(){
                 first = false;
             }
         });*/
-    
-    }
-        
+  }
 
-    /* enabke popover
+  /* enabke popover
     if($('.homepagemap').length) {
         var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
@@ -48,20 +44,18 @@ $(document).ready(function(){
                 poppies.show();
             });
 
-
             setTimeout(
-            function() 
+            function()
             {
                 poppies.show();
             }, 1000);
-            
+
         });
 
     }
     */
-    
 
-    /*-------
+  /* -------
     Line Chart, Custom Code
     Dependency:
         - jquery-3.6.0.min.js
@@ -72,17 +66,16 @@ $(document).ready(function(){
             - Statistics by region in United Kingdom
     */
 
-    // check element exist        
-    if($('.line-stats').length)  {
+  // check element exist
+  if ($('.line-stats').length)  {
+    // loop through the plot object, get data size and set as width for .plotter class.
+    $('.line-stats ul li .plot').each(function() {
+      let sizing = $(this).attr('data-size');
+      $('.plotter', this).animate({ 'width': sizing + '%' }, 1500);
+    });
+  }
 
-        // loop through the plot object, get data size and set as width for .plotter class.
-        $('.line-stats ul li .plot').each(function(){
-            var sizing = $(this).attr('data-size');
-            $('.plotter',this).animate({'width':sizing+'%'},1500);
-        });
-    }
-
-    /*-------
+  /* -------
     Line Chart V2, Custom Code
     Dependency:
         - jquery-3.6.0.min.js
@@ -91,115 +84,109 @@ $(document).ready(function(){
             - Top 5 activities by companies amount in United Kingdom
     */
 
-    // check element exist         
-    if($('.line-stats-dynamic').length) {
-        
-        // loop through .item class, get attribute data and set as width along with the colors
-        $('.line-stats-dynamic .base .item').each(function(){
+  // check element exist
+  if ($('.line-stats-dynamic').length) {
+    // loop through .item class, get attribute data and set as width along with the colors
+    $('.line-stats-dynamic .base .item').each(function() {
+      // get
+      let color = $(this).attr('data-color');
+      let amount = $(this).attr('data-amount');
 
-            // get
-            var color = $(this).attr('data-color');
-            var amount = $(this).attr('data-amount');
+      // set
+      $(this).css({
+        'background-color': color,
+        'width': amount + '%'
+      });
+    });
 
-            // set
-            $(this).css({
-                'background-color' : color,
-                'width' : amount+"%"
-            });
-        });
+    // loop through data attribute in list item and set the content for each region
+    // data is set using attribute data-* in the list item html
+    $('.line-stats-dynamic ul li').each(function() {
+      // get
+      let color = $(this).attr('data-color');
+      let amount = $(this).attr('data-amount');
+      let percentage = $(this).attr('data-percentage');
 
-        // loop through data attribute in list item and set the content for each region
-        // data is set using attribute data-* in the list item html
-        $('.line-stats-dynamic ul li').each(function(){
+      // set
+      $('.color', this).css({
+        'background-color': color
+      });
+      $('.count', this).html(amount);
+      $('.percentage', this).html(percentage);
+    });
+  }
 
-            // get
-            var color = $(this).attr('data-color');
-            var amount = $(this).attr('data-amount');
-            var percentage = $(this).attr('data-percentage');
-
-            // set
-            $('.color',this).css({
-                'background-color' : color
-            });
-            $('.count',this).html(amount);
-            $('.percentage',this).html(percentage);
-        });
-    }
-
-    /*-------
+  /* -------
     Slick Sliders
     Dependency:
         - jquery-3.6.0.min.js
         - slick.min.js
     */
 
-    // check slick attribute
-    if($('[data-slickjs]').length) {
+  // check slick attribute
+  if ($('[data-slickjs]').length) {
+    // loop
+    $('[data-slickjs]').each(function() {
+      // get attributes settings
+      let slidesToShow = parseInt($(this).attr('data-slickjs-show'));
+      let slidesToScroll = parseInt($(this).attr('data-slickjs-scroll'));
+      let breakpointLG = 2;
+      let breakpointMD = 2;
+      let breakpointSM = 1;
 
-        // loop
-        $('[data-slickjs]').each(function(){
-            
-            // get attributes settings
-            var slidesToShow = parseInt($(this).attr('data-slickjs-show'));
-            var slidesToScroll = parseInt($(this).attr('data-slickjs-scroll'));
-            var breakpointLG = 2;
-            var breakpointMD = 2;
-            var breakpointSM = 1;
+      // check
+      if (slidesToShow > 3) {
+        breakpointLG = slidesToShow - 1;
+        breakpointMD = slidesToShow - 2;
+        breakpointSM = slidesToShow - 3;
+      }
+      if (slidesToScroll > 1) {
+        slidesToScroll = 1;
+      }
 
-            // check
-            if( slidesToShow > 3 ) {
-                breakpointLG = slidesToShow - 1;
-                breakpointMD = slidesToShow - 2;
-                breakpointSM = slidesToShow - 3;
+      // initialize
+      $(this).slick({
+        infinite: false,
+        slidesToShow,
+        slidesToScroll,
+        prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-angle-left"></i></button>',
+        nextArrow: '<button type="button" class="slick-next"><i class="fas fa-angle-right"></i></button>',
+        responsive: [
+          {
+            breakpoint: 1199,
+            settings: {
+              slidesToShow: breakpointLG
             }
-            if( slidesToScroll > 1 ) {
-                slidesToScroll = 1;
+          },
+          {
+            breakpoint: 991,
+            settings: {
+              slidesToShow: breakpointMD
             }
-
-            // initialize
-            $(this).slick({
-                infinite: false,
-                slidesToShow: slidesToShow,
-                slidesToScroll: slidesToScroll,
-                prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-angle-left"></i></button>',
-                nextArrow: '<button type="button" class="slick-next"><i class="fas fa-angle-right"></i></button>',
-                responsive: [
-                    {
-                      breakpoint: 1199,
-                      settings: {
-                        slidesToShow: breakpointLG,
-                      }
-                    },
-                    {
-                        breakpoint: 991,
-                        settings: {
-                          slidesToShow: breakpointMD,
-                        }
-                    },
-                    {
-                        breakpoint: 576,
-                        settings: {
-                          slidesToShow: breakpointSM,
-                        }
-                    },
-                ]
-            });
-        });
-    };
-
-    // Sign In & Up Page
-    $('.slick-features').slick({
-        infinite: true,
-        autoplay: true,
-        autoplaySpeed: 6000,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
-        dots: true
+          },
+          {
+            breakpoint: 576,
+            settings: {
+              slidesToShow: breakpointSM
+            }
+          }
+        ]
+      });
     });
+  }
 
-    
-    /*-------
+  // Sign In & Up Page
+  $('.slick-features').slick({
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 6000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    dots: true
+  });
+
+  /* -------
     Custom function to toggle filter child
     Used in the explore page on sidebar (to expand child regions/activities)
     activate by using the HTML attribute 'data-filter-toggle' and giving the target ID as a value (ID of div that you want to toggle)
@@ -207,31 +194,29 @@ $(document).ready(function(){
         - jquery-3.6.0.min.js
     */
 
-    // check if attribute exist    
-    if($("[data-filter-toggle]").length){
+  // check if attribute exist
+  if ($('[data-filter-toggle]').length) {
+    // on link click
+    $('[data-filter-toggle]').on('click', function(e) {
+      // block default event
+      e.preventDefault();
 
-        // on link click
-        $("[data-filter-toggle]").on('click',function(e){
+      // get ID of the div we want to toggle
+      let nav = $(this).attr('data-filter-toggle');
+      let $button = $(this);
 
-            // block default event
-            e.preventDefault();
+      // toggle, with callback to change the button +/- using the styling set in the CSS
+      $(nav).toggle(200, () => {
+        if ($button.hasClass('showing')) {
+          $button.removeClass('showing');
+        } else {
+          $button.addClass('showing');
+        }
+      });
+    });
+  }
 
-            // get ID of the div we want to toggle
-            var nav = $(this).attr('data-filter-toggle');
-            var $button = $(this);
-
-            // toggle, with callback to change the button +/- using the styling set in the CSS
-            $(nav).toggle(200,function(){
-                if($button.hasClass('showing')) {
-                    $button.removeClass('showing');
-                } else {
-                    $button.addClass('showing');
-                }
-            });
-        });
-    }
-
-    /*-------
+  /* -------
     Custom function to hide/show different div in the same page
     Difference with the toggle, this function will show certain div & hide other div at the same time
     Used in the explore results (to show and hide the statistics chart/list results)
@@ -244,37 +229,35 @@ $(document).ready(function(){
             - set HTML attribute 'data-filter-group' on the target div, the value will represent the value of 'data-filter-showhide-group' on the action button
     Dependency:
         - jquery-3.6.0.min.js
-    */ 
+    */
 
-    // check
-    if($("[data-filter-showhide]").length) {
+  // check
+  if ($('[data-filter-showhide]').length) {
+    // on click
+    $('[data-filter-showhide]').on('click', function(e) {
+      // get attributes value on each button
+      let nav = $(this).attr('data-filter-showhide');
+      let sections = $(this).attr('data-filter-showhide-group');
 
-        // on click
-        $("[data-filter-showhide]").on('click',function(e){
+      // hide all the divs within the same group
+      $('[data-filter-group=\'' + sections + '\']').hide();
 
-            // get attributes value on each button
-            var nav = $(this).attr('data-filter-showhide');
-            var sections = $(this).attr('data-filter-showhide-group');
+      // show only the target one
+      $('[data-filter-target=\'' + nav + '\']').show();
+    });
+  }
 
-            // hide all the divs within the same group
-            $("[data-filter-group='" + sections + "']").hide();
-
-            // show only the target one
-            $("[data-filter-target='" + nav + "']").show();
-        });
-    } 
-
-    /*-------
+  /* -------
     Tooltip
     Dependency:
         - jquery-3.6.0.min.js
         - bootstrap.bundle.min.js
     */
 
-    // initialize html tooltip for this chart
-    $('[data-toggle="tooltip"]').tooltip();
+  // initialize html tooltip for this chart
+  $('[data-toggle="tooltip"]').tooltip();
 
-  /*-------
+  /* -------
     Example AMCHART
     Dependency:
         - script(src="https://cdn.amcharts.com/lib/5/index.js")
@@ -286,7 +269,7 @@ $(document).ready(function(){
         - Not use in the slicing.
     */
 
-    /*
+  /*
     var root = am5.Root.new("chart-map");
     var chart = root.container.children.push(
         am5map.MapChart.new(root, {
@@ -307,7 +290,6 @@ $(document).ready(function(){
     chart.goHome();
     });
 
-
     var root = am5.Root.new("trend-chart");
 
     // Set themes
@@ -315,7 +297,6 @@ $(document).ready(function(){
     root.setThemes([
     am5themes_Animated.new(root)
     ]);
-
 
     // Create chart
     // https://www.amcharts.com/docs/v5/charts/xy-chart/
@@ -326,14 +307,12 @@ $(document).ready(function(){
     wheelY: "zoomX"
     }));
 
-
     // Add cursor
     // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
     var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
     behavior: "none"
     }));
     cursor.lineY.set("visible", false);
-
 
     // Generate random data
     var date = new Date();
@@ -357,7 +336,6 @@ $(document).ready(function(){
     return data;
     }
 
-
     // Create axes
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
     var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
@@ -374,7 +352,6 @@ $(document).ready(function(){
     renderer: am5xy.AxisRendererY.new(root, {})
     }));
 
-
     // Add series
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
     var series = chart.series.push(am5xy.LineSeries.new(root, {
@@ -388,18 +365,15 @@ $(document).ready(function(){
         })
     }));
 
-
     // Add scrollbar
     // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
     chart.set("scrollbarX", am5.Scrollbar.new(root, {
         orientation: "horizontal"
     }));
 
-
     // Set data
     var data = generateDatas(1200);
     series.data.setAll(data);
-
 
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/

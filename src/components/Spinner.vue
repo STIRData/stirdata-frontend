@@ -1,5 +1,8 @@
 <template>
-  <b-spinner label="Spinning" class="spinner-color m-3"></b-spinner>
+  <b-spinner
+    label="Spinning"
+    class="spinner-color m-3"
+  />
 </template>
 
 <style lang="scss" scoped>

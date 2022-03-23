@@ -8,6 +8,6 @@ export default () => {
       day: '2-digit',
       year: 'numeric'
     });
-  })
-}
+  });
+};
 

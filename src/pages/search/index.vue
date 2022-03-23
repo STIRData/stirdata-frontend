@@ -8,10 +8,16 @@
     </div>
     <div class="container mb-4">
       <div class="w-100">
-        <b-form v-if="show" @submit="onSubmit" @reset="onReset">
+        <b-form
+          v-if="show"
+          @submit="onSubmit"
+          @reset="onReset"
+        >
           <b-row class="d-flex justify-content-between">
             <b-col>
-              <h3 class="mb-4">Region</h3>
+              <h3 class="mb-4">
+                Region
+              </h3>
               <b-form-group v-if="form.nutsTags.length > 0">
                 <b-form-tags
                   v-model="form.nutsTags"
@@ -28,15 +34,18 @@
               </b-form-group>
               <b-form-group
                 v-for="(nuts, index) in nutsOptions"
-                :key="'nuts-group-' + index"
                 id="'nuts-group-'+index"
+                :key="'nuts-group-' + index"
               >
-                <b-col cols="10" class="d-inline-flex p-0">
+                <b-col
+                  cols="10"
+                  class="d-inline-flex p-0"
+                >
                   <b-form-select
                     id="'nuts-'+index"
                     v-model="form.nuts[index]"
                     :options="nuts"
-                    v-on:change="selectLevel('nuts', index)"
+                    @change="selectLevel('nuts', index)"
                   />
                 </b-col>
                 <b-col
@@ -52,13 +61,18 @@
                       form.nutsTags.push(form.nuts[index].split('/').pop())
                     "
                   >
-                    <i class="fa fa-plus" aria-hidden="true" />
+                    <i
+                      class="fa fa-plus"
+                      aria-hidden="true"
+                    />
                   </b-button>
                 </b-col>
               </b-form-group>
             </b-col>
             <b-col>
-              <h3 class="mb-4">Activity</h3>
+              <h3 class="mb-4">
+                Activity
+              </h3>
               <b-form-group v-if="form.naceTags.length > 0">
                 <b-form-tags
                   v-model="form.naceTags"
@@ -75,15 +89,18 @@
               </b-form-group>
               <b-form-group
                 v-for="(nace, index) in naceOptions"
-                :key="'nace-group-' + index"
                 id="'nace-group-'+index"
+                :key="'nace-group-' + index"
               >
-                <b-col cols="10" class="d-inline-flex p-0">
+                <b-col
+                  cols="10"
+                  class="d-inline-flex p-0"
+                >
                   <b-form-select
                     id="'nace-'+index"
                     v-model="form.nace[index]"
                     :options="nace"
-                    v-on:change="selectLevel('nace', index)"
+                    @change="selectLevel('nace', index)"
                   />
                 </b-col>
                 <b-col
@@ -99,16 +116,26 @@
                       form.naceTags.push(form.nace[index].split('/').pop())
                     "
                   >
-                    <i class="fa fa-plus" aria-hidden="true" />
+                    <i
+                      class="fa fa-plus"
+                      aria-hidden="true"
+                    />
                   </b-button>
                 </b-col>
               </b-form-group>
             </b-col>
             <b-col>
-              <h3 class="mb-4">Registration Date</h3>
+              <h3 class="mb-4">
+                Registration Date
+              </h3>
               <b-form-group id="date-group">
                 <b-row class="align-items-center mb-2">
-                  <b-col cols="2" class="mb-2">After:</b-col>
+                  <b-col
+                    cols="2"
+                    class="mb-2"
+                  >
+                    After:
+                  </b-col>
                   <b-col cols="10">
                     <b-form-datepicker
                       id="date-0"
@@ -122,7 +149,12 @@
                   </b-col>
                 </b-row>
                 <b-row class="align-items-center">
-                  <b-col cols="2" class="mb-2">Before:</b-col>
+                  <b-col
+                    cols="2"
+                    class="mb-2"
+                  >
+                    Before:
+                  </b-col>
                   <b-col cols="10">
                     <b-form-datepicker
                       id="date-1"
@@ -144,7 +176,10 @@
           >
             <div>
               <b-row class="ml-0">
-                <b-col cols="{6}" class="mr-5">
+                <b-col
+                  cols="{6}"
+                  class="mr-5"
+                >
                   <b-form-group class="mb-1">
                     <b-form-checkbox
                       id="gnuts3-checkbox"
@@ -164,13 +199,19 @@
                     </b-form-checkbox>
                   </b-form-group>
                 </b-col>
-                <b-col cols="{2}" class="align-self-center">
+                <b-col
+                  cols="{2}"
+                  class="align-self-center"
+                >
                   <b-button
                     variant="primary"
                     :disabled="loadingQueries.length > 0"
                     @click="viewGrouped()"
                   >
-                    <div v-if="loadingQueries.length > 0" class="d-flex">
+                    <div
+                      v-if="loadingQueries.length > 0"
+                      class="d-flex"
+                    >
                       <b-spinner
                         small
                         type="grow"
@@ -184,18 +225,32 @@
               </b-row>
             </div>
             <div class="align-self-center">
-              <b-button type="reset" variant="outline-danger"> Reset </b-button>
+              <b-button
+                type="reset"
+                variant="outline-danger"
+              >
+                Reset
+              </b-button>
               <b-button
                 type="submit"
                 variant="primary"
                 class="ml-2"
                 :disabled="loadingQueries.length > 0"
               >
-                <div v-if="loadingQueries.length > 0" class="d-flex">
-                  <b-spinner small type="grow" class="align-self-center mr-2" />
+                <div
+                  v-if="loadingQueries.length > 0"
+                  class="d-flex"
+                >
+                  <b-spinner
+                    small
+                    type="grow"
+                    class="align-self-center mr-2"
+                  />
                   Loading...
                 </div>
-                <div v-else>Search</div>
+                <div v-else>
+                  Search
+                </div>
               </b-button>
             </div>
           </b-row>
@@ -204,15 +259,26 @@
           v-if="results && Object.keys(results).length > 0"
           class="mt-4 pt-4 border-secondary border-top"
         >
-          <h3 id="searchResults" class="text-center mb-4">Results</h3>
-          <b-tabs justified nav-class="mx-3">
+          <h3
+            id="searchResults"
+            class="text-center mb-4"
+          >
+            Results
+          </h3>
+          <b-tabs
+            justified
+            nav-class="mx-3"
+          >
             <b-tab
               v-for="(endpoint, index) in results"
               :key="index"
               :title="endpoint.title"
               title-item-class="text-capitalize"
             >
-              <div v-if="loading" class="d-flex justify-content-center m-5">
+              <div
+                v-if="loading"
+                class="d-flex justify-content-center m-5"
+              >
                 <b-spinner label="Loading" />
               </div>
               <b-table
@@ -235,7 +301,7 @@
                 <template #cell(activity)="naces">
                   <p
                     v-for="nace in naces.value.slice(0, 3)"
-                    v-bind:key="nace"
+                    :key="nace"
                     v-b-tooltip.hover.left
                     :title="nace.label"
                     delay="150"
@@ -247,7 +313,7 @@
                     <b-collapse :id="'activities-' + naces.index">
                       <p
                         v-for="nace in naces.value.slice(3)"
-                        v-bind:key="nace"
+                        :key="nace"
                         v-b-tooltip.hover.left
                         :title="nace.label"
                         delay="150"
@@ -269,14 +335,28 @@
                   </div>
                 </template>
                 <template #cell(region)="nuts">
-                  <span v-b-tooltip.hover :title="nuts.value.label" delay="150">
+                  <span
+                    v-b-tooltip.hover
+                    :title="nuts.value.label"
+                    delay="150"
+                  >
                     {{ nuts.value.code.split("/").pop() }}
                   </span>
                 </template>
                 <template #cell(link)="sites">
-                  <span v-for="link in sites.value" v-bind:key="link">
-                    <a :href="link" class="pr-0" target="_blank">
-                      <i class="fa fa-external-link" aria-hidden="true" />
+                  <span
+                    v-for="link in sites.value"
+                    :key="link"
+                  >
+                    <a
+                      :href="link"
+                      class="pr-0"
+                      target="_blank"
+                    >
+                      <i
+                        class="fa fa-external-link"
+                        aria-hidden="true"
+                      />
                     </a>
                   </span>
                 </template>
@@ -314,9 +394,9 @@
 <script>
   export default {
     components: {
-      InfoModal: () => import("../../components/InfoModal"),
+      InfoModal: () => import('../../components/InfoModal'),
       // CustomMap: () => import("../../components/map/CustomMap"),
-      DetailedMap: () => import("../../components/map/DetailedMap")
+      DetailedMap: () => import('../../components/map/DetailedMap')
     },
 
     data() {
@@ -332,7 +412,7 @@
           naceTags: [],
           gnace: false,
           foundingStartDate: null,
-          foundingEndDate: null,
+          foundingEndDate: null
         },
         tableColumns: [],
         nutsOptions: [],
@@ -342,36 +422,36 @@
         results: null,
         pageSize: 20,
         endpoints: {},
-        selectedEntry: {},
+        selectedEntry: {}
       };
-    },
-
-    created() {
-      this.$nuxt.$on("toast-warning", (message) => {
-        this.$bvToast.toast(message, {
-          variant: "danger",
-          title: "Warning",
-          solid: true,
-        });
-      });
     },
 
     async fetch() {
       let nuts0 = [];
       let nace0 = [];
 
-      let nutsZeroResponse = await this.$calls.getTopLevel("nuts?top=stirdata");
+      let nutsZeroResponse = await this.$calls.getTopLevel('nuts?top=stirdata');
       nutsZeroResponse.forEach((item) => {
         nuts0.push(item);
-        this.endpoints[item.value.split("/").pop()] = [];
+        this.endpoints[item.value.split('/').pop()] = [];
       });
       this.nutsOptions.push(nuts0);
 
-      let naceZeroResponse = await this.$calls.getTopLevel("nace");
+      let naceZeroResponse = await this.$calls.getTopLevel('nace');
       naceZeroResponse.forEach((item) => {
         nace0.push(item);
       });
       this.naceOptions.push(nace0);
+    },
+
+    created() {
+      this.$nuxt.$on('toast-warning', (message) => {
+        this.$bvToast.toast(message, {
+          variant: 'danger',
+          title: 'Warning',
+          solid: true
+        });
+      });
     },
 
     methods: {
@@ -389,7 +469,7 @@
           !this.form.foundingStartDate ||
           this.form.foundingEndDate > this.form.foundingStartDate;
         let validGrouped =
-          type === "grouped" ? this.form.gnace || this.form.gnuts3 : true;
+          type === 'grouped' ? this.form.gnace || this.form.gnuts3 : true;
 
         return (
           validFoundingEndDate &&
@@ -409,9 +489,9 @@
               response.data.results.bindings.forEach((item) => {
                 options.push({
                   value: item.code.value,
-                  text: `${item.code.value.split("/").pop()} - ${
+                  text: `${item.code.value.split('/').pop()} - ${
                     item.label.value
-                  }`,
+                  }`
                 });
               });
               if (level === this[typeOptions].length - 1) {
@@ -422,7 +502,7 @@
                 this.form[type].splice(level + 1, 4);
               }
             } else {
-              this.form[typeTags].push(this.form[type][level].split("/").pop());
+              this.form[typeTags].push(this.form[type][level].split('/').pop());
             }
           });
       },
@@ -432,35 +512,37 @@
           .get(`data/label?resource=${id}`)
           .then((response) => {
             let index = response.data[0][
-              "http://www.w3.org/2004/02/skos/core#prefLabel"
-            ].findIndex((el) => el["@language"] === "en");
-            if (index < 0) index = 0;
+              'http://www.w3.org/2004/02/skos/core#prefLabel'
+            ].findIndex((el) => el['@language'] === 'en');
+            if (index < 0) {
+              index = 0;
+            }
             return response.data[0][
-              "http://www.w3.org/2004/02/skos/core#prefLabel"
-            ][index]["@value"];
+              'http://www.w3.org/2004/02/skos/core#prefLabel'
+            ][index]['@value'];
           })
           .catch((error) => {
             console.error(error);
-            return "";
+            return '';
           });
       },
 
       resolveLabels(index, type) {
-        this.results[index].entries.forEach(async (entry, i) => {
-          entry[type].forEach(async (node, j) => {
+        this.results[index].entries.forEach(async(entry, i) => {
+          entry[type].forEach(async(node, j) => {
             this.results[index].entries[i][type][j].label = node.code
               ? await this.getLabel(node.code)
-              : "";
+              : '';
           });
         });
       },
 
       async goToPage(bvEvent, page, country) {
-        this.$scrollTo("#searchResults", {
-          easing: "ease-in-out",
+        this.$scrollTo('#searchResults', {
+          easing: 'ease-in-out',
           lazy: false,
           offset: -88,
-          duration: 750,
+          duration: 750
         });
 
         let query =
@@ -468,12 +550,12 @@
           `page=${page}`;
         this.loading = true;
         let index = await this.searchQuery(query, true);
-        this.resolveLabels(index, "activity");
+        this.resolveLabels(index, 'activity');
       },
 
       buildQueries(querySuffix) {
-        var queriesType = "queries";
-        var suffixParams = "";
+        let queriesType = 'queries';
+        let suffixParams = '';
         if (querySuffix.length > 0) {
           queriesType =
             queriesType +
@@ -486,13 +568,13 @@
           .map(
             (code) => `NACE=https://lod.stirdata.eu/nace/nace-rev2/code/${code}&`
           )
-          .join("");
+          .join('');
         let foundingStartDateQuery = this.form.foundingStartDate
           ? `foundingStartDate=${this.form.foundingStartDate}&`
-          : "";
+          : '';
         let foundingEndDateQuery = this.form.foundingEndDate
           ? `foundingEndDate=${this.form.foundingEndDate}&`
-          : "";
+          : '';
 
         this[queriesType] = [];
         if (this.form.nutsTags.length > 0) {
@@ -505,7 +587,7 @@
             if (this.endpoints[code] && this.endpoints[code].length > 0) {
               this[queriesType].push(
                 `query${querySuffix}?country=${code}&${this.endpoints[code].join(
-                  "&"
+                  '&'
                 )}&${naceQuery}${foundingStartDateQuery}${foundingEndDateQuery}${suffixParams}`
               );
               // Empty the query of this endpoint, for the next search
@@ -522,7 +604,7 @@
       },
 
       searchQuery(q, update) {
-        this.tableColumns = ["name", "registration_date", "activity", "link"];
+        this.tableColumns = ['name', 'registration_date', 'activity', 'link'];
         return this.$api
           .get(q)
           .then((queryResponse) => {
@@ -534,43 +616,43 @@
                 countryCode: queryResponse.data[0].countryCode,
                 count: queryResponse.data[0].count,
                 title: `${
-                  queryResponse.data[0].endpointName.split("-")[0]
+                  queryResponse.data[0].endpointName.split('-')[0]
                 } (${queryResponse.data[0].count.toLocaleString()})`,
-                entries: [],
+                entries: []
               };
             }
             if (queryResponse.data[0].response.length > 0) {
-              queryResponse.data[0].response.forEach(async (item) => {
+              queryResponse.data[0].response.forEach(async(item) => {
                 if (
-                  item["@type"] &&
-                  item["@type"][0] ===
-                    "http://www.w3.org/ns/regorg#RegisteredOrganization"
+                  item['@type'] &&
+                  item['@type'][0] ===
+                  'http://www.w3.org/ns/regorg#RegisteredOrganization'
                 ) {
                   let entry = {
-                    name: "",
-                    registration_date: "",
+                    name: '',
+                    registration_date: '',
                     activity: [],
-                    link: [],
+                    link: []
                   };
-                  entry.name = item["http://www.w3.org/ns/regorg#legalName"]
-                    ? item["http://www.w3.org/ns/regorg#legalName"][0]["@value"]
-                    : "no-name-found";
-                  entry["registration_date"] = item[
-                    "https://schema.org/foundingDate"
+                  entry.name = item['http://www.w3.org/ns/regorg#legalName']
+                    ? item['http://www.w3.org/ns/regorg#legalName'][0]['@value']
+                    : 'no-name-found';
+                  entry['registration_date'] = item[
+                    'https://schema.org/foundingDate'
                   ]
-                    ? item["https://schema.org/foundingDate"][0]["@value"]
-                    : item["http://schema.org/foundingDate"]
-                    ? item["http://schema.org/foundingDate"][0]["@value"]
-                    : "no-date-found";
-                  entry.activity = item["http://www.w3.org/ns/regorg#orgActivity"]
-                    ? item["http://www.w3.org/ns/regorg#orgActivity"].map(
-                        (e) => ({ code: e["@id"], label: "" })
-                      )
+                    ? item['https://schema.org/foundingDate'][0]['@value']
+                    : item['http://schema.org/foundingDate']
+                      ? item['http://schema.org/foundingDate'][0]['@value']
+                      : 'no-date-found';
+                  entry.activity = item['http://www.w3.org/ns/regorg#orgActivity']
+                    ? item['http://www.w3.org/ns/regorg#orgActivity'].map(
+                      (e) => ({ code: e['@id'], label: '' })
+                    )
                     : [];
-                  entry.link = item["http://www.w3.org/2002/07/owl#sameAs"]
-                    ? item["http://www.w3.org/2002/07/owl#sameAs"]
-                        .map((e) => e["@id"])
-                        .filter((e) => !e.includes("opencorporates"))
+                  entry.link = item['http://www.w3.org/2002/07/owl#sameAs']
+                    ? item['http://www.w3.org/2002/07/owl#sameAs']
+                      .map((e) => e['@id'])
+                      .filter((e) => !e.includes('opencorporates'))
                     : [];
                   entry.json = item;
                   this.results[queryResponse.data[0].endpointName].entries.push(
@@ -582,9 +664,9 @@
               this.$bvToast.toast(
                 `${queryResponse.data[0].endpointName}: No response for these criteria.`,
                 {
-                  variant: "danger",
-                  title: "Warning",
-                  solid: true,
+                  variant: 'danger',
+                  title: 'Warning',
+                  solid: true
                 }
               );
             }
@@ -607,46 +689,48 @@
       },
 
       searchGroupedQuery(q, update) {
-        this.tableColumns = ["activity", "region", "count"];
+        this.tableColumns = ['activity', 'region', 'count'];
         this.$api
           .get(q)
           .then((response) => {
             if (update) {
-              this.results[response.data[0].endpointName + "-stats"].entries = [];
+              this.results[response.data[0].endpointName + '-stats'].entries = [];
             } else {
               this.results = Object.assign({}, this.results);
-              this.results[response.data[0].endpointName + "-stats"] = {
+              this.results[response.data[0].endpointName + '-stats'] = {
                 countryCode: response.data[0].countryCode,
                 count: response.data[0].count,
                 title: `${
-                  response.data[0].endpointName.split("-")[0]
+                  response.data[0].endpointName.split('-')[0]
                 } statistics`,
-                entries: [],
+                entries: []
               };
             }
             if (response.data[0].response.results.bindings.length > 0) {
-              response.data[0].response.results.bindings.forEach(async (item) => {
+              response.data[0].response.results.bindings.forEach(async(item) => {
                 let entry = {};
-                if (this.form.gnace)
+                if (this.form.gnace) {
                   entry.activity = item.nace
-                    ? [{ code: item.nace.value, label: "" }]
+                    ? [{ code: item.nace.value, label: '' }]
                     : [];
-                if (this.form.gnuts3)
+                }
+                if (this.form.gnuts3) {
                   entry.region = item.nuts3
-                    ? { code: item.nuts3.value, label: "" }
+                    ? { code: item.nuts3.value, label: '' }
                     : {};
+                }
                 entry.count = item.count ? item.count.value : 0;
                 this.results[
-                  response.data[0].endpointName + "-stats"
+                  response.data[0].endpointName + '-stats'
                 ].entries.push(entry);
               });
             } else {
               this.$bvToast.toast(
                 `${response.data[0].endpointName}: No response for these criteria.`,
                 {
-                  variant: "danger",
-                  title: "Warning",
-                  solid: true,
+                  variant: 'danger',
+                  title: 'Warning',
+                  solid: true
                 }
               );
             }
@@ -668,19 +752,19 @@
 
       viewGrouped() {
         // TODO: Retrieve groupBy results and display them
-        if (!this.validateInput("grouped")) {
+        if (!this.validateInput('grouped')) {
           this.$bvToast.toast(
-            "You have to select at least one search criteria.",
+            'You have to select at least one search criteria.',
             {
-              variant: "danger",
-              title: "Warning",
-              solid: true,
+              variant: 'danger',
+              title: 'Warning',
+              solid: true
             }
           );
           return;
         }
 
-        this.buildQueries("/grouped");
+        this.buildQueries('/grouped');
 
         for (let q of this.queriesGrouped) {
           this.loadingQueries.push(true);
@@ -690,29 +774,29 @@
 
       showInfoModal(row) {
         this.selectedEntry = row.item;
-        this.$bvModal.show("info-modal");
+        this.$bvModal.show('info-modal');
       },
 
       async onSubmit(event) {
         event.preventDefault();
-        if (!this.validateInput("")) {
+        if (!this.validateInput('')) {
           this.$bvToast.toast(
-            "You have to select at least one search criteria.",
+            'You have to select at least one search criteria.',
             {
-              variant: "danger",
-              title: "Warning",
-              solid: true,
+              variant: 'danger',
+              title: 'Warning',
+              solid: true
             }
           );
           return;
         }
 
-        this.buildQueries("");
+        this.buildQueries('');
         this.results = {};
         for (let q of this.queries) {
           this.loadingQueries.push(true);
           let index = await this.searchQuery(q.slice(0, -1), false);
-          this.resolveLabels(index, "activity");
+          this.resolveLabels(index, 'activity');
         }
       },
 
@@ -732,8 +816,8 @@
         this.$nextTick(() => {
           this.show = true;
         });
-      },
-    },
+      }
+    }
   };
 </script>
 

@@ -17,40 +17,41 @@
       <!-- Countries with no data -->
       <path
         v-if="!countryCounts[code]"
-        :key="'country-' + code"
         :id="code"
+        :key="'country-' + code"
         :name="regions[code].name"
         :d="regions[code].coordinates"
-      >
-      </path>
+      />
       <!-- Countries with data -->
       <template
         v-else
       >
         <b-link
           :id="code + 'pop'"
-          :to="{ name: 'statistics-region-region', params: { region: code } }"
           :key="'link-' + code"
+          :to="{ name: 'statistics-region-region', params: { region: code } }"
         >
           <path
             :id="code"
             :name="regions[code].name"
             :d="regions[code].coordinates"
-          >
-          </path>
+          />
         </b-link>
         <b-tooltip
+          :key="'tooltip-' + code"
           :target="code + 'pop'"
           triggers="hover"
-          :key="'tooltip-' + code"
         >
-          <div class='htmlpop'>
-            <span class='count'>
+          <div class="htmlpop">
+            <span class="count">
               {{ regions[code].name }}
-              <span class='label'></span>
+              <span class="label" />
             </span>
-            <br/>
-            <span v-if="!loading" class='detail'>
+            <br />
+            <span
+              v-if="!loading"
+              class="detail"
+            >
               {{ countryCounts[code].toLocaleString() }} Companies
             </span>
           </div>
@@ -64,6 +65,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import regions from '../../../data/regions.json';
 
   export default {
@@ -77,22 +79,24 @@
       };
     },
 
-    mounted() {
-      this.loading = true;
+    computed: {
+      ...mapState({
+        countriesStatistics: state => state.countriesStatistics
+      })
+    },
+
+    async mounted() {
       this.regions = regions;
-      this.$calls.getStatistics()
-        .then(response => {
-          response.placeGroups.forEach(entry => {
-            this.countryCounts[entry.country.code] = entry.count;
-          });
-          this.loading = false;
-        })
-        .catch(error => {
-          console.error(error);
-          this.loading = false;
-        });
+      if (this.countriesStatistics.length == 0) {
+        this.loading = true;
+        await this.$store.dispatch('fetchTopLevelStatistics');
+      }
+      this.countriesStatistics.forEach(entry => {
+        this.countryCounts[entry.country.code] = entry.count;
+      });
+      this.loading = false;
     }
-  }
+  };
 </script>
 
 <style lang="scss" scoped>
