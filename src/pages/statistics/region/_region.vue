@@ -442,7 +442,11 @@
 
     methods: {
       getImagePath(country) {
-        return require(`../../../assets/img/icons/ic-${country.country.code.toLowerCase()}.png`);
+        try {
+          return require(`../../../assets/img/icons/ic-${country.country.code.toLowerCase()}.png`);
+        } catch (e) {
+          return require('../../../assets/img/broken-image.png');
+        }
       },
       percentage(count) {
         return ((count / this.regionTotalCount) * 100).toFixed(1) === '0.0' ? 0.1 : Number(((count / this.regionTotalCount) * 100).toFixed(1));
