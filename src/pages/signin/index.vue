@@ -183,18 +183,25 @@
         this.webId = session.webId;
         // Build a custom user json object
         let usrObj = { 'name': '' + this.user.name, 'webID': this.webId };
+        this.getToken(this.id_token, 'solid');
         this.$store.commit('setUser', usrObj);
       }
       this.$router.push('/');
     },
 
     methods: {
+      getToken(token,provider){
+          this.$api
+          .post(`oauth/authorize/${provider}`, { token: token })
+          .then((response) => {console.log(response)});
+      },
       onSignIn(user) {
         const profile = user.getBasicProfile();
         this.$store.commit('setUser', profile);
         // The ID token for backend:
         this.id_token = user.getAuthResponse().id_token;
         console.log(this.id_token);
+        this.getToken(this.id_token, 'google');
         this.$router.push('/');
       },
 
