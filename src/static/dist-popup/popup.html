@@ -4,9 +4,10 @@
     <title>Select your Identity Provider</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <div id="app-container"></div>
+    <div id="app-container" class="container"></div>
   <script type="text/javascript">/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -145,12 +146,12 @@ findAppOrigin().then(appOrigin => {
   } else {
     const idps = [..._idps_json__WEBPACK_IMPORTED_MODULE_7__];
 
-    if (!idps.some(idp => idp.url === baseUrl)) {
+   /* if (!idps.some(idp => idp.url === baseUrl)) {
       idps.unshift({
         displayName: host,
         url: baseUrl
       });
-    }
+    }*/
 
     element = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement(_components_IdpSelect__WEBPACK_IMPORTED_MODULE_5__["default"], {
       idps: idps,
@@ -9628,8 +9629,11 @@ class IdpSelect extends react__WEBPACK_IMPORTED_MODULE_1__["default"].Component 
     }, appName)), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("p", {
       className: "error"
     }, error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("p", null, "Please enter your WebID or the URL of your identity provider:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("form", {
-      className: "custom-idp",
+      className: "form",
       onSubmit: this.handleSelectIdp(idp)
+    }, 
+    /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("div", {
+      className: "inputform"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("input", {
       ref: input => this.idpInput = input,
       type: "url",
@@ -9637,16 +9641,24 @@ class IdpSelect extends react__WEBPACK_IMPORTED_MODULE_1__["default"].Component 
       value: idp,
       onChange: this.handleChangeIdp,
       onBlur: this.handleBlurIdp
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("button", {
+    })),  /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("div", {
+      className: "inputaction"
+    }, 
+    /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("button", {
       type: "submit",
       disabled: !idp
-    }, "Go")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("p", null, "Or pick an identity provider from the list below:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("div", {
-      className: "idp-list"
-    }, idps.map(idp => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("button", {
-      className: "idp",
+    }, "Go"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("p", null, "Or pick an identity provider from the list below:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("div", {
+      className: "inputaction"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("form", {
+      className: "form",
+    },
+    idps.map(idp => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("span", {
+      className: "idp inputaction"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__["default"].createElement("button", {
+      className: "button",
       onClick: this.handleSelectIdp(idp.url),
       key: idp.url
-    }, idp.displayName))));
+    }, idp.displayName))))));
   }
 
 }
@@ -10128,7 +10140,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(true);
 // Module
-___CSS_LOADER_EXPORT___.push([module.i, "body {\n  margin: 20px;\n}\n\nbody, button, input {\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size: 11pt;\n}\n\nh1 {\n  font-weight: normal;\n  padding-bottom: 10px;\n}\n\np {\n  margin: .75em 0;\n}\n\nbutton {\n  font-weight: bold;\n  border: none;\n  border-radius: 7px;\n  background-color: rgb(61, 109, 211);\n  color: #fff;\n  transition: background-color 0.4s;\n  cursor: pointer;\n}\nbutton:hover,\nbutton:focus {\n  background-color: rgb(55, 97, 188);\n}\n\n:focus {\n  outline: none;\n}\n\n#app-container {\n  max-width: 600px;\n  margin: auto;\n}\n\n.error {\n  background-color: #ff8e8e;\n  color: #323232;\n  padding: 8px;\n  border-radius: 2px;\n}\n\n.app-name {\n  font-weight: bold;\n}\n", "",{"version":3,"sources":["webpack://popup-app/index.css"],"names":[],"mappings":"AAAA;EACE,YAAY;AACd;;AAEA;EACE,2DAA2D;EAC3D,eAAe;AACjB;;AAEA;EACE,mBAAmB;EACnB,oBAAoB;AACtB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,iBAAiB;EACjB,YAAY;EACZ,kBAAkB;EAClB,mCAAmC;EACnC,WAAW;EACX,iCAAiC;EACjC,eAAe;AACjB;AACA;;EAEE,kCAAkC;AACpC;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,gBAAgB;EAChB,YAAY;AACd;;AAEA;EACE,yBAAyB;EACzB,cAAc;EACd,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,iBAAiB;AACnB","sourcesContent":["body {\n  margin: 20px;\n}\n\nbody, button, input {\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size: 11pt;\n}\n\nh1 {\n  font-weight: normal;\n  padding-bottom: 10px;\n}\n\np {\n  margin: .75em 0;\n}\n\nbutton {\n  font-weight: bold;\n  border: none;\n  border-radius: 7px;\n  background-color: rgb(61, 109, 211);\n  color: #fff;\n  transition: background-color 0.4s;\n  cursor: pointer;\n}\nbutton:hover,\nbutton:focus {\n  background-color: rgb(55, 97, 188);\n}\n\n:focus {\n  outline: none;\n}\n\n#app-container {\n  max-width: 600px;\n  margin: auto;\n}\n\n.error {\n  background-color: #ff8e8e;\n  color: #323232;\n  padding: 8px;\n  border-radius: 2px;\n}\n\n.app-name {\n  font-weight: bold;\n}\n"],"sourceRoot":""}]);
+//___CSS_LOADER_EXPORT___.push([module.i, "body {\n  margin: 20px;\n}\n\nbody, button, input {\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size: 11pt;\n}\n\nh1 {\n  font-weight: normal;\n  padding-bottom: 10px;\n}\n\np {\n  margin: .75em 0;\n}\n\nbutton {\n  font-weight: bold;\n  border: none;\n  border-radius: 7px;\n  background-color: rgb(61, 109, 211);\n  color: #fff;\n  transition: background-color 0.4s;\n  cursor: pointer;\n}\nbutton:hover,\nbutton:focus {\n  background-color: rgb(55, 97, 188);\n}\n\n:focus {\n  outline: none;\n}\n\n#app-container {\n  max-width: 600px;\n  margin: auto;\n}\n\n.error {\n  background-color: #ff8e8e;\n  color: #323232;\n  padding: 8px;\n  border-radius: 2px;\n}\n\n.app-name {\n  font-weight: bold;\n}\n", "",{"version":3,"sources":["webpack://popup-app/index.css"],"names":[],"mappings":"AAAA;EACE,YAAY;AACd;;AAEA;EACE,2DAA2D;EAC3D,eAAe;AACjB;;AAEA;EACE,mBAAmB;EACnB,oBAAoB;AACtB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,iBAAiB;EACjB,YAAY;EACZ,kBAAkB;EAClB,mCAAmC;EACnC,WAAW;EACX,iCAAiC;EACjC,eAAe;AACjB;AACA;;EAEE,kCAAkC;AACpC;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,gBAAgB;EAChB,YAAY;AACd;;AAEA;EACE,yBAAyB;EACzB,cAAc;EACd,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,iBAAiB;AACnB","sourcesContent":["body {\n  margin: 20px;\n}\n\nbody, button, input {\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size: 11pt;\n}\n\nh1 {\n  font-weight: normal;\n  padding-bottom: 10px;\n}\n\np {\n  margin: .75em 0;\n}\n\nbutton {\n  font-weight: bold;\n  border: none;\n  border-radius: 7px;\n  background-color: rgb(61, 109, 211);\n  color: #fff;\n  transition: background-color 0.4s;\n  cursor: pointer;\n}\nbutton:hover,\nbutton:focus {\n  background-color: rgb(55, 97, 188);\n}\n\n:focus {\n  outline: none;\n}\n\n#app-container {\n  max-width: 600px;\n  margin: auto;\n}\n\n.error {\n  background-color: #ff8e8e;\n  color: #323232;\n  padding: 8px;\n  border-radius: 2px;\n}\n\n.app-name {\n  font-weight: bold;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 

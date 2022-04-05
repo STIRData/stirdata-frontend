@@ -77,13 +77,13 @@
           </template>
           <b-dropdown-item
             class="ml-0 pl-0 dropdown-item left"
-            href="#"
+            :to="{ path: '/profile' }"
           >
-            Profile
+              Profile
           </b-dropdown-item>
           <b-dropdown-item
             class="ml-0 pl-0 dropdown-item left"
-            href="#"
+            :to="{ path: '/profile/savedview' }"
           >
             Saved view
           </b-dropdown-item>

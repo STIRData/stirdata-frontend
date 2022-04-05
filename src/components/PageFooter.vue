@@ -39,14 +39,19 @@
                 Data Providers
               </b-link>
             </li>
-            <li>
+            <li v-if="!isAuthenticated">
               <b-link :to="{ name: 'signin' }">
                 Sign In
               </b-link>
             </li>
-            <li>
+            <li v-if="!isAuthenticated">
               <b-link :to="{ name: 'signup' }">
                 Sign Up
+              </b-link>
+            </li>
+            <li v-if="isAuthenticated">
+              <b-link :to="{ name: 'profile' }">
+                Profile
               </b-link>
             </li>
           </ul>
@@ -86,7 +91,11 @@
   export default {
     name: 'PageFooter',
 
-    computed: {},
+    computed: {
+      isAuthenticated() {
+        return this.$store.getters['isAuthenticated'];
+      }
+    },
 
     methods: {}
   };
