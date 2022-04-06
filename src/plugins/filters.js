@@ -8,6 +8,14 @@ export default () => {
       day: '2-digit',
       year: 'numeric'
     });
+  }),
+  Vue.filter('formatDateForCompany', (date) => {
+    const newDate = new Date(date);
+    return newDate.toLocaleString('en-GB', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
   });
 };
 

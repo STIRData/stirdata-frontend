@@ -86,6 +86,13 @@ export default (ctx, inject) => {
       let code = regionCode.includes(':') ? regionCode : `nuts:${regionCode}`;
       return ctx.$api.get(`nuts?top=${code}&geometry=${resolution}`)
         .then(response => response.data.placeGroups);
+    },
+    getCompany: (uri) => {
+      if (!uri.includes('://')) {
+        uri = uri.replace(':/', '://');
+      }
+      return ctx.$api.get(`query/entity?uri=${uri}`)
+        .then(response => response.data);
     }
   };
 
