@@ -15,7 +15,7 @@
     <div class="pageintro">
       <div class="container">
         <div class="headingtext">
-          <h1>{{ currentActivity.activity.label }}</h1>
+          <h1>{{ currentActivity.activity[0].label }}</h1>
         </div>
       </div>
     </div>
@@ -58,11 +58,11 @@
                   >
                     <li
                       v-for="activity in arraySlice(index - 1, index)"
-                      :key="activity.activity.code"
+                      :key="activity.activity[0].code"
                     >
                       <b-link
                         class="wrap"
-                        :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity.code.split(':')[1] } }"
+                        :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
                       >
                         <div class="icon">
                           <img :src="getImagePath(activity)">
@@ -72,7 +72,7 @@
                             {{ Number(activity.count).toLocaleString() }}
                           </div>
                           <div class="label">
-                            {{ capitalizeTheFirstLetterOfEachWord(activity.activity.label) }}
+                            {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                           </div>
                         </div>
                       </b-link>
@@ -109,7 +109,7 @@
             >
               <div class="headingtext">
                 <h2>
-                  Statistics by {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity.label) }} Business Activity
+                  Statistics by {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
                 </h2>
               </div>
               <!-- line stats-->
@@ -130,21 +130,21 @@
                   </li>
                   <li
                     v-for="activity in subactivities"
-                    :key="activity.activity.code"
+                    :key="activity.activity[0].code"
                   >
                     <div class="wrap">
                       <div class="subject">
                         <b-link
-                          :id="activity.activity.code+'-label'"
-                          :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity.code.split(':')[1] } }"
+                          :id="activity.activity[0].code+'-label'"
+                          :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
                         >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity.label) }}
+                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-link>
                         <b-tooltip
-                          :target="activity.activity.code+'-label'"
+                          :target="activity.activity[0].code+'-label'"
                           triggers="hover"
                         >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity.label) }}
+                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-tooltip>
                       </div>
                       <div class="stat">
@@ -167,7 +167,7 @@
                 <div class="action">
                   <b-link :to="{ name: 'search' }">
                     <span class="text">
-                      Explore all companies for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity.label) }} Business Activity
+                      Explore all companies for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
                     </span>
                     <span class="icon"><i class="fa fa-angle-right" /></span>
                   </b-link>
@@ -180,7 +180,7 @@
             >
               <div class="headingtext">
                 <h2>
-                  Top 5 countries by companies amount in {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity.label) }}
+                  Top 5 countries by companies amount in {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }}
                 </h2>
               </div>
               <div class="chart-line-c line-stats-dynamic">
@@ -255,7 +255,7 @@
                 <div class="action">
                   <b-link :to="{ name: 'search' }">
                     <span class="text">
-                      Explore all countries for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity.label) }} Business Activity
+                      Explore all countries for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
                     </span>
                     <span class="icon"><i class="fa fa-angle-right" /></span>
                   </b-link>
@@ -333,8 +333,8 @@
       let nace = this.$route.params.activity;
       await this.$calls.getActivityStatistics(nace)
         .then(response => {
-          this.subactivities = response.activityGroups ? response.activityGroups : [];
-          this.countries = response.placeGroups ? response.placeGroups : [];
+          this.subactivities = response.activityGroups ?? [];
+          this.countries = response.placeGroups ?? [];
 
           function sortByCount(a, b) {
             if (a.count < b.count) {
@@ -381,7 +381,7 @@
             active: true
           },
           {
-            text: this.currentActivity.activity.label.toUpperCase(),
+            text: this.currentActivity.activity[0].label.toUpperCase(),
             active: true
           }
         ];
@@ -408,7 +408,7 @@
         return separateWord;
       },
       getImagePath(activity) {
-        return require(`../../../assets/img/icons/ic-${activity.activity.code.split(':')[1]}.png`);
+        return require(`../../../assets/img/icons/ic-${activity.activity[0].code.split(':')[1]}.png`);
       }
     }
   };

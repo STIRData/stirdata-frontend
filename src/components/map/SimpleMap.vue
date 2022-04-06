@@ -41,11 +41,11 @@
         .then(response => {
           response.forEach(region => {
             this.customGeodata.features.push({
-              geometry: JSON.parse(region.place.geometry),
-              id: region.place.code,
+              geometry: JSON.parse(region.place[0].geometry),
+              id: region.place[0].code,
               properties: {
-                name: region.place.label,
-                id: region.place.code,
+                name: region.place[0].label,
+                id: region.place[0].code,
                 Continent: 'Europe'
               },
               type: 'Feature'
