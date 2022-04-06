@@ -131,22 +131,22 @@
                   </li>
                   <li
                     v-for="reg in subregions"
-                    :key="reg.place.code"
+                    :key="reg.place[0].code"
                   >
                     <div class="wrap">
                       <div class="subject">
                         <b-link
-                          :id="reg.place.code+'-label'"
+                          :id="reg.place[0].code+'-label'"
                           class="wrap"
-                          :to="!hasLauSubregions ? { name: 'statistics-region-region', params: { region: reg.place.code } } : {}"
+                          :to="!hasLauSubregions ? { name: 'statistics-region-region', params: { region: reg.place[0].code } } : {}"
                         >
-                          {{ reg.place.label }}
+                          {{ reg.place[0].label }}
                         </b-link>
                         <b-tooltip
-                          :target="reg.place.code+'-label'"
+                          :target="reg.place[0].code+'-label'"
                           triggers="hover"
                         >
-                          {{ reg.place.label }}
+                          {{ reg.place[0].label }}
                         </b-tooltip>
                       </div>
                       <div class="stat">
@@ -195,15 +195,15 @@
                 >
                   <b-progress-bar
                     v-for="(activity, index) in activities.slice(0, 5)"
-                    :id="activity.activity.code"
+                    :id="activity.activity[0].code"
                     :key="index"
                     :value="percentage(activity.count)"
                     :style="{ 'background-color': colors[index] }"
                   />
                   <b-tooltip
                     v-for="activity in activities.slice(0, 5)"
-                    :key="activity.activity.code"
-                    :target="activity.activity.code"
+                    :key="activity.activity[0].code"
+                    :target="activity.activity[0].code"
                     triggers="hover"
                   >
                     {{ percentage(activity.count) }}%
@@ -237,7 +237,7 @@
                   </li>
                   <li
                     v-for="(activity, index) in activities.slice(0, 5)"
-                    :key="activity.activity.code"
+                    :key="activity.activity[0].code"
                   >
                     <div class="wrap">
                       <div class="subject">
@@ -246,16 +246,16 @@
                           :style="{ 'background-color': colors[index] }"
                         />
                         <b-link
-                          :id="activity.activity.code+'-label'"
-                          :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity.code.split(':')[1] } }"
+                          :id="activity.activity[0].code+'-label'"
+                          :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
                         >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity.label) }}
+                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-link>
                         <b-tooltip
-                          :target="activity.activity.code+'-label'"
+                          :target="activity.activity[0].code+'-label'"
                           triggers="hover"
                         >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity.label) }}
+                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-tooltip>
                       </div>
                       <div class="stat">
@@ -407,12 +407,12 @@
     async mounted() {
       await this.$calls.getRegionStatistics(this.$route.params.region)
         .then(response => {
-          this.subregions = response.placeGroups ? response.placeGroups : [];
-          this.activities = response.activityGroups ? response.activityGroups : [];
+          this.subregions = response.placeGroups ?? [];
+          this.activities = response.activityGroups ?? [];
           // Update the code and the dates in order to render the chart
           this.regionCode = this.$route.params.region;
-          this.foundingDates = response.foundingDateGroups ? response.foundingDateGroups : [];
-          this.dissolutionDates = response.dissolutionDateGroups ? response.dissolutionDateGroups : [];
+          this.foundingDates = response.foundingDateGroups ?? [];
+          this.dissolutionDates = response.dissolutionDateGroups ?? [];
 
           function sortByCount(a, b) {
             if (a.count < b.count) {
@@ -430,7 +430,7 @@
         .then(response => {
           this.regionTotalCount = response.selection.count;
           this.subregionTemplate = 'place' in response.selection;
-          this.regionLabel = this.subregionTemplate ? response.selection.place.label : response.selection.country.label;
+          this.regionLabel = this.subregionTemplate ? response.selection.place[0].label : response.selection.country.label;
           this.country = response.selection.country;
           this.addCountryNameInBreadcrumb;
         });

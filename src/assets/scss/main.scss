@@ -1318,6 +1318,9 @@ body {
 				.row {
 					padding: 15px 0;
 					border-bottom: 1px solid #E4E8EE;
+          &.content-row{
+            border: transparent;
+          }
 					.head {
 						font-weight: 500;
 					}
@@ -2338,6 +2341,25 @@ body {
 			&:last-child {
 				border-bottom: 0px;
 			}
+      span{
+        &.pill{
+          font-size: 0.875rem;
+          padding: 2px 15px 2px 15px;
+          border-radius: 5px;
+          background-color: white;
+          border: 1px solid $pills-color;
+          color: $pills-color;
+          display: inline-block;
+          transition: 0.3s;
+          cursor: pointer;
+
+          &:hover{
+            background-color: $pills-color;
+            color: white;
+            text-decoration: underline;
+          }
+        }
+      }
 		}
 	}
 

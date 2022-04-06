@@ -82,11 +82,11 @@
               >
                 <li
                   v-for="activity in arraySlice(index - 1, index)"
-                  :key="activity.activity.code"
+                  :key="activity.activity[0].code"
                 >
                   <b-link
                     class="wrap"
-                    :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity.code.split(':')[1] } }"
+                    :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
                   >
                     <div class="icon">
                       <img :src="getImagePath(activity)">
@@ -96,7 +96,7 @@
                         {{ Number(activity.count).toLocaleString() }}
                       </div>
                       <div class="label">
-                        {{ capitalizeTheFirstLetterOfEachWord(activity.activity.label) }}
+                        {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                       </div>
                     </div>
                   </b-link>
@@ -192,6 +192,7 @@
         this.loading = false;
         return;
       }
+
       await this.$store.dispatch('fetchTopLevelStatistics');
       this.loading = false;
     },
@@ -225,7 +226,7 @@
       },
       getImagePath(activity) {
         return require(`../../assets/img/icons/ic-${
-          activity.activity.code.split(':')[1]
+          activity.activity[0].code.split(':')[1]
         }.png`);
       }
     }

@@ -15,6 +15,10 @@
       regionCode: {
         type: String,
         required: true
+      },
+      lau: {
+        type: Object,
+        required: false
       }
     },
 
@@ -41,11 +45,11 @@
         .then(response => {
           response.forEach(region => {
             this.customGeodata.features.push({
-              geometry: JSON.parse(region.place.geometry),
-              id: region.place.code,
+              geometry: JSON.parse(region.place[0].geometry),
+              id: region.place[0].code,
               properties: {
-                name: region.place.label,
-                id: region.place.code,
+                name: region.place[0].label,
+                id: region.place[0].code,
                 Continent: 'Europe'
               },
               type: 'Feature'
@@ -80,7 +84,15 @@
         polygonTemplate.tooltipText = '{name}';
         polygonSeries.tooltip.getFillFromObject = false;
         polygonSeries.tooltip.background.fill = this.am4core.color('#0056b3');
-
+        // If there's a selected lau-region, highlight it on the map
+        if (this.lau) {
+          polygonSeries.data=[{
+            id: this.lau.code,
+            name: this.lau.label,
+            fill: this.am4core.color("#0056b3")
+          }];
+          polygonTemplate.propertyFields.fill = "fill";
+        }
         // Create hover state and set alternative fill color
         polygonTemplate.cursorOverStyle = this.hasLauSubregions ? this.am4core.MouseCursorStyle.default : this.am4core.MouseCursorStyle.pointer;
         let hs = polygonTemplate.states.create('hover');
