@@ -158,7 +158,7 @@
                         type="button"
                         class="slick-prev"
                       >
-                        <font-awesome-icon :icon="['fas', 'angle-left']" />
+                        <font-awesome-icon :icon="['fas', 'angle-left']" class="w-30" />
                       </button>
                     </template>
                     <template #nextArrow="">
@@ -166,7 +166,7 @@
                         type="button"
                         class="slick-next"
                       >
-                        <font-awesome-icon :icon="['fas', 'angle-right']" />
+                        <font-awesome-icon :icon="['fas', 'angle-right']" class="w-30" />
                       </button>
                     </template>
                   </VueSlickCarousel>
@@ -267,7 +267,7 @@
                         type="button"
                         class="slick-prev"
                       >
-                        <font-awesome-icon :icon="['fas', 'angle-left']" />
+                        <font-awesome-icon :icon="['fas', 'angle-left']" class="w-30" />
                       </button>
                     </template>
                     <template #nextArrow="">
@@ -275,7 +275,7 @@
                         type="button"
                         class="slick-next"
                       >
-                        <font-awesome-icon :icon="['fas', 'angle-right']" />
+                        <font-awesome-icon :icon="['fas', 'angle-right']" class="w-30" />
                       </button>
                     </template>
                   </VueSlickCarousel>

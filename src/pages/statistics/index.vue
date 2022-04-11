@@ -107,7 +107,7 @@
                   type="button"
                   class="slick-prev"
                 >
-                  <font-awesome-icon :icon="['fa', 'angle-left']" />
+                  <font-awesome-icon :icon="['fa', 'angle-left']" class="w-30" />
                 </button>
               </template>
               <template #nextArrow="">
@@ -115,7 +115,7 @@
                   type="button"
                   class="slick-next"
                 >
-                  <font-awesome-icon :icon="['fa', 'angle-right']" />
+                  <font-awesome-icon :icon="['fa', 'angle-right']" class="w-30" />
                 </button>
               </template>
             </VueSlickCarousel>
