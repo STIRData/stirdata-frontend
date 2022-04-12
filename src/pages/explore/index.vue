@@ -508,9 +508,15 @@ export default {
 }
 
 .fa-chevron-down {
+  width: 19px;
   color: #525558;
   transform: rotate(0deg);
   transition: transform 0.2s linear;
+}
+
+::v-deep .fa-chart-column,
+::v-deep .fa-list {
+  width: 14px !important;
 }
 
 :not(.collapsed) > .fa-chevron-down {
