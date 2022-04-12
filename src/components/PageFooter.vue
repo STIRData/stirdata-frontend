@@ -15,7 +15,7 @@
               </b-link>
             </li>
             <li>
-              <b-link :to="{ name: 'search' }">
+              <b-link :to="{ name: 'explore' }">
                 Explore
               </b-link>
             </li>

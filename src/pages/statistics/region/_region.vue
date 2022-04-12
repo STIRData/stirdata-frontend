@@ -167,7 +167,7 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'search' }">
+                  <b-link :to="{ name: 'explore' }">
                     <span class="text">
                       Explore all companies in {{ regionLabel }}
                     </span>
@@ -289,7 +289,7 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'search' }">
+                  <b-link :to="{ name: 'explore' }">
                     <span class="text">
                       Explore all Business Activities in {{ regionLabel }}
                     </span>

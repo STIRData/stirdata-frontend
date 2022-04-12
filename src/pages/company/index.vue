@@ -99,6 +99,7 @@
                             <b-link
                               :to=" !act.code.includes('tol') ? { name: 'statistics-activity-activity', params: { activity: act.code } } : {}"
                               :class="act.code.includes('tol') ? 'not-clickable' : ''"
+                              target="_blank"
                             >
                               {{ act.label }}
                             </b-link>
@@ -134,11 +135,6 @@
 
 <script>
 export default {
-  // TODO: remove these instructions after merge with explore page
-  // How to redirect to this page
-  // <b-link :to="{ name: 'company', query: {uri: '...'} }">
-  //   Company
-  // </b-link>
   components: {
     SimpleMap: () => import("../../components/map/SimpleMap"),
   },

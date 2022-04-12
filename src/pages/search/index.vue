@@ -384,7 +384,7 @@
               </div>
             </b-tab>
           </b-tabs>
-          <InfoModal :item="selectedEntry" />
+          <!-- <InfoModal :item="selectedEntry" /> -->
         </div>
       </div>
     </div>
@@ -394,7 +394,7 @@
 <script>
   export default {
     components: {
-      InfoModal: () => import('../../components/InfoModal'),
+      // InfoModal: () => import('../../components/InfoModal'),
       // CustomMap: () => import("../../components/map/CustomMap"),
       DetailedMap: () => import('../../components/map/DetailedMap')
     },
