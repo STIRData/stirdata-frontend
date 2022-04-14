@@ -33,7 +33,7 @@ export default (ctx, inject) => {
       let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
       let type = (resource === 'nace') ? 'activity' : 'place';
       return ctx.$api.get(resource)
-        .then(response => response.data[grouping].map(item => new Object({ value: item[type].code.split(':')[1], text: `${item[type].code.split(':')[1]} - ${item[type].label}` })));
+        .then(response => response.data[grouping].map(item => new Object({ value: item[type][0].code.split(':')[1], text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}` })));
     },
     getStatistics: () => {
       return ctx.$api.get('statistics?dimension=place,activity')
@@ -92,6 +92,14 @@ export default (ctx, inject) => {
         uri = uri.replace(':/', '://');
       }
       return ctx.$api.get(`query/entity?uri=${uri}`)
+        .then(response => response.data);
+    },
+    searchCompanies: (searchParams) => {
+      return ctx.$api.get(`query/search?${searchParams}&details=true`)
+        .then(response => response.data);
+    },
+    getQueryStatistics: (searchParams) => {
+      return ctx.$api.get(`statistics?${searchParams}`)
         .then(response => response.data);
     }
   };

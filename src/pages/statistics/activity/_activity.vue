@@ -165,7 +165,7 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'search' }">
+                  <b-link :to="{ name: 'explore' }">
                     <span class="text">
                       Explore all companies for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
                     </span>
@@ -253,7 +253,7 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'search' }">
+                  <b-link :to="{ name: 'explore' }">
                     <span class="text">
                       Explore all countries for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
                     </span>

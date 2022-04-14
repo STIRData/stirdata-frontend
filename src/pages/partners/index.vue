@@ -56,7 +56,7 @@
                     <li>
                       <b-link
                         class="button"
-                        :to="{ name: 'search' }"
+                        :to="{ name: 'explore' }"
                       >
                         Explore Now
                       </b-link>

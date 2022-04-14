@@ -14,7 +14,7 @@
       >
         <ul>
           <li>
-            <b-link :to="{ name: 'search' }">
+            <b-link :to="{ name: 'explore' }">
               Explore
             </b-link>
           </li>
@@ -104,7 +104,7 @@
         is-nav
       >
         <b-navbar-nav>
-          <b-nav-item :to="{ name: 'search' }">
+          <b-nav-item :to="{ name: 'explore' }">
             Explore
           </b-nav-item>
           <b-nav-item :to="{ name: 'statistics' }">

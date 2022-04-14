@@ -5,9 +5,8 @@ export default {
     topLevelNace: [],
     countriesStatistics: [],
     activitiesStatistics: [],
-    totalCompanies: 0
-    // countryRegions: [],
-    // countryGeoJSON: null
+    totalCompanies: 0,
+    searchFilters: []
   }),
 
   mutations: {
@@ -28,13 +27,10 @@ export default {
     },
     setTotalCompanies(state, value) {
       state.totalCompanies = value;
+    },
+    setSearchFilters(state, value) {
+      state.searchFilters = value;
     }
-    // setCountryRegions(state, value) {
-    //   state.countryRegions = value;
-    // },
-    // setCountryGeoJSON(state, value) {
-    //   state.countryGeoJSON = value;
-    // }
   },
 
   getters: {
@@ -44,12 +40,6 @@ export default {
     isAuthenticated(state) {
       return !!state.user;
     }
-    // countryRegions(state) {
-    //   return state.countryRegions;
-    // },
-    // countryGeoJSON(state) {
-    //   return state.countryGeoJSON;
-    // }
   },
 
   actions: {
@@ -59,7 +49,7 @@ export default {
     },
     fetchTopLevelNace({ dispatch, commit }) {
       return this.$calls.getTopLevel('nace')
-        .then(nace => commit('setTopLevelNace', nace.filter(item => item.value.includes('nace-rev2'))));
+        .then(nace => commit('setTopLevelNace', nace));
     },
     fetchTopLevelStatistics({ dispatch, commit }) {
       return this.$calls.getStatistics()
@@ -69,13 +59,5 @@ export default {
           commit('setCountriesStatistics', response.placeGroups);
         });
     }
-    // fetchCountryRegions({ dispatch, commit }, uri) {
-    //   return this.$calls.getCountryRegions(uri)
-    //     .then(response => commit('setCountryRegions', response));
-    // },
-    // fetchCountryGeoJSON({ dispatch, commit }, uri) {
-    //   return this.$calls.getCountryGeoJSON(uri)
-    //     .then(geoJSON => commit('setCountryGeoJSON', geoJSON));
-    // }
   }
 };

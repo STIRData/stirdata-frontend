@@ -21,7 +21,7 @@
                     </b-link>
                   </li>
                   <li>
-                    <b-link :to="{ name: 'search' }">
+                    <b-link :to="{ name: 'explore' }">
                       <span>or </span>Start Exploring
                     </b-link>
                   </li>
@@ -60,7 +60,7 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'search' }">
+                  <b-link :to="{ name: 'explore' }">
                     <span class="text">Explore business activities</span>
                   </b-link>
                   <b-link :to="{ name: 'search' }">

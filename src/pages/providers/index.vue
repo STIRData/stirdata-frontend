@@ -58,7 +58,7 @@
                     <li>
                       <b-link
                         class="button"
-                        :to="{ name: 'search' }"
+                        :to="{ name: 'explore' }"
                       >
                         Explore Now
                       </b-link>
@@ -127,7 +127,7 @@
                       <li class="head">
                         {{ provider.country.label }}
                       </li>
-                      <li><img src="../../assets/img/ic-check.png"></li>
+                      <li><img v-if="'names' in provider && provider.names.length" src="../../assets/img/ic-check.png"></li>
                       <li>
                         <img
                           v-if="'foundingDate' in provider"
@@ -209,10 +209,10 @@
                     <!-- <li>Update Frequency</li> -->
                     <li>SPARQL Endpoint</li>
                     <li>Number of Entries</li>
+                    <li>License</li>
                     <li class="source">
                       Source
                     </li>
-                    <!-- <li>License</li> -->
                   </ul>
                 </b-col>
                 <b-col
@@ -250,6 +250,14 @@
                       <li>
                         {{ Number(provider.legalEntityCount).toLocaleString() }}
                       </li>
+                      <li>
+                        <a
+                          v-if="'license' in provider && 'label' in provider.license"
+                          :href="provider.license.uri"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >{{ provider.license.label }}</a>
+                      </li>
                       <li class="source">
                         <a
                           v-if="'source' in provider && 'label' in provider.source"
@@ -260,7 +268,6 @@
                           {{ provider.source.label }}
                         </a>
                       </li>
-                      <!-- <li>CC BY-SA</li> -->
                     </ul>
                     <template #prevArrow="">
                       <button

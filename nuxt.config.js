@@ -63,6 +63,7 @@ export default {
 
   fontawesome: {
     icons: {
+      regular: true,
       solid: true,
       brands: true
     }
