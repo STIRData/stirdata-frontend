@@ -46,6 +46,7 @@
               <div class="statisticsmap-section">
                 <SimpleMap
                   :region-code="regionCode"
+                  :hasLauSubregions="hasLauSubregions"
                 />
                 <div
                   v-if="!hasLauSubregions"
@@ -343,8 +344,7 @@
       allCountries: state => state.countriesStatistics
     }),
     hasLauSubregions() {
-      const code = this.regionCode.includes(':') ? this.regionCode : `nuts:${this.regionCode}`;
-      return !(code.split(':')[1].length < 5);
+      return  this.subregions.length ? this.subregions[0].place[0].code.split(':')[0] === 'lau' : true;
     },
     subregionsCount() {
       return this.subregions.length;

@@ -19,12 +19,16 @@
       lau: {
         type: Object,
         required: false
+      },
+      hasLauSubregions:{
+        type: Boolean,
+        required: true,
+        default: false
       }
     },
 
     data() {
       return {
-        hasLauSubregions: false,
         customGeodata: {
           features: [],
           type: 'FeatureCollection'
@@ -38,14 +42,13 @@
       this.europeHigh = this.$am4core().europeHigh;
 
       const code = this.regionCode.includes(':') ? this.regionCode : `nuts:${this.regionCode}`;
-      const resolution = code.split(':')[1].length < 5 ? '3M' : '1M';
-      this.hasLauSubregions = !(code.split(':')[1].length < 5);
+      let resolution = !this.hasLauSubregions ? '3M' : '1M';
 
       this.$calls.getRegionGeoJSON(this.regionCode, resolution)
-        .then(response => {
+        .then(async (response) => {
           response.forEach(region => {
             this.customGeodata.features.push({
-              geometry: JSON.parse(region.place[0].geometry),
+              geometry: 'geometry' in region.place[0] ? JSON.parse(region.place[0].geometry) : {},
               id: region.place[0].code,
               properties: {
                 name: region.place[0].label,

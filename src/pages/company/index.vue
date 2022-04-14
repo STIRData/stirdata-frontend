@@ -18,6 +18,7 @@
                 <SimpleMap
                   :region-code="company.registeredAddresses[0].nuts3.code"
                   :lau="company.registeredAddresses[0].lau"
+                  :hasLauSubregions="true"
                 />
               </div>
             </div>
@@ -148,7 +149,7 @@ export default {
         },
         {
           text: "EXPLORE",
-          to: { name: "search" },
+          to: { name: "explore" },
         },
         {
           text: "COMPANY",
