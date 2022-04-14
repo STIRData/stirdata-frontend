@@ -42,7 +42,7 @@
       this.europeHigh = this.$am4core().europeHigh;
 
       const code = this.regionCode.includes(':') ? this.regionCode : `nuts:${this.regionCode}`;
-      let resolution = !this.hasLauSubregions ? '3M' : '1M';
+      let resolution = '3M,1M';
 
       this.$calls.getRegionGeoJSON(this.regionCode, resolution)
         .then(async (response) => {
