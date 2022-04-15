@@ -124,7 +124,7 @@
                         Companies
                       </div>
                       <div class="plothead">
-                        Percentage
+                        Percentage*
                       </div>
                     </div>
                   </li>
@@ -154,7 +154,7 @@
                       </div>
                       <div class="scale-activity">
                         <span class="percentage">
-                          {{ percentage(activity.count) }}%
+                          {{ percentage(activity.count, activitiesTotalCount) }}%
                         </span>
                         <b-progress
                           :value="activity.count"
@@ -163,7 +163,11 @@
                       </div>
                     </div>
                   </li>
+                  <li class="asterisk">
+                    *Percentage of the subactivity's total count for the sum of the registered activity codes.
+                  </li>
                 </ul>
+                <!-- <br /> -->
                 <div class="action">
                   <b-link :to="{ name: 'explore' }">
                     <span class="text">
@@ -192,7 +196,7 @@
                     v-for="(country, index) in countries.slice(0, 5)"
                     :id="country.country.code"
                     :key="index"
-                    :value="percentage(country.count)"
+                    :value="percentage(country.count, currentActivity.count)"
                     :style="{ 'background-color': colors[index] }"
                   />
                   <b-tooltip
@@ -201,7 +205,7 @@
                     :target="country.country.code"
                     triggers="hover"
                   >
-                    {{ percentage(country.count) }}%
+                    {{ percentage(country.count, currentActivity.count) }}%
                   </b-tooltip>
                 </b-progress>
                 <ul>
@@ -247,7 +251,7 @@
                         </span>
                       </div>
                       <div class="scale percentage">
-                        {{ percentage(country.count) }}
+                        {{ percentage(country.count, currentActivity.count) }}%
                       </div>
                     </div>
                   </li>
@@ -345,6 +349,7 @@
             }
             return 0;
           }
+          this.activitiesTotalCount = this.subactivities.reduce(((a,b) => a + b.count), 0);
           this.subactivities.sort(sortByCount);
           this.countries.sort(sortByCount);
         });
@@ -390,8 +395,8 @@
     },
 
     methods: {
-      percentage(count) {
-        return ((count / this.currentActivity.count) * 100).toFixed(1) === '0.0' ? 0.1 : Number(((count / this.currentActivity.count) * 100).toFixed(1));
+      percentage(count, totalCount) {
+        return ((count / totalCount) * 100).toFixed(1) === '0.0' ? 0.1 : Number(((count / totalCount) * 100).toFixed(1));
       },
       arraySlice(start, end) {
         return this.activities.slice(start * 3, 3 * end);

@@ -157,7 +157,7 @@
                       </div>
                       <div class="scale">
                         <span class="percentage">
-                          {{ percentage(reg.count) }}%
+                          {{ percentage(reg.count, regionTotalCount) }}%
                         </span>
                         <b-progress
                           :value="reg.count"
@@ -186,7 +186,7 @@
                   Top 5 activities by companies amount in {{ regionLabel }}
                 </h2>
                 <p>
-                  {{ Number(regionTotalCount).toLocaleString() }} Registered Companies in {{ activitiesCount }} Activities
+                  {{ Number(activitiesTotalCount).toLocaleString() }} Registered Activity Codes in {{ activitiesCount }} Activities
                 </p>
               </div>
               <div class="chart-line-c line-stats-dynamic">
@@ -198,7 +198,7 @@
                     v-for="(activity, index) in activities.slice(0, 5)"
                     :id="activity.activity[0].code"
                     :key="index"
-                    :value="percentage(activity.count)"
+                    :value="percentage(activity.count, activitiesTotalCount)"
                     :style="{ 'background-color': colors[index] }"
                   />
                   <b-tooltip
@@ -207,18 +207,18 @@
                     :target="activity.activity[0].code"
                     triggers="hover"
                   >
-                    {{ percentage(activity.count) }}%
+                    {{ percentage(activity.count, activitiesTotalCount) }}%
                   </b-tooltip>
                   <b-progress-bar
                     id="other"
-                    :value="percentage(activitiesOtherCount)"
+                    :value="percentage(activitiesOtherCount, activitiesTotalCount)"
                     :style="{ 'background-color': colors[colors.length - 1] }"
                   >
                     <b-tooltip
                       target="other"
                       triggers="hover"
                     >
-                      {{ percentage(activitiesOtherCount) }}%
+                      {{ percentage(activitiesOtherCount, activitiesTotalCount) }}%
                     </b-tooltip>
                   </b-progress-bar>
                 </b-progress>
@@ -265,7 +265,7 @@
                         </span>
                       </div>
                       <div class="scale percentage">
-                        {{ percentage(activity.count) }}%
+                        {{ percentage(activity.count, activitiesTotalCount) }}%
                       </div>
                     </div>
                   </li>
@@ -284,7 +284,7 @@
                         </span>
                       </div>
                       <div class="scale percentage">
-                        {{ percentage(activitiesOtherCount) }}%
+                        {{ percentage(activitiesOtherCount, activitiesTotalCount) }}%
                       </div>
                     </div>
                   </li>
@@ -333,6 +333,7 @@
         dissolutionDates: [],
         foundingDates: [],
         regionTotalCount: 0,
+        activitiesTotalCount: 0,
         regionLabel: '',
         loading: true,
         subregionTemplate: false,
@@ -401,7 +402,7 @@
       this.activities.slice(0, 5).forEach((activity) => {
         sum += activity.count;
       });
-      return this.regionTotalCount - sum;
+      return this.activitiesTotalCount - sum;
     }
     },
     async mounted() {
@@ -426,6 +427,7 @@
           this.subregions.sort(sortByCount);
           this.activities.sort(sortByCount);
         });
+        this.activitiesTotalCount = this.activities.reduce(((a,b) => a + b.count), 0)
       await this.$calls.getRegionData(this.$route.params.region)
         .then(response => {
           this.regionTotalCount = response.selection.count;
@@ -448,8 +450,8 @@
           return require('../../../assets/img/broken-image.png');
         }
       },
-      percentage(count) {
-        return ((count / this.regionTotalCount) * 100).toFixed(1) === '0.0' ? 0.1 : Number(((count / this.regionTotalCount) * 100).toFixed(1));
+      percentage(count, totalCount) {
+        return ((count / totalCount) * 100).toFixed(1) === '0.0' ? 0.1 : Number(((count / totalCount) * 100).toFixed(1));
       },
       capitalizeTheFirstLetterOfEachWord(words) {
         let separateWord = words.toLowerCase().split(' ');

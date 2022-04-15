@@ -320,6 +320,11 @@
     // li
     li {
       // head
+      &.asterisk{
+        margin: 3px 0 3px 0;
+        font-size:0.8em;
+        font-style: oblique;
+      }
       &.heading {
         font-weight: 500;
         border-bottom: 0;
