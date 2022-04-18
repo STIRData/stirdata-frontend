@@ -1,6 +1,8 @@
 <template>
   <Spinner class="text-center" v-if="companiesLoading" />
-
+  <h3 v-else-if="totalResults === 0">
+    There are no companies in {{ countryFilters.name }} based on Filter
+  </h3>
   <div v-else>
     <div class="filter-list-option">
       <div class="pagination-detail" id="pagination-details">
@@ -163,22 +165,7 @@ export default {
   },
 
   mounted() {
-    this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
-    this.countrySearchQuery = `place=${this.countryFilters.place.join()}&activity=${this.countryFilters.activity.join()}`;
-    this.$calls.searchCompanies(this.countrySearchQuery)
-      .then(response => {
-        this.resultsCompanies = response[0];
-        this.totalResults = this.resultsCompanies.page.totalResults;
-        this.totalPages = Math.ceil(this.totalResults / this.resultsCompanies.page.pageSize);
-        this.currentPage = this.resultsCompanies.page.pageNumber;
-
-        // Loading the first page is a lot slower than the other pages
-        // Solution: we keep the first 20 companies and we load them instantly
-        // this.firstResultsCompanies = this.resultsCompanies;
-
-        this.companiesLoading = false;
-      })
-      .catch(error => console.error(error));
+    this.initiateSearch();
   },
 
   computed: {
@@ -187,7 +174,37 @@ export default {
     })
   },
 
+  watch: {
+    searchFilters(newValue, oldValue) {
+      let oldFilters = oldValue.find(filterObj => filterObj.code === this.countryCode);
+      let newFilters = newValue.find(filterObj => filterObj.code === this.countryCode);
+      if (JSON.stringify(oldFilters) === JSON.stringify(newFilters)) {
+        return;
+      }
+      this.initiateSearch();
+    }
+  },
+
   methods: {
+    initiateSearch() {
+      this.companiesLoading = true;
+      this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
+      this.countrySearchQuery = this.countryFilters.query;
+      this.$calls.searchCompanies(this.countrySearchQuery)
+        .then(response => {
+          this.resultsCompanies = response[0];
+          this.totalResults = this.resultsCompanies.page.totalResults;
+          this.totalPages = Math.ceil(this.totalResults / this.resultsCompanies.page.pageSize);
+          this.currentPage = this.resultsCompanies.page.pageNumber;
+
+          // Loading the first page is a lot slower than the other pages
+          // Solution: we keep the first 20 companies and we load them instantly
+          // this.firstResultsCompanies = this.resultsCompanies;
+
+          this.companiesLoading = false;
+        })
+        .catch(error => console.error(error));
+    },
     paginationImplementation(pageToGo) {
       if (pageToGo > this.totalPages || pageToGo < 1) return;
       // document.getElementById("pagination-details").scrollIntoView({

@@ -250,35 +250,7 @@ export default {
   },
 
   mounted() {
-    this.statisticsLoading = true;
-    this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
-    this.countryStatisticsQuery = `place=${this.countryFilters.place.join()}&activity=${this.countryFilters.activity.join()}&dimension=selection,place,activity,foundingDate`;
-    this.$calls.getQueryStatistics(this.countryStatisticsQuery)
-      .then(response => {
-        this.resultsStatistics = response;
-        this.statisticsSelection = response.selection ?? [];
-        this.statisticsActivity = response.activityGroups ?? [];
-        this.statisticsPlaces = response.placeGroups ?? [];
-        function sortByCount(a, b) {
-          if (a.count < b.count) {
-            return 1;
-          }
-          if (a.count > b.count) {
-            return -1;
-          }
-          return 0;
-        }
-        this.statisticsPlaces.sort(sortByCount);
-        this.placeTotalResults = this.statisticsPlaces.length;
-        this.placeTotalPages = Math.ceil(this.placeTotalResults / this.pageSize);
-
-        this.statisticsActivity.sort(sortByCount);
-        this.activityTotalResults = this.statisticsActivity.length;
-        this.activityTotalPages = Math.ceil(this.activityTotalResults / this.pageSize);
-
-        this.statisticsLoading = false;
-      })
-      .catch(error => console.error(error));
+    this.initiateRetrieveStatistics();
   },
 
   computed: {
@@ -341,7 +313,52 @@ export default {
     },
   },
 
+  watch: {
+    searchFilters(newValue, oldValue) {
+      let oldFilters = oldValue.find(filterObj => filterObj.code === this.countryCode);
+      let newFilters = newValue.find(filterObj => filterObj.code === this.countryCode);
+      if (JSON.stringify(oldFilters) === JSON.stringify(newFilters)) {
+        return;
+      }
+      this.initiateRetrieveStatistics();
+    }
+  },
+
   methods: {
+    initiateRetrieveStatistics() {
+      this.statisticsLoading = true;
+      this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
+      this.countryStatisticsQuery = `place=${this.countryFilters.place.join()}&activity=${this.countryFilters.activity.join()}&dimension=selection,place,activity,foundingDate`;
+      this.$calls.getQueryStatistics(this.countryStatisticsQuery)
+        .then(response => {
+          this.resultsStatistics = response;
+          this.statisticsSelection = response.selection ?? [];
+          this.statisticsActivity = response.activityGroups ?? [];
+          this.statisticsPlaces = response.placeGroups ?? [];
+          function sortByCount(a, b) {
+            if (a.count < b.count) {
+              return 1;
+            }
+            if (a.count > b.count) {
+              return -1;
+            }
+            return 0;
+          }
+          this.statisticsPlaces.sort(sortByCount);
+          this.placeTotalResults = this.statisticsPlaces.length;
+          this.placeTotalPages = Math.ceil(this.placeTotalResults / this.pageSize);
+
+          this.statisticsActivity.sort(sortByCount);
+          this.activityTotalResults = this.statisticsActivity.length;
+          this.activityTotalPages = Math.ceil(this.activityTotalResults / this.pageSize);
+
+          this.statisticsLoading = false;
+        })
+        .catch(error => {
+          console.error(error);
+          this.statisticsLoading = false;
+        });
+    },
     paginatedArrayToShow(arr, cur) {
       return arr.slice(this.pageSize * (cur - 1), this.pageSize * cur);
     },

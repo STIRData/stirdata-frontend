@@ -35,7 +35,11 @@
                     <div class="savefilter" v-b-toggle.saveview-form>
                       <span class="add">+</span>Save current view
                     </div>
-                    <b-collapse class="form" id="saveview-form" appear>
+                    <b-collapse
+                      id="saveview-form"
+                      class="form"
+                      v-model="toggles.saveview"
+                    >
                       <div class="inputform">
                         <span class="label">View Title</span>
                         <input type="text">
@@ -53,9 +57,9 @@
                         <font-awesome-icon icon="chevron-down" />
                       </div>
                     </h3>
-                    <b-form-group v-if="form.nutsTags.length > 0" class="mb-0">
+                    <b-form-group v-if="nutsTags.length > 0" class="mb-0">
                       <b-form-tags
-                        v-model="form.nutsTags"
+                        v-model="nutsTags"
                         input-id="nuts-tags"
                         input-class="d-none"
                         :input-attrs="{ readonly: 'true' }"
@@ -65,14 +69,43 @@
                         no-outer-focus
                         size="lg"
                         placeholder=""
-                        @input="removeNutsTags"
                       />
                     </b-form-group>
-                    <b-collapse class="accordion-collapse" id="collapseCountries">
+                    <b-collapse
+                      id="collapseCountries"
+                      class="accordion-collapse"
+                      v-model="toggles.countries"
+                    >
                       <div class="input-wrap">
                         <img class="search" src="../../assets/img/ic-search.png">
-                        <input class="form-control" type="text" id="searchquery" placeholder="">
+                        <b-form-input
+                          v-model="searchNutsPrefix"
+                          id="searchNuts"
+                          class="form-control"
+                          placeholder=""
+                          @keydown.enter.native="searchTags('nuts', 'searchNutsResults', searchNutsPrefix)"
+                        ></b-form-input>
+                        <div
+                          v-if="searchNutsPrefix.length > 0"
+                          class="delete-text"
+                        >
+                          <font-awesome-icon
+                            class="remove"
+                            :icon="['far', 'fa-circle-xmark']"
+                            @click="clearSearch('searchNutsPrefix', 'searchNutsResults')"
+                          />
+                        </div>
                       </div>
+                      <ul v-if="searchNutsResults.length > 0" class="searchNutsResults expandList">
+                        <li
+                          v-for="nutsResult in searchNutsResults"
+                          @click="selectSearchResult('nuts', nutsResult, 'searchNutsPrefix', 'searchNutsResults')"
+                        >
+                          <div>
+                            {{ nutsResult.text }}
+                          </div>
+                        </li>
+                      </ul>
                       <div class="input-filter">
                         <ul>
                           <li
@@ -80,43 +113,12 @@
                             :id="'nuts-'+nuts.value"
                             :key="'nuts-'+nuts.value"
                           >
-                            <div class="check-wrap d-flex justify-content-between">
-                              <b-form-checkbox
-                                :id="'nuts-checkbox-'+nuts.value"
-                                v-model="form.nuts[nuts.value]"
-                                :name="'nuts-checkbox-'+nuts.value"
-                                :value=true
-                                :unchecked-value=false
-                                @change="updateTags(nuts.value, 'nuts')"
-                              >
-                                {{ nuts.text }}
-                              </b-form-checkbox>
-                              <div class="plus-expander" data-filter-toggle="#unitedkingdom-region">
-                                <span class="expand"></span>
-                              </div>
-                            </div>
-                            <ul class="collapse" id="unitedkingdom-region">
-                              <li>
-                                <div class="check-wrap">
-                                  <input id="country-uk-east" type="checkbox" name="country-uk-east">
-                                  <label for="country-uk-east">East Midlands (England)</label><a href="#" data-filter-toggle="#eastmidlands-region"> <span class="expand"></span></a>
-                                </div>
-                                <ul class="collapse" id="eastmidlands-region">
-                                  <li>
-                                    <div class="check-wrap">
-                                      <input id="country-uk-east-derby" type="checkbox" name="country-uk-east-derby">
-                                      <label for="country-uk-east-derby">Derbyshire and Nottinghamshire</label>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div class="check-wrap">
-                                      <input id="country-uk-east-leicestershire" type="checkbox" name="country-uk-east-leicestershire">
-                                      <label for="country-uk-east-leicestershire">Leicestershire</label>
-                                    </div>
-                                  </li>
-                                </ul>
-                              </li>
-                            </ul>
+                            <tree-menu-node
+                              menuType="nuts"
+                              :menuItem="nuts"
+                              :tags="nutsTags"
+                              @select-tag="selectTag"
+                            />
                           </li>
                         </ul>
                       </div>
@@ -130,9 +132,9 @@
                         <font-awesome-icon icon="chevron-down" />
                       </div>
                     </h3>
-                    <b-form-group v-if="form.naceTags.length > 0" class="mb-0">
+                    <b-form-group v-if="naceTags.length > 0" class="mb-0">
                       <b-form-tags
-                        v-model="form.naceTags"
+                        v-model="naceTags"
                         input-id="nace-tags"
                         input-class="d-none"
                         :input-attrs="{ readonly: 'true' }"
@@ -142,14 +144,43 @@
                         no-outer-focus
                         size="lg"
                         placeholder=""
-                        @input="removeNaceTags"
                       />
                     </b-form-group>
-                    <b-collapse class="accordion-collapse" id="collapseActivities">
+                    <b-collapse
+                      id="collapseActivities"
+                      class="accordion-collapse"
+                      v-model="toggles.activities"
+                    >
                       <div class="input-wrap">
                         <img class="search" src="../../assets/img/ic-search.png">
-                        <input class="form-control" type="text" id="searchquery" placeholder="">
+                        <b-form-input
+                          v-model="searchNacePrefix"
+                          id="searchNace"
+                          class="form-control"
+                          placeholder=""
+                          @keydown.enter.native="searchTags('nace', 'searchNaceResults', searchNacePrefix)"
+                        ></b-form-input>
+                        <div
+                          v-if="searchNacePrefix.length > 0"
+                          class="delete-text"
+                        >
+                          <font-awesome-icon
+                            class="remove"
+                            :icon="['far', 'fa-circle-xmark']"
+                            @click="clearSearch('searchNacePrefix', 'searchNaceResults')"
+                          />
+                        </div>
                       </div>
+                      <ul v-if="searchNaceResults.length > 0" class="searchNaceResults expandList">
+                        <li
+                          v-for="naceResult in searchNaceResults"
+                          @click="selectSearchResult('nace', naceResult, 'searchNacePrefix', 'searchNaceResults')"
+                        >
+                          <div>
+                            {{ naceResult.text }}
+                          </div>
+                        </li>
+                      </ul>
                       <div class="input-filter">
                         <ul>
                           <li
@@ -157,47 +188,12 @@
                             :id="'nace-'+nace.value"
                             :key="'nace-'+nace.value"
                           >
-                            <div class="check-wrap d-flex justify-content-between">
-                              <b-form-checkbox
-                                :id="'nace-checkbox-'+nace.value"
-                                v-model="form.nace[nace.value]"
-                                :name="'nace-checkbox-'+nace.value"
-                                :value=true
-                                :unchecked-value=false
-                                @change="updateTags(nace.value, 'nace')"
-                              >
-                                <span
-                                  v-b-tooltip.hover.top="nace.text"
-                                >
-                                  {{ nace.text }}
-                                </span>
-                              </b-form-checkbox>
-                              <div class="plus-expander" data-filter-toggle="#unitedkingdom-region">
-                                <span class="expand"></span>
-                              </div>
-                            </div>
-                            <ul class="collapse" id="unitedkingdom-region">
-                              <li>
-                                <div class="check-wrap">
-                                  <input id="country-uk-east" type="checkbox" name="country-uk-east">
-                                  <label for="country-uk-east">East Midlands (England)</label><a href="#" data-filter-toggle="#eastmidlands-region"> <span class="expand"></span></a>
-                                </div>
-                                <ul class="collapse" id="eastmidlands-region">
-                                  <li>
-                                    <div class="check-wrap">
-                                      <input id="country-uk-east-derby" type="checkbox" name="country-uk-east-derby">
-                                      <label for="country-uk-east-derby">Derbyshire and Nottinghamshire</label>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div class="check-wrap">
-                                      <input id="country-uk-east-leicestershire" type="checkbox" name="country-uk-east-leicestershire">
-                                      <label for="country-uk-east-leicestershire">Leicestershire</label>
-                                    </div>
-                                  </li>
-                                </ul>
-                              </li>
-                            </ul>
+                          <tree-menu-node
+                            menuType="nace"
+                            :menuItem="nace"
+                            :tags="naceTags"
+                            @select-tag="selectTag"
+                          />
                           </li>
                         </ul>
                       </div>
@@ -211,9 +207,9 @@
                         <font-awesome-icon icon="chevron-down" />
                       </div>
                     </h3>
-                    <b-form-group v-if="form.dateTags.length > 0" class="mb-0">
+                    <b-form-group v-if="dateTags.length > 0" class="mb-0">
                       <b-form-tags
-                        v-model="form.dateTags"
+                        v-model="dateTags"
                         input-id="date-tags"
                         input-class="d-none"
                         :input-attrs="{ readonly: 'true' }"
@@ -225,7 +221,11 @@
                         placeholder=""
                       />
                     </b-form-group>
-                    <b-collapse class="accordion-collapse" id="collapseRegistration">
+                    <b-collapse
+                      id="collapseRegistration"
+                      class="accordion-collapse"
+                      v-model="toggles.registration"
+                    >
                       <div class="form registrationdate">
                         <div class="datepicker">
                           <div class="label">After</div>
@@ -234,17 +234,19 @@
                           </button>
                           <div class="dialog">
                             <label @click="openDatepicker('afterDate')">
-                              <span v-if="form.foundingStartDate">
-                                {{ form.foundingStartDate | formatDateForCompany }}
+                              <span v-if="foundingStartDate">
+                                {{ foundingStartDate | formatDateForCompany }}
                               </span>
                             </label>
                             <div id="afterDate" class="calendar-container d-none">
                               <b-calendar
-                                v-model="form.foundingStartDate"
+                                v-if="toggles.afterDate"
+                                v-model="foundingStartDate"
                                 locale="en-US"
                                 :start-weekday="1"
                                 :show-decade-nav="true"
-                                @input="selectDate('After: ', form.foundingStartDate)"
+                                @input="selectDate('After: ', foundingStartDate)"
+                                v-click-outside="closeDatepickers"
                               />
                             </div>
                           </div>
@@ -256,17 +258,19 @@
                           </button>
                           <div class="dialog">
                             <label @click="openDatepicker('beforeDate')">
-                              <span v-if="form.foundingEndDate">
-                                {{ form.foundingEndDate | formatDateForCompany }}
+                              <span v-if="foundingEndDate">
+                                {{ foundingEndDate | formatDateForCompany }}
                               </span>
                             </label>
                             <div id="beforeDate" class="calendar-container d-none">
                               <b-calendar
-                                v-model="form.foundingEndDate"
+                                v-if="toggles.beforeDate"
+                                v-model="foundingEndDate"
                                 locale="en-US"
                                 :start-weekday="1"
                                 :show-decade-nav="true"
-                                @input="selectDate('Before: ', form.foundingEndDate)"
+                                @input="selectDate('Before: ', foundingEndDate)"
+                                v-click-outside="closeDatepickers"
                               />
                             </div>
                           </div>
@@ -298,12 +302,18 @@
 
 <script>
 import { mapState } from 'vuex';
+import vClickOutside from 'v-click-outside';
 
 export default {
   components: {
+    TreeMenuNode: () => import("../../components/TreeMenuNode"),
     ExploreResults: () => import("../../components/explore/ExploreResults"),
     Breadcrumb: () => import("../../components/Breadcrumb"),
     Spinner: () => import("../../components/Spinner")
+  },
+
+  directives: {
+    clickOutside: vClickOutside.directive
   },
 
   data() {
@@ -327,33 +337,23 @@ export default {
         { value: 2, text: 'Greece companies in IT' },
         { value: 3, text: 'Manufacturing in Latvia' }
       ],
-      loadingQueries: [],
-      form: {
-        nuts: [],
-        nutsTags: [],
-        gnuts3: false,
-        nace: [],
-        naceTags: [],
-        gnace: false,
-        dateTags: [],
-        foundingStartDate: null,
-        foundingEndDate: null
+      toggles: {
+        saveview: false,
+        countries: false,
+        activities: false,
+        registration: false,
+        afterDate: false,
+        beforeDate: false
       },
-      filters: {
-        place: [],
-        activity: [],
-        afterDate: '',
-        beforeDate: ''
-      },
-      tableColumns: [],
-      nutsOptions: [],
-      naceOptions: [],
-      queries: [],
-      queriesGrouped: [],
-      results: null,
-      pageSize: 20,
-      endpoints: {},
-      selectedEntry: {}
+      searchNutsPrefix: '',
+      searchNutsResults: [],
+      searchNacePrefix: '',
+      searchNaceResults: [],
+      nutsTags: [],
+      naceTags: [],
+      dateTags: [],
+      foundingStartDate: null,
+      foundingEndDate: null
     };
   },
 
@@ -361,10 +361,6 @@ export default {
     if (!this.topLevelNuts.length) {
       await this.$store.dispatch('fetchTopLevelNuts');
     }
-    this.topLevelNuts.forEach(nuts => {
-      this.form.nuts[nuts.value] = false;
-    });
-
     if (!this.topLevelNace.length) {
       await this.$store.dispatch('fetchTopLevelNace');
     }
@@ -378,59 +374,102 @@ export default {
     })
   },
 
+  watch: {
+    nutsTags(newValue, oldValue) {
+      let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
+
+      if (tagsDifference.length == 1) {
+        let checkbox = document.getElementById('nuts-checkbox-'+tagsDifference[0]);
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+      }
+    },
+    naceTags(newValue, oldValue) {
+      let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
+
+      if (tagsDifference.length == 1) {
+        let checkbox = document.getElementById('nace-checkbox-'+tagsDifference[0]);
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+      }
+    }
+  },
+
   methods: {
-    updateTags(tagCode, type) {
+    searchTags(type, resultsArray, prefix) {
+      if (prefix.length == 0) {
+        return;
+      }
+      // TODO: remove this blocker once API endpoint is ready
+      if (type == 'nace') return;
+
+      this.$calls.searchLabels(type, prefix)
+        .then(response => {
+          this[resultsArray] = response;
+        })
+        .catch(error => console.error(error));
+    },
+    clearSearch(prefix, results) {
+      this[prefix] = '';
+      this[results] = [];
+    },
+    selectSearchResult(type, tag, prefix, results) {
+      let checkbox = document.getElementById(`${type}-checkbox-${tag.value}`);
+      if (checkbox) {
+        checkbox.checked = true;
+      }
+      this.updateTags(`${tag.type}:${tag.value}`, type, true);
+      this.clearSearch(prefix, results);
+    },
+    selectTag(e) {
+      this.updateTags(e.tagCode, e.type, e.checked);
+    },
+    updateTags(tagCode, type, checked) {
       let formTags = type + 'Tags';
-      if (this.form[type][tagCode]) {
-        this.form[formTags].push(tagCode);
+
+      if (checked) {
+        this[formTags].push(tagCode);
       }
       else {
-        let index = this.form[formTags].findIndex(code => code == tagCode);
-        this.form[formTags].splice(index, 1);
+          let index = this[formTags].findIndex(code => code == tagCode);
+          this[formTags].splice(index, 1);
       }
-    },
-    removeNutsTags(nutsTags) {
-      Object.keys(this.form.nuts).forEach(nuts => this.form.nuts[nuts] = false);
-      nutsTags.forEach(tag => {
-        this.form.nuts[tag] = true;
-      });
-    },
-    removeNaceTags(naceTags) {
-      Object.keys(this.form.nace).forEach(nace => this.form.nace[nace] = false);
-      naceTags.forEach(tag => {
-        this.form.nace[tag] = true;
-      });
     },
     openDatepicker(id) {
-      let calendars = document.getElementsByClassName('calendar-container');
-      calendars.forEach(cal => cal.classList.add('d-none'));
-
       let calendar = document.getElementById(id);
       calendar.classList.remove('d-none');
+      this.toggles[id] = true;
     },
-    selectDate(when, date) {
-      let index = this.form.dateTags.findIndex(tag => tag.startsWith(when));
-      if (index >= 0) {
-        this.form.dateTags.splice(index, 1);
-      }
-      this.form.dateTags.push(when + this.$options.filters.formatDateForCompany(date));
-      this.form.dateTags.sort();
+    closeDatepickers() {
       let calendars = document.getElementsByClassName('calendar-container');
       calendars.forEach(cal => cal.classList.add('d-none'));
+      this.toggles.afterDate = false;
+      this.toggles.beforeDate = false;
+    },
+    selectDate(when, date) {
+      let index = this.dateTags.findIndex(tag => tag.startsWith(when));
+      if (index >= 0) {
+        this.dateTags.splice(index, 1);
+      }
+      this.dateTags.push(when + this.$options.filters.formatDateForCompany(date));
+      this.dateTags.sort();
+      this.closeDatepickers();
     },
     resetFilters() {
-      this.form.nutsTags = [];
-      this.form.naceTags = [];
-      this.form.dateTags = [];
-      Object.keys(this.form.nuts).forEach(nuts => this.form.nuts[nuts] = false);
-      Object.keys(this.form.nace).forEach(nace => this.form.nace[nace] = false);
+      this.nutsTags = [];
+      this.naceTags = [];
+      this.dateTags = [];
+      document.getElementsByClassName('custom-control-input').forEach(el => el.checked = false);
+
       this.$store.commit('setSearchFilters', []);
     },
     validateInput() {
       let validFoundingEndDate =
-        !this.form.foundingEndDate ||
-        !this.form.foundingStartDate ||
-        this.form.foundingEndDate > this.form.foundingStartDate;
+        !this.foundingEndDate ||
+        !this.foundingStartDate ||
+        this.foundingEndDate > this.foundingStartDate;
       if (!validFoundingEndDate) {
         this.$bvToast.toast(
           'Invalid date range',
@@ -442,7 +481,7 @@ export default {
         );
         return false;
       }
-      if (this.form.nutsTags.length > 0 || this.form.naceTags.length > 0) {
+      if (this.nutsTags.length == 0 || this.naceTags.length == 0) {
         this.$bvToast.toast(
           'You have to select at least one region and one activity',
           {
@@ -456,36 +495,52 @@ export default {
       return true;
     },
     search() {
-      if (!this.validateInput('')) {
+      if (!this.validateInput()) {
         return;
       }
-      // TODO: Replace these static filters with values from the form
-      console.log(this.form)
-      let filters = [
-        {
-          code: 'FI',
-          name: 'Finland',
-          place: [
-            "nuts:FI1"
-          ],
-          activity: [
-            "nace-rev2:C",
-            "nace-rev2:D"
-          ]
-        },
-        {
-          code: 'UK',
-          name: 'United Kingdom',
-          place: [
-            "nuts:UK1"
-          ],
-          activity: [
-            "nace-rev2:C",
-            "nace-rev2:D"
-          ]
+
+      let filters = [];
+      let countries = {};
+      // Fork queries based on the country of the nutsTags
+      for (let nuts of this.nutsTags) {
+        let country = nuts.split(':')[1].substring(0, 2);
+        if (!countries[country]) {
+          countries[country] = [];
         }
-      ]
-      this.$store.commit('setSearchFilters', filters);
+        countries[country].push(nuts);
+      }
+
+      // Build filters and query for each country
+      for (let country of Object.keys(countries)) {
+        let countryName = '';
+        for (let topNuts of this.topLevelNuts) {
+          if (topNuts.value == country) {
+            countryName = topNuts.text.split(' - ')[1];
+            break;
+          }
+        }
+        let filter = {
+          code: country,
+          name: countryName,
+          place: countries[country],
+          activity: this.naceTags
+        };
+        filter.query = `place=${filter.place.join()}&activity=${filter.activity.join()}`;
+        if (this.foundingStartDate || this.foundingEndDate) {
+          filter.date = (this.foundingStartDate ?? '') + ':' + (this.foundingEndDate ?? '');
+          filter.query += `&founding=date-range:${filter.date}`;
+        }
+        filters.push(filter);
+      }
+
+      // Initiate search queries
+      // Shallow-copy the filters to avoid mutating vuex store state outside mutation handlers
+      this.$store.commit('setSearchFilters', JSON.parse(JSON.stringify(filters)));
+      // Collapse open menus
+      this.toggles.saveview = false;
+      this.toggles.countries = false;
+      this.toggles.activities = false;
+      this.toggles.registration = false;
     }
   }
 }
@@ -507,16 +562,53 @@ export default {
   background-size: 16px 12px;
 }
 
-.fa-chevron-down {
-  width: 19px;
-  color: #525558;
-  transform: rotate(0deg);
-  transition: transform 0.2s linear;
+.input-wrap .delete-text .remove {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  width: 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+ul.searchNutsResults,
+ul.searchNaceResults {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 1px;
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 4px;
+  z-index: 2;
+  width: 100%;
+
+  li {
+    border-radius: 4px;
+    padding: 4px 12px 4px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $list-border-color;
+    }
+  }
 }
 
 ::v-deep .fa-chart-column,
 ::v-deep .fa-list {
   width: 14px !important;
+}
+
+.fa-chevron-down {
+  width: 19px;
+  color: #525558;
+  transform: rotate(0deg);
+  transition: transform 0.2s linear;
 }
 
 :not(.collapsed) > .fa-chevron-down {

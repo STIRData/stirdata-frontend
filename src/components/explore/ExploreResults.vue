@@ -167,6 +167,15 @@ export default {
     })
   },
 
+  watch: {
+    searchFilters(newValue, oldValue) {
+      if (JSON.stringify(newValue) === JSON.stringify(oldValue)) {
+        return;
+      }
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+  },
+
   methods: {
   },
 };

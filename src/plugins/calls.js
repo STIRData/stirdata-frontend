@@ -33,7 +33,23 @@ export default (ctx, inject) => {
       let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
       let type = (resource === 'nace') ? 'activity' : 'place';
       return ctx.$api.get(resource)
-        .then(response => response.data[grouping].map(item => new Object({ value: item[type][0].code.split(':')[1], text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}` })));
+        .then(response => response.data[grouping].map(item => new Object({ value: item[type][0].code.split(':')[1], type: item[type][0].code.split(':')[0], text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}` })));
+    },
+    getSubLevels: (resource, code) => {
+      let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
+      let type = (resource === 'nace') ? 'activity' : 'place';
+      return ctx.$api.get(`${resource}?top=${code}`)
+        .then(response => {
+          if (response.data[grouping]) {
+            return response.data[grouping].map(item => new Object({
+              value: item[type][0].code.split(':')[1],
+              type: item[type][0].code.split(':')[0],
+              text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}`
+            }));
+          } else {
+            return [];
+          }
+        });
     },
     getStatistics: () => {
       return ctx.$api.get('statistics?dimension=place,activity')
@@ -101,6 +117,22 @@ export default (ctx, inject) => {
     getQueryStatistics: (searchParams) => {
       return ctx.$api.get(`statistics?${searchParams}`)
         .then(response => response.data);
+    },
+    searchLabels: (type, prefix) => {
+      // TODO: restore this call, when API endpoint is ready
+      // return ctx.$api.get(`content/index/${type}/phrase-prefix-search?text=${prefix}&fields=r0-lexical-form,r1-lexical-form&type=prefix&keys=r0-lexical-form`)
+      return ctx.$api.get(`https://stirdata-semantic.ails.ece.ntua.gr/api/content/index/${type}/phrase-prefix-search?text=${prefix}&fields=r0-lexical-form,r1-lexical-form&type=prefix&keys=r0-lexical-form`)
+        .then(response => {
+          if (response.data) {
+            return response.data.map(item => new Object({
+              value: item['r1-lexical-form'][0],
+              type: type,
+              text: `${item['r1-lexical-form'][0]} - ${item['r0-lexical-form'][0]}`
+            }));
+          } else {
+            return [];
+          }
+        });
     }
   };
 
