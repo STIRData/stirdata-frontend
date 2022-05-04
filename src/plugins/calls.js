@@ -119,15 +119,20 @@ export default (ctx, inject) => {
         .then(response => response.data);
     },
     searchLabels: (type, prefix) => {
-      // TODO: restore this call, when API endpoint is ready
-      // return ctx.$api.get(`content/index/${type}/phrase-prefix-search?text=${prefix}&fields=r0-lexical-form,r1-lexical-form&type=prefix&keys=r0-lexical-form`)
-      return ctx.$api.get(`https://stirdata-semantic.ails.ece.ntua.gr/api/content/index/${type}/phrase-prefix-search?text=${prefix}&fields=r0-lexical-form,r1-lexical-form&type=prefix&keys=r0-lexical-form`)
+      let url = '';
+      if (type === 'nace') {
+        url = `content/index/nace-eu/phrase-prefix-search?keys=label-en&text=${prefix}&fields=label-en`;
+      }
+      else {
+        url = `content/index/${type}/phrase-prefix-search?text=${prefix}&fields=label,notation&type=prefix&keys=label`;
+      }
+      return ctx.$sageApi.get(url)
         .then(response => {
           if (response.data) {
             return response.data.map(item => new Object({
-              value: item['r1-lexical-form'][0],
-              type: type,
-              text: `${item['r1-lexical-form'][0]} - ${item['r0-lexical-form'][0]}`
+              value: (type === 'nace') ? item.uri.split('/item/')[1] : item.notation[0],
+              type: (type === 'nace') ? 'nace-rev2' : item.uri.split('/resource/')[1].split('/')[0],
+              text: (type === 'nace') ? `${item.uri.split('/item/')[1]} - ${item['label-en'][0]}` : `${item.notation[0]} - ${item.label[0]}`
             }));
           } else {
             return [];

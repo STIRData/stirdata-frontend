@@ -83,7 +83,7 @@
                           id="searchNuts"
                           class="form-control"
                           placeholder=""
-                          @keydown.enter.native="searchTags('nuts', 'searchNutsResults', searchNutsPrefix)"
+                          @keydown.enter.native="searchTags('nuts-lau', 'searchNutsResults', searchNutsPrefix)"
                         ></b-form-input>
                         <div
                           v-if="searchNutsPrefix.length > 0"
@@ -402,8 +402,6 @@ export default {
       if (prefix.length == 0) {
         return;
       }
-      // TODO: remove this blocker once API endpoint is ready
-      if (type == 'nace') return;
 
       this.$calls.searchLabels(type, prefix)
         .then(response => {

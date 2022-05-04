@@ -35,7 +35,8 @@ export default {
   },
 
   env: {
-    baseUrl: process.env.BASE_API_URL
+    baseUrl: process.env.BASE_API_URL,
+    sageUrl: process.env.SAGE_API_URL
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
