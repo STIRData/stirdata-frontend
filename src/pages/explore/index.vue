@@ -479,9 +479,9 @@ export default {
         );
         return false;
       }
-      if (this.nutsTags.length == 0 || this.naceTags.length == 0) {
+      if (this.nutsTags.length == 0) {
         this.$bvToast.toast(
-          'You have to select at least one region and one activity',
+          'You have to select at least one region',
           {
             variant: 'danger',
             title: 'Warning',

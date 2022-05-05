@@ -85,7 +85,7 @@
                     </div>
                   </b-col>
                 </b-row>
-                <b-row>
+                <b-row v-if="companyActivities.length > 0">
                   <b-col md="4" class="head">
                     Business Activity
                   </b-col>
@@ -164,17 +164,17 @@ export default {
   },
 
   async mounted() {
-    this.company = await this.$calls.getCompany(this.$route.query.uri)
-      .then((response) => {
-        return response;
+    this.$calls.getCompany(this.$route.query.uri)
+      .then(response => {
+        this.company = response;
+        this.companyActivities = response.companyActivities ? response.companyActivities.slice(0,5) : [];
+        this.loading = false;
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
         this.loading = false;
         this.failed = true;
       });
-    this.companyActivities = this.company.companyActivities.slice(0,5);
-    this.loading = false;
   },
 
   computed: {
@@ -184,13 +184,13 @@ export default {
         .slice(2);
     },
 
-    allActivitiesLoaded: function(){
-      return this.companyActivities.length < this.company.companyActivities.length
+    allActivitiesLoaded: function() {
+      return this.company.companyActivities ? this.companyActivities.length < this.company.companyActivities.length : true;
     }
   },
 
   methods:{
-    loadMoreActivities(){
+    loadMoreActivities() {
       this.companyActivities = this.company.companyActivities.slice(0,this.companyActivities.length+5)
     }
   }
