@@ -379,7 +379,7 @@ export default {
       let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
 
       if (tagsDifference.length == 1) {
-        let checkbox = document.getElementById('nuts-checkbox-'+tagsDifference[0]);
+        let checkbox = document.getElementById('nuts-checkbox-'+tagsDifference[0].split(':')[1]);
         if (checkbox) {
           checkbox.checked = false;
         }
@@ -389,7 +389,7 @@ export default {
       let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
 
       if (tagsDifference.length == 1) {
-        let checkbox = document.getElementById('nace-checkbox-'+tagsDifference[0]);
+        let checkbox = document.getElementById('nace-checkbox-'+tagsDifference[0].split(':')[1]);
         if (checkbox) {
           checkbox.checked = false;
         }
