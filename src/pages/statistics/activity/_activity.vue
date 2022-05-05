@@ -1,25 +1,30 @@
 <template>
-  <div
-    v-if="loading"
-    class="text-center"
-  >
-    <Spinner />
-  </div>
   <main
-    v-else
     role="main"
   >
     <b-container>
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>
-    <div class="pageintro">
+    <div
+      v-if="loading"
+      class="text-center"
+    >
+      <Spinner />
+    </div>
+    <div
+      v-if="!loading"
+      class="pageintro"
+    >
       <div class="container">
         <div class="headingtext">
           <h1>{{ currentActivity.activity[0].label }}</h1>
         </div>
       </div>
     </div>
-    <section class="statisticsdetail">
+    <section
+      v-if="!loading"
+      class="statisticsdetail"
+    >
       <b-container>
         <b-row>
           <b-col

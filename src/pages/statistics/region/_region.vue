@@ -1,24 +1,27 @@
 <template>
-  <div
-    v-if="loading"
-    class="text-center"
-  >
-    <Spinner />
-  </div>
   <main
-    v-else
     role="main"
   >
     <b-container>
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>
-    <b-container>
+    <div
+      v-if="loading"
+      class="text-center"
+    >
+      <Spinner />
+    </div>
+    <b-container
+      v-if="!loading"
+    >
       <div class="headingtext">
         <h1>{{ regionLabel }}</h1>
       </div>
     </b-container>
-
-    <section class="statisticsdetail">
+    <section
+      v-if="!loading"
+      class="statisticsdetail"
+    >
       <b-container>
         <b-row>
           <b-col
