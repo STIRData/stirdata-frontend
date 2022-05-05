@@ -48,7 +48,7 @@
         .then(async (response) => {
           response.forEach(region => {
             this.customGeodata.features.push({
-              geometry: 'geometry' in region.place[0] ? JSON.parse(region.place[0].geometry) : {},
+              geometry: 'uri' in region.place[0] ? JSON.parse(region.place[0].uri) : {},
               id: region.place[0].code,
               properties: {
                 name: region.place[0].label,
