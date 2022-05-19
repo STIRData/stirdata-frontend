@@ -142,7 +142,7 @@
                         <b-link
                           :id="reg.place[0].code+'-label'"
                           class="wrap"
-                          :to="!hasLauSubregions ? { name: 'statistics-region-region', params: { region: reg.place[0].code } } : {}"
+                          :to="!regionIsLau(reg.place[0].code) ? { name: 'statistics-region-region', params: { region: reg.place[0].code } } : {}"
                         >
                           {{ reg.place[0].label }}
                         </b-link>
@@ -446,6 +446,9 @@
     },
 
     methods: {
+      regionIsLau(code){
+        return code.split(':')[0] === 'lau'
+      },
       getImagePath(country) {
         try {
           return require(`../../../assets/img/icons/ic-${country.country.code.toLowerCase()}.png`);
