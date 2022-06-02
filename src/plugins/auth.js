@@ -35,4 +35,8 @@ export default async function ({ $auth }) {
       console.log(e);
     }
   }
+  else if($auth.strategy.name === 'local'){
+    let token = $auth.strategy.token.get();
+    if(token){$auth.ctx.$api.setToken(token);}
+  }
 }
