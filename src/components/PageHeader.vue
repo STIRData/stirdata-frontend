@@ -62,7 +62,7 @@
         </ul>
       </nav>
       <nav
-        v-if="isAuthenticated"
+        v-if="$auth.loggedIn"
         class="actionnav"
       >
         <b-dropdown
@@ -73,7 +73,7 @@
           left
         >
           <template #button-content>
-            {{ getDisplayName() }}<span class="caret"><i class="fa fa-angle-down" /></span>
+            {{ $auth.user.email }}<span class="caret"><i class="fa fa-angle-down" /></span>
           </template>
           <b-dropdown-item
             class="ml-0 pl-0 dropdown-item left"
@@ -140,36 +140,23 @@
 
     computed: {
       authuser() {
-        return this.$store.getters.user;
+        return this.$auth.user;
       },
 
       isAuthenticated() {
-        return this.$store.getters['isAuthenticated'];
+        return this.$auth.loggedIn;
       }
     },
 
     methods: {
-      getDisplayName() {
-        if (this.isAuthenticated) {
-          return this.authuser.name ? this.authuser.name : this.authuser.getName();
-        }
-        return;
-      },
       signOut() {
+        this.$auth.logout();
         if (this.$solid.auth) {
           this.$solid.auth.logout()
             .then(() => {
               this.$store.commit('setUser', null);
             });
-        } else {
-          let auth2 = gapi.auth2.getAuthInstance();
-          auth2
-            .signOut()
-            .then(() => {
-              auth2.disconnect();
-            })
-            .then(this.$store.commit('setUser', null));
-        }
+        } 
       }
     }
   };

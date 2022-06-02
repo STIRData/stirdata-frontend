@@ -30,13 +30,13 @@
               <b-row>
                 <b-col xl="6">
                   <div class="inputform"><span class="label">First Name</span>
-                    <b-form-input v-model="firstname" placeholder="First Name">
+                    <b-form-input v-model="currentUser.firstName" placeholder="First Name">
                     </b-form-input>
                   </div>
                 </b-col>
                 <b-col xl="6">
                   <div class="inputform"><span class="label">Last Name</span>
-                    <b-form-input v-model="lastname" placeholder="Last Name">
+                    <b-form-input v-model="currentUser.lastName" placeholder="Last Name">
                     </b-form-input>
                   </div>
                 </b-col>
@@ -44,15 +44,15 @@
               <!-- TODO Only for local account password -->
 
               <div class="inputform"><span class="label">Password</span>
-                <b-form-input v-model="password" placeholder="Password" type="password" />
+                <b-form-input placeholder="Password" type="password" />
               </div>
               <!-- Organisation info only available for local users -->
               <div class="inputform"><span class="label">Organisation</span>
-                <b-form-input v-model="org" placeholder="Organisation" />
+                <b-form-input v-model="currentUser.org" placeholder="Organisation" />
               </div>
               <div class="inputaction">
                 <!-- TODO Save and Reset should only be available for local users -->
-                <b-button type="button">Save</b-button><span class="note space"><a href="#" @click="reset()">Reset</a></span>
+                <b-button type="button" v-show="authStrategy === 'local'">Save</b-button><span class="note space"><a href="#" @click="reset()" v-show="authStrategy === 'local'">Reset</a></span>
                 <b-button class="delete">Delete Account</b-button>
               </div>
             </b-form>
@@ -70,6 +70,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
+   middleware: 'auth',
   components: {
     Breadcrumb: () => import('../../components/Breadcrumb')
   },
@@ -77,6 +78,7 @@ export default {
 
   data() {
     return {
+      currentUser: null,
       breadcrumb_items: [{
           text: 'HOME',
           to: {
@@ -91,14 +93,21 @@ export default {
 
     };
   },
+  created(){
+    this.currentUser = this.getUser();
+  }, 
 
   computed: {
     authuser() {
-      return this.$store.getters.user;
+      return this.$auth.user;
     },
 
     isAuthenticated() {
-      return this.$store.getters['isAuthenticated'];
+      return this.$auth.loggedIn;
+    },
+
+    authStrategy(){
+     return this.$auth.$state.strategy;
     }
   },
 
@@ -106,12 +115,16 @@ export default {
     // TODO replaced all with auth-next methods after api endpoints are done
     getDisplayName() {
       if (this.isAuthenticated) {
-        return this.authuser.name ? this.authuser.name : this.authuser.getName();
+        return this.authuser.firstName + ' ' + this.authuser.lastName;
       }
       return;
     },
+    getUser(){
+      return Object.assign({}, this.$auth.user);
+    },
 
     signOut() {
+      this.$auth.logout();
       if (this.$solid.auth) {
         this.$solid.auth.logout()
           .then(() => {

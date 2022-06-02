@@ -1,4 +1,3 @@
-
 /* eslint-disable camelcase */
 
 export default {
@@ -11,10 +10,10 @@ export default {
     script: [
       /* {
         src: 'https://code.jquery.com/jquery-3.5.1.min.js'
-      },*/
+      },
       {
         src: 'https://apis.google.com/js/platform.js?onload=renderButton'
-      }
+      }*/
     ],
     meta: [
       { charset: 'utf-8' },
@@ -50,7 +49,7 @@ export default {
     { src: '~/plugins/chart.js', mode: 'client' },
     { src: '~/plugins/amCharts.js', ssr: false },
     { src: '~/plugins/vue-slick-carousel.js', ssr: false },
-    { src: '~/plugins/solidLogin.js' }
+    { src: '~/plugins/solidLogin.js' , ssr: true},
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -73,15 +72,52 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
     'bootstrap-vue/nuxt',
     'vue-scrollto/nuxt',
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
   ],
 
-  axios: {
+  auth: {
+    redirect: {
+      login : '/signin',
+      callback: '/signin/callback',
+      home: false,  
+    },
+    strategies: {
+      local: {
+        token: {
+        property: 'token',
+        global: true,
+        type: 'Bearer'
+        },
+        user: {
+          property: false,
+          autoFetch: true
+        },
+        endpoints: {
+          login: {url: `${process.env.BASE_API_URL}/user/login`, method: 'post', propertyName: 'token' },
+          logout: false,
+          user: {url: `${process.env.BASE_API_URL}/user/me`, method: 'get'},
+        }
+      },
+      google: {
+        clientId:  process.env.GOOGLE_CLIENT_ID,
+        codeChallengeMethod: '',
+        responseType: 'id_token',
+        scope: ['profile', 'email', 'openid'],
+        endpoints: {
+          userInfo: false,
+        },
+        token: {
+         property: 'id_token',
+         type: 'Bearer',
+         maxAge: 1800
+       }
+      }
+    },
+    plugins: [{src:'~/plugins/auth.js'}]
   },
-
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },

@@ -39,26 +39,24 @@
             <div class="headingtext">
               <h1>Sign in</h1>
               <p>
-                Sign in using your email and password or <a
-                  class="anchor"
-                  href="signup.html"
-                >Sign up  </a> if you haven’t got an account.
+                Sign in using your email and password or <b-link :to="{ name: 'signup' }" class="anchor">Sign up</b-link> if you haven’t got an account.
               </p>
             </div>
             <!-- sign in form-->
+            <div class="text-danger" v-show="message">{{ message }}</div>
             <div class="form">
               <div class="inputform">
                 <span class="label">Email</span>
-                <input type="email">
+                <input v-model="login.email" type="email" @keydown.enter.prevent="loginWithLocal()">
               </div>
               <div class="inputform">
                 <span class="label">Password</span>
-                <input type="password">
+                <input v-model="login.password" type="password" @keydown.enter.prevent="loginWithLocal()">
               </div>
               <div class="inputaction">
-                <button type="button">
+                <b-button type="submit" @click="loginWithLocal()">
                   Sign in
-                </button>
+                </b-button>
                 <span class="note">
                   <span>or</span>
                   <a href="#">Forgot Password</a>
@@ -73,11 +71,10 @@
                 </button>
 
                 <div class="float-right">
-                  <div
-                    v-show="!isAuthenticated"
-                    id="google-signin-button"
-                    class="g-signin2 float-right mb-3"
-                  />
+                  <b-button @click="loginWithGoogle()" v-show="!isAuthenticated" class="login-btn">
+                      <span class="icon"><font-awesome-icon icon="fa-brands fa-google" class="google-icon" /></span>
+                      <span class="label">Sign in with Google</span>
+                  </b-button>
 
                   <SolidLogin
                     v-if="!isAuthenticated"
@@ -96,11 +93,11 @@
                       <button
                         v-else
                         type="button"
-                        class="solid-login-btn"
+                        class="login-btn"
                         @click="login()"
                       >
                         <span class="icon">
-                          <svg viewBox="0 0 352 322">
+                          <svg class="solid-icon" viewBox="0 0 352 322">
                             <g fill="none">
                               <path
                                 d="M87.973 282.353l-60.732-105.33a31.6 31.6 0 010-31.538L87.973 40.233c5.646-9.784 16.08-15.795 27.321-15.795H236.68c11.266 0 21.727 6.011 27.321 15.795l60.758 105.304a31.6 31.6 0 010 31.537l-60.732 105.33c-5.646 9.784-16.08 15.795-27.321 15.795H115.372a31.846 31.846 0 01-27.4-15.846z"
@@ -144,9 +141,15 @@
   export default {
     data() {
       return {
+        login: {
+          email: '',
+          password: ''
+        } ,
         id_token: null,
-        webId: ''
-      };
+        webId: '',
+        message: null
+
+      }
     },
 
     solid: {
@@ -158,68 +161,75 @@
 
     computed: {
       isAuthenticated() {
-        return this.$store.getters['isAuthenticated'];
+        this.$auth.loggedIn;
       }
     },
-
-    mounted() {
-      setTimeout(() => {
-        gapi.signin2.render('google-signin-button', {
-          width: 200,
-          height: 40,
-          longtitle: true,
-          onsuccess: this.onSignIn
-        });
-      });
-    },
-
     async loggedIn() {
-      console.log('USERNAME:' + this.user.name);
       let session = await this.$solid.auth.currentSession();
+      const userUrl='/user/me';
       if (session) {
         // The ID token for backend:
         this.id_token = session.authorization.id_token;
-        console.log(this.id_token);
-        this.webId = session.webId;
-        // Build a custom user json object
-        let usrObj = { 'name': '' + this.user.name, 'webID': this.webId };
-        this.getToken(this.id_token, 'solid');
-        this.$store.commit('setUser', usrObj);
-      }
-      this.$router.push('/');
-    },
-
-    methods: {
-      getToken(token,provider){
+        try{
           this.$api
-          .post(`oauth/authorize/${provider}`, { token: token })
-          .then((response) => {console.log(response)});
-      },
-      onSignIn(user) {
-        const profile = user.getBasicProfile();
-        this.$store.commit('setUser', profile);
-        // The ID token for backend:
-        this.id_token = user.getAuthResponse().id_token;
-        console.log(this.id_token);
-        this.getToken(this.id_token, 'google');
-        this.$router.push('/');
-      },
+          .post('oauth/authorize/solid', { token: this.id_token })
+          .then((response) => {
+            this.$api.setToken(response.data.token, 'Bearer');
+            this.$auth.strategy.token.set('Bearer '+ response.data.token);
+            this.$auth.setStrategy('local');
+            setTimeout(async() => {
+                      const user = await this.$api.$get(userUrl);
+                      this.$auth.setUser(user);
+            })
+            this.$router.push('/');
+          })
+           .catch(error => {
+              this.message = error.response.data.message;
+              localStorage.clear();
+              return false;
 
+            })
+        } catch (e) {
+          this.message = "Login failed, please try again";
+          localStorage.clear();
+          return false;
+        }
+
+      }
+    },
+    methods: {
+      async loginWithGoogle() {
+        await this.$auth.loginWith("google");
+      },
+      async loginWithLocal() {
+			  this.message = null;
+
+        try {
+          await this.$auth.loginWith('local', { data: this.login })
+            .catch(error => {
+              let response = error.response.data;
+              console.error(error.message);
+              this.message = "Login failed, please try again";
+              return false;
+
+            })
+          this.$router.push('/profile');
+
+        } catch (e) {
+          console.error(e);
+          this.message = "Login failed, please try again";
+          return false;
+        }
+		  },
       signOut() {
+        this.$auth.logout();
         if (this.$solid.auth) {
           this.$solid.auth.logout()
             .then(() => {
               this.$store.commit('setUser', null);
             });
-        } else {
-          let auth2 = gapi.auth2.getAuthInstance();
-          auth2
-            .signOut()
-            .then(() => {
-              auth2.disconnect();
-            })
-            .then(this.$store.commit('setUser', null));
         }
+
       }
     }
   };
@@ -242,15 +252,26 @@
     }
   }
 
-  .solid-login-btn {
+  .login-btn {
+    display: inline-flex !important;
+    align-items: center;
     width: 200px;
+    height: 42px;
     padding: 5px 15px !important;
 
     svg {
-      width: 1.6rem;
-      height: 1.6rem;
-      margin-right: 0.5rem;
-      margin-bottom: 3px;
+      &.solid-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-right: 0.5rem;
+        margin-bottom: 3px;
+      }
+      &.google-icon {
+        margin-right: 0.5rem;
+        height: 1.4rem;
+        margin-top: 3px;
+        margin-left: 2px;
+      }
     }
   }
 </style>
