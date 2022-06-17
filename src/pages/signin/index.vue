@@ -138,7 +138,10 @@
 </template>
 
 <script>
+ import ErrorHandler from '@zaengle/error-handler';
+
   export default {
+    middleware: 'guest',
     data() {
       return {
         login: {
@@ -165,40 +168,37 @@
       }
     },
     async loggedIn() {
+      this.message = null;
       let session = await this.$solid.auth.currentSession();
       const userUrl='/user/me';
       if (session) {
         // The ID token for backend:
         this.id_token = session.authorization.id_token;
-        try{
-          this.$api
+        this.$api
           .post('oauth/authorize/solid', { token: this.id_token })
           .then((response) => {
             this.$api.setToken(response.data.token, 'Bearer');
             this.$auth.strategy.token.set('Bearer '+ response.data.token);
             this.$auth.setStrategy('local');
-            setTimeout(async() => {
+            async() => {
                       const user = await this.$api.$get(userUrl);
                       this.$auth.setUser(user);
-            })
-            this.$router.push('/');
+                      this.$router.push('/');
+             }
+            
           })
-           .catch(error => {
-              this.message = error.response.data.message;
+          .catch(error => {
+              const errorResponse = new ErrorHandler().setAll(error).parse();
+              this.message = `Error status: ${errorResponse.status}. Error message: ${errorResponse.message}`;
               localStorage.clear();
               return false;
 
             })
-        } catch (e) {
-          this.message = "Login failed, please try again";
-          localStorage.clear();
-          return false;
-        }
-
       }
     },
     methods: {
       async loginWithGoogle() {
+        this.message = null;
         await this.$auth.loginWith("google");
       },
       async loginWithLocal() {
@@ -207,18 +207,19 @@
         try {
           await this.$auth.loginWith('local', { data: this.login })
             .catch(error => {
-              let response = error.response.data;
-              console.error(error.message);
-              this.message = "Login failed, please try again";
+              //let response = error.response.data;
+              const errorResponse = new ErrorHandler().setAll(error).parse();
+
+              this.message = `Login failed, please try again: ${errorResponse.message}`;
               return false;
 
             })
           this.$router.push('/profile');
 
         } catch (e) {
-          console.error(e);
-          this.message = "Login failed, please try again";
-          return false;
+           const errorResponse = new ErrorHandler().setAll(error).parse();
+           this.message = `Error status: ${errorResponse.status}. Error message: ${errorResponse.message}`;
+           return false;
         }
 		  },
       signOut() {
