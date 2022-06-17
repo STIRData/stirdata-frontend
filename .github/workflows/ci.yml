@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - main
 
 jobs:
   ci:
@@ -38,7 +39,7 @@ jobs:
           echo DEPLOY_SERVER=hotwheels.ails.ece.ntua.gr >> $GITHUB_ENV
           echo DEPLOY_TARGET=/data/$PROJECT/$APP/current >> $GITHUB_ENV
       - name: Set env for production
-        if: endsWith(github.ref, '/master')
+        if: endsWith(github.ref, '/main')
         run: |
           echo DEPLOY_SERVER=lego.ails.ece.ntua.gr >> $GITHUB_ENV
           echo DEPLOY_TARGET=/data/$PROJECT/$APP/current >> $GITHUB_ENV
