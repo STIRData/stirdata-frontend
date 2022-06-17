@@ -16,7 +16,7 @@
           <div class="explore-map-section" id="explore-map-section">
             <!-- TODO: Replaced img with amchart maps-->
             <img class="tmpmap" src="../../assets/img/img-temp-map.png">
-            <div class="maps-notify"><i class="fa fa-info-circle"></i>Click area on the map to select country or region</div>
+            <!-- <div class="maps-notify"><i class="fa fa-info-circle"></i>Click area on the map to select country or region</div> -->
           </div>
         </div>
       </div>
@@ -365,9 +365,11 @@ export default {
     if (!this.topLevelNace.length) {
       await this.$store.dispatch('fetchTopLevelNace');
     }
-    this.$calls.getSavedViews().then(response => {
-      response.forEach(view => this.savedViews.push({ value: view.id, text: view.name}));
-    });
+    if (this.isAuthenticated) {
+      this.$calls.getSavedViews().then(response => {
+        response.forEach(view => this.savedViews.push({ value: view.id, text: view.name}));
+      });
+    }
   },
 
   computed: {
