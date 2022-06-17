@@ -26,7 +26,7 @@
             <div class="col-lg-4 col-xl-4 explore-controls-sidebar">
               <div class="sidebar" id="sidebar-accordion">
                 <div class="wraps">
-                  <div class="sidebar-savedview sidebar-section-wrap">
+                  <div v-if="isAuthenticated" class="sidebar-savedview sidebar-section-wrap">
                     <h3>Saved View </h3>
                     <b-form-select
                       v-model="selectedSavedView"
@@ -375,7 +375,10 @@ export default {
       topLevelNuts: state => state.topLevelNuts,
       topLevelNace: state => state.topLevelNace,
       searchFilters: state => state.searchFilters
-    })
+    }),
+    isAuthenticated() {
+      return this.$auth.loggedIn;
+    }
   },
 
   watch: {
