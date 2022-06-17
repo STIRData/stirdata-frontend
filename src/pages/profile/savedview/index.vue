@@ -25,10 +25,14 @@
               <h2>Saved view</h2>
               <p>List of saved search queries</p>
             </div>
+            <Spinner class="text-center" v-if="loading" />
+            <h5 v-else-if="views.length === 0">
+              You haven't any saved views yet. You can save your views in the <b-link :to="{ name: 'explore' }" class="anchor">Explore page</b-link>.
+            </h5>
             <!-- saved list-->
-            <div class="savedlist">
+            <div class="savedlist" v-else>
               <!-- page details-->
-              <div class="pagination-detail">Showing 1 - 10 from 21</div>
+              <div class="pagination-detail">Showing {{views.length}} Results</div>
               <!-- table-->
               <table class="table table-borderless table-stir">
                 <thead>
@@ -39,41 +43,32 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td> <a href="savedviewdetail.html">Animal Production Companies in Belgium and Norway </a></td>
-                    <td>12 April 2021</td>
-                    <td class="end"><a href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false"><img src="img/ic-bullets.png"></a>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                        <li> <a class="dropdown-item" href="#">Details</a></li>
-                        <li> <a class="dropdown-item" href="#">View</a></li>
-                        <li> <a class="dropdown-item" href="#">Delete</a></li>
-                      </ul>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td> <a href="savedviewdetail.html">Mining and Agriculture Companies in Europe </a></td>
-                    <td>12 April 2021</td>
-                    <td class="end"><a href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-expanded="false"><img src="img/ic-bullets.png"></a>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
-                        <li> <a class="dropdown-item" href="#">Details</a></li>
-                        <li> <a class="dropdown-item" href="#">View</a></li>
-                        <li> <a class="dropdown-item" href="#">Delete</a></li>
-                      </ul>
+                  <tr v-for="view of views" :key="view.creationDate">
+                    <!-- <td><a href="savedviewdetail.html">{{view.name}}</a></td> -->
+                    <td><a>{{view.name}}</a></td>
+                    <td>{{view.creationDate | formatDate}}</td>
+                    <td class="end">
+                      <b-dropdown
+                        no-caret
+                        toggle-class="text-decoration-none px-0 py-1"
+                        variant="link"
+                      >
+                        <template #button-content>
+                          <img src="../../../assets/img/ic-bullets.png"/>
+                        </template>
+                        <b-dropdown-item
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          @click="deleteView(view.id)"
+                        >
+                          Delete
+                        </b-dropdown-item>
+
+                      </b-dropdown>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <!-- action-->
-              <div class="inputaction">
-                <nav class="pagination-stir">
-                  <ul>
-                    <li><a href="#">Prev</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">Next</a></li>
-                  </ul>
-                </nav>
-              </div>
             </div>
           </b-col>
           <b-col lg="2" xl="2" class="profile-decor">
@@ -89,6 +84,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  middleware: 'auth',
   components: {
     Breadcrumb: () => import('../../../components/Breadcrumb')
   },
@@ -109,18 +105,23 @@ export default {
           text: 'SAVED VIEW',
           active: true
         }
-      ]
+      ],
+      savedViews: [],
+      loading: true
 
     };
   },
-
+  async mounted() {
+    this.views = await this.$calls.getSavedViews();
+    this.loading = false;
+  },
   computed: {
     authuser() {
-      return this.$store.getters.user;
+      return this.$auth.user;
     },
 
     isAuthenticated() {
-      return this.$store.getters['isAuthenticated'];
+      return this.$auth.loggedIn;
     }
   },
 
@@ -128,11 +129,21 @@ export default {
     // TODO replaced all with auth-next methods after api endpoints are done
     getDisplayName() {
       if (this.isAuthenticated) {
-        return this.authuser.name ? this.authuser.name : this.authuser.getName();
+        if (!this.authuser.firstName && !this.authuser.lastName) {
+          return this.authuser.email.substring(0, this.authuser.email.lastIndexOf("@"));
+        }
+        else {
+          return this.authuser.firstName + ' ' + this.authuser.lastName;
+        }
       }
       return;
     },
-
+    async deleteView(id) {
+      this.loading = true
+      await this.$calls.deleteView(id)
+      this.views = await this.$calls.getSavedViews();
+      this.loading = false;
+    },
     signOut() {
       if (this.$solid.auth) {
         this.$solid.auth.logout()
@@ -150,8 +161,7 @@ export default {
       }
       this.$router.push('/');
     },
-
-    reset(){
+    reset() {
 
     }
   }

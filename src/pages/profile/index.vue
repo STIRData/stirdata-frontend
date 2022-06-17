@@ -95,7 +95,7 @@ export default {
   },
   created(){
     this.currentUser = this.getUser();
-  }, 
+  },
 
   computed: {
     authuser() {
@@ -115,11 +115,16 @@ export default {
     // TODO replaced all with auth-next methods after api endpoints are done
     getDisplayName() {
       if (this.isAuthenticated) {
-        return this.authuser.firstName + ' ' + this.authuser.lastName;
+        if (!this.authuser.firstName && !this.authuser.lastName) {
+          return this.authuser.email.substring(0, this.authuser.email.lastIndexOf("@"));
+        }
+        else {
+          return this.authuser.firstName + ' ' + this.authuser.lastName;
+        }
       }
       return;
     },
-    getUser(){
+    getUser() {
       return Object.assign({}, this.$auth.user);
     },
 

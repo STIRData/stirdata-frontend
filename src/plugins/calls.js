@@ -26,6 +26,18 @@ export function countryProperties(code, name) {
 
 export default (ctx, inject) => {
   const apiCalls = {
+    getSavedViews:() => {
+      return ctx.$api.get('view').then(response => response.data)
+    },
+    getSavedView: (id) => {
+      return ctx.$api.get(`view/${id}`).then(response => response.data)
+    },
+    saveNewView: (view) => {
+      return ctx.$api.post('view', view)
+    },
+    deleteView: (id)=>{
+      return ctx.$api.delete(`view/${id}`)
+    },
     getProviders: () => {
       return ctx.$api.get('datasets').then(response => response.data);
     },

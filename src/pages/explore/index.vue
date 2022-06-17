@@ -31,6 +31,7 @@
                     <b-form-select
                       v-model="selectedSavedView"
                       :options="savedViews"
+                      @change="selectSavedView()"
                     ></b-form-select>
                     <div class="savefilter" v-b-toggle.saveview-form>
                       <span class="add">+</span>Save current view
@@ -42,10 +43,10 @@
                     >
                       <div class="inputform">
                         <span class="label">View Title</span>
-                        <input type="text">
+                        <b-form-input type="text" v-model="newViewTitle"></b-form-input>
                       </div>
                       <div class="inputaction">
-                        <button type="button">Save</button>
+                        <button type="button" @click="saveCurrentView()">Save</button>
                       </div>
                     </b-collapse>
                   </div>
@@ -99,6 +100,7 @@
                       <ul v-if="searchNutsResults.length > 0" class="searchNutsResults expandList">
                         <li
                           v-for="nutsResult in searchNutsResults"
+                          :key="nutsResult.text"
                           @click="selectSearchResult('nuts', nutsResult, 'searchNutsPrefix', 'searchNutsResults')"
                         >
                           <div>
@@ -109,7 +111,7 @@
                       <div class="input-filter">
                         <ul>
                           <li
-                            v-for="(nuts, index) in topLevelNuts"
+                            v-for="(nuts) in topLevelNuts"
                             :id="'nuts-'+nuts.value"
                             :key="'nuts-'+nuts.value"
                           >
@@ -174,6 +176,7 @@
                       <ul v-if="searchNaceResults.length > 0" class="searchNaceResults expandList">
                         <li
                           v-for="naceResult in searchNaceResults"
+                          :key="naceResult.text"
                           @click="selectSearchResult('nace', naceResult, 'searchNacePrefix', 'searchNaceResults')"
                         >
                           <div>
@@ -184,7 +187,7 @@
                       <div class="input-filter">
                         <ul>
                           <li
-                            v-for="(nace, index) in topLevelNace"
+                            v-for="(nace) in topLevelNace"
                             :id="'nace-'+nace.value"
                             :key="'nace-'+nace.value"
                           >
@@ -285,7 +288,7 @@
                         Search
                       </button>
                       <span class="note space">
-                        <a @click="resetFilters()">Reset</a>
+                        <a @click="resetFilters(true)">Reset</a>
                       </span>
                     </div>
                   </div>
@@ -332,10 +335,7 @@ export default {
       ],
       selectedSavedView: null,
       savedViews: [
-        { value: null, text: 'Select Saved View' },
-        { value: 1, text: 'Belgium agriculture' },
-        { value: 2, text: 'Greece companies in IT' },
-        { value: 3, text: 'Manufacturing in Latvia' }
+        { value: null, text: 'Select Saved View', disabled: true }
       ],
       toggles: {
         saveview: false,
@@ -353,7 +353,8 @@ export default {
       naceTags: [],
       dateTags: [],
       foundingStartDate: null,
-      foundingEndDate: null
+      foundingEndDate: null,
+      newViewTitle: ''
     };
   },
 
@@ -364,6 +365,9 @@ export default {
     if (!this.topLevelNace.length) {
       await this.$store.dispatch('fetchTopLevelNace');
     }
+    this.$calls.getSavedViews().then(response => {
+      response.forEach(view => this.savedViews.push({ value: view.id, text: view.name}));
+    });
   },
 
   computed: {
@@ -394,10 +398,83 @@ export default {
           checkbox.checked = false;
         }
       }
+    },
+    dateTags(newValue, oldValue) {
+      let before = false;
+      let after = false;
+      newValue.forEach(tag => {
+        if (tag.startsWith("After")) {
+          after = true;
+        }
+        if (tag.startsWith("Before")) {
+          before = true;
+        }
+      })
+      if (!before) {
+        this.foundingEndDate = null;
+      }
+      if (!after) {
+        this.foundingStartDate = null;
+      }
     }
   },
 
   methods: {
+    async selectSavedView() {
+      this.resetFilters(false);
+      let view = await this.$calls.getSavedView(this.selectedSavedView);
+
+      view.place.forEach(place => {
+        this.selectSearchResult('nuts', { type: place.split(':')[0], value: place.split(':')[1] }, 'searchNutsPrefix', 'searchNutsResults');
+      });
+      view.activity.forEach(activity => {
+        this.selectSearchResult('nace', { type: activity.split(':')[0], value: activity.split(':')[1] }, 'searchNacePrefix', 'searchNaceResults');
+      });
+      if (!!view.startDate) {
+        this.foundingStartDate = view.startDate;
+        this.selectDate('After: ', view.startDate);
+      }
+      if (!!view.endDate) {
+        this.foundingEndDate = view.endDate;
+        this.selectDate('Before: ', view.endDate);
+      }
+    },
+    async saveCurrentView() {
+      if (!this.validateInput()) {
+        return;
+      }
+      let filters = this.buildFilters();
+      let view = {
+        name: this.newViewTitle,
+        activity: filters[0].activity,
+        startDate: filters[0].date ? filters[0].date.split(':')[0] : null,
+        endDate: filters[0].date ? filters[0].date.split(':')[1] : null,
+        place: filters.reduce((a,b) => a.concat(b.place), [])
+      }
+      await this.$calls.saveNewView(view)
+        .then(response => {
+          this.$bvToast.toast('Custom query saved successfully', {
+              variant: 'success',
+              title: 'Success',
+              solid: true
+          });
+          this.toggles.saveview = false;
+        })
+        .catch(error => {
+          this.$bvToast.toast('Error while saving query', {
+              variant: 'danger',
+              title: 'Error',
+              solid: true
+          });
+        });
+      this.$calls.getSavedViews()
+        .then(response => {
+          this.savedViews = [{ value: null, text: 'Select Saved View', disabled: true }];
+          response.forEach(view => this.savedViews.push({ value: view.id, text: view.name}));
+          this.selectedSavedView = null;
+        })
+        .catch(error => console.error(error));
+    },
     searchTags(type, resultsArray, prefix) {
       if (prefix.length == 0) {
         return;
@@ -455,13 +532,54 @@ export default {
       this.dateTags.sort();
       this.closeDatepickers();
     },
-    resetFilters() {
+    resetFilters(resetSavedView) {
       this.nutsTags = [];
       this.naceTags = [];
       this.dateTags = [];
+      this.foundingStartDate = null;
+      this.foundingEndDate = null;
+      if (resetSavedView) {
+        this.selectedSavedView = null;
+      }
       document.getElementsByClassName('custom-control-input').forEach(el => el.checked = false);
 
       this.$store.commit('setSearchFilters', []);
+    },
+    buildFilters() {
+      let filters = [];
+      let countries = {};
+      // Fork queries based on the country of the nutsTags
+      for (let nuts of this.nutsTags) {
+        let country = nuts.split(':')[1].substring(0, 2);
+        if (!countries[country]) {
+          countries[country] = [];
+        }
+        countries[country].push(nuts);
+      }
+
+      // Build filters and query for each country
+      for (let country of Object.keys(countries)) {
+        let countryName = '';
+        for (let topNuts of this.topLevelNuts) {
+          if (topNuts.value == country) {
+            countryName = topNuts.text.split(' - ')[1];
+            break;
+          }
+        }
+        let filter = {
+          code: country,
+          name: countryName,
+          place: countries[country],
+          activity: this.naceTags
+        };
+        filter.query = `place=${filter.place.join()}&activity=${filter.activity.join()}`;
+        if (this.foundingStartDate || this.foundingEndDate) {
+          filter.date = (this.foundingStartDate ?? '') + ':' + (this.foundingEndDate ?? '');
+          filter.query += `&founding=date-range:${filter.date}`;
+        }
+        filters.push(filter);
+      }
+      return filters;
     },
     validateInput() {
       let validFoundingEndDate =
@@ -497,39 +615,7 @@ export default {
         return;
       }
 
-      let filters = [];
-      let countries = {};
-      // Fork queries based on the country of the nutsTags
-      for (let nuts of this.nutsTags) {
-        let country = nuts.split(':')[1].substring(0, 2);
-        if (!countries[country]) {
-          countries[country] = [];
-        }
-        countries[country].push(nuts);
-      }
-
-      // Build filters and query for each country
-      for (let country of Object.keys(countries)) {
-        let countryName = '';
-        for (let topNuts of this.topLevelNuts) {
-          if (topNuts.value == country) {
-            countryName = topNuts.text.split(' - ')[1];
-            break;
-          }
-        }
-        let filter = {
-          code: country,
-          name: countryName,
-          place: countries[country],
-          activity: this.naceTags
-        };
-        filter.query = `place=${filter.place.join()}&activity=${filter.activity.join()}`;
-        if (this.foundingStartDate || this.foundingEndDate) {
-          filter.date = (this.foundingStartDate ?? '') + ':' + (this.foundingEndDate ?? '');
-          filter.query += `&founding=date-range:${filter.date}`;
-        }
-        filters.push(filter);
-      }
+      let filters = this.buildFilters();
 
       // Initiate search queries
       // Shallow-copy the filters to avoid mutating vuex store state outside mutation handlers

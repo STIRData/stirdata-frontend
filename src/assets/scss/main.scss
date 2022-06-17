@@ -1381,6 +1381,14 @@ body {
 			.profile-content {
 				padding: 0 0px 0 40px;
 
+        a {
+          &.anchor {
+            @include simple-anchor($text-first-color);
+            cursor: pointer;
+            @include text-highlight($accent-second-color, 10px);
+          }
+        }
+
 				// filterlist
 				.filterlist {
 					margin-bottom: 20px;
