@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader v-if="!loading"/>
-    <Nuxt />
+    <Nuxt  v-if="!loading"/>
     <LazyPageFooter keep-alive />
   </div>
 </template>
