@@ -35,7 +35,7 @@
             class="statisticsdetail-left"
           >
             <ul class="counter">
-              <li v-if="subregionsCount">
+              <li v-show="subregionsCount">
                 <span class="count">{{ subregionsCount }}</span>
                 <span class="text">
                   {{ subregionTemplate ? "" : "Country" }} <br> Regions
@@ -45,7 +45,7 @@
                 <span class="count">{{ Number(regionTotalCount).toLocaleString() }}</span>
                 <span class="text">Registered<br>Companies</span>
               </li>
-              <li v-if="activities.length">
+              <li v-show="activities.length">
                 <span class="count">{{ activitiesCount }}</span>
                 <span class="text"> Business<br>Activities</span>
               </li>
@@ -57,7 +57,7 @@
                   :hasLauSubregions="hasLauSubregions"
                 />
                 <div
-                  v-if="!hasLauSubregions"
+                  v-show="!hasLauSubregions"
                   class="maps-notify py-1"
                 >
                   <i class="fa fa-info-circle" />Click an area on the map to select a subregion
@@ -65,7 +65,7 @@
               </div>
             </div>
             <div
-              v-if="foundingDates.length || dissolutionDates.length"
+              v-show="foundingDates.length || dissolutionDates.length"
               class="statisticstrend"
             >
               <div class="headingtext">
@@ -114,7 +114,7 @@
             class="statisticsdetail-right"
           >
             <div
-              v-if="subregionsCount"
+              v-show="subregionsCount"
               class="regionstats"
             >
               <div class="headingtext">
@@ -186,7 +186,7 @@
               </div>
             </div>
             <div
-              v-if="activities.length"
+              v-show="activities.length"
               class="activitystats"
             >
               <div class="headingtext">
@@ -443,9 +443,9 @@
           this.country = response.selection.country;
           this.addCountryNameInBreadcrumb;
         });
-      if (this.allCountries.length === 0) {
-         await this.$store.dispatch('fetchTopLevelStatistics');
-      }
+    
+      await this.$store.dispatch('fetchTopLevelStatistics');
+      
      // this.loading = false;
     },
 
