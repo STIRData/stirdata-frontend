@@ -6,23 +6,28 @@
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>
     <div
-      v-if="loading"
+      v-if="$fetchState.pending"
       class="text-center"
     >
       <Spinner />
     </div>
     <b-container
-      v-if="!loading"
+      v-else
     >
       <div class="headingtext">
         <h1>{{ regionLabel }}</h1>
       </div>
     </b-container>
     <section
-      v-if="!loading"
       class="statisticsdetail"
     >
-      <b-container>
+     <div
+      v-if="$fetchState.pending"
+      class="text-center"
+    >
+      <Spinner />
+    </div>
+      <b-container v-else>
         <b-row>
           <b-col
             lg="6"
@@ -338,7 +343,6 @@
         regionTotalCount: 0,
         activitiesTotalCount: 0,
         regionLabel: '',
-        loading: true,
         subregionTemplate: false,
         country: {}
       };
@@ -408,7 +412,7 @@
       return this.activitiesTotalCount - sum;
     }
     },
-    async mounted() {
+    async fetch() {
       await this.$calls.getRegionStatistics(this.$route.params.region)
         .then(response => {
           this.subregions = response.placeGroups ?? [];
@@ -440,9 +444,9 @@
           this.addCountryNameInBreadcrumb;
         });
       if (this.allCountries.length === 0) {
-        await this.$store.dispatch('fetchTopLevelStatistics');
+         await this.$store.dispatch('fetchTopLevelStatistics');
       }
-      this.loading = false;
+     // this.loading = false;
     },
 
     methods: {
