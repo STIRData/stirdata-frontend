@@ -49,7 +49,7 @@ export default {
     { src: '~/plugins/chart.js', mode: 'client' },
     { src: '~/plugins/amCharts.js', mode: 'client' },
     { src: '~/plugins/vue-slick-carousel.js', mode: 'client' },
-    { src: '~/plugins/solidLogin.js' , mode: 'client'},
+    { src: '~/plugins/solidLogin.js'},
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -116,7 +116,7 @@ export default {
        }
       }
     },
-    plugins: [{src:'~/plugins/auth.js'}]
+    plugins: [{ src: '~/plugins/apis.js', ssr: true }, {src:'~/plugins/auth.js'}]
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

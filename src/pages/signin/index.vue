@@ -57,10 +57,10 @@
                 <b-button type="submit" @click="loginWithLocal()">
                   Sign in
                 </b-button>
-                <span class="note">
+                <!--<span class="note">
                   <span>or</span>
                   <a href="#">Forgot Password</a>
-                </span>
+                </span>-->
                 <button
                   v-show="isAuthenticated"
                   class="google"
@@ -75,7 +75,7 @@
                       <span class="icon"><font-awesome-icon icon="fa-brands fa-google" class="google-icon" /></span>
                       <span class="label">Sign in with Google</span>
                   </b-button>
-
+<!--
                   <SolidLogin
                     v-if="!isAuthenticated"
                     ref="solidlogin"
@@ -85,11 +85,10 @@
                       slot-scope="{ initializing, login }"
                       class="mt-2"
                     >
-                      <!--<span v-if="webId">{{ webId }}</span>-->
+                     
                       <button v-if="initializing">
                         Loading...
                       </button>
-                      <!--<button v-else-if="loggedIn" @click="logout()" :title="webId">Solid Log out</button>-->
                       <button
                         v-else
                         type="button"
@@ -126,7 +125,7 @@
                         <span class="label">Sign in with Solid</span>
                       </button>
                     </div>
-                  </SolidLogin>
+                  </SolidLogin>-->
                 </div>
               </div>
             </div>
