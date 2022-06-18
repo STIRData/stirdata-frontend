@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!loading">
-    <PageHeader keep-alive />
+  <div>
+    <PageHeader v-if="!loading"/>
     <Nuxt />
     <LazyPageFooter keep-alive />
   </div>
