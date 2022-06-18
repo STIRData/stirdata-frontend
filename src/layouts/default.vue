@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!loading">
     <PageHeader keep-alive />
     <Nuxt />
     <LazyPageFooter keep-alive />
@@ -14,7 +14,15 @@
     components: {
       PageHeader,
       PageFooter
-    }
+    },
+     data: () => ({
+       loading: true
+     }),
+     created () {
+        this.$nextTick(function () {
+           this.loading = false
+       })
+     }
   };
 </script>
 
