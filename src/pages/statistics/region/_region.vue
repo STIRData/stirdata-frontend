@@ -11,8 +11,8 @@
     >
       <Spinner />
     </div>
+    <div v-else> 
     <b-container
-      v-else
     >
       <div class="headingtext">
         <h1>{{ regionLabel }}</h1>
@@ -21,13 +21,7 @@
     <section
       class="statisticsdetail"
     >
-     <div
-      v-if="$fetchState.pending"
-      class="text-center"
-    >
-      <Spinner />
-    </div>
-      <b-container v-else>
+    <b-container>
         <b-row>
           <b-col
             lg="6"
@@ -311,6 +305,7 @@
         </b-row>
       </b-container>
     </section>
+    </div>
   </main>
 </template>
 
