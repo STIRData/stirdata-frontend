@@ -41,10 +41,10 @@
         </ul>
       </nav>
       <!-- navigation-->
+       <client-only>
       <nav
         v-show="!isAuthenticated"
-        class="actionnav"
-      >
+        class="actionnav">
         <ul>
           <li class="sign">
             <b-link :to="{ name: 'signin' }">
@@ -95,6 +95,7 @@
           </b-dropdown-item>
         </b-dropdown>
       </nav>
+      </client-only>
       <!-- hamburger-->
       <b-navbar-toggle target="hamburger-menu">
         <span class="navbar-toggler-icon" />
