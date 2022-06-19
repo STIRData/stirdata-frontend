@@ -429,7 +429,7 @@
           this.subregions.sort(sortByCount);
           this.activities.sort(sortByCount);
         });
-        this.activitiesTotalCount = this.activities.reduce(((a,b) => a + b.count), 0)
+      
       await this.$calls.getRegionData(this.$route.params.region)
         .then(response => {
           this.regionTotalCount = response.selection.count;
@@ -440,12 +440,12 @@
         });
     
       await this.$store.dispatch('fetchTopLevelStatistics');
+      this.activitiesTotalCount = this.activities.reduce(((a,b) => a + b.count), 0);
       
      // this.loading = false;
     },
-
-    methods: {
-      regionIsLau(code){
+  methods: {
+     regionIsLau(code){
         return code.split(':')[0] === 'lau'
       },
       getImagePath(country) {
