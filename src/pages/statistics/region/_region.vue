@@ -1,7 +1,5 @@
 <template>
-  <main
-    role="main"
-  >
+  <main role="main">
     <b-container>
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>

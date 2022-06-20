@@ -41,9 +41,9 @@
         </ul>
       </nav>
       <!-- navigation-->
-       <client-only>
+   <!--    <client-only>
       <nav
-        v-show="!isAuthenticated"
+        v-if="!isAuthenticated"
         class="actionnav">
         <ul>
           <li class="sign">
@@ -62,7 +62,7 @@
         </ul>
       </nav>
       <nav
-        v-if="$auth.loggedIn"
+        v-else
         class="actionnav"
       >
         <b-dropdown
@@ -95,7 +95,7 @@
           </b-dropdown-item>
         </b-dropdown>
       </nav>
-      </client-only>
+      </client-only>-->
       <!-- hamburger-->
       <b-navbar-toggle target="hamburger-menu">
         <span class="navbar-toggler-icon" />
