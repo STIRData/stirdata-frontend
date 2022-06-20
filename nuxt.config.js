@@ -80,7 +80,7 @@ export default {
     'vue-scrollto/nuxt',
   ],
 
-  generate: {
+ /* generate: {
     routes() {
       return axios.get(`${process.env.BASE_API_URL}/statistics?dimension=place`).then(res => {
         console.log(res.data.placeGroups);
@@ -92,7 +92,7 @@ export default {
         })
       })
     }
-  },
+  },*/
 
   auth: {
     redirect: {
