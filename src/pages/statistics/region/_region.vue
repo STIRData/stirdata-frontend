@@ -10,22 +10,18 @@
       <Spinner />
     </div>
     <div v-else> 
-    <b-container
-    >
+    <b-container>
       <div class="headingtext">
         <h1>{{ regionLabel }}</h1>
       </div>
     </b-container>
-    <section
-      class="statisticsdetail"
-    >
-    <b-container>
+    <section class="statisticsdetail">
+      <b-container>
         <b-row>
           <b-col
             lg="6"
             xl="7"
-            class="statisticsdetail-left"
-          >
+            class="statisticsdetail-left">
             <ul class="counter">
               <li v-show="subregionsCount">
                 <span class="count">{{ subregionsCount }}</span>
@@ -132,8 +128,7 @@
                   </li>
                   <li
                     v-for="reg in subregions"
-                    :key="reg.place[0].code"
-                  >
+                    :key="reg.place[0].code">
                     <div class="wrap">
                       <div class="subject">
                         <b-link
@@ -179,8 +174,7 @@
             </div>
             <div
               v-show="activities.length"
-              class="activitystats"
-            >
+              class="activitystats">
               <div class="headingtext">
                 <h2>
                   Top 5 activities by companies amount in {{ regionLabel }}

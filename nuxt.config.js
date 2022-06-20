@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 
+import axios from 'axios';
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -77,6 +79,20 @@ export default {
     'bootstrap-vue/nuxt',
     'vue-scrollto/nuxt',
   ],
+
+  generate: {
+    routes() {
+      return axios.get(`${process.env.BASE_API_URL}/statistics?dimension=place`).then(res => {
+        console.log(res.data.placeGroups);
+        return res.data.placeGroups.map(place => {
+          return {
+            route: '/statistics/region/' + place.country.code,
+            payload: place
+          }
+        })
+      })
+    }
+  },
 
   auth: {
     redirect: {

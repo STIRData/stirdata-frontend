@@ -41,7 +41,7 @@
         </ul>
       </nav>
       <!-- navigation-->
-   <!--    <client-only>
+      <client-only>
       <nav
         v-if="!isAuthenticated"
         class="actionnav">
@@ -95,7 +95,7 @@
           </b-dropdown-item>
         </b-dropdown>
       </nav>
-      </client-only>-->
+      </client-only>
       <!-- hamburger-->
       <b-navbar-toggle target="hamburger-menu">
         <span class="navbar-toggler-icon" />

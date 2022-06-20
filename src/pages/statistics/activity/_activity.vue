@@ -5,24 +5,19 @@
     </b-container>
     <div
       v-if="loading"
-      class="text-center"
-    >
+      class="text-center">
       <Spinner />
     </div>
     <div
       v-if="!loading"
-      class="pageintro"
-    >
+      class="pageintro">
       <div class="container">
         <div class="headingtext">
           <h1>{{ currentActivity.activity[0].label }}</h1>
         </div>
       </div>
     </div>
-    <section
-      v-if="!loading"
-      class="statisticsdetail"
-    >
+    <section v-if="!loading" class="statisticsdetail">
       <b-container>
         <b-row>
           <b-col
