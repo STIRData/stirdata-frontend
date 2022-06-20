@@ -1,0 +1,43 @@
+header
+
+	// wrap
+	.container.d-flex.align-items-center
+
+		// logo
+		a( href="index.html" )
+			img.logo( src="img/ic-logo.png" )
+
+		// navigation
+		nav.mainnav.collapse#navbarCollapse
+			ul 
+				li
+					a( href="explore.html" ) Explore
+				li
+					a( href="statistics.html" ) Statistics
+				li
+					a( href="about.html" ) About
+				li
+					a( href="partners.html" ) Partners
+				li
+					a( href="dataproviders.html" ) Data Providers
+		
+		// navigation
+		nav.actionnav
+			ul 
+				li.username
+					a( href="#" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false")
+						| Mark Wiens
+						span.caret
+							i.fas.fa-angle-down
+							// img( src="img/ic-caret.png" )
+					ul.dropdown-menu(aria-labelledby="dropdownMenu")
+						li 
+							a.dropdown-item( href="profile.html" ) Profile
+						li 
+							a.dropdown-item( href="savedview.html" ) Saved View
+						li 
+							a.dropdown-item( href="index.html") Sign out
+		
+		// hamburger
+		button.navbar-toggler.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation")
+			span.navbar-toggler-icon

@@ -1,0 +1,78 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "Sign In"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/header.pug
+
+		// page main
+		main(role="main")
+
+			// container
+			section.authentication
+				.container
+					.row 
+						.col-md-6.col-lg-6.authentication-left
+
+							// box
+							.box.signin
+								// banner feature
+								ul.bannerfeatures.slick-features
+									li
+										img( src="img/img-feature-1.png")
+										.text
+											h2 
+												| Explore, Search and 
+												br
+												| Navigate
+											p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+									li
+										img( src="img/img-feature-2.png")
+										.text
+											h2 
+												| Visualize, Analyze and
+												br
+												| Save
+											p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+
+
+						.col-sm-12.col-md-6.col-lg-6.authentication-right
+
+							// heading
+							.headingtext
+								h1 Sign in
+								p
+									| Sign in using your email and password or 
+									a.anchor( href="signup.html") Sign up  
+									|  if you haven’t got an account.
+							
+							// sign in form
+							.form 
+								.inputform
+									span.label Email
+									input( type="email" )
+								.inputform
+									span.label Password
+									input( type="password" )
+								.inputaction
+									button( type="button" ) Sign in
+									span.note
+										span or
+										a( href="#" ) Forgot Password
+									button.google( type="button" ) Sign in with Google
+		
+			// footer
+			include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

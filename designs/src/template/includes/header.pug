@@ -1,0 +1,34 @@
+header
+
+	// wrap
+	.container.d-flex.align-items-center.navbar
+
+		// logo
+		a( href="index.html" )
+			img.logo( src="img/ic-logo.png" )
+
+		// navigation
+		nav.mainnav.collapse#navbarCollapse
+			ul 
+				li
+					a( href="explore.html" ) Explore
+				li
+					a( href="statistics.html" ) Statistics
+				li
+					a( href="about.html" ) About
+				li
+					a( href="partners.html" ) Partners
+				li
+					a( href="dataproviders.html" ) Data Providers
+		
+		// navigation
+		nav.actionnav
+			ul 
+				li.sign
+					a( href="signin.html" ) Sign in
+				li
+					a.button( href="signup.html" ) Get Started
+		
+		// hamburger
+		button.navbar-toggler.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation")
+			span.navbar-toggler-icon

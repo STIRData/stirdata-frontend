@@ -1,0 +1,92 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "Sign Up"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/header.pug
+
+		// page main
+		main(role="main")
+
+			// container
+			section.authentication
+				.container
+					.row 
+						.col-md-6.authentication-left
+
+							// box
+							.box.signup
+
+								// banner feature
+								ul.bannerfeatures.slick-features
+									li
+										img( src="img/img-feature-1-yellow.png")
+										.text
+											h2 
+												| Explore, Search and 
+												br
+												| Navigate
+											p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+									li
+										img( src="img/img-feature-2-yellow.png")
+										.text
+											h2 
+												| Visualize, Analyze and
+												br
+												| Save
+											p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+
+
+						.col-md-6.authentication-right
+
+
+							// heading
+							.headingtext
+								h1 Sign up
+								p
+									| Sign up to start using additional tools in the STIRDATA Platform, or 
+									a.anchor( href="signin.html" ) Sign in 
+									|  if you already have an account.
+							
+							// sign in form
+							.form
+								.row 
+									.col-xl-6
+										.inputform
+											span.label First Name
+											input( type="text" value="Mark")
+									.col-xl-6
+										.inputform
+											span.label Last Name
+											input( type="text"  value="Wiens")
+								.inputform
+									span.label Email
+									input( type="email" )
+								.inputform
+									span.label Password
+									input( type="password" )
+								.inputform
+									span.label Repeat Password
+									input( type="password" )
+								.inputform
+									span.label Organisation
+									input( type="text" )
+								.inputaction
+									button( type="button" ) Sign up
+									button.google( type="button" ) Sign up with Google
+		
+			// footer
+			include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

@@ -1,0 +1,192 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = ""
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/headerlog.pug
+
+		// page main
+		main(role="main")
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item
+							a( href="explore-result.html" ) EXPLORE
+						li.breadcrumb-item.active(aria-current="page") COMPANY
+			
+			// child page
+			section.companydetail
+				.container
+
+					// row
+					.row 
+						
+						// column
+						.col-lg-6.col-xl-6.companydetail-left 
+							
+							// stats map
+							.companydetail-map
+								.companydetail-map-section
+
+									// temp image of map, need to be replaced by amchart maps
+									// to be replaced with js maps
+									img.tmpmap( src="img/img-temp-map.png" )
+							
+							// // heading
+							.companydetail-related
+
+								// heading
+								.headingtext
+									h2 Other companies in the same region
+								
+								// table
+								table.table.table-borderless.table-stir 
+									thead 
+										tr 
+											th(scope="col") Company Name 
+											th.end(scope="col") Activity
+									tbody
+										tr 
+											td 
+												a(href="company.html") ASCENT LEGAL SERVICES LIMITED
+											td.end 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+												a(href="company.html") +2
+										tr 
+											td 
+												a(href="company.html") ASAP DIGITAL LIMITED
+											td.end 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+												a(href="company.html") +2
+										tr 
+											td 
+												a(href="company.html") ASCENT PERFORMANCE GROUP LIMITED
+											td.end 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+												a(href="company.html") +2
+										tr 
+											td 
+												a(href="company.html") ARZHAD LTD
+											td.end 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+												a(href="company.html") +2
+										tr 
+											td 
+												a(href="company.html") AS MILLHOUSES LTD
+											td.end 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+												a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+												a(href="company.html") +2
+								
+								// action link
+								.action
+									a( href="explore.html" )
+										span.text View complete list in the explore page
+										span.icon
+											i.fas.fa-angle-right
+						
+						// column
+						.col-lg-6.col-xl-6.companydetail-right
+
+							// region stats
+							.regionstats
+
+								// heading
+								.headingtext
+									h2 ASC PROPERTY MANAGEMENT SERVICES LTD
+
+								// company detail
+								.companydetail-data 
+
+									// row
+									.row 
+										.col-md-4.head Registration Date
+										.col-md-8 12 April 2021
+									.row 
+										.col-md-4.head Address
+										.col-md-8 MANCHESTER ROAD, STOCKSBRIDGE
+									.row 
+										.col-md-4.head Region
+										.col-md-8
+											.category-pill
+												ul
+													li 
+														span.pill 
+															a(href="statisticscountry.html" ) United Kingdom
+													li.separator
+														ul 
+															li 
+																span.pill 
+																	a(href="statisticscountry.html" ) Svalbag og Jan Mayen
+															li.separator
+																ul 
+																	li 
+																		span.pill 
+																			a(href="statisticscountry.html" ) Svalbag
+									.row 
+										.col-md-4.head Business Activity
+										.col-md-8
+											.category-pill
+												ul
+													li 
+														span.pill 
+															a(href="statisticsactivity.html" ) Agriculture, Forestry and Fishing
+													li.separator
+														ul 
+															li 
+																span.pill 
+																	a(href="statisticsactivity.html" ) Crop and animal production, hunting
+															li.separator
+																ul 
+																	li 
+																		span.pill 
+																			a(href="statisticsactivity.html" ) Plant propagation
+												ul
+													li 
+														span.pill 
+															a(href="statisticsactivity.html" ) Mining and Quarrying
+													li.separator
+														ul 
+															li 
+																span.pill 
+																	a(href="#" ) 
+																		a(href="statisticsactivity.html" ) Extraction of crude petroleum and natural gas
+												ul
+													li 
+														span.pill 
+															a(href="#" ) 
+																a(href="statisticsactivity.html" ) Water Supply; Sewerage, Waste Management and Remediation...
+									.row 
+										.col-md-4.head URI
+										.col-md-8
+											a.anchor(href="http://data.companieshouse.gov.uk/doc/company/10473863" target="_blank") http://data.companieshouse.gov.uk/doc/company/10473863
+									.row 
+										.col-md-4.head Metadata 1
+										.col-md-8 Lorem ipsum dolor sit amet
+									.row 
+										.col-md-4.head Metadata 2
+										.col-md-8 Lorem ipsum dolor sit amet
+		
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

@@ -1,0 +1,345 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "United Kingdom Statistics"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/header.pug
+
+		// page main
+		main(role="main")
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item
+							a( href="statistics.html" ) STATISTICS
+						li.breadcrumb-item
+							a( href="statisticscountry.html" ) COUNTRY / UNITED KINGDOM
+						li.breadcrumb-item.active(aria-current="page") LONDON
+			
+			// page intro
+			.pageintro
+				.container 
+
+					// heading
+					.headingtext
+						h1 London
+			
+			// child page
+			section.statisticsdetail
+				.container
+
+					// row
+					.row 
+						
+						// column
+						.col-lg-6.col-xl-7.statisticsdetail-left 
+
+							// counter
+							ul.counter 
+								li
+									span.count 5
+									span.text 
+										| Sub 
+										br
+										| Regions
+								li
+									span.count 370,000
+									span.text
+										| Registered
+										br
+										| Companies
+								li
+									span.count 13
+									span.text 
+										| Business
+										br
+										| Activities
+
+							// stats map
+							.statisticsmap
+								.statisticsmap-section
+
+									// temp image of map, need to be replaced by amchart maps
+									// to be replaced with js maps
+									img.tmpmap( src="img/img-temp-map.png" )
+
+									// notify
+									.maps-notify
+										i.fas.fa-info-circle 
+										| Click area on the map to select country and region
+
+							// heading
+							.statisticstrend
+
+								// heading
+								.headingtext
+									h2 Established and Dissoluted Companies Trend in London
+								
+								// plot
+								.chart 
+									img( src="img/ic-graph-home.png" )
+							
+							// other countries
+							.statisticsother
+
+								// heading
+								.headingtext
+									h2 Explore other countries in STIRDATA
+
+								// first line
+								ul 
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-bg.png" )
+											.text
+												.counter 2,000,000
+												.label Belgium
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-cy.png" )
+											.text 
+												.counter 23,000
+												.label Cyprus
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-cz.png" )
+											.text 
+												.counter 23,000
+												.label Czech Republic
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-ee.png" )
+											.text
+												.counter 23,000
+												.label Estonia
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-fi.png" )
+											.text 
+												.counter 23,000
+												.label Finland
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-gr.png" )
+											.text 
+												.counter 23,000
+												.label Greece
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-lv.png" )
+											.text
+												.counter 23,000
+												.label Latvia
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-no.png" )
+											.text 
+												.counter 23,000
+												.label Norway
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-ro.png" )
+											.text 
+												.counter 23,000
+												.label Romania
+									li 
+										a.wrap(href="statisticscountry.html")
+											.icon
+												img( src="img/icons/ic-uk.png" )
+											.text 
+												.counter 23,000
+												.label United Kingdom
+
+
+						// column
+						.col-lg-6.col-xl-5.statisticsdetail-right
+
+							// region stats
+							.regionstats
+
+								// heading
+								.headingtext
+									h2 Statistics by region in London
+									p 370,000 Registered Companies in 5 Sub Regions
+								
+								// line stats
+								.chart-line-b.line-stats 
+									ul
+										li.heading 
+											.wrap
+												.subject Region
+												.stat Companies
+												.plothead Percentage 
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" data-toggle="tooltip" data-placement="top" title="Inner London (East)") Inner London (East)
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 25%
+													.plot( data-size="100" )
+														span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" data-toggle="tooltip" data-placement="top" title="Inner London (West)") Inner London (West)
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 23%
+													.plot( data-size="90" )
+														span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" data-toggle="tooltip" data-placement="top" title="Outer London (East and North East)") Outer London (East and Nor..)
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 20%
+													.plot( data-size="80" )
+														span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" data-toggle="tooltip" data-placement="top" title="Outer London (South)") Outer London (South)
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 18%
+													.plot( data-size="75" )
+														span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" data-toggle="tooltip" data-placement="top" title="Outer London (West and North West") Outer London (West and Nor..
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 15%
+													.plot( data-size="70" )
+														span.plotter
+										
+								
+									// action link
+									.action
+										a( href="explore.html" )
+											span.text Explore all companies in London
+											span.icon
+												i.fas.fa-angle-right
+							
+							// region stats
+							.activitystats
+
+								// heading
+								.headingtext
+									h2 Top 5 activities by companies amount in London
+									p 370,000 Registered Companies in 13 Activities
+								
+								// line stats
+								.chart-line-c.line-stats-dynamic 
+
+									// graph
+									.graph
+										span.base
+											.item.data-1(data-color="#75A1F3" data-amount="30" data-toggle="tooltip" data-placement="top" title="30%")
+											.item.data-2(data-color="#FFBC6D" data-amount="20" data-toggle="tooltip" data-placement="top" title="20%") 
+											.item.data-3(data-color="#F86DFF" data-amount="15" data-toggle="tooltip" data-placement="top" title="15%")  
+											.item.data-4(data-color="#FF4A4A" data-amount="10" data-toggle="tooltip" data-placement="top" title="10%")  
+											.item.data-5(data-color="#97CC04" data-amount="5" data-toggle="tooltip" data-placement="top" title="5%")
+											.item.data-5(data-color="#D8D8D8" data-amount="20" data-toggle="tooltip" data-placement="top" title="20%")   
+
+									// listing
+									ul
+										li.heading
+											.wrap
+												.subject Business Activity
+												.stat Companies
+												.scale Percentage 
+										li(data-color="#75A1F3" data-amount="12,230" data-percentage="30%")
+											.wrap
+												.subject
+													.color
+													a( href="statisticsactivity.html" ) Agriculture, Forestry
+												.stat
+													span.count -
+												.scale.percentage -
+										li(data-color="#FFBC6D" data-amount="7,230" data-percentage="20%")
+											.wrap
+												.subject 
+													.color 
+													a( href="statisticsactivity.html" ) Mining and Quarrying
+												.stat
+													span.count -
+												.scale.percentage -
+										li(data-color="#F86DFF" data-amount="4,200" data-percentage="15%")
+											.wrap
+												.subject 
+													.color 
+													a( href="statisticsactivity.html" ) Manufacturing
+												.stat
+													span.count -
+												.scale.percentage -
+										li(data-color="#FF4A4A" data-amount="2,600" data-percentage="10%")  
+											.wrap
+												.subject 
+													.color
+													a( href="statisticsactivity.html" ) Construction
+												.stat
+													span.count -
+												.scale.percentage -
+										li(data-color="#97CC04" data-amount="1,401" data-percentage="5%")  
+											.wrap
+												.subject 
+													.color
+													a( href="statisticsactivity.html" ) Wholesale, retail
+												.stat
+													span.count -
+												.scale.percentage -
+										li(data-color="#D8D8D8" data-amount="1,401" data-percentage="20%")  
+											.wrap
+												.subject 
+													.color
+													a( href="statisticsactivity.html" ) Other Business Activities
+												.stat
+													span.count -
+												.scale.percentage -
+								
+									// action link
+									.action
+										a( href="explore.html" )
+											span.text Explore all Business Activities in London
+											span.icon
+												i.fas.fa-angle-right
+
+					
+
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

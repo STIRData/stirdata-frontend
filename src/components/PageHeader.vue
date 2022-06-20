@@ -1,61 +1,186 @@
 <template>
-  <header
-    class="m-0 navbar-brand container-fluid d-flex justify-content-between"
-    role="banner"
-  >
-    <img
-      src="../assets/img/stirdata-logo.png"
-      alt="logo"
-      class="logo ml-3"
-    >
-    <b-navbar
-      class="align-items-center flex-row d-flex p-0 mr-3"
-      role="navigation"
-    >
-      <b-navbar-nav class="ml-xl-auto top-navbar">
-        <b-nav-item
-          href="https://stirdata.eu/"
-          target="_blank"
+  <header>
+    <b-container class="d-flex align-items-center navbar">
+      <b-link :to="{ name: 'index' }">
+        <img
+          class="logo"
+          src="../assets/img/ic-logo.png"
         >
-          PROJECT
-        </b-nav-item>
-      </b-navbar-nav>
-    </b-navbar>
+      </b-link>
+      <!-- navigation-->
+      <nav
+        id="navbarCollapse"
+        class="mainnav collapse"
+      >
+        <ul>
+          <li>
+            <b-link :to="{ name: 'explore' }">
+              Explore
+            </b-link>
+          </li>
+          <li>
+            <b-link :to="{ name: 'statistics' }">
+              Statistics
+            </b-link>
+          </li>
+          <li>
+            <b-link :to="{ name: 'about' }">
+              About
+            </b-link>
+          </li>
+          <li>
+            <b-link :to="{ name: 'partners' }">
+              Partners
+            </b-link>
+          </li>
+          <li>
+            <b-link :to="{ name: 'providers' }">
+              Data Providers
+            </b-link>
+          </li>
+        </ul>
+      </nav>
+      <!-- navigation-->
+      <nav
+        v-show="!isAuthenticated"
+        class="actionnav"
+      >
+        <ul>
+          <li class="sign">
+            <b-link :to="{ name: 'signin' }">
+              Sign in
+            </b-link>
+          </li>
+          <li>
+            <b-link
+              :to="{ name: 'signup' }"
+              class="button"
+            >
+              Get Started
+            </b-link>
+          </li>
+        </ul>
+      </nav>
+      <nav
+        v-if="$auth.loggedIn"
+        class="actionnav"
+      >
+        <b-dropdown
+          id="dropdownMenu"
+          class="username"
+          variant="outline-none"
+          no-caret
+          left
+        >
+          <template #button-content>
+            {{ $auth.user.email }}<span class="caret"><i class="fa fa-angle-down" /></span>
+          </template>
+          <b-dropdown-item
+            class="ml-0 pl-0 dropdown-item left"
+            :to="{ path: '/profile' }"
+          >
+              Profile
+          </b-dropdown-item>
+          <b-dropdown-item
+            class="ml-0 pl-0 dropdown-item left"
+            :to="{ path: '/profile/savedview' }"
+          >
+            Saved view
+          </b-dropdown-item>
+          <b-dropdown-item
+            class="ml-0 pl-0 dropdown-item"
+            @click="signOut"
+          >
+            Sign out
+          </b-dropdown-item>
+        </b-dropdown>
+      </nav>
+      <!-- hamburger-->
+      <b-navbar-toggle target="hamburger-menu">
+        <span class="navbar-toggler-icon" />
+      </b-navbar-toggle>
+      <b-collapse
+        id="hamburger-menu"
+        is-nav
+      >
+        <b-navbar-nav>
+          <b-nav-item :to="{ name: 'explore' }">
+            Explore
+          </b-nav-item>
+          <b-nav-item :to="{ name: 'statistics' }">
+            Statistics
+          </b-nav-item>
+          <b-nav-item :to="{ name: 'about' }">
+            About
+          </b-nav-item>
+          <b-nav-item :to="{ name: 'partners' }">
+            Partners
+          </b-nav-item>
+          <b-nav-item :to="{ name: 'providers' }">
+            Data Providers
+          </b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-container>
   </header>
 </template>
 
-<style lang="scss" scoped>
-  @import '../assets/scss/variables.scss';
+<script>
+  /* global gapi */
+  import { mapGetters } from 'vuex';
 
-  .container-fluid {
-    background: $white;
-    height: 4rem;
-    position: fixed;
-    right: 0;
-    top: 0;
-    left: 0;
-    z-index: 1030;
-    padding: 0;
-    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.08);
+  export default {
+    name: 'PageHeader',
 
-    &:not(.show) ::v-deep .search-query,
-    &:not(.show) ::v-deep .auto-suggest-dropdown {
-      display: none;
+    data() {
+      return {
+        id_token: null
+      };
+    },
+
+    computed: {
+      authuser() {
+        return this.$auth.user;
+      },
+
+      isAuthenticated() {
+        return this.$auth.loggedIn;
+      }
+    },
+
+    methods: {
+      signOut() {
+        this.$auth.logout();
+        if (this.$solid.auth) {
+          this.$solid.auth.logout()
+            .then(() => {
+              this.$store.commit('setUser', null);
+            });
+        } 
+      }
     }
-  }
+  };
+</script>
 
-  .navbar-brand {
-    min-width: 11.0625rem;
-    flex: 0 0 auto;
-    font-size: 1rem;
-    font-weight: bold;
+<style lang="scss" scoped>
+  @import "../assets/scss/variables.scss";
 
-    .logo {
-      padding: 5px;
-      min-width: 9.5625rem;
-      transition: 0.3s ease-in-out;
-      img {
-        width: 9.5625rem;
+  #hamburger-menu {
+    background: $accent-first-color;
+    position: absolute;
+    right: var(--bs-gutter-x, 0.75rem);
+    top: 99px;
+    z-index: 2;
+    width: 50%;
+    border-radius: 4px;
+    ul li {
+      border-bottom: 1px solid #4b78c7;
+      a {
+        color: $background-color;
+        padding: 10px 20px;
+        display: block;
+        text-align: right;
+        text-decoration: none;
       }
     }
   }

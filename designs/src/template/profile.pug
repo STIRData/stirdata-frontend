@@ -1,0 +1,95 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "About"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/headerlog.pug
+
+		// page main
+		main(role="main")
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item.active(aria-current="page") PROFILE
+
+			// container
+			section.profile 
+				.container 
+
+					// row
+					.row 
+
+						// column
+						.col-md-4.col-lg-3.col-xl-3.profile-sidebar
+							
+							// headingtext
+							h3 Welcome,
+							h1 Mark Wiens
+
+							// navigation
+							nav.sidenavigation
+								ul 
+									li.active 
+										a( href="profile.html" ) Profile
+									li 
+										a( href="savedview.html" ) Saved View
+									li 
+										a( href="signin.html" ) Sign out
+
+						// column
+						.col-sm-12.col-md-8.col-lg-7.col-xl-7.profile-content
+
+							// heading
+							.headingtext
+								h2 Profile
+								p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+							// sign in form
+							.form
+								.row 
+									.col-xl-6
+										.inputform
+											span.label First Name
+											input( type="text" value="Mark")
+									.col-xl-6
+										.inputform
+											span.label Last Name
+											input( type="text"  value="Wiens")
+								.inputform
+									span.label Password
+									input( type="password" )
+								.inputform
+									span.label Organisation
+									input( type="text" value="NTUA")
+								.inputaction
+									button( type="button" ) Save
+									span.note.space
+										a( href="#" ) Reset
+									button.delete( type="button" ) Delete Account
+
+						// column
+						.col.lg-2.col-xl-2.profile-decor
+
+							// img
+							img( src="img/ic-decor-vertical.png" )
+
+
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

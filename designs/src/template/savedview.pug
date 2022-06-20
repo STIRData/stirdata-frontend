@@ -1,0 +1,242 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "Saved View"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/headerlog.pug
+
+		// page main
+		main(role="main")
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item
+							a( href="profile.html" ) PROFILE
+						li.breadcrumb-item.active(aria-current="page") SAVED VIEW
+
+			// container
+			section.profile 
+				.container 
+
+					// row
+					.row 
+
+						// column
+						.col-md-4.col-lg-3.col-xl-3.profile-sidebar
+							
+							// headingtext
+							h3 Welcome,
+							h1 Mark Wiens
+
+							// navigation
+							nav.sidenavigation
+								ul 
+									li 
+										a( href="profile.html" ) Profile
+									li.active 
+										a( href="savedview.html" ) Saved View
+									li 
+										a( href="signin.html" ) Sign out
+
+						// column
+						.col-sm-12.col-md-8.col-lg-7.col-xl-7.profile-content
+
+							// heading
+							.headingtext
+								h2 Saved View
+								p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+							// saved list
+							.savedlist
+
+								// page details
+								.pagination-detail Showing 1 - 10 from 21
+
+								// table
+								table.table.table-borderless.table-stir 
+									thead 
+										tr 
+											th(scope="col") Name 
+											th(scope="col") Date Created
+											th.end(scope="col") Action
+									tbody
+										tr 
+											td 
+												a(href="savedviewdetail.html") Animal Production Companies in Belgium and Norway 
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink1")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+										tr 
+											td 
+												a(href="savedviewdetail.html") Mining and Agriculture Companies in Europe 
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink2")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+										tr 
+											td 
+												a(href="savedviewdetail.html") Helenic Republic ICT Companies
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink3")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+										tr 
+											td 
+												a(href="savedviewdetail.html") Distribution of companies in England
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink4" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink4")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+										tr 
+											td 
+												a(href="savedviewdetail.html") Mining and Agriculture Companies in Europe
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink5" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink5")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+										tr 
+											td 
+												a(href="savedviewdetail.html") Helenic Republic ICT Companies
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink6" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink6")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+										tr 
+											td 
+												a(href="savedviewdetail.html") Romania’s Registered Companies in Mining
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink7" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink7")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+										tr 
+											td 
+												a(href="savedviewdetail.html") Distribution of companies in England
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink8" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink8")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+										tr 
+											td 
+												a(href="savedviewdetail.html") Mining and Agriculture Companies in Latvia
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink9" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink9")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+										tr 
+											td 
+												a(href="savedviewdetail.html") Animal Production Companies in Finland 
+											td 12 April 2021
+											td.end
+												a(href="#" role="button" id="dropdownMenuLink10" data-bs-toggle="dropdown" aria-expanded="false")
+													img( src="img/ic-bullets.png" )
+												ul.dropdown-menu(aria-labelledby="dropdownMenuLink10")
+													li 
+														a.dropdown-item( href="#" ) Details
+													li 
+														a.dropdown-item( href="#" ) View
+													li 
+														a.dropdown-item( href="#") Delete
+								
+								// action
+								.inputaction
+									nav.pagination-stir
+										ul
+											li
+												a( href="#" ) Prev
+											li.active
+												a( href="#" ) 1
+											li
+												a( href="#" ) 2
+											li
+												a( href="#" ) Next
+
+						// column
+						.col.lg-2.col-xl-2.profile-decor
+
+							// img
+							img( src="img/ic-decor-vertical.png" )
+
+
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

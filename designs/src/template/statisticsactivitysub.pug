@@ -1,0 +1,410 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "Manifacturing Statistics"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/header.pug
+
+		// page main
+		main(role="main")
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item
+							a( href="statistics.html" ) STATISTICS
+						li.breadcrumb-item
+							a( href="statisticsactivity.html" ) ACTIVITIES / MANUFACTURING
+						li.breadcrumb-item.active(aria-current="page") OTHER MANUFACTURING
+			
+			// page intro
+			.pageintro
+				.container 
+
+					// heading
+					.headingtext
+						h1 Other Manufacturing
+			
+			// child page
+			section.statisticsdetail
+				.container
+
+					// row
+					.row 
+						
+						// column
+						.col-xl-7 
+
+							// counter
+							ul.counter 
+								li
+									span.count 5
+									span.text 
+										| European 
+										br
+										| Countries
+								li
+									span.count 480,000
+									span.text
+										| Registered
+										br
+										| Companies
+							
+							// stats map
+							.activityimage
+								img( src="img/icons/activity/manufacturing.jpg" )
+
+							// other countries
+							.activitylist
+
+								// heading
+								.headingtext
+									h2 Explore other Business Activity in STIRDATA
+
+								// first line
+								div(data-slickjs="true" data-slickjs-show="2" data-slickjs-scroll="2")
+									ul 
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-accommodation.png" )
+												.text
+													.counter 23,000
+													.label Accommodation and Food Service Activities
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-administrative.png" )
+												.text 
+													.counter 23,000
+													.label Administrative and Support Service Activities
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-agriculture.png" )
+												.text 
+													.counter 23,000
+													.label Agriculture, Forestry, and Fishing
+									ul
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-construction.png" )
+												.text
+													.counter 23,000
+													.label Construction
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-education.png" )
+												.text 
+													.counter 23,000
+													.label Education
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-electricity.png" )
+												.text 
+													.counter 23,000
+													.label Electricity, Gas, Steam and Air Conditioning Supply
+									ul
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-entertainment.png" )
+												.text
+													.counter 23,000
+													.label Arts, Entertainment, and Recreation
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-financial.png" )
+												.text 
+													.counter 23,000
+													.label Financial and Insurance Activities
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-health.png" )
+												.text 
+													.counter 23,000
+													.label Human Health and Social Work Activity
+									ul
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-household.png" )
+												.text 
+													.counter 23,000
+													.label Activities of Houehold as Employers
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-information.png" )
+												.text 
+													.counter 23,000
+													.label Information and Communication
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-manufacturing.png" )
+												.text 
+													.counter 23,000
+													.label Manufacturing
+									
+									ul
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-mining.png" )
+												.text 
+													.counter 23,000
+													.label Mining and Quarrying
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-organization.png" )
+												.text 
+													.counter 23,000
+													.label Activities of Extraterritorial Organisations and Bodies
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-realestate.png" )
+												.text 
+													.counter 23,000
+													.label Real Estate Activities
+									
+									ul
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-science.png" )
+												.text 
+													.counter 23,000
+													.label Professional, Scientific and Technical Activities
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-service.png" )
+												.text 
+													.counter 23,000
+													.label Other Service Activities
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-socialsecurity.png" )
+												.text 
+													.counter 23,000
+													.label Public Administration and Defense
+									
+									ul
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-transport.png" )
+												.text 
+													.counter 23,000
+													.label Transportation and Storage
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-water.png" )
+												.text 
+													.counter 23,000
+													.label Water Supply, Sewage, Waste Management
+										li 
+											a.wrap(href="statisticsactivity.html")
+												.icon
+													img( src="img/icons/ic-wholesale.png" )
+												.text 
+													.counter 23,000
+													.label Wholesale and Retail Trade
+
+						// column
+						.col-xl-5.statisticsdetail-right
+							
+							// region stats
+							.regionstats
+
+								// heading
+								.headingtext
+									h2 Statistics by Other Manufacturing Business Activity
+									p 20,002 Registered Companies in 4 Countries
+								
+								// line stats
+								.chart-line-d.line-stats 
+									ul
+										li.heading 
+											.wrap
+												.subject Country
+												.stat Companies
+												.plothead Percentage 
+										li 
+											.wrap
+												.subject 
+													a( href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of jewellery, bijouterie and related articles") Manufacture of jewellery, bij..
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 25%
+													.plot( data-size="100" )
+														span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of musical instruments") Manufacture of musical inst..
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 23%
+													.plot( data-size="90" )
+														span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of sports goods") Manufacture of sports goods
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 20%
+													.plot( data-size="80" )
+														span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of games and toys")  Manufacture of games and toys
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 18%
+													.plot( data-size="75" )
+														span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of medical and dental instruments and supplies") Manufacture of medical and..
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 15%
+													.plot( data-size="70" )
+														span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacturing n.e.c.") Manufacturing n.e.c.
+												.stat
+													span.detail-a 1,202
+												.scale
+													span.percentage 12%
+													.plot( data-size="68" )
+														span.plotter
+										
+										
+								
+									// action link
+									.action
+										a( href="explore.html" )
+											span.text Explore all companies for Other Manufacturing Activity
+											span.icon
+												i.fas.fa-angle-right
+							
+							// region stats
+							.activitystats
+
+								// heading
+								.headingtext
+									h2 Top 5 countries by companies amount in Other Manufacturing
+									p 20,002 Registered Companies in 7 Countries 
+								
+								// line stats
+								.chart-line-c.line-stats-dynamic 
+
+									// graph
+									.graph
+										span.base
+											.item.data-1(data-color="#75A1F3" data-amount="30" data-toggle="tooltip" data-placement="top" title="30%")
+											.item.data-2(data-color="#FFBC6D" data-amount="25" data-toggle="tooltip" data-placement="top" title="25%") 
+											.item.data-3(data-color="#97CC04" data-amount="20" data-toggle="tooltip" data-placement="top" title="20%")  
+											.item.data-4(data-color="#FF4A4A" data-amount="15" data-toggle="tooltip" data-placement="top" title="15%")  
+											.item.data-5(data-color="#D8D8D8" data-amount="10" data-toggle="tooltip" data-placement="top" title="10%")  
+
+									// listing
+									ul
+										li.heading
+											.wrap
+												.subject Country 
+												.stat Companies
+												.scale Percentage 
+										li(data-color="#75A1F3" data-amount="12,230" data-percentage="30%")
+											.wrap
+												.subject
+													.color
+													a( href="statisticscountry.html" ) Romania
+												.stat
+													span.count -
+												.scale.percentage -
+										li(data-color="#FFBC6D" data-amount="7,230" data-percentage="25%")
+											.wrap
+												.subject 
+													.color 
+													a( href="statisticscountry.html" ) Belgium
+												.stat
+													span.count -
+												.scale.percentage -
+										li(data-color="#97CC04" data-amount="4,200" data-percentage="20%")
+											.wrap
+												.subject 
+													.color 
+													a( href="statisticscountry.html" ) Finland
+												.stat
+													span.count -
+												.scale.percentage -
+										li(data-color="#FF4A4A" data-amount="2,600" data-percentage="15%")  
+											.wrap
+												.subject 
+													.color
+													a( href="statisticscountry.html" ) Norway
+												.stat
+													span.count -
+												.scale.percentage -
+										li(data-color="#D8D8D8" data-amount="1,401" data-percentage="10%")  
+											.wrap
+												.subject 
+													.color
+													a( href="statisticscountry.html" ) Czech Republic
+												.stat
+													span.count -
+												.scale.percentage -
+								
+									// action link
+									.action
+										a( href="explore.html" )
+											span.text Explore all countries for Manufacturing Business Activity
+											span.icon
+												i.fas.fa-angle-right
+
+					
+
+
+
+
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

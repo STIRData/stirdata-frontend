@@ -1,0 +1,342 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "Statistics"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/headerlog.pug
+
+		// page main
+		main(role="main")
+
+			// maps
+			.maps.small
+
+				// chart
+				//#chart-map.map-box
+				
+				// to be replaced with js maps
+				img( src="img/img-temp-map.png" )
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item.active(aria-current="page") STATISTICS
+
+			// page intro
+			.container 
+
+				// heading
+				.headingtext
+					h1 Statistics
+					p.half STIRDATA is an online platform for searching, navigating, synthetically analysing, and visualising company-related open data content.
+
+			// child page
+			section.statistics 
+				.container
+
+					// heading
+					.headingtext
+						h2 
+							| Explore countries statistics in
+							br
+							| STIRDATA database
+				
+					// country list
+					.row.statistics-countries-list
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="statisticscountry.html")
+								h3 Belgium 
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="#")
+								h3 Cyprus 
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="#")
+								h3 Czech Republic
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="#")
+								h3 Estonia 
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="#")
+								h3 Finland
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="#")
+								h3 Greece
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="#")
+								h3 Latvia 
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="#")
+								h3 Norway 
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="#")
+								h3 Romania 
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						.country.col-sm-12.col-md-6.col-lg-3.col-xl-3
+							a.wrap(href="#")
+								h3 United Kingdom 
+								ul 
+									li
+										span.amount 230,000
+										.label Companies
+									li
+										span.amount 21
+										.label Activities
+						
+					// activity list
+					.statistics-activity-list
+					
+						// heading
+						.headingtext
+							h2 
+								| Explore business activity statistics
+								br
+								| STIRDATA database	
+						
+						// country selector
+						.statistics-activity-list-wrap(data-slickjs="true" data-slickjs-show="4" data-slickjs-scroll="1")
+
+							// first line
+							ul 
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-accommodation.png" )
+										.text
+											.counter 23,000
+											.label Accommodation and Food Service Activities
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-administrative.png" )
+										.text 
+											.counter 23,000
+											.label Administrative and Support Service Activities
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-agriculture.png" )
+										.text 
+											.counter 23,000
+											.label Agriculture, Forestry, and Fishing
+							// first line
+							ul 
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-construction.png" )
+										.text 
+											.counter 23,000
+											.label Construction
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-education.png" )
+										.text 
+											.counter 23,000
+											.label Education
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-electricity.png" )
+										.text 
+											.counter 23,000
+											.label Electricity, Gas, Steam and Air Conditioning Supply
+							// first line
+							ul 
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-entertainment.png" )
+										.text 
+											.counter 23,000
+											.label Arts, Entertainment, and Recreation
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-financial.png" )
+										.text 
+											.counter 23,000
+											.label Financial and Insurance Activities
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-health.png" )
+										.text 
+											.counter 23,000
+											.label Human Health and Social Work Activity
+							
+							// first line
+							ul 
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-household.png" )
+										.text 
+											.counter 23,000
+											.label Activities of Household as Employers
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-information.png" )
+										.text 
+											.counter 23,000
+											.label Information and Communication
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-manufacturing.png" )
+										.text 
+											.counter 23,000
+											.label Manufacturing
+							
+							// first line
+							ul 
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-mining.png" )
+										.text 
+											.counter 23,000
+											.label Mining and Quarrying
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-organization.png" )
+										.text 
+											.counter 23,000
+											.label Activities of Extraterritorial Organisations and Bodies
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-realestate.png" )
+										.text 
+											.counter 23,000
+											.label Real Estate Activities
+							
+							// first line
+							ul 
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-science.png" )
+										.text 
+											.counter 23,000
+											.label Professional, Scientific and Technical Activities
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-service.png" )
+										.text 
+											.counter 23,000
+											.label Other Service Activities
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-socialsecurity.png" )
+										.text 
+											.counter 23,000
+											.label Public Administration and Defense
+							// first line
+							ul 
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-transport.png" )
+										.text 
+											.counter 23,000
+											.label Transportation and Storage
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-water.png" )
+										.text 
+											.counter 23,000
+											.label Water Supply, Sewage, Waste Management
+								li 
+									a.wrap(href="statisticsactivity.html")
+										.icon
+											img( src="img/icons/ic-wholesale.png" )
+										.text 
+											.counter 23,000
+											.label Wholesale and Retail Trade
+		
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

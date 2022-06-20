@@ -1,0 +1,478 @@
+// sidebar
+.col-lg-4.col-xl-4.explore-controls-sidebar 
+
+	// sidemenu
+	.sidebar#sidebar-accordion 
+
+		// wraps
+		.wraps
+
+			// saved view
+			.sidebar-savedview.sidebar-section-wrap
+
+				// heading
+				h3 Saved View 
+
+				// input
+				select.form-select
+					option(selected) Select Saved View
+					option(value="1") Belgium agriculture 
+					option(value="2") Greece companies in IT
+					option(value="3") Manufacturing in Latvia
+
+				// add action
+				a.savefilter( href="#" data-filter-toggle="#saveview-form")
+					span.add +
+					| Save current view
+				
+				// save filter form
+				.form.collapse#saveview-form
+					.inputform
+						span.label View Title
+						input( type="text")
+					.inputaction
+						button( type="button" ) Save
+
+			// countries
+			.sidebar-countries.sidebar-section-wrap 
+
+				// heading
+				h3#heading-countries
+					a.accordion-button.collapsed( href="#" data-bs-toggle="collapse" data-bs-target="#collapseCountries" aria-expanded="true" aria-controls="collapseCountries") 
+						| Countries &amp; Region
+				
+				// ul
+				ul.pills
+					li 
+						| Belgium
+						a( href="#" ) 
+							i.fas.fa-times
+					li 
+						| United Kingdom
+						a( href="#" ) 
+							i.fas.fa-times
+
+				// content
+				#collapseCountries.accordion-collapse.collapse(aria-labelledby="heading-countries" data-bs-parent="#sidebar-accordion")
+					
+					// input
+					.input-wrap
+						img.search( src="img/ic-search.png" )
+						input(type="text" class="form-control" id="searchquery" placeholder="")
+					
+					// selection filter
+					.input-filter
+
+						// unordered list for filter listing
+						ul
+							// every country is represented with the first-level li element 
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+
+									// 
+										actual checkbox - where the value will be retrieved by the logic
+										note:
+											- make sure the name attribute on the input checkbox element is the same with the for attribute on the adjacent label element
+											- this will enable selecting checkbox by clicking on the label
+									
+									input#country-uk(type="checkbox" name="country-uk")
+									label(for="country-uk") United Kingdom
+									
+									//
+										this anchor is to expand/hide the child selection
+										works by setting the target div (ID) to the href link
+									a( href="#" data-filter-toggle="#unitedkingdom-region") 
+
+										// this is where the +/- image will appears
+										span.expand
+								
+								// 
+									this is where we put the child list as a nested "ul" inside the parent "li" element
+									need to set the target ID to the element, in this case is "unitedkingdom-region"
+									need to set "hide" class to the "ul" element to hide the child content on document load
+									you can also use lazy loading to append the child when the expand anchor link is clicked - better for performance
+								ul#unitedkingdom-region.collapse 
+									li
+										.check-wrap
+											input#country-uk-east(type="checkbox" name="country-uk-east")
+											label(for="country-uk-east") East Midlands (England)
+											a( href="#" data-filter-toggle="#eastmidlands-region" ) 
+												span.expand
+										ul.collapse#eastmidlands-region
+											li
+												.check-wrap
+													input#country-uk-east-derby(type="checkbox" name="country-uk-east-derby")
+													label(for="country-uk-east-derby") Derbyshire and Nottinghamshire
+											li
+												.check-wrap
+													input#country-uk-east-leicestershire(type="checkbox" name="country-uk-east-leicestershire")
+													label(for="country-uk-east-leicestershire") Leicestershire
+											li
+												.check-wrap
+													input#country-uk-east-lincolnshire(type="checkbox" name="country-uk-east-lincolnshire")
+													label(for="country-uk-east-lincolnshire") Lincolnshire
+													a( href="#" data-filter-toggle="#lincolnshire-region" ) 
+														span.expand
+												ul.collapse#lincolnshire-region 
+													li
+														.check-wrap
+															input#country-uk-east-lincolnshire-boston(type="checkbox" name="country-uk-east-lincolnshire-boston")
+															label(for="country-uk-east-lincolnshire-boston") Boston
+													li
+														.check-wrap
+															input#country-uk-east-lincolnshire-east(type="checkbox" name="country-uk-east-lincolnshire-east")
+															label(for="country-uk-east-lincolnshire-east") East Lindsey
+													li
+														.check-wrap
+															input#country-uk-east-lincolnshire-lincoln(type="checkbox" name="country-uk-east-lincolnshire-lincoln")
+															label(for="country-uk-east-lincolnshire-lincoln") Lincoln
+													li
+														.check-wrap
+															input#country-uk-east-lincolnshire-north(type="checkbox" name="country-uk-east-lincolnshire-north")
+															label(for="country-uk-east-lincolnshire-north") North Kesteven
+													li
+														.check-wrap
+															input#country-uk-east-lincolnshire-south(type="checkbox" name="country-uk-east-lincolnshire-south")
+															label(for="country-uk-east-lincolnshire-south") South Holland
+									li
+										.check-wrap
+											input#country-uk-eastengland(type="checkbox" name="country-uk-eastengland")
+											label(for="country-uk-eastengland") East of England
+									li
+										.check-wrap
+											input#country-uk-london(type="checkbox" name="country-uk-london")
+											label(for="country-uk-london") London
+							li
+								.check-wrap
+									input#country-norway(type="checkbox" name="country-norway")
+									label(for="country-norway") Norway
+									a( href="#" data-filter-toggle="#norway-region" ) 
+										span.expand
+								ul#norway-region.collapse 
+									li
+										.check-wrap
+											input#norway-region-oslo(type="checkbox" name="norway-region-oslo")
+											label(for="norway-region-oslo") Oslo og Viken
+							li
+								.check-wrap
+									input#country-greece(type="checkbox" name="country-greece")
+									label(for="country-greece") Greece
+									a( href="#" data-filter-toggle="#greece-region" ) 
+										span.expand
+								ul#greece-region.collapse 
+									li
+										.check-wrap
+											input#country-greece-attica(type="checkbox" name="country-greece-attica")
+											label(for="country-greece-attica") Attica
+							li
+								.check-wrap
+									input#country-belgium(type="checkbox" name="country-belgium")
+									label(for="country-belgium") Belgium
+									a( href="#" data-filter-toggle="#belgium-region" ) 
+										span.expand
+								ul#belgium-region.collapse 
+									li
+										.check-wrap
+											input#country-belgium-vlaams(type="checkbox" name="country-belgium-vlaams")
+											label(for="country-belgium-vlaams") Vlaams Gewest
+							li
+								.check-wrap
+									input#country-czech(type="checkbox" name="country-czech")
+									label(for="country-czech") Czech Republic
+									a( href="#" data-filter-toggle="#czech-region" ) 
+										span.expand
+								ul#czech-region.collapse 
+									li
+										.check-wrap
+											input#country-czech-praha(type="checkbox" name="country-czech-praha")
+											label(for="country-czech-praha") Praha
+							li
+								.check-wrap
+									input#country-estonia(type="checkbox" name="country-estonia")
+									label(for="country-estonia") Estonia
+									a( href="#" data-filter-toggle="#estonia-region" ) 
+										span.expand
+								ul#estonia-region.collapse 
+									li
+										.check-wrap
+											input#country-estonia-keesk(type="checkbox" name="country-estonia-keesk")
+											label(for="country-estonia-keesk") Keesk - Esti
+							li
+								.check-wrap
+									input#country-latvia(type="checkbox" name="country-latvia")
+									label(for="country-latvia") Latvia
+									a( href="#" data-filter-toggle="#latvia-region" ) 
+										span.expand
+								ul#latvia-region.collapse 
+									li
+										.check-wrap
+											input#country-latvia-latgale(type="checkbox" name="country-latvia-latgale")
+											label(for="country-latvia-latgale") Latgale
+							li
+								.check-wrap
+									input#country-romania(type="checkbox" name="country-romania")
+									label(for="country-romania") Romania
+									a( href="#romania-region" ) 
+										span.expand
+								ul#romania-region.collapse 
+									li
+										.check-wrap
+											input#country-romania-doi(type="checkbox" name="country-romania-doi")
+											label(for="country-romania-doi") Macroregiunea Doi
+							li
+								.check-wrap
+									input#country-finland(type="checkbox" name="country-finland")
+									label(for="country-finland") Finland
+									a( href="#" data-filter-toggle="#finland-region" ) 
+										span.expand
+								ul#finland-region.collapse 
+									li
+										.check-wrap
+											input#country-finland-manner(type="checkbox" name="country-finland-manner")
+											label(for="country-finland-manner") Manner-Suomi
+							li
+								.check-wrap
+									input#country-cyprus(type="checkbox" name="country-cyprus")
+									label(for="country-cyprus") Cyprus
+									a( href="#" data-filter-toggle="#cyprus-region" ) 
+										span.expand
+								ul#cyprus-region.collapse 
+									li
+										.check-wrap
+											input#country-cyprus-ypsonas(type="checkbox" name="country-cyprus-ypsonas")
+											label(for="country-cyprus-ypsonas") Ypsonas
+											
+
+			// activities
+			.sidebar-activities.sidebar-section-wrap
+
+				// heading
+				h3#heading-activities
+					a.accordion-button.collapsed( href="#" data-bs-toggle="collapse" data-bs-target="#collapseActivities" aria-expanded="true" aria-controls="collapseActivities")
+						| Business Activities
+
+				// ul
+				ul.pills
+					li 
+						| Manufacturing
+						a( href="#" ) 
+							i.fas.fa-times
+				
+				// content
+				#collapseActivities.accordion-collapse.collapse(aria-labelledby="heading-activities" data-bs-parent="#sidebar-accordion")
+					
+					// input
+					.input-wrap
+						img.search( src="img/ic-search.png" )
+						input(type="text" class="form-control" id="searchquery" placeholder="")
+					
+					// selection filter
+					.input-filter
+
+						// unordered list for filter listing
+						ul
+							// every country is represented with the first-level li element 
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-agriculture(type="checkbox" name="activity-agriculture")
+									label(for="activity-agriculture") Agriculture, Forestry and Fishing
+									a( href="#" data-filter-toggle="#activity-agriculture-region" ) 
+
+										// this is where the +/- image will appears
+										span.expand
+								
+								ul#activity-agriculture-region.collapse 
+									li
+										.check-wrap
+											input#activity-agriculture-crop(type="checkbox" name="activity-agriculture-crop")
+											label(for="activity-agriculture-crop") Crop and animal production, hunting and related service activities
+									li
+										.check-wrap
+											input#activity-agriculture-forestry(type="checkbox" name="activity-agriculture-forestry")
+											label(for="activity-agriculture-forestry") Forestry and logging
+									li
+										.check-wrap
+											input#activity-agriculture-fishing(type="checkbox" name="activity-agriculture-fishing")
+											label(for="activity-agriculture-fishing") Fishing and aquaculture
+
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-administrative(type="checkbox" name="activity-administrative")
+									label(for="activity-administrative") Administrative and Support Service Activities
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-accommodation(type="checkbox" name="activity-accommodation")
+									label(for="activity-accommodation") Accommodation and Food Service Activities
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-construction(type="checkbox" name="activity-construction")
+									label(for="activity-construction") Construction
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-education(type="checkbox" name="activity-education")
+									label(for="activity-education") Education
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-electricity(type="checkbox" name="activity-electricity")
+									label(for="activity-electricity") Electricity, Gas, Steam and Air Conditioning Supply
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-arts(type="checkbox" name="activity-arts")
+									label(for="activity-arts") Arts, Entertainment, and Recreation
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-financial(type="checkbox" name="activity-financial")
+									label(for="activity-financial") Financial and Insurance Activities
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-social(type="checkbox" name="activity-social")
+									label(for="activity-social") Human Health and Social Work Activity
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-household(type="checkbox" name="activity-household")
+									label(for="activity-household") Activities of Household as Employers
+
+						//
+							Additional business activities that are hidden
+							for the sake of usability - limit information into half of full information
+							showing using the more/less button below.	
+						ul#activity-list-full.collapse
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-information(type="checkbox" name="activity-information")
+									label(for="activity-information") Information and Communication
+							
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-manufacturing(type="checkbox" name="activity-manufacturing")
+									label(for="activity-manufacturing") Manufacturing
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-extraterritorial(type="checkbox" name="activity-extraterritorial")
+									label(for="activity-extraterritorial") Activities of Extraterritorial Organisations and Bodies
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-estate(type="checkbox" name="activity-estate")
+									label(for="activity-estate") Real Estate Activities
+							
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-professional(type="checkbox" name="activity-professional")
+									label(for="activity-professional") Professional, Scientific and Technical Activities
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-other(type="checkbox" name="activity-other")
+									label(for="activity-other") Other Service Activities
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-administration(type="checkbox" name="activity-administration")
+									label(for="activity-administration") Public Administration and Defense
+							
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-transportation(type="checkbox" name="activity-transportation")
+									label(for="activity-transportation") Transportation and Storage
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-water(type="checkbox" name="activity-water")
+									label(for="activity-water") Water Supply, Sewage, Waste Management
+							li
+
+								// wrap for custom checkbox element to provide absolute positioning for background image
+								.check-wrap
+									input#activity-wholesale(type="checkbox" name="activity-wholesale")
+									label(for="activity-wholesale") Wholesale and Retail Trade
+						
+						//
+							Load more / show less button
+							Works using the same function and expand/hide child filter
+						ul 
+							li 
+								a.moreless( href="#" data-filter-toggle="#activity-list-full" )
+									span.more Load More
+									span.less Show Less
+
+			// registration
+			.sidebar-registration.sidebar-section-wrap 
+
+				// heading
+				h3#heading-registration
+					a.accordion-button.collapsed( href="#" data-bs-toggle="collapse" data-bs-target="#collapseRegistration" aria-expanded="true" aria-controls="collapseRegistration") 
+						| Registration Date
+
+				// ul
+				ul.pills
+					li 
+						b Before 
+						| 12 January 2022
+						a( href="#" ) 
+							i.fas.fa-times
+				
+				// content
+				#collapseRegistration.accordion-collapse.collapse(aria-labelledby="heading-registration" data-bs-parent="#sidebar-accordion")
+					
+					// form
+					.form.registrationdate
+						
+						// group
+						.datepicker
+							.label After
+							button.icon(type="button")
+								i.far.fa-calendar
+							.dialog 
+								label 
+						
+						// group
+						.datepicker
+							.label Before 
+							button.icon(type="button")
+								i.far.fa-calendar
+							.dialog 
+								label Wednesday, January 12 2022
+
+			// action
+			.sidebar-action.sidebar-section-wrap
+				.inputaction
+					button( type="button" ) Search
+					span.note.space
+						a( href="explore-result.html" ) Reset

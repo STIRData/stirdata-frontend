@@ -1,0 +1,391 @@
+//- index.jade
+- var title = "STIRDATA"
+- var page = "Data Providers"
+
+doctype html
+html(lang="en")
+
+	// html head
+	head
+		include ./includes/head.pug
+
+	// body
+	body
+
+		// header
+		include ./includes/header.pug
+
+		// page main
+		main(role="main")
+
+			// breadcrumb
+			.container 
+				nav(aria-label="breadcrumb").bread
+					ol.breadcrumb 
+						li.breadcrumb-item
+							a( href="index.html" ) HOME
+						li.breadcrumb-item.active(aria-current="page") DATA PROVIDERS
+
+			// page intro
+			.pageintro
+				.container 
+
+					// heading
+					.headingtext
+						h1 Data Providers
+						p.half Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+
+			// child page
+			section.two-columns  
+				.container
+					.row 
+						
+						// column
+						.col-lg-4.col-xl-3.two-columns-sidebar
+
+							// ads
+							.ads
+								.ads-learn
+									img.decor( src="img/ic-ads.png")
+									p STIRDATA is an online platform for searching, navigating, synthetically analyzing, and visualizing company related open data content
+									
+									// button nav
+									nav.heronav
+										ul
+											li
+												a.button( href="about.html" ) Learn More
+								
+								// ads
+								.ads-explore
+									h2 
+										| Explore 
+										br
+										| Companies
+									p Search, Navigate, Analyze, and Visualizing Company related Open Data Content
+									
+									// button nav
+									nav.heronav
+										ul
+											li
+												a.button( href="explore.html" ) Explore Now
+
+
+						// column
+						.col-lg-8.col-xl-9.two-columns-content
+
+							// table data
+							.data-availability 
+
+								// heading
+								.headingtext
+									h2 Data Availability Mapping 
+									p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+								
+								// table replacement
+								.row.table-section 
+									.col-sm-5.col-md-3.col-lg-3.col-xl-3.table-section-column
+										ul.table-section-label.countrylabel
+											li.head Metadata
+											li Company Name
+											li Founding date
+											li Dissolution date
+											li Site
+											li Legal form
+											li Identifier
+											li Jurisdiction
+											li Economic activity
+
+									.col-sm-7.col-md-9.col-lg-9.col-xl-9.table-section-data(data-slickjs="true" data-slickjs-show="4" data-slickjs-scroll="1")
+										ul.country
+											li.head United Kingdom
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+										ul.country
+											li.head Greece
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+										ul.country
+											li.head Norway
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+										ul.country
+											li.head Belgium
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+										ul.country
+											li.head Czech Republic
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+										ul.country
+											li.head Finland
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+										ul.country
+											li.head Estonia
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+										ul.country
+											li.head Cyprus
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+										ul.country
+											li.head Romania
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+										ul.country
+											li.head Latvia
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+											li
+												img( src="img/ic-check.png" )
+
+								
+
+							// table data
+							.data-information 
+
+								// heading
+								.headingtext
+									h2 Data Information 
+									p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+								// table replacement
+								.row.table-section 
+									.col-xs-6.col-sm-5.col-md-3.col-lg-4.col-xl-3.table-section-column
+										ul.table-section-label.countrylabel
+											li.head Information
+											li Last Updated
+											li Update Frequency
+											li Link to API
+											li Number of Entries
+											li License
+
+									.col-xs-6.col-sm-7.col-md-9.col-lg-8.col-xl-9.table-section-data(data-slickjs="true" data-slickjs-show="4" data-slickjs-scroll="1")
+										ul.country
+											li.head United Kingdom
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+										ul.country
+											li.head Greece
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+										ul.country
+											li.head Norway
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+										ul.country
+											li.head Belgium
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+										ul.country
+											li.head Czech Republic
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+										ul.country
+											li.head Finland
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+										ul.country
+											li.head Estonia
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+										ul.country
+											li.head Cyprus
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+										ul.country
+											li.head Romania
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+										ul.country
+											li.head Latvia
+											li 22 Nov 2021
+											li Monthly
+											li
+												a( href="#" ) Link
+											li 120,000
+											li CC BY-SA
+								
+								
+								
+
+
+		// footer
+		include ./includes/footer.pug
+
+	// javascript
+	include ./includes/script.pug

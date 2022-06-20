@@ -1,0 +1,976 @@
+// results
+.col-lg-8.col-xl-8.explore-controls-results 
+
+	// heading
+	.headingtext.resultheading
+		h1 Results
+
+	// tab
+	nav
+		.nav.nav-tabs#tab-result(role="tablist")
+			button.active#country-1-tab(data-bs-toggle="tab" data-bs-target="#country-1" type="button" role="tab" aria-controls="country-1" aria-selected="true") Belgium
+			button#country-2-tab(data-bs-toggle="tab" data-bs-target="#country-2" type="button" role="tab" aria-controls="country-2" aria-selected="false") United Kingdom
+
+	// content
+	.tab-content
+
+		// first country (Belgium)
+		.tab-pane.fade.show.active#country-1(role="tab-panel" aria-labelledby="country-1-tab")
+
+			// accordion
+			#country-1-accordion
+
+				// heading
+				h2.accordion-heading#country-1-accordion-heading-stats
+					a.accordion-button( href="#" data-bs-toggle="collapse" data-bs-target="#country-1-stats" aria-expanded="true" aria-controls="country-1-stats") 
+						| Result Statistics
+
+				// content
+				#country-1-stats.accordion-collapse.collapse.show(aria-labelledby="country-1-accordion-heading-stats" data-bs-parent="#country-1-accordion")
+					
+					// filter left
+					.filter-stat-option
+						.btn-group.filter-left-option(role="group" data-filter-group="country-1-tab-content-results" data-filter-target="country-1-stat-results" aria-label="Basic radio toggle button group")
+							input(type="radio" class="btn-check" name="country-1-btnradio" id="country-1-btnradio1" autocomplete="off" checked)
+							label.btn.btn-outline-primary(for="country-1-btnradio1" data-toggle="tooltip" data-placement="top" title="Group based on Region") Region
+
+							input(type="radio" class="btn-check" name="country-1-btnradio" id="country-1-btnradio2" autocomplete="off")
+							label.btn.btn-outline-primary(for="country-1-btnradio2" data-toggle="tooltip" data-placement="top" title="Group based on Activity") Activity
+
+							input(type="radio" class="btn-check" name="country-1-btnradio" id="country-1-btnradio3" autocomplete="off")
+							label.btn.btn-outline-primary(for="country-1-btnradio3" data-toggle="tooltip" data-placement="top" title="Group based on Date") Date
+
+
+						.form-check.form-switch.collapse(data-filter-group="country-1-tab-content-results" data-filter-target="country-1-list-results")
+							input.form-check-input(type="checkbox" id="flexSwitchCheckDefault")
+							label.form-check-label(for="flexSwitchCheckDefault") Group by Activity
+
+						// filter left
+						.btn-group.filter-right-option(role="group" aria-label="Basic radio toggle button group")
+							input.filter-action(type="radio" class="btn-check" data-filter-showhide="country-1-stat-results" data-filter-showhide-group="country-1-tab-content-results" name="country-1-btnradio-stat" id="country-1-btnradio-stat" autocomplete="off" checked)
+							label.btn.btn-outline-primary(for="country-1-btnradio-stat"  data-toggle="tooltip" data-placement="top" title="Chart View")
+								i.far.fa-chart-bar
+
+							input.filter-action(type="radio" class="btn-check" data-filter-showhide="country-1-list-results" data-filter-showhide-group="country-1-tab-content-results" name="country-1-btnradio-stat" id="country-1-btnradio-list" autocomplete="off")
+							label.btn.btn-outline-primary(for="country-1-btnradio-list"  data-toggle="tooltip" data-placement="top" title="List View") 
+								i.fas.fa-bars
+					
+					// results
+					div(data-filter-group="country-1-tab-content-results" data-filter-target="country-1-stat-results")
+
+						// heading
+						.headingtext 
+							h3 Top 10 Regions in Belgium based on Filter
+						
+						// row
+						.row 
+							.col-xl-6 
+
+								// line stats
+								.line-stats.chart-line-a 
+									ul 
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Halle-Vilvoorde
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="100" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Antwerpen
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="90" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. de Bruxelles-Capitale
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="80" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Gent
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="60" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Charleroi
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="50" )
+												span.plotter 
+							
+							// col
+							.col-xl-6 
+
+								// line stats
+								.line-stats.chart-line-a 
+									ul 
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Charleroi
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="45" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Mons
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="35" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Mouscron
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="25" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Touin
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="20" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Tournai
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="10" )
+												span.plotter
+					
+					// results
+					.collapse(data-filter-group="country-1-tab-content-results" data-filter-target="country-1-list-results")
+						
+						// page details
+						.pagination-detail Showing 1 - 10 from 21
+
+						// table
+						table.table.table-borderless.table-stir 
+							thead 
+								tr 
+									th(scope="col") Region 
+									th(scope="col") Companies
+									th.end(scope="col") Action
+							tbody
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Halle-Vilvoorde 
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink1")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Antwerpen
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink2")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. de Bruxelles-Capitale
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink3")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Gent
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink4" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink4")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Charleroi
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink5" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink5")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Charleroi 
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink1")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Mons 
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink2")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Mouscron
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink3")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Touin
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink4" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink4")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Tournai
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink5" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink5")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								
+						// action
+						.inputaction
+							nav.pagination-stir
+								ul
+									li
+										a( href="#" ) Prev
+									li.active
+										a( href="#" ) 1
+									li
+										a( href="#" ) 2
+									li
+										a( href="#" ) Next
+										
+				// heading
+				h2.accordion-heading#country-1-accordion-heading-list
+					a.accordion-button.collapsed( href="#" data-bs-toggle="collapse" data-bs-target="#country-1-list" aria-expanded="false" aria-controls="country-1-list") 
+						| Result Companies
+
+				// content
+				#country-1-list.accordion-collapse.collapse(aria-labelledby="country-1-accordion-heading-list" data-bs-parent="#country-1-accordion")
+					
+					// filter left
+					.filter-list-option
+
+						// page details
+						.pagination-detail Showing 1 - 10 from 21
+
+						// download
+						a.download(href="#") Download Result
+
+					// table
+					table.table.table-borderless.table-stir 
+						thead 
+							tr 
+								th(scope="col") Company Name 
+								th(scope="col") Registration Date
+								th(scope="col") Activity
+								th.end(scope="col") Action
+						tbody
+							tr 
+								td 
+									a(href="company.html") GOETHALS 
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink1")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") CHAMPIGNONKWEKERIJ ROSSEEL 
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink2")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") TOPA
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink3")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") VLAEMYNCKHOF
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink4" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink4")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") JAVA - PLANT
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink5" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink5")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") LAURICA - PLANTS
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink6" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink6")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") LOONWERKEN COUDEVILLE
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink7" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink7")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") TOUSSEYN-BRUSSELLE
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink8" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink8")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") VANDAMME SIERPLANTEN
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink9" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink9")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") CRICO ENGINEERING
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink10" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink10")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+					
+					// action
+					.inputaction
+						nav.pagination-stir
+							ul
+								li
+									a( href="#" ) Prev
+								li.active
+									a( href="#" ) 1
+								li
+									a( href="#" ) 2
+								li
+									a( href="#" ) Next
+
+		// second country (United Kingdom)
+		.tab-pane.fade#country-2(role="tab-panel" aria-labelledby="country-2-tab")
+			
+			// accordion
+			#country-2-accordion
+
+				// heading
+				h2.accordion-heading#country-2-accordion-heading-stats
+					a.accordion-button( href="#" data-bs-toggle="collapse" data-bs-target="#country-2-stats" aria-expanded="true" aria-controls="country-2-stats") 
+						| Result Statistics
+
+				// content
+				#country-2-stats.accordion-collapse.collapse.show(aria-labelledby="country-2-accordion-heading-stats" data-bs-parent="#country-2-accordion")
+					
+					// filter left
+					.filter-stat-option
+						.btn-group.filter-left-option(role="group" data-filter-group="country-2-tab-content-results" data-filter-target="country-2-stat-results" aria-label="Basic radio toggle button group")
+							input(type="radio" class="btn-check" name="country-2-btnradio" id="country-2-btnradio1" autocomplete="off" checked)
+							label.btn.btn-outline-primary(for="country-2-btnradio1" data-toggle="tooltip" data-placement="top" title="Group based on Region") Region
+
+							input(type="radio" class="btn-check" name="country-2-btnradio" id="country-2-btnradio2" autocomplete="off")
+							label.btn.btn-outline-primary(for="country-2-btnradio2" data-toggle="tooltip" data-placement="top" title="Group based on Activity") Activity
+
+							input(type="radio" class="btn-check" name="country-2-btnradio" id="country-2-btnradio3" autocomplete="off")
+							label.btn.btn-outline-primary(for="country-2-btnradio3" data-toggle="tooltip" data-placement="top" title="Group based on Date") Date
+						
+						.form-check.form-switch.collapse(data-filter-group="country-2-tab-content-results" data-filter-target="country-2-list-results")
+							input.form-check-input(type="checkbox" id="flexSwitchCheckDefault2")
+							label.form-check-label(for="flexSwitchCheckDefault2") Group by Activity
+
+						// filter left
+						.btn-group.filter-right-option(role="group" aria-label="Basic radio toggle button group")
+							input.filter-action(type="radio" class="btn-check" data-filter-showhide="country-2-stat-results" data-filter-showhide-group="country-2-tab-content-results" name="country-2-btnradio-stat" id="country-2-btnradio-stat" autocomplete="off" checked)
+							label.btn.btn-outline-primary(for="country-2-btnradio-stat"  data-toggle="tooltip" data-placement="top" title="Chart View")
+								i.far.fa-chart-bar
+
+							input.filter-action(type="radio" class="btn-check" data-filter-showhide="country-2-list-results" data-filter-showhide-group="country-2-tab-content-results" name="country-2-btnradio-stat" id="country-2-btnradio-list" autocomplete="off")
+							label.btn.btn-outline-primary(for="country-2-btnradio-list"  data-toggle="tooltip" data-placement="top" title="List View") 
+								i.fas.fa-bars
+					
+					// results
+					div(data-filter-group="country-2-tab-content-results" data-filter-target="country-2-stat-results")
+
+						// heading
+						.headingtext 
+							h3 Top 10 Regions in United Kingdom based on Filter
+						
+						// row
+						.row 
+							.col-xl-6 
+
+								// line stats
+								.line-stats.chart-line-a 
+									ul 
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Halle-Vilvoorde
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="100" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Antwerpen
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="90" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. de Bruxelles-Capitale
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="80" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Gent
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="60" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Charleroi
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="50" )
+												span.plotter 
+							
+							// col
+							.col-xl-6 
+
+								// line stats
+								.line-stats.chart-line-a 
+									ul 
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Charleroi
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="45" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Mons
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="35" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Mouscron
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="25" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Touin
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="20" )
+												span.plotter
+										li 
+											.wrap
+												.subject 
+													a( href="statisticscountry.html" ) Arr. Tournai
+												.stat
+													span.detail-a 1,202 Companies
+													span.detail-b 23 Activities
+											.plot( data-size="10" )
+												span.plotter
+					
+					// results
+					.collapse(data-filter-group="country-2-tab-content-results" data-filter-target="country-2-list-results")
+
+						// page details
+						.pagination-detail Showing 1 - 10 from 21
+
+						// table
+						table.table.table-borderless.table-stir 
+							thead 
+								tr 
+									th(scope="col") Region 
+									th(scope="col") Companies
+									th.end(scope="col") Action
+							tbody
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Halle-Vilvoorde 
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink1")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Antwerpen
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink2")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. de Bruxelles-Capitale
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink3")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Gent
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink4" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink4")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Charleroi
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink5" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink5")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Charleroi 
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink1")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Mons 
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink2")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Mouscron
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink3")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Touin
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink4" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink4")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								tr 
+									td 
+										a(href="statisticscountry.html") Arr. Tournai
+									td  123,982
+									td.end
+										a(href="#" role="button" id="dropdownMenuLink5" data-bs-toggle="dropdown" aria-expanded="false")
+											img( src="img/ic-bullets.png" )
+										ul.dropdown-menu(aria-labelledby="dropdownMenuLink5")
+											li 
+												a.dropdown-item( href="statisticscountry.html" ) Details
+								
+						// action
+						.inputaction
+							nav.pagination-stir
+								ul
+									li
+										a( href="#" ) Prev
+									li.active
+										a( href="#" ) 1
+									li
+										a( href="#" ) 2
+									li
+										a( href="#" ) Next
+										
+				// heading
+				h2.accordion-heading#country-2-accordion-heading-list
+					a.accordion-button.collapsed( href="#" data-bs-toggle="collapse" data-bs-target="#country-2-list" aria-expanded="false" aria-controls="country-2-list") 
+						| Result Companies
+
+				// content
+				#country-2-list.accordion-collapse.collapse(aria-labelledby="country-2-accordion-heading-list" data-bs-parent="#country-2-accordion")
+					
+					// filter left
+					.filter-list-option
+
+						// page details
+						.pagination-detail Showing 1 - 10 from 21
+
+						// download
+						a.download(href="#") Download Result
+
+					// table
+					table.table.table-borderless.table-stir 
+						thead 
+							tr 
+								th(scope="col") Company Name 
+								th(scope="col") Registration Date
+								th(scope="col") Activity
+								th.end(scope="col") Action
+						tbody
+							tr 
+								td 
+									a(href="company.html") GOETHALS 
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink1" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink1")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") CHAMPIGNONKWEKERIJ ROSSEEL 
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink2")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") TOPA
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink3" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink3")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") VLAEMYNCKHOF
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink4" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink4")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") JAVA - PLANT
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink5" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink5")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") LAURICA - PLANTS
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink6" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink6")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") LOONWERKEN COUDEVILLE
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink7" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink7")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") TOUSSEYN-BRUSSELLE
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink8" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink8")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") VANDAMME SIERPLANTEN
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink9" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink9")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+							tr 
+								td 
+									a(href="company.html") CRICO ENGINEERING
+								td 12 April 2021
+								td 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of rubber and plastic products") 65421, 
+									a(href="statisticsactivity.html" data-toggle="tooltip" data-placement="top" title="Manufacture of coke and refined petroleum products") 67281, 
+									a(href="company.html") +2
+								td.end
+									a(href="#" role="button" id="dropdownMenuLink10" data-bs-toggle="dropdown" aria-expanded="false")
+										img( src="img/ic-bullets.png" )
+									ul.dropdown-menu(aria-labelledby="dropdownMenuLink10")
+										li 
+											a.dropdown-item( href="#" ) Visit URI
+										li 
+											a.dropdown-item( href="company.html" ) Details
+					
+					// action
+					.inputaction
+						nav.pagination-stir
+							ul
+								li
+									a( href="#" ) Prev
+								li.active
+									a( href="#" ) 1
+								li
+									a( href="#" ) 2
+								li
+									a( href="#" ) Next
