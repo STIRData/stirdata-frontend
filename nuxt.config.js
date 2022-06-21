@@ -1,8 +1,10 @@
 /* eslint-disable camelcase */
 
+//import axios from 'axios';
+
 export default {
-  mode: 'universal',
   target: 'static',
+  
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'STIRData',
@@ -80,7 +82,8 @@ export default {
     'vue-scrollto/nuxt',
   ],
 
- /* generate: {
+ /* dynamic route generation 
+  generate: {
     routes() {
       return axios.get(`${process.env.BASE_API_URL}/statistics?dimension=place`).then(res => {
         console.log(res.data.placeGroups);

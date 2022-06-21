@@ -3,21 +3,20 @@
     <b-container>
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>
-    <div
-      v-if="loading"
+    <div v-if="$fetchState.pending"
       class="text-center">
-      <Spinner />
+      <Spinner/>
     </div>
-    <div
-      v-if="!loading"
-      class="pageintro">
+    <div v-else-if="$fetchState.error">Error while fetching statistics. Please try again</div>
+   <div v-else>
+    <div class="pageintro">
       <div class="container">
         <div class="headingtext">
           <h1>{{ currentActivity.activity[0].label }}</h1>
         </div>
       </div>
     </div>
-    <section v-if="!loading" class="statisticsdetail">
+    <section class="statisticsdetail">
       <b-container>
         <b-row>
           <b-col
@@ -46,8 +45,8 @@
                 <h2>Explore other Business Activity in STIRDATA</h2>
               </div>
               <div>
+                <client-only>
                 <VueSlickCarousel
-                  v-if="!loading"
                   v-bind="activityCarouselSettings"
                 >
                   <ul
@@ -93,6 +92,7 @@
                     </button>
                   </template>
                 </VueSlickCarousel>
+                </client-only>
               </div>
             </div>
           </b-col>
@@ -178,8 +178,7 @@
             </div>
             <div
               v-if="countries.length"
-              class="activitystats"
-            >
+              class="activitystats">
               <div class="headingtext">
                 <h2>
                   Top 5 countries by companies amount in {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }}
@@ -268,6 +267,7 @@
         </b-row>
       </b-container>
     </section>
+    </div>
   </main>
 </template>
 
@@ -324,11 +324,11 @@
         currentActivity: {},
         loading: true,
         subactivities: [],
+        activitiesTotalCount: 0,
         countries: []
       };
     },
-
-    async mounted() {
+    async fetch() {
       let nace = this.$route.params.activity;
       await this.$calls.getActivityStatistics(nace)
         .then(response => {
@@ -355,9 +355,7 @@
       this.currentActivity = await this.$calls.getActivityData(nace)
         .then(response => response.selection);
       this.addActivityInBreadcrumb;
-      this.loading = false;
     },
-
     computed: {
     ...mapState({
       activities: state => state.activitiesStatistics
