@@ -82,6 +82,11 @@ export default {
     'vue-scrollto/nuxt',
   ],
 
+  generate: {
+    fallback: true
+  },
+
+
  /* dynamic route generation 
   generate: {
     routes() {
