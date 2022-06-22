@@ -1,12 +1,17 @@
 
 <template>
-  <div class="nuxt-error">
-    <component :is="errorPage" :error="error" />
+<div class="nuxt-error">
+<main role="main">
+  <div class="container">
+    <h1 v-if="error.statusCode === 404">Page not found</h1>
+    <h1 v-else>An error occurred</h1>
+    <NuxtLink to="/">Home page</NuxtLink>  
+  </div>
+  </main>
   </div>
 </template>
 <script>
-import error404 from '~/components/error/404.vue';
-import error500 from '~/components/error/500.vue';
+
 export default {
   name: 'nuxt-error',
   layout: 'default',
@@ -15,15 +20,7 @@ export default {
       type: Object,
       default: () => {},
     },
-  },
-  computed: {
-    errorPage() {
-      if (this.error.statusCode === 404) {
-        return error404;
-      }
-      // catch everything else
-      return error500;
-    },
-}
+  }
+
 }
 </script>

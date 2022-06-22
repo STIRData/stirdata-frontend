@@ -9,7 +9,7 @@
     >
       <Spinner/>
     </div>
-    <div v-else-if="$fetchState.error">Error while fetching statistics. Please try again</div>
+    <div v-else-if="$fetchState.error"><b-container>Error while fetching statistics. Please try again</b-container></div>
     <div v-else> 
     <b-container>
       <div class="headingtext">
