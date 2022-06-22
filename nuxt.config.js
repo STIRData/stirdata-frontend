@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
-
-//import axios from 'axios';
+import axios from 'axios';
 
 export default {
   target: 'static',
@@ -82,25 +81,22 @@ export default {
     'vue-scrollto/nuxt',
   ],
 
-  generate: {
-    fallback: true
-  },
 
-
- /* dynamic route generation 
+ /* dynamic route generation */
   generate: {
+    fallback: true,
+    crawler: false,
     routes() {
       return axios.get(`${process.env.BASE_API_URL}/statistics?dimension=place`).then(res => {
-        console.log(res.data.placeGroups);
         return res.data.placeGroups.map(place => {
           return {
             route: '/statistics/region/' + place.country.code,
-            payload: place
+            payload: place.country
           }
         })
       })
     }
-  },*/
+  },
 
   auth: {
     redirect: {
