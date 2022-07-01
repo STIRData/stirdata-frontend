@@ -150,6 +150,21 @@ export default (ctx, inject) => {
             return [];
           }
         });
+    },
+    getRegionFeatures: () => {
+      return ctx.$api.get(`nuts/filters`)
+        .then(response => response.data.map((feature, index) => {
+          return {
+            value: `feature-${index}`,
+            type: 'stat',
+            text: feature.property.label,
+            subLevels: feature.values.map(value => new Object({
+              value: `${feature.dataset.code.split(':')[1]}:${feature.property.code.split(':')[1]}:${value.code.split(':')[1]}`,
+              type: 'stat',
+              text: value.label
+            }))
+          };
+        }));
     }
   };
 

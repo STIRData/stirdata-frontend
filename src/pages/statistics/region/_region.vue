@@ -10,7 +10,7 @@
       <Spinner/>
     </div>
     <div v-else-if="$fetchState.error"><b-container>Error while fetching statistics. Please try again</b-container></div>
-    <div v-else> 
+    <div v-else>
     <b-container>
       <div class="headingtext">
         <h1>{{ regionLabel }}</h1>
@@ -131,7 +131,11 @@
                     v-for="reg in subregions"
                     :key="reg.place[0].code">
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="reg.place[0].label"
+                      >
                         <b-link
                           :id="reg.place[0].code+'-label'"
                           class="wrap"
@@ -139,12 +143,6 @@
                         >
                           {{ reg.place[0].label }}
                         </b-link>
-                        <b-tooltip
-                          :target="reg.place[0].code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ reg.place[0].label }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="detail-a">
@@ -236,7 +234,11 @@
                     :key="activity.activity[0].code"
                   >
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="capitalizeTheFirstLetterOfEachWord(activity.activity[0].label)"
+                      >
                         <div
                           class="color"
                           :style="{ 'background-color': colors[index] }"
@@ -247,12 +249,6 @@
                         >
                           {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-link>
-                        <b-tooltip
-                          :target="activity.activity[0].code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="count">
@@ -422,7 +418,7 @@
           this.subregions.sort(sortByCount);
           this.activities.sort(sortByCount);
         });
-      
+
       await this.$calls.getRegionData(this.$route.params.region)
         .then(response => {
           this.regionTotalCount = response.selection.count;
@@ -431,10 +427,10 @@
           this.country = response.selection.country;
           this.addCountryNameInBreadcrumb;
         });
-    
+
       await this.$store.dispatch('fetchTopLevelStatistics');
       this.activitiesTotalCount = this.activities.reduce(((a,b) => a + b.count), 0);
-      
+
      // this.loading = false;
     },
   methods: {
@@ -475,11 +471,6 @@
     text-overflow: ellipsis;
   }
 
-  ::v-deep .arrow::before {
-    border-top-color: $accent-first-color;
-    border-bottom-color: $accent-first-color;
-  }
-
   body main[role=main] .chart-line-b .action a,
   body main[role=main] .chart-line-c .action a {
     display: flex;
@@ -493,5 +484,9 @@
     span.icon {
       top: 0;
     }
+  }
+
+  .tooltip {
+    margin-right: 0.5rem;
   }
 </style>

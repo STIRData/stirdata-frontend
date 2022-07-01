@@ -2546,6 +2546,14 @@ body {
 		border-bottom-color: $accent-first-color;
 	}
 
+  .tooltip.bs-tooltip-right .arrow::before {
+    border-right-color: $accent-first-color;
+  }
+
+  .tooltip.bs-tooltip-left .arrow::before {
+    border-left-color: $accent-first-color;
+  }
+
 	.tooltip.bs-tooltip-start .arrow::before {
 		border-left-color: $accent-first-color;
 	}

@@ -131,19 +131,17 @@
                     :key="activity.activity[0].code"
                   >
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="capitalizeTheFirstLetterOfEachWord(activity.activity[0].label)"
+                      >
                         <b-link
                           :id="activity.activity[0].code+'-label'"
                           :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
                         >
                           {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-link>
-                        <b-tooltip
-                          :target="activity.activity[0].code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="detail-a">
@@ -224,7 +222,11 @@
                     :key="country.country.code"
                   >
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="country.country.label"
+                      >
                         <div
                           class="color"
                           :style="{ 'background-color': colors[index] }"
@@ -235,12 +237,6 @@
                         >
                           {{ country.country.label }}
                         </b-link>
-                        <b-tooltip
-                          :target="country.country.code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ country.country.label }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="count">
@@ -422,11 +418,6 @@
     text-overflow: ellipsis;
   }
 
-  ::v-deep .arrow::before {
-    border-top-color: $accent-first-color;
-    border-bottom-color: $accent-first-color;
-  }
-
   body main[role=main] .chart-line-c .action a,
   body main[role=main] .chart-line-d .action a {
     display: flex;
@@ -440,5 +431,9 @@
     span.icon {
       top: 0;
     }
+  }
+
+  .tooltip {
+    margin-right: 0.5rem;
   }
 </style>

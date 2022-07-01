@@ -74,14 +74,14 @@
                       >
                         Activity
                       </b-form-radio>
-                      <b-form-radio
+                      <!-- <b-form-radio
                         v-if="layoutSelected == 'chart'"
                         value="date"
                         v-b-tooltip.hover
                         title="Group based on Date"
                       >
                         Date
-                      </b-form-radio>
+                      </b-form-radio> -->
                     </b-form-radio-group>
                   </b-form-group>
                 </div>
