@@ -63,7 +63,7 @@
                   <b-link :to="{ name: 'explore' }">
                     <span class="text">Explore business activities</span>
                   </b-link>
-                  <b-link :to="{ name: 'search' }">
+                  <b-link :to="{ name: 'explore' }">
                     <span class="icon"><i class="fa fa-angle-right" /></span>
                   </b-link>
                 </div>

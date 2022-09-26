@@ -3,6 +3,7 @@ export default {
     user: null,
     topLevelNuts: [],
     topLevelNace: [],
+    regionFeatures: [],
     countriesStatistics: [],
     activitiesStatistics: [],
     totalCompanies: 0,
@@ -18,6 +19,9 @@ export default {
     },
     setTopLevelNace(state, value) {
       state.topLevelNace = value;
+    },
+    setRegionFeatures(state, value) {
+      state.regionFeatures = value;
     },
     setCountriesStatistics(state, value) {
       state.countriesStatistics = value;
@@ -50,6 +54,10 @@ export default {
     fetchTopLevelNace({ dispatch, commit }) {
       return this.$calls.getTopLevel('nace')
         .then(nace => commit('setTopLevelNace', nace));
+    },
+    fetchRegionFeatures({ dispatch, commit }) {
+      return this.$calls.getRegionFeatures()
+        .then(features => commit('setRegionFeatures', features));
     },
     fetchTopLevelStatistics({ dispatch, commit }) {
       return this.$calls.getStatistics()

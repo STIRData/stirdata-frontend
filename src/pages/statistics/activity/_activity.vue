@@ -1,30 +1,22 @@
 <template>
-  <main
-    role="main"
-  >
+  <main role="main">
     <b-container>
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>
-    <div
-      v-if="loading"
-      class="text-center"
-    >
-      <Spinner />
+    <div v-if="$fetchState.pending"
+      class="text-center">
+      <Spinner/>
     </div>
-    <div
-      v-if="!loading"
-      class="pageintro"
-    >
+    <div v-else-if="$fetchState.error"><b-container>Error while fetching statistics. Please try again</b-container></div>
+   <div v-else>
+    <div class="pageintro">
       <div class="container">
         <div class="headingtext">
           <h1>{{ currentActivity.activity[0].label }}</h1>
         </div>
       </div>
     </div>
-    <section
-      v-if="!loading"
-      class="statisticsdetail"
-    >
+    <section class="statisticsdetail">
       <b-container>
         <b-row>
           <b-col
@@ -53,8 +45,8 @@
                 <h2>Explore other Business Activity in STIRDATA</h2>
               </div>
               <div>
+                <client-only>
                 <VueSlickCarousel
-                  v-if="!loading"
                   v-bind="activityCarouselSettings"
                 >
                   <ul
@@ -100,6 +92,7 @@
                     </button>
                   </template>
                 </VueSlickCarousel>
+                </client-only>
               </div>
             </div>
           </b-col>
@@ -138,19 +131,17 @@
                     :key="activity.activity[0].code"
                   >
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="capitalizeTheFirstLetterOfEachWord(activity.activity[0].label)"
+                      >
                         <b-link
                           :id="activity.activity[0].code+'-label'"
                           :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
                         >
                           {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-link>
-                        <b-tooltip
-                          :target="activity.activity[0].code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="detail-a">
@@ -185,8 +176,7 @@
             </div>
             <div
               v-if="countries.length"
-              class="activitystats"
-            >
+              class="activitystats">
               <div class="headingtext">
                 <h2>
                   Top 5 countries by companies amount in {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }}
@@ -232,7 +222,11 @@
                     :key="country.country.code"
                   >
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="country.country.label"
+                      >
                         <div
                           class="color"
                           :style="{ 'background-color': colors[index] }"
@@ -243,12 +237,6 @@
                         >
                           {{ country.country.label }}
                         </b-link>
-                        <b-tooltip
-                          :target="country.country.code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ country.country.label }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="count">
@@ -275,18 +263,16 @@
         </b-row>
       </b-container>
     </section>
+    </div>
   </main>
 </template>
 
 <script>
-  import VueSlickCarousel from 'vue-slick-carousel';
-  import 'vue-slick-carousel/dist/vue-slick-carousel.css';
   import { mapState } from 'vuex';
 
   export default {
     components: {
-      Breadcrumb: () => import('../../../components/Breadcrumb'),
-      VueSlickCarousel
+      Breadcrumb: () => import('../../../components/Breadcrumb')
     },
 
     data() {
@@ -334,11 +320,11 @@
         currentActivity: {},
         loading: true,
         subactivities: [],
+        activitiesTotalCount: 0,
         countries: []
       };
     },
-
-    async mounted() {
+    async fetch() {
       let nace = this.$route.params.activity;
       await this.$calls.getActivityStatistics(nace)
         .then(response => {
@@ -365,9 +351,7 @@
       this.currentActivity = await this.$calls.getActivityData(nace)
         .then(response => response.selection);
       this.addActivityInBreadcrumb;
-      this.loading = false;
     },
-
     computed: {
     ...mapState({
       activities: state => state.activitiesStatistics
@@ -434,11 +418,6 @@
     text-overflow: ellipsis;
   }
 
-  ::v-deep .arrow::before {
-    border-top-color: $accent-first-color;
-    border-bottom-color: $accent-first-color;
-  }
-
   body main[role=main] .chart-line-c .action a,
   body main[role=main] .chart-line-d .action a {
     display: flex;
@@ -452,5 +431,9 @@
     span.icon {
       top: 0;
     }
+  }
+
+  .tooltip {
+    margin-right: 0.5rem;
   }
 </style>

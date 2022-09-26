@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
+import axios from 'axios';
 
 export default {
+  target: 'static',
+  
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'STIRData',
@@ -77,6 +80,23 @@ export default {
     'bootstrap-vue/nuxt',
     'vue-scrollto/nuxt',
   ],
+
+
+ /* dynamic route generation */
+  generate: {
+    fallback: '404.html',
+    crawler: true,
+    routes() {
+      return axios.get(`${process.env.BASE_API_URL}/statistics?dimension=place`).then(res => {
+        return res.data.placeGroups.map(place => {
+          return {
+            route: '/statistics/region/' + place.country.code,
+            payload: place.country
+          }
+        })
+      })
+    }
+  },
 
   auth: {
     redirect: {

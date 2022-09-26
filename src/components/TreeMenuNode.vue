@@ -4,11 +4,12 @@
       <div class="check-wrap d-flex justify-content-between">
         <b-form-checkbox
           :id="menuType+'-checkbox-'+menuItem.value"
+          :disabled="isDisabled"
           v-model="selected"
           :name="menuType+'-checkbox-'+menuItem.value"
           :value=true
           :unchecked-value=false
-          v-b-tooltip.hover
+          v-b-tooltip.hover.right
           :title="menuItem.text"
           @change="selectTag(`${menuItem.type}:${menuItem.value}`, selected)"
         >
@@ -74,7 +75,8 @@ export default {
     return {
       isCollapseOpen: false,
       subLevels: [],
-      selected: false
+      selected: false,
+      isDisabled: false
     };
   },
 
@@ -88,11 +90,23 @@ export default {
       return;
     }
 
-    this.$calls.getSubLevels(this.menuType, `${this.menuItem.type}:${this.menuItem.value}`)
-      .then(response => {
-        this.subLevels = response;
-      })
-      .catch(error => console.error(error));
+    if (this.menuItem.type === 'stat') {
+      if (this.menuItem.value.startsWith('feature')) {
+        let inputFieldLabel = document.getElementById(`stat-checkbox-${this.menuItem.value}`).nextSibling;
+        inputFieldLabel.classList.add('hideInputCheckbox');
+        this.isDisabled = true;
+      }
+      if (this.menuItem.subLevels) {
+        this.subLevels = this.menuItem.subLevels;
+      }
+    }
+    else {
+      this.$calls.getSubLevels(this.menuType, `${this.menuItem.type}:${this.menuItem.value}`)
+        .then(response => {
+          this.subLevels = response;
+        })
+        .catch(error => console.error(error));
+    }
   },
 
   computed: {
@@ -113,6 +127,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/scss/variables.scss";
+
 .custom-control.custom-checkbox {
   width: 97%;
   padding-left: 0;
@@ -136,5 +152,16 @@ export default {
 
 ul.treeMenu {
   margin: 5px 0 0 26px !important;
+}
+
+.tooltip {
+  top: -1px !important;
+  margin-left: 1.2rem;
+}
+
+::v-deep .hideInputCheckbox {
+  background-image: none !important;
+  padding-left: 0 !important;
+  color: #21314D !important;
 }
 </style>

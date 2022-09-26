@@ -193,7 +193,7 @@ export default {
       this.$calls.searchCompanies(this.countrySearchQuery)
         .then(response => {
           this.resultsCompanies = response[0];
-          this.totalResults = this.resultsCompanies.page.totalResults;
+          this.totalResults = this.resultsCompanies.page.totalResults ?? 0;
           this.totalPages = Math.ceil(this.totalResults / this.resultsCompanies.page.pageSize);
           this.currentPage = this.resultsCompanies.page.pageNumber;
 

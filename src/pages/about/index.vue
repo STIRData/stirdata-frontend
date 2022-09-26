@@ -29,17 +29,24 @@
               publishing company data as Linked Data.
             </p>
             <!-- counter-->
-            <ul class="counter">
+
+            <ul class="counter" v-if="fetched">
               <li>
-                <span class="count">10</span><span class="text"> European <br>Countries</span>
+                <span class="count">{{ countriesStatistics.length }}</span><span class="text"> European <br>Countries</span>
               </li>
               <li>
-                <span class="count">1,5M+</span><span class="text">Registered<br>Companies</span>
+                <span class="count">{{ totalCompanies.toLocaleString()}}</span><span class="text">Registered<br>Companies</span>
               </li>
               <li>
-                <span class="count">21</span><span class="text"> Business<br>Activities</span>
+                <span class="count">{{ activitiesStatistics.length }}</span><span class="text"> Business<br>Activities</span>
               </li>
             </ul>
+            <div
+              v-else
+              class="d-flex justify-content-center"
+            >
+              <Spinner />
+            </div>
             <!-- button nav-->
             <b-nav class="heronav">
               <ul>
@@ -84,8 +91,7 @@
                   class="decor"
                   src="../../assets/img/ic-remarks.png"
                 >
-                <p>Contact us for more information regarding STIRDATA</p>
-                <!-- button nav-->
+                <!-- <p>Contact us for more information regarding STIRDATA</p>
                 <nav class="heronav">
                   <ul>
                     <li>
@@ -95,7 +101,7 @@
                       >Contact Us</a>
                     </li>
                   </ul>
-                </nav>
+                </nav> -->
               </div>
             </b-col>
             <!-- right-->
@@ -129,6 +135,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+
   export default {
     components: {
       Breadcrumb: () => import('../../components/Breadcrumb')
@@ -145,8 +153,22 @@
             text: 'ABOUT',
             active: true
           }
-        ]
+        ],
+        fetched: false
       };
+    },
+
+    computed: {
+      ...mapState({
+        countriesStatistics: state => state.countriesStatistics,
+        activitiesStatistics: state => state.activitiesStatistics,
+        totalCompanies: state => state.totalCompanies
+      })
+    },
+
+    async mounted() {
+      await this.$store.dispatch('fetchTopLevelStatistics');
+      this.fetched = true;
     },
 
     methods: {

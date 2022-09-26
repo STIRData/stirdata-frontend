@@ -1,7 +1,5 @@
 <template>
-  <main
-    role="main"
-  >
+  <main role="main">
     <b-container>
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>
@@ -9,25 +7,22 @@
       v-if="$fetchState.pending"
       class="text-center"
     >
-      <Spinner />
+      <Spinner/>
     </div>
-    <div v-else> 
-    <b-container
-    >
+    <div v-else-if="$fetchState.error"><b-container>Error while fetching statistics. Please try again</b-container></div>
+    <div v-else>
+    <b-container>
       <div class="headingtext">
         <h1>{{ regionLabel }}</h1>
       </div>
     </b-container>
-    <section
-      class="statisticsdetail"
-    >
-    <b-container>
+    <section class="statisticsdetail">
+      <b-container>
         <b-row>
           <b-col
             lg="6"
             xl="7"
-            class="statisticsdetail-left"
-          >
+            class="statisticsdetail-left">
             <ul class="counter">
               <li v-show="subregionsCount">
                 <span class="count">{{ subregionsCount }}</span>
@@ -134,10 +129,13 @@
                   </li>
                   <li
                     v-for="reg in subregions"
-                    :key="reg.place[0].code"
-                  >
+                    :key="reg.place[0].code">
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="reg.place[0].label"
+                      >
                         <b-link
                           :id="reg.place[0].code+'-label'"
                           class="wrap"
@@ -145,12 +143,6 @@
                         >
                           {{ reg.place[0].label }}
                         </b-link>
-                        <b-tooltip
-                          :target="reg.place[0].code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ reg.place[0].label }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="detail-a">
@@ -181,8 +173,7 @@
             </div>
             <div
               v-show="activities.length"
-              class="activitystats"
-            >
+              class="activitystats">
               <div class="headingtext">
                 <h2>
                   Top 5 activities by companies amount in {{ regionLabel }}
@@ -243,7 +234,11 @@
                     :key="activity.activity[0].code"
                   >
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="capitalizeTheFirstLetterOfEachWord(activity.activity[0].label)"
+                      >
                         <div
                           class="color"
                           :style="{ 'background-color': colors[index] }"
@@ -254,12 +249,6 @@
                         >
                           {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-link>
-                        <b-tooltip
-                          :target="activity.activity[0].code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="count">
@@ -429,7 +418,7 @@
           this.subregions.sort(sortByCount);
           this.activities.sort(sortByCount);
         });
-        this.activitiesTotalCount = this.activities.reduce(((a,b) => a + b.count), 0)
+
       await this.$calls.getRegionData(this.$route.params.region)
         .then(response => {
           this.regionTotalCount = response.selection.count;
@@ -438,14 +427,14 @@
           this.country = response.selection.country;
           this.addCountryNameInBreadcrumb;
         });
-    
+
       await this.$store.dispatch('fetchTopLevelStatistics');
-      
+      this.activitiesTotalCount = this.activities.reduce(((a,b) => a + b.count), 0);
+
      // this.loading = false;
     },
-
-    methods: {
-      regionIsLau(code){
+  methods: {
+     regionIsLau(code){
         return code.split(':')[0] === 'lau'
       },
       getImagePath(country) {
@@ -482,11 +471,6 @@
     text-overflow: ellipsis;
   }
 
-  ::v-deep .arrow::before {
-    border-top-color: $accent-first-color;
-    border-bottom-color: $accent-first-color;
-  }
-
   body main[role=main] .chart-line-b .action a,
   body main[role=main] .chart-line-c .action a {
     display: flex;
@@ -500,5 +484,9 @@
     span.icon {
       top: 0;
     }
+  }
+
+  .tooltip {
+    margin-right: 0.5rem;
   }
 </style>

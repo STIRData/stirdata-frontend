@@ -50,11 +50,11 @@
                       </div>
                     </b-collapse>
                   </div>
-                  <!-- Regions -->
+                  <!-- Countries -->
                   <div class="sidebar-countries sidebar-section-wrap">
                     <h3 id="heading-countries">
                       <div v-b-toggle.collapseCountries class="accordion-button d-flex justify-content-between">
-                        Countries &amp; Regions
+                        Countries
                         <font-awesome-icon icon="chevron-down" />
                       </div>
                     </h3>
@@ -281,6 +281,51 @@
                       </div>
                     </b-collapse>
                   </div>
+                  <!-- Region Features -->
+                  <div class="sidebar-features sidebar-section-wrap">
+                    <h3 id="heading-features">
+                      <div v-b-toggle.collapseFeatures class="accordion-button d-flex justify-content-between">
+                        Region Features
+                        <font-awesome-icon icon="chevron-down" />
+                      </div>
+                    </h3>
+                    <b-form-group v-if="statTags.length > 0" class="mb-0">
+                      <b-form-tags
+                        v-model="statTags"
+                        input-id="features-tags"
+                        input-class="d-none"
+                        :input-attrs="{ readonly: 'true' }"
+                        class="p-0"
+                        tag-class="pill-class"
+                        add-button-text=""
+                        no-outer-focus
+                        size="lg"
+                        placeholder=""
+                      />
+                    </b-form-group>
+                    <b-collapse
+                      id="collapseFeatures"
+                      class="accordion-collapse"
+                      v-model="toggles.features"
+                    >
+                      <div class="input-filter">
+                        <ul>
+                          <li
+                            v-for="(feature, index) in regionFeatures"
+                            :id="'feature-'+index"
+                            :key="'feature-'+index"
+                          >
+                            <tree-menu-node
+                              menuType="stat"
+                              :menuItem="feature"
+                              :tags="statTags"
+                              @select-tag="selectTag"
+                            />
+                          </li>
+                        </ul>
+                      </div>
+                    </b-collapse>
+                  </div>
                   <!-- Form buttons -->
                   <div class="sidebar-action sidebar-section-wrap">
                     <div class="inputaction">
@@ -315,6 +360,11 @@ export default {
     Spinner: () => import("../../components/Spinner")
   },
 
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('setSearchFilters', []);
+    next();
+  },
+
   directives: {
     clickOutside: vClickOutside.directive
   },
@@ -342,6 +392,7 @@ export default {
         countries: false,
         activities: false,
         registration: false,
+        features: false,
         afterDate: false,
         beforeDate: false
       },
@@ -352,6 +403,7 @@ export default {
       nutsTags: [],
       naceTags: [],
       dateTags: [],
+      statTags: [],
       foundingStartDate: null,
       foundingEndDate: null,
       newViewTitle: ''
@@ -365,6 +417,9 @@ export default {
     if (!this.topLevelNace.length) {
       await this.$store.dispatch('fetchTopLevelNace');
     }
+    if (!this.regionFeatures.length) {
+      await this.$store.dispatch('fetchRegionFeatures');
+    }
     if (this.isAuthenticated) {
       this.$calls.getSavedViews().then(response => {
         response.forEach(view => this.savedViews.push({ value: view.id, text: view.name}));
@@ -376,6 +431,7 @@ export default {
     ...mapState({
       topLevelNuts: state => state.topLevelNuts,
       topLevelNace: state => state.topLevelNace,
+      regionFeatures: state => state.regionFeatures,
       searchFilters: state => state.searchFilters
     }),
     isAuthenticated() {
@@ -421,6 +477,16 @@ export default {
       if (!after) {
         this.foundingStartDate = null;
       }
+    },
+    statTags(newValue, oldValue) {
+      let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
+
+      if (tagsDifference.length == 1) {
+        let checkbox = document.getElementById('stat-checkbox-'+tagsDifference[0].split('stat:')[1]);
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+      }
     }
   },
 
@@ -434,6 +500,9 @@ export default {
       });
       view.activity.forEach(activity => {
         this.selectSearchResult('nace', { type: activity.split(':')[0], value: activity.split(':')[1] }, 'searchNacePrefix', 'searchNaceResults');
+      });
+      view.feature.forEach(feature => {
+        this.selectSearchResult('stat', { type: 'stat', value: feature.split('stat:')[1] });
       });
       if (!!view.startDate) {
         this.foundingStartDate = view.startDate;
@@ -454,6 +523,7 @@ export default {
         activity: filters[0].activity,
         startDate: filters[0].date ? filters[0].date.split(':')[0] : null,
         endDate: filters[0].date ? filters[0].date.split(':')[1] : null,
+        feature: filters[0].feature,
         place: filters.reduce((a,b) => a.concat(b.place), [])
       }
       await this.$calls.saveNewView(view)
@@ -501,7 +571,9 @@ export default {
         checkbox.checked = true;
       }
       this.updateTags(`${tag.type}:${tag.value}`, type, true);
-      this.clearSearch(prefix, results);
+      if (prefix && results) {
+        this.clearSearch(prefix, results);
+      }
     },
     selectTag(e) {
       this.updateTags(e.tagCode, e.type, e.checked);
@@ -541,6 +613,7 @@ export default {
       this.nutsTags = [];
       this.naceTags = [];
       this.dateTags = [];
+      this.statTags = [];
       this.foundingStartDate = null;
       this.foundingEndDate = null;
       if (resetSavedView) {
@@ -575,9 +648,16 @@ export default {
           code: country,
           name: countryName,
           place: countries[country],
+          feature: this.statTags,
           activity: this.naceTags
         };
-        filter.query = `place=${filter.place.join()}&activity=${filter.activity.join()}`;
+        filter.query = `place=${filter.place.join()}`;
+        if (this.statTags.length) {
+          filter.query += `,${filter.feature.join()}`;
+        }
+        if (this.naceTags.length) {
+          filter.query += `&activity=${filter.activity.join()}`;
+        }
         if (this.foundingStartDate || this.foundingEndDate) {
           filter.date = (this.foundingStartDate ?? '') + ':' + (this.foundingEndDate ?? '');
           filter.query += `&founding=date-range:${filter.date}`;
@@ -630,6 +710,7 @@ export default {
       this.toggles.countries = false;
       this.toggles.activities = false;
       this.toggles.registration = false;
+      this.toggles.features = false;
     }
   }
 }

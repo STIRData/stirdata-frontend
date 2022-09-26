@@ -457,7 +457,8 @@ body {
 				}
 				.contactwrap {
 					position: absolute;
-					bottom: 0px;
+          top: 0;
+					// bottom: 0px;
 					left: 0px;
 					padding: 0 40px 0 10px;
 
@@ -2544,6 +2545,14 @@ body {
 	.tooltip.bs-tooltip-bottom .arrow::before {
 		border-bottom-color: $accent-first-color;
 	}
+
+  .tooltip.bs-tooltip-right .arrow::before {
+    border-right-color: $accent-first-color;
+  }
+
+  .tooltip.bs-tooltip-left .arrow::before {
+    border-left-color: $accent-first-color;
+  }
 
 	.tooltip.bs-tooltip-start .arrow::before {
 		border-left-color: $accent-first-color;
