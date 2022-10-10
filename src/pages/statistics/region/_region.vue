@@ -139,7 +139,7 @@
                         <b-link
                           :id="reg.place[0].code+'-label'"
                           class="wrap"
-                          :to="!regionIsLau(reg.place[0].code) ? { name: 'statistics-region-region', params: { region: reg.place[0].code } } : {}"
+                          :to="!regionIsLau(reg.place[0].code) ? { name: 'statistics-region-region', params: { region: reg.place[0].code } } : { name: 'explore', params: { nutsFilter: reg.place[0].code }}"
                         >
                           {{ reg.place[0].label }}
                         </b-link>
@@ -162,7 +162,7 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'explore' }">
+                  <b-link :to="{ name: 'explore', params: { nutsFilter: regionCode } }">
                     <span class="text">
                       Explore all companies in {{ regionLabel }}
                     </span>
@@ -281,7 +281,7 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'explore' }">
+                  <b-link :to="{ name: 'explore', params: { nutsFilter: regionCode } }">
                     <span class="text">
                       Explore all Business Activities in {{ regionLabel }}
                     </span>
