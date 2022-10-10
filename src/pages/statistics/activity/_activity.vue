@@ -165,7 +165,7 @@
                 </ul>
                 <!-- <br /> -->
                 <div class="action">
-                  <b-link :to="{ name: 'explore' }">
+                  <b-link :to="{ name: 'explore', params: { naceFilter: naceCode } }">
                     <span class="text">
                       Explore all companies for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
                     </span>
@@ -250,7 +250,7 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'explore' }">
+                  <b-link :to="{ name: 'explore', params: { naceFilter: naceCode } }">
                     <span class="text">
                       Explore all countries for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
                     </span>
@@ -321,11 +321,13 @@
         loading: true,
         subactivities: [],
         activitiesTotalCount: 0,
-        countries: []
+        countries: [],
+        naceCode: ''
       };
     },
     async fetch() {
       let nace = this.$route.params.activity;
+      this.naceCode = `nace-rev2:${nace}`;
       await this.$calls.getActivityStatistics(nace)
         .then(response => {
           this.subactivities = response.activityGroups ?? [];
