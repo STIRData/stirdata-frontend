@@ -5,6 +5,7 @@ export default {
     topLevelNace: [],
     regionFeatures: [],
     countriesStatistics: [],
+    countriesWithDates: [],
     activitiesStatistics: [],
     totalCompanies: 0,
     searchFilters: []
@@ -31,6 +32,9 @@ export default {
     },
     setTotalCompanies(state, value) {
       state.totalCompanies = value;
+    },
+    setCountriesWithDates(state, value) {
+      state.countriesWithDates = value;
     },
     setSearchFilters(state, value) {
       state.searchFilters = value;
@@ -66,6 +70,24 @@ export default {
           commit('setActivitiesStatistics', response.activityGroups);
           commit('setCountriesStatistics', response.placeGroups);
         });
+    },
+    async fetchCountriesWithDates({ dispatch, commit, state }) {
+      let countriesWithDates = await Promise.all(state.countriesStatistics.map( async (stat) =>{
+        return new Promise((resolve) => {
+          this.$calls.getRegionStatistics(stat.country.code)
+            .then( response =>{
+              response['countryCode'] = stat.country.code
+              response['countryLabel'] = stat.country.label
+            resolve(response);
+          })
+        })
+      }))
+      countriesWithDates =  countriesWithDates.filter(
+        ( stat ) =>
+          (stat.dissolutionDateGroups && stat.dissolutionDateGroups.length) ||
+          (stat.foundingDateGroups && stat.foundingDateGroups.length))
+      commit('setCountriesWithDates', countriesWithDates)
+
     }
   }
 };
