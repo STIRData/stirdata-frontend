@@ -1,5 +1,5 @@
 <template>
-  <div id="simpleMap" />
+  <div id="simpleMap" :class="{'empty-map': emptyMapBool }" />
 </template>
 
 <script>
@@ -32,7 +32,8 @@
         customGeodata: {
           features: [],
           type: 'FeatureCollection'
-        }
+        },
+        emptyMapBool: false
       };
     },
 
@@ -46,7 +47,7 @@
 
       this.$calls.getRegionGeoJSON(this.regionCode, resolution)
         .then(async (response) => {
-          response.forEach(region => {
+          response?.forEach(region => {
             this.customGeodata.features.push({
               geometry: 'uri' in region.place[0] ? JSON.parse(region.place[0].geometry) : {},
               id: region.place[0].code,
@@ -58,6 +59,9 @@
               type: 'Feature'
             });
           });
+          if(!response || !Object.keys(this.customGeodata.features[0].geometry).length){
+            this.emptyMapBool = true
+          }
           this.initializeMap();
         })
         .catch(error => console.error(error));
@@ -118,5 +122,19 @@
 <style lang="scss" scoped>
   #simpleMap {
     height: inherit;
+  }
+  .empty-map{
+    position: relative;
+    &::after{
+      content:"There are no location data for this region!";
+      position: absolute;
+      left:50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: #355FAA;
+      font-size: 1.2rem;
+      text-align: center;
+      font-weight: 600;
+    }
   }
 </style>
