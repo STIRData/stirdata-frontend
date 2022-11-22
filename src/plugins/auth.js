@@ -17,7 +17,7 @@ export default async function ({ $auth }) {
           $auth.ctx.$api.setToken(response.token, 'Bearer');
       
           setTimeout(async() => {
-                $auth.setStrategy('local');
+                //$auth.setStrategy('local');
                 $auth.strategy.token.set('Bearer '+ response.token);
                 setTimeout(async() => {
                       const user = await $auth.ctx.$api.$get(userUrl);
