@@ -89,7 +89,6 @@
         email: '',
         password: '',
         passwordconf:'',
-        organisation:'',
         error: null
 
       }
@@ -106,8 +105,8 @@
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
-            password: this.password,
-            organisation: this.organisation
+            password: this.password
+            
           })
 
           await this.$auth.loginWith('local', {
