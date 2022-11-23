@@ -5,8 +5,9 @@ export default async function ({ $auth }) {
 
   if($auth.strategy.name === 'google'){
     let token = $auth.strategy.token.get();
-    if(token){token=token.substr(7);}
+    if(token){token=token.substr(7);} 
     else return;
+    
     const url = '/oauth/authorize/google';
     const userUrl='/user/me';
     
@@ -17,11 +18,10 @@ export default async function ({ $auth }) {
           $auth.ctx.$api.setToken(response.token, 'Bearer');
       
           setTimeout(async() => {
-                //$auth.setStrategy('local');
+                $auth.setStrategy('local');
                 $auth.strategy.token.set('Bearer '+ response.token);
                 setTimeout(async() => {
                       const user = await $auth.ctx.$api.$get(userUrl);
-                     
                       $auth.setUser(user);
                 })
                 $auth.ctx.redirect(302, '/');
