@@ -58,7 +58,7 @@
               </div>
               <div class="inputaction">
                 <!-- TODO Save and Reset should only be available for local users -->
-                <b-button v-if="isStrategyLocal" type="submit">Save</b-button><span class="note space"><a href="#" @click="reset()" v-show="authStrategy === 'local'">Reset</a></span>
+                <b-button v-if="isStrategyLocal" type="submit">Save</b-button><span class="note space"><a href="#" @click="reset()" v-show="isStrategyLocal">Reset</a></span>
                 <b-button class="delete">Delete Account</b-button>
               </div>
             </b-form>
@@ -118,12 +118,8 @@ export default {
       return this.$auth.loggedIn;
     },
 
-    authStrategy(){
-     return this.$auth.$state.strategy;
-    },
-
     isStrategyLocal(){
-     return this.$auth.$state.strategy === 'local';
+     return this.$auth.$state.user.userLoginType === 'CUSTOM';
     }
   },
 
