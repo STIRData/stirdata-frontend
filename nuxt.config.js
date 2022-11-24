@@ -79,6 +79,7 @@ export default {
     '@nuxtjs/auth-next',
     'bootstrap-vue/nuxt',
     'vue-scrollto/nuxt',
+    '@nuxtjs/toast'
   ],
 
 
@@ -129,6 +130,9 @@ export default {
       }
     },
     plugins: [{ src: '~/plugins/apis.js', ssr: true }, {src:'~/plugins/auth.js'}]
+  },
+ toast: {
+      position: 'top-right',
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
