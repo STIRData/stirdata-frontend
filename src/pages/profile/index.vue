@@ -46,10 +46,10 @@
                 <b-form-input v-model="oldPassword" placeholder="Current Password" type="password" />
               </div>
               <div class="inputform"><span class="label">New Password</span>
-                <b-form-input v-model="newPassword" placeholder="Password" type="password" />
+                <b-form-input v-model="newPassword" placeholder="Password" type="password" minlength="7"/>
               </div>
               <div class="inputform"><span class="label">Re-type Password</span>
-                <b-form-input placeholder="Password" type="password" v-model="verifyPassword" />
+                <b-form-input placeholder="Password" type="password" v-model="verifyPassword" minlength="7"/>
               </div>
               </template>
               <!-- Registered email -->
@@ -58,8 +58,8 @@
               </div>
               <div class="inputaction">
                 <!-- TODO Save and Reset should only be available for local users -->
-                <b-button v-if="isStrategyLocal" type="submit">Save</b-button><span class="note space"><a href="#" @click="reset()" v-show="isStrategyLocal">Reset</a></span>
-                <b-button class="delete">Delete Account</b-button>
+                <b-button v-if="isStrategyLocal" type="submit">Save</b-button><span class="note space"><a href="#" @click="reset()" v-if="isStrategyLocal">Reset</a></span>
+                <b-button class="delete" @click="showMsgDeleteAccount()">Delete Account</b-button>
               </div>
             </b-form>
             <div class="text-danger" v-show="error">{{ error }}</div>
@@ -151,7 +151,37 @@ export default {
       this.$auth.setUser(clone);
     },
 
-    signOut() {
+    showMsgDeleteAccount() {
+      this.error=null;
+      this.$bvModal.msgBoxConfirm('Are you sure you want to delete your account and all your saved views?', {
+        title: 'Please confirm account deletion',
+        buttonSize: 'md',
+        okVariant: 'danger',
+        okTitle: 'I\'m sure',
+        cancelTitle: 'NO',
+        footerClass: 'p-1',
+        hideHeaderClose: false,
+        centered: true
+      })
+        .then(value => {
+            this.$calls.deleteUser()
+            .then(response =>{
+                this.$toast.show('User account deleted',{ 
+                      theme: "toasted-primary", 
+                      position: "top-center", 
+                      duration : 3000
+                  });
+                this.signOut();
+              })
+            .catch(error => {
+                this.error = error.message+" : "+error.response.data.error;
+                return error;
+                  
+              });
+        });
+
+    },
+      signOut() {
       this.$auth.logout();
       if (this.$solid.auth) {
         this.$solid.auth.logout()
@@ -185,22 +215,21 @@ export default {
             }
             
         };
-        try {
-          await this.$api.put('user/updateUserDetails', {
+        this.$calls.updateUser({
             username: this.username,
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
             password: this.password
             
-          })
-
-        } catch (e) {
-          this.error = e.response.data.message
-        } finally{
-           this.updateAuthUser();
-           this.success = 'User  account updated successfully';
-        }
+        }).then(response =>{
+            this.updateAuthUser();
+            this.success = 'User  account updated successfully';
+        })
+        .catch(error =>{
+            this.error = error.message+" : "+error.response.data.error;
+            return;
+        })
      },
     reset() {
       this.initValues();
@@ -210,6 +239,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep .modal-{
+  &header, &footer {
+    height:4em;
+    margin:0; }
+}
 textarea:hover,
 input:hover,
 textarea:active,
