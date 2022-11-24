@@ -56,14 +56,14 @@
               <div class="inputform"><span class="label">Email address</span>
                 <b-form-input v-model="email" placeholder="Email" :disabled="!isStrategyLocal"/>
               </div>
+              <div class="text-danger" v-show="error">{{ error }}</div>
+               <div class="text-primary" v-show="success">{{ success }}</div>
               <div class="inputaction">
                 <!-- TODO Save and Reset should only be available for local users -->
                 <b-button v-if="isStrategyLocal" type="submit">Save</b-button><span class="note space"><a href="#" @click="reset()" v-if="isStrategyLocal">Reset</a></span>
                 <b-button class="delete" @click="showMsgDeleteAccount()">Delete Account</b-button>
               </div>
             </b-form>
-            <div class="text-danger" v-show="error">{{ error }}</div>
-            <div class="text-primary" v-show="success">{{ success }}</div>
           </b-col>
 
           <b-col lg="2" xl="2" class="profile-decor">
