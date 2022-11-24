@@ -215,14 +215,16 @@ export default {
             }
             
         };
-        this.$calls.updateUser({
+
+        let updatedUser = {
             username: this.username,
             firstName: this.firstName,
-            lastName: this.lastName,
-            email: this.email,
-            password: this.password
+            lastName: this.lastName
             
-        }).then(response =>{
+        };
+        this.email!== this.currentUser.email ? Object.assign(updatedUser, {email: this.email}) : 0 ;
+        this.oldPassword !=="" ? Object.assign(updatedUser, {oldPassword: this.oldPassword, newPassword: this.newPassword }) : 0;
+        this.$calls.updateUser(updatedUser).then(response =>{
             this.updateAuthUser();
             this.success = 'User  account updated successfully';
         })
