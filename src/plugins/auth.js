@@ -23,8 +23,9 @@ export default async function ({ $auth }) {
                 setTimeout(async() => {
                       const user = await $auth.ctx.$api.$get(userUrl);
                       $auth.setUser(user);
+                      $auth.ctx.redirect(301, '/profile');
+                
                 })
-                $auth.ctx.redirect(302, '/');
                 return;
           })
     })
