@@ -427,7 +427,11 @@ export default {
     }
     if (this.$route.params.nutsFilter){
       this.nutsTags.push(this.$route.params.nutsFilter)
-      this.search();
+      this.$bvToast.toast('Your region has been preselected.', {
+          variant: 'info',
+          title: 'Info',
+          solid: true
+      });
     }
     if (this.$route.params.naceFilter){
       this.naceTags.push(this.$route.params.naceFilter)
