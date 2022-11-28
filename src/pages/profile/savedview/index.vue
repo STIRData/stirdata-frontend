@@ -145,6 +145,7 @@ export default {
       this.loading = false;
     },
     signOut() {
+      this.$auth.logout();
       if (this.$solid.auth) {
         this.$solid.auth.logout()
           .then(() => {
