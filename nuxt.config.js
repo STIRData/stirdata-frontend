@@ -79,6 +79,7 @@ export default {
     '@nuxtjs/auth-next',
     'bootstrap-vue/nuxt',
     'vue-scrollto/nuxt',
+    '@nuxtjs/toast'
   ],
 
 
@@ -124,19 +125,14 @@ export default {
       google: {
         clientId:  process.env.GOOGLE_CLIENT_ID,
         codeChallengeMethod: '',
-        responseType: 'id_token',
-        scope: ['profile', 'email', 'openid'],
-        endpoints: {
-          userInfo: false,
-        },
-        token: {
-         property: 'id_token',
-         type: 'Bearer',
-         maxAge: 1800
-       }
+        responseType: 'token id_token',
+        scope: ['email', 'profile', 'openid'],
       }
     },
     plugins: [{ src: '~/plugins/apis.js', ssr: true }, {src:'~/plugins/auth.js'}]
+  },
+ toast: {
+      position: 'top-right',
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

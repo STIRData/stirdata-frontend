@@ -60,15 +60,12 @@
                   <input type="email" v-model="email" required>
                 </div>
                 <div class="inputform"><span class="label">Password</span>
-                  <input type="password" v-model="password" required>
+                  <input type="password" minlength="7" v-model="password" required>
                 </div>
                 <div class="inputform"><span class="label">Repeat Password</span>
-                  <input type="password" v-model="passwordconf" required>
+                  <input type="password" v-model="passwordconf" minlength="7" required>
                 </div>
-                <div class="inputform"><span class="label">Organisation</span>
-                  <input type="text" v-model="organisation">
-                </div>
-                <div class="inputaction">
+               <div class="inputaction">
                   <button type="submit">Sign up</button>
                 </div>
               </div>
@@ -89,7 +86,6 @@
         email: '',
         password: '',
         passwordconf:'',
-        organisation:'',
         error: null
 
       }
@@ -106,8 +102,8 @@
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
-            password: this.password,
-            organisation: this.organisation
+            password: this.password
+            
           })
 
           await this.$auth.loginWith('local', {

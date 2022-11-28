@@ -35,6 +35,12 @@ export default (ctx, inject) => {
     saveNewView: (view) => {
       return ctx.$api.post('view', view)
     },
+    updateUser: (user) => {
+      return ctx.$api.put('user/updateUserDetails', user)
+    },
+    deleteUser: () => {
+      return ctx.$api.post('/user/deleteAccount')
+    },
     deleteView: (id)=>{
       return ctx.$api.delete(`view/${id}`)
     },
