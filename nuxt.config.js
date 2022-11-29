@@ -102,6 +102,7 @@ export default {
   auth: {
     redirect: {
       login : '/signin',
+      logout: '/',
       callback: '/signin/callback',
       home: false,  
     },

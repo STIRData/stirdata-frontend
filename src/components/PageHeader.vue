@@ -87,11 +87,8 @@
           >
             Saved view
           </b-dropdown-item>
-          <b-dropdown-item
-            class="ml-0 pl-0 dropdown-item"
-            @click="signOut"
-          >
-            Sign out
+          <b-dropdown-item class="ml-0 pl-0 dropdown-item"
+            :to="{ path: '/profile/logout' }"> Sign out
           </b-dropdown-item>
         </b-dropdown>
       </nav>
@@ -146,18 +143,6 @@
 
       isAuthenticated() {
         return this.$auth.loggedIn;
-      }
-    },
-
-    methods: {
-      signOut() {
-        this.$auth.logout();
-        if (this.$solid.auth) {
-          this.$solid.auth.logout()
-            .then(() => {
-              this.$store.commit('setUser', null);
-            });
-        } 
       }
     }
   };

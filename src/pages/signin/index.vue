@@ -65,7 +65,7 @@
                   v-show="isAuthenticated"
                   class="google"
                   type="button"
-                  @click="signOut"
+                  @click="$router.push({ name: '/profile/logout'})"
                 >
                   Sign out
                 </button>
@@ -166,7 +166,7 @@
         this.$auth.loggedIn;
       }
     },
-    async loggedIn() {
+    /*async loggedIn() {
       this.message = null;
       let session = await this.$solid.auth.currentSession();
       const userUrl='/user/me';
@@ -182,7 +182,7 @@
             async() => {
                       const user = await this.$api.$get(userUrl);
                       this.$auth.setUser(user);
-                      this.$router.push('/');
+                      this.$router.push('/profile');
              }
             
           })
@@ -194,7 +194,7 @@
 
             })
       }
-    },
+    },*/
     methods: {
       async loginWithGoogle() {
         this.message = null;
@@ -205,32 +205,20 @@
 
         try {
           await this.$auth.loginWith('local', { data: this.login })
+          .then((response) => { this.$router.push('/profile'); })
             .catch(error => {
-              //let response = error.response.data;
               const errorResponse = new ErrorHandler().setAll(error).parse();
 
               this.message = `Login failed, please try again: ${errorResponse.message}`;
               return false;
 
             })
-          this.$router.push('/profile');
-
         } catch (e) {
            const errorResponse = new ErrorHandler().setAll(error).parse();
            this.message = `Error status: ${errorResponse.status}. Error message: ${errorResponse.message}`;
            return false;
         }
-		  },
-      signOut() {
-        this.$auth.logout();
-        if (this.$solid.auth) {
-          this.$solid.auth.logout()
-            .then(() => {
-              this.$store.commit('setUser', null);
-            });
-        }
-
-      }
+		  }
     }
   };
 </script>

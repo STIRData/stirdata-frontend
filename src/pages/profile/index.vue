@@ -14,7 +14,7 @@
               <ul>
                 <b-nav-item class="active" :to="{ name: 'profile' }">Profile</b-nav-item>
                 <b-nav-item :to="{ name: 'profile-savedview' }">Saved view</b-nav-item>
-                <b-nav-item @click="signOut()">Sign out</b-nav-item>
+                <b-nav-item :to="{ path: 'profile/logout' }">Sign out</b-nav-item>
               </ul>
             </nav>
           </b-col>
@@ -171,7 +171,7 @@ export default {
                       position: "top-center", 
                       duration : 3000
                   });
-                this.signOut();
+                this.$router.push('/profile/logout');
               })
             .catch(error => {
                 this.error = error.message+" : "+error.response.data.error;
@@ -180,24 +180,6 @@ export default {
               });
         });
 
-    },
-      signOut() {
-      this.$auth.logout();
-      if (this.$solid.auth) {
-        this.$solid.auth.logout()
-          .then(() => {
-            this.$store.commit('setUser', null);
-          });
-      } else {
-        let auth2 = gapi.auth2.getAuthInstance();
-        auth2
-          .signOut()
-          .then(() => {
-            auth2.disconnect();
-          })
-          .then(this.$store.commit('setUser', null));
-      }
-      this.$router.push('/');
     },
     
     async updateUser() {
