@@ -91,7 +91,7 @@ export default {
     }
 
     if (this.menuItem.type === 'stat') {
-      if (this.menuItem.value.startsWith('feature')) {
+      if (this.menuItem.value.startsWith('feature') || this.menuItem.value.startsWith('filter')) {
         let inputFieldLabel = document.getElementById(`stat-checkbox-${this.menuItem.value}`).nextSibling;
         inputFieldLabel.classList.add('hideInputCheckbox');
         this.isDisabled = true;

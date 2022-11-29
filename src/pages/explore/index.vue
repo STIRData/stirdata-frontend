@@ -326,6 +326,51 @@
                       </div>
                     </b-collapse>
                   </div>
+                  <!-- Eurostat Filters -->
+                  <div class="sidebar-filters sidebar-section-wrap">
+                    <h3 id="heading-filters">
+                      <div v-b-toggle.collapseFilters class="accordion-button d-flex justify-content-between">
+                        Eurostat Filters
+                        <font-awesome-icon icon="chevron-down" />
+                      </div>
+                    </h3>
+                    <b-form-group v-if="statTags.length > 0" class="mb-0">
+                      <b-form-tags
+                        v-model="statTags"
+                        input-id="features-tags"
+                        input-class="d-none"
+                        :input-attrs="{ readonly: 'true' }"
+                        class="p-0"
+                        tag-class="pill-class"
+                        add-button-text=""
+                        no-outer-focus
+                        size="lg"
+                        placeholder=""
+                      />
+                    </b-form-group>
+                    <b-collapse
+                      id="collapseFilters"
+                      class="accordion-collapse"
+                      v-model="toggles.filters"
+                    >
+                      <div class="input-filter">
+                        <ul>
+                          <li
+                            v-for="(filter, index) in eurostatFilters"
+                            :id="'filter-'+index"
+                            :key="'filter-'+index"
+                          >
+                            <tree-menu-node
+                              menuType="stat"
+                              :menuItem="filter"
+                              :tags="statTags"
+                              @select-tag="selectTag"
+                            />
+                          </li>
+                        </ul>
+                      </div>
+                    </b-collapse>
+                  </div>
                   <!-- Form buttons -->
                   <div class="sidebar-action sidebar-section-wrap">
                     <div class="inputaction">
@@ -420,6 +465,9 @@ export default {
     if (!this.regionFeatures.length) {
       await this.$store.dispatch('fetchRegionFeatures');
     }
+    if (!this.eurostatFilters.length) {
+      await this.$store.dispatch('fetchEurostatFilters');
+    }
     if (this.isAuthenticated) {
       this.$calls.getSavedViews().then(response => {
         response.forEach(view => this.savedViews.push({ value: view.id, text: view.name}));
@@ -448,6 +496,7 @@ export default {
       topLevelNuts: state => state.topLevelNuts,
       topLevelNace: state => state.topLevelNace,
       regionFeatures: state => state.regionFeatures,
+      eurostatFilters: state => state.eurostatFilters,
       searchFilters: state => state.searchFilters
     }),
     isAuthenticated() {

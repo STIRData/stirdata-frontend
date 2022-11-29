@@ -4,6 +4,7 @@ export default {
     topLevelNuts: [],
     topLevelNace: [],
     regionFeatures: [],
+    eurostatFilters: [],
     countriesStatistics: [],
     countriesWithDates: [],
     activitiesStatistics: [],
@@ -23,6 +24,9 @@ export default {
     },
     setRegionFeatures(state, value) {
       state.regionFeatures = value;
+    },
+    setEurostatFilters(state, value) {
+      state.eurostatFilters = value;
     },
     setCountriesStatistics(state, value) {
       state.countriesStatistics = value;
@@ -62,6 +66,10 @@ export default {
     fetchRegionFeatures({ dispatch, commit }) {
       return this.$calls.getRegionFeatures()
         .then(features => commit('setRegionFeatures', features));
+    },
+    fetchEurostatFilters({ dispatch, commit }) {
+      return this.$calls.getEurostatFilters()
+        .then(filters => commit('setEurostatFilters', filters));
     },
     fetchTopLevelStatistics({ dispatch, commit }) {
       return this.$calls.getStatistics()
