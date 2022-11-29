@@ -49,13 +49,22 @@
             </div>
             <!-- button nav-->
             <b-nav class="heronav">
-              <ul>
+              <ul class="w-100 d-flex justify-content-between">
                 <li>
                   <b-link
                     class="button"
                     :to="{ name: 'partners'}"
                   >
                     View Partners
+                  </b-link>
+                </li>
+                <li>
+                  <b-link
+                    class="button ml-2"
+                    href="https://stirdata.eu/"
+                    target="_blank"
+                  >
+                    About STIRData Project
                   </b-link>
                 </li>
               </ul>
