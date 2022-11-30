@@ -19,7 +19,6 @@
                     <h2>
                       Explore, Search and <br>Navigate
                     </h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
                   </div>
                 </li>
                 <li>
@@ -28,7 +27,6 @@
                     <h2>
                       Visualize, Analyze and<br>Save
                     </h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
                   </div>
                 </li>
               </VueSlickCarousel>
@@ -172,6 +170,9 @@
       const userUrl='/user/me';
       if (session) {
         // The ID token for backend:
+        console.log("SESSION");
+        console.log(session);
+        console.log(session.authorization);
         this.id_token = session.authorization.id_token;
         this.$api
           .post('oauth/authorize/solid', { token: this.id_token })

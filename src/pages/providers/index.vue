@@ -8,9 +8,8 @@
         <div class="headingtext">
           <h1>Data Providers</h1>
           <p class="half">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam.
+            Data providers are the countries participating in the STIRDATA portal. Only the countries providing 
+            company related data as open data are listed below. There are countries that treat company data in a commercial way and are not included in this portal.
           </p>
         </div>
       </b-container>
@@ -77,10 +76,7 @@
               <div class="headingtext">
                 <h2>Data Availability Mapping</h2>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
+                  These are the metadata fields that each country is providing:
                 </p>
               </div>
               <div
@@ -175,12 +171,9 @@
             </div>
             <div class="data-information">
               <div class="headingtext">
-                <h2>Data Information</h2>
+               <a id="datinf"><h2>Data Information</h2></a>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
+                  Technical information about the data that each participating country is providing in the STIRData portal.
                 </p>
               </div>
               <div
@@ -203,7 +196,7 @@
                 >
                   <ul class="table-section-label countrylabel">
                     <li class="head">
-                      Information
+                       Information
                     </li>
                     <li>Last Updated</li>
                     <!-- <li>Update Frequency</li> -->
