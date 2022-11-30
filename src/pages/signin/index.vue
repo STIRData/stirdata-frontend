@@ -164,7 +164,7 @@
         this.$auth.loggedIn;
       }
     },
-    /*async loggedIn() {
+    async loggedIn() {
       this.message = null;
       let session = await this.$solid.auth.currentSession();
       const userUrl='/user/me';
@@ -195,7 +195,7 @@
 
             })
       }
-    },*/
+    },
     methods: {
       async loginWithGoogle() {
         this.message = null;
