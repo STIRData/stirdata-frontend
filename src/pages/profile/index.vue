@@ -164,6 +164,7 @@ export default {
         centered: true
       })
         .then(value => {
+          if(value){ 
             this.$calls.deleteUser()
             .then(response =>{
                 this.$toast.show('User account deleted',{ 
@@ -178,6 +179,7 @@ export default {
                 return error;
                   
               });
+          }
         });
 
     },
