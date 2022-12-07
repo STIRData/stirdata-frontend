@@ -12,7 +12,7 @@
     <section class="companydetail" v-else>
       <b-container>
         <b-row>
-          <b-col lg="6" xl="6" class="companydetail-left">
+          <b-col lg="6" xl="6" class="companydetail-left" v-if="company.registeredAddresses[0].nuts3">
             <div class="companydetail-map">
               <div class="companydetail-map-section">
                 <SimpleMap
@@ -60,7 +60,7 @@
                   <b-col md="8">
                     <div class="category-pill">
                       <ul>
-                        <li>
+                        <li v-if="addr.nuts3">
                           <span class="pill">
                             <b-link
                               :to="{ name: 'statistics-region-region', params: { region: addr.nuts3.code } }"
@@ -71,7 +71,7 @@
                           </span>
                         </li>
                         <ul>
-                          <li class="separator" v-if="addr.lau">
+                          <li class="separator" v-if="addr.lau" :class="{ 'no-parent-separator': !addr.nuts3 }">
                             <ul>
                               <li>
                                 <span class="pill">
@@ -167,6 +167,7 @@ export default {
     this.$calls.getCompany(this.$route.query.uri)
       .then(response => {
         this.company = response;
+        console.log(response)
         this.companyActivities = response.companyActivities ? response.companyActivities.slice(0,5) : [];
         this.loading = false;
       })
