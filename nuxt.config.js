@@ -51,8 +51,7 @@ export default {
     '~plugins/filters',
     { src: '~/plugins/chart.js', mode: 'client' },
     { src: '~/plugins/amCharts.js', mode: 'client' },
-    { src: '~/plugins/vue-slick-carousel.js', mode: 'client' },
-    { src: '~/plugins/solidLogin.js'},
+    { src: '~/plugins/vue-slick-carousel.js', mode: 'client' }
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
