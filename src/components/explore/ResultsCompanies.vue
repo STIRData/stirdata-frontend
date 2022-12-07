@@ -75,6 +75,7 @@
                 Visit URI
               </b-dropdown-item>
               <b-dropdown-item
+                v-if="company.legalNames"
                 :to="{ name: 'company', query: {uri: company.uri} }"
                 target="_blank"
                 rel="noopener noreferrer"

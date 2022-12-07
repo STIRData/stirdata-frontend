@@ -167,7 +167,6 @@ export default {
     this.$calls.getCompany(this.$route.query.uri)
       .then(response => {
         this.company = response;
-        console.log(response)
         this.companyActivities = response.companyActivities ? response.companyActivities.slice(0,5) : [];
         this.loading = false;
       })
