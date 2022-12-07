@@ -59,7 +59,7 @@
                     >
                       <b-link
                         class="wrap"
-                        :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
+                       :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
                       >
                         <div class="icon">
                           <img :src="getImagePath(activity)">
@@ -107,7 +107,7 @@
             >
               <div class="headingtext">
                 <h2>
-                  Statistics by {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
+                  Statistics by {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity {{ currentRegion ? `in ${currentRegion.country.label}` : '' }}{{ currentRegion && currentRegion.place ? `, ${currentRegion.place[0].label}` : ''}}
                 </h2>
               </div>
               <!-- line stats-->
@@ -127,8 +127,8 @@
                     </div>
                   </li>
                   <li
-                    v-for="activity in subactivities"
-                    :key="activity.activity[0].code"
+                    v-for="(activity,index) in subactivities"
+                    :key="index"
                   >
                     <div class="wrap">
                       <div
@@ -179,7 +179,7 @@
               class="activitystats">
               <div class="headingtext">
                 <h2>
-                  Top 5 countries by companies amount in {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }}
+                  Top 5 {{regionCode === '' ?  "countries" : "regions"}} by companies amount in {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} {{ currentRegion ? `in ${currentRegion.country.label}` : '' }}{{ currentRegion && currentRegion.place ? `, ${currentRegion.place[0].label}` : ''}}
                 </h2>
               </div>
               <div class="chart-line-c line-stats-dynamic">
@@ -195,8 +195,8 @@
                     :style="{ 'background-color': colors[index] }"
                   />
                   <b-tooltip
-                    v-for="country in countries.slice(0, 5)"
-                    :key="country.country.code"
+                    v-for="(country, index) in countries.slice(0, 5)"
+                    :key="index"
                     :target="country.country.code"
                     triggers="hover"
                   >
@@ -207,7 +207,7 @@
                   <li class="heading">
                     <div class="wrap">
                       <div class="subject">
-                        Country
+                        {{regionCode === '' ?  "Country" : "Region"}}
                       </div>
                       <div class="stat">
                         Companies
@@ -217,9 +217,10 @@
                       </div>
                     </div>
                   </li>
+                  <template v-if="regionCode===''">
                   <li
                     v-for="(country, index) in countries.slice(0, 5)"
-                    :key="country.country.code"
+                    :key="index"
                   >
                     <div class="wrap">
                       <div
@@ -233,7 +234,7 @@
                         />
                         <b-link
                           :id="country.country.code+'-label'"
-                          :to="{ name: 'statistics-region-region', params: { region: country.country.code } }"
+                          :to="{ name: 'statistics-activity-activity', query:{ activity: naceCode, place: country.country.code } }"
                         >
                           {{ country.country.label }}
                         </b-link>
@@ -248,6 +249,40 @@
                       </div>
                     </div>
                   </li>
+                  </template>
+                  <template v-else>
+                  <li
+                    v-for="(place, index) in countries.slice(0, 5)"
+                    :key="index"
+                  >
+                    <div class="wrap">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="place.place[0].label"
+                      >
+                        <div
+                          class="color"
+                          :style="{ 'background-color': colors[index] }"
+                        />
+                        <b-link
+                          :id="place.place[0].code+'-label'"
+                          :to="{ name: 'statistics-activity-activity', query:{ activity: naceCode, place: place.place[0].code } }"
+                        >
+                          {{ place.place[0].label }}
+                        </b-link>
+                      </div>
+                      <div class="stat">
+                        <span class="count">
+                          {{ Number(place.count).toLocaleString() }}
+                        </span>
+                      </div>
+                      <div class="scale percentage">
+                        {{ percentage(place.count, currentActivity.count) }}%
+                      </div>
+                    </div>
+                  </li>
+                  </template>
                 </ul>
                 <div class="action">
                   <b-link :to="{ name: 'explore', params: { naceFilter: naceCode } }">
@@ -318,17 +353,27 @@
         ],
         breadcrumb_items: [],
         currentActivity: {},
+        currentRegion: {},
         loading: true,
         subactivities: [],
         activitiesTotalCount: 0,
         countries: [],
-        naceCode: ''
+        naceCode: '',
+        nace: '',
+        region: '',
+        regionCode: ''
       };
     },
+    watch: {
+    '$route.params': '$fetch'
+    },
     async fetch() {
-      let nace = this.$route.params.activity;
-      this.naceCode = `nace-rev2:${nace}`;
-      await this.$calls.getActivityStatistics(nace)
+      this.nace = this.$route.params.activity ? this.$route.params.activity : this.$route.query.activity;
+      this.region = this.$route.query && this.$route.query.place ? this.$route.query.place : '';
+      this.naceCode = this.nace.includes(':') ? this.nace : `nace-rev2:${this.nace}`;
+      if(this.region!=='')
+       this.regionCode = this.region.includes(':') ? this.region : `nuts:${this.region}`;
+      await this.$calls.getActivityByRegionStatistics(this.nace, this.regionCode)
         .then(response => {
           this.subactivities = response.activityGroups ?? [];
           this.countries = response.placeGroups ?? [];
@@ -350,9 +395,12 @@
       if (this.activities.length === 0) {
         await this.$store.dispatch('fetchTopLevelStatistics');
       }
-      this.currentActivity = await this.$calls.getActivityData(nace)
+      this.currentActivity = await this.$calls.getActivityData(this.nace)
         .then(response => response.selection);
       this.addActivityInBreadcrumb;
+      this.currentRegion = this.region.length ? await this.$calls.getRegionData(this.region)
+        .then(response => response.selection) : null;
+     
     },
     computed: {
     ...mapState({
