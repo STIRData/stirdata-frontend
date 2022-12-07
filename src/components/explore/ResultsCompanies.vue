@@ -32,10 +32,11 @@
           <!-- Company Name -->
           <td>
             <b-link
-              :to="{ name: 'company', query: {uri: company.uri} }"
+              :to="company.legalNames ? { name: 'company', query: {uri: company.uri} } : null"
               target="_blank"
+              :class="{ 'empty-legalnames': !company.legalNames }"
             >
-              {{ company.legalNames[0].value }}
+              {{ company.legalNames ? company.legalNames[0].value : 'Legal name not available' }}
             </b-link>
           </td>
           <!-- Registration Date -->
@@ -253,6 +254,14 @@ export default {
 
   &:hover {
     border-radius: 0.25rem;
+  }
+}
+
+.empty-legalnames{
+  opacity: 0.5;
+  cursor: text;
+  &:hover{
+    text-decoration: none !important;
   }
 }
 </style>
