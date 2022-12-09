@@ -128,7 +128,7 @@
                   </li>
                   <li
                     v-for="(activity,index) in subactivities"
-                    :key="index"
+                    :key="'A'+index"
                   >
                     <div class="wrap">
                       <div
@@ -138,7 +138,7 @@
                       >
                         <b-link
                           :id="activity.activity[0].code+'-label'"
-                          :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
+                          :to="currentRegion ? { name: 'statistics-activity-activity', query:{ activity: activity.activity[0].code.split(':')[1], place:  currentRegion.place ? currentRegion.place[0].code : currentRegion.country.code } } : { name: 'statistics-activity-activity', query:{ activity:  activity.activity[0].code.split(':')[1]}} "
                         >
                           {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-link>
@@ -196,7 +196,7 @@
                   />
                   <b-tooltip
                     v-for="(country, index) in countries.slice(0, 5)"
-                    :key="index"
+                    :key="'B'+index"
                     :target="country.country.code"
                     triggers="hover"
                   >
@@ -220,7 +220,7 @@
                   <template v-if="regionCode===''">
                   <li
                     v-for="(country, index) in countries.slice(0, 5)"
-                    :key="index"
+                    :key="'C'+index"
                   >
                     <div class="wrap">
                       <div
@@ -253,7 +253,7 @@
                   <template v-else>
                   <li
                     v-for="(place, index) in countries.slice(0, 5)"
-                    :key="index"
+                    :key="'D'+index"
                   >
                     <div class="wrap">
                       <div
@@ -353,7 +353,7 @@
         ],
         breadcrumb_items: [],
         currentActivity: {},
-        currentRegion: {},
+        currentRegion: null,
         loading: true,
         subactivities: [],
         activitiesTotalCount: 0,
@@ -364,7 +364,7 @@
         regionCode: ''
       };
     },
-    watch: {
+   watch: {
     '$route.params': '$fetch'
     },
     async fetch() {
@@ -398,8 +398,9 @@
       this.currentActivity = await this.$calls.getActivityData(this.nace)
         .then(response => response.selection);
       this.addActivityInBreadcrumb;
-      this.currentRegion = this.region.length ? await this.$calls.getRegionData(this.region)
-        .then(response => response.selection) : null;
+      if(this.region.length)
+        this.currentRegion = await this.$calls.getRegionData(this.region)
+          .then(response => response.selection);
      
     },
     computed: {
