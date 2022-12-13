@@ -27,11 +27,12 @@
             <ul class="counter">
               <li v-if="countries.length">
                 <span class="count">{{ countries.length }}</span>
-                <span class="text"> European <br>Countries</span>
+                <span class="text" v-if="currentRegion"> regions in <br/>{{currentRegion.country.label}}{{ currentRegion && currentRegion.place ? `, ${currentRegion.place[0].label}` : ''}}</span>
+                <span class="text" v-else> European Countries<br/><br/></span>
               </li>
               <li>
                 <span class="count">
-                  {{ Number(currentActivity.count).toLocaleString() }}
+                  {{ activitiesTotalCount }}
                 </span>
                 <span class="text">Registered<br>Companies</span>
               </li>
@@ -136,7 +137,7 @@
                         v-b-tooltip.hover.left
                         :title="capitalizeTheFirstLetterOfEachWord(activity.activity[0].label)"
                       >
-                        <b-link
+                        <b-link :disabled="activity.activity[0].leaf"
                           :id="activity.activity[0].code+'-label'"
                           :to="currentRegion ? { name: 'statistics-activity-activity', query:{ activity: activity.activity[0].code.split(':')[1], place:  currentRegion.place ? currentRegion.place[0].code : currentRegion.country.code } } : { name: 'statistics-activity-activity', query:{ activity:  activity.activity[0].code.split(':')[1]}} "
                         >
@@ -165,9 +166,9 @@
                 </ul>
                 <!-- <br /> -->
                 <div class="action">
-                  <b-link :to="{ name: 'explore', params: { naceFilter: naceCode } }">
+                  <b-link :to="{ name: 'explore', params: { naceFilter: naceCode , nutsFilter: regionCode} }">
                     <span class="text">
-                      Explore all companies for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
+                      Explore all companies for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity {{ currentRegion ? `in ${currentRegion.country.label}` : '' }}{{ currentRegion && currentRegion.place ? `, ${currentRegion.place[0].label}` : ''}}
                     </span>
                     <span class="icon"><i class="fa fa-angle-right" /></span>
                   </b-link>
@@ -233,6 +234,7 @@
                           :style="{ 'background-color': colors[index] }"
                         />
                         <b-link
+                          :disabled="country.activity[0].leaf"
                           :id="country.country.code+'-label'"
                           :to="{ name: 'statistics-activity-activity', query:{ activity: naceCode, place: country.country.code } }"
                         >
@@ -265,7 +267,7 @@
                           class="color"
                           :style="{ 'background-color': colors[index] }"
                         />
-                        <b-link
+                        <b-link :disabled="place.place[0].leaf"
                           :id="place.place[0].code+'-label'"
                           :to="{ name: 'statistics-activity-activity', query:{ activity: naceCode, place: place.place[0].code } }"
                         >
@@ -482,6 +484,11 @@
     span.icon {
       top: 0;
     }
+  }
+
+  .disabled {
+    opacity: 0.8;
+    pointer-events: none;
   }
 
   .tooltip {
