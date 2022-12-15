@@ -16,6 +16,10 @@
         type: String,
         required: true
       },
+      naceCode: {
+        type: String,
+        required: false
+      },
       lau: {
         type: Object,
         required: false
@@ -113,7 +117,11 @@
         if (id.includes('lau')) {
           return;
         }
-        this.$router.push({ name: 'statistics-region-region', params: { region: id } });
+        if(this.naceCode){
+          this.$router.push({ name: 'statistics-region-region', query:{ activity: this.naceCode, place: id } });
+        }
+        else { this.$router.push({ name: 'statistics-region-region', params: { region: id }})};
+        
       }
     }
   };

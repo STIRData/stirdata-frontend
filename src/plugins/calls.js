@@ -102,11 +102,14 @@ export default (ctx, inject) => {
       return ctx.$api.get(`statistics?activity=${code}&dimension=place,activity`).then(response => response.data);
     },
     getActivityByRegionStatistics: (activityCode, regionCode) => {
-      let code = activityCode.includes(':') ? activityCode : `nace-rev2:${activityCode}`;
+      let code='';
+      if(activityCode.length>0){
+        code = activityCode.includes(':') ? `&activity=${activityCode}` : `&activity=nace-rev2:${activityCode}`;
+      }
       let rcode='';
       if(regionCode.length>0){
         rcode = regionCode.includes(':') ? `&place=${regionCode}` : `&place=nuts:${regionCode}`;}
-      return ctx.$api.get(`statistics?activity=${code}${rcode}&dimension=place,activity`).then(response => response.data);
+      return ctx.$api.get(`statistics?dimension=place,activity${code}${rcode}`).then(response => response.data);
     },
     getRegionData: regionCode => {
       let code = regionCode.includes(':') ? regionCode : `nuts:${regionCode}`;
