@@ -73,7 +73,7 @@
           <div class="col-xl-6 col-lg-6">
             <div class="homepage-stat-trend">
               <h2>Established and Dissoluted Company Yearly Trend</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+              <p>Quick view of established and dissoluted companies on a yearly basis based on the data each country is providing (not all countries are providing information about dissoluted companies).</p>
               <ul class="selector">
                 <li
                   v-for="entry in countriesStatistics"
@@ -116,15 +116,15 @@
               <div class="row features">
                 <div class="col-xl-4">
                   <h3>Target </h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                  <p>Use of Linked Data and Semantic Technologies as the means to “stir” different and heterogeneous data from multiple sources.</p>
                 </div>
                 <div class="col-xl-4">
                   <h3>API </h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                  <p>STIRDATA is providing an API to access its data. More information on how to use the API can be found in this <a href="https://dev.stirdata.eu/api/swagger-ui/index.html" target="_blank">link.</a></p>
                 </div>
                 <div class="col-xl-4">
                   <h3>Harvest </h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                  <p>The data is harvested from the business registries of the participating countries and updated on a regular basis. More information about the exact dates of the last update for each country can be found <a href="/providers#datinf" target="_self">here.</a></p>
                 </div>
               </div>
             </div>
