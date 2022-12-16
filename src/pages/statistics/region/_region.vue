@@ -35,7 +35,7 @@
                 <span class="text">Registered<br>Companies</span>
               </li>
               <li v-show="activities.length">
-                <span class="count">{{ activitiesCount }}</span>
+                <span class="count">{{ activitiesCount.toLocaleString() }}</span>
                 <span class="text"> Business<br>Activities</span>
               </li>
             </ul>
