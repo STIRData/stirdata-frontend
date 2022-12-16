@@ -410,13 +410,14 @@
       this.nace = this.$route.query && this.$route.query.activity ? this.$route.query.activity : '';
       if(this.nace!=='')
        this.naceCode = this.nace.includes(':') ? this.nace : `nace-rev2:${this.nace}`;
+      if(this.region!=='')
+       this.regionCode = this.region.includes(':') ? this.region : `nuts:${this.region}`;
       
       await this.$calls.getActivityByRegionStatistics(this.nace, this.region)
         .then(response => {
           this.subregions = response.placeGroups ?? [];
           this.activities = response.activityGroups ?? [];
           // Update the code and the dates in order to render the chart
-          this.regionCode = this.region;
           this.foundingDates = response.foundingDateGroups ?? [];
           this.dissolutionDates = response.dissolutionDateGroups ?? [];
 
