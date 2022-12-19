@@ -100,7 +100,7 @@
                   class="decor"
                   src="../../assets/img/ic-remarks.png"
                 >
-                <!-- <p>Contact us for more information regarding STIRDATA</p>
+                <p>Contact us for more information regarding STIRDATA</p>
                 <nav class="heronav">
                   <ul>
                     <li>
@@ -110,7 +110,7 @@
                       >Contact Us</a>
                     </li>
                   </ul>
-                </nav> -->
+                </nav>
               </div>
             </b-col>
             <!-- right-->
