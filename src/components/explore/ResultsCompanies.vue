@@ -1,5 +1,8 @@
 <template>
   <Spinner class="text-center" v-if="companiesLoading" />
+  <h3 v-else-if="companiesCallError">
+    An error occured while fetching the data. Please try again or set different search criteria.
+  </h3>
   <h3 v-else-if="totalResults === 0">
     There are no companies in {{ countryFilters.name }} based on Filter
   </h3>
@@ -162,7 +165,8 @@ export default {
       resultsCompanies: {},
       companiesLoading: true,
       countryFilters: {},
-      countrySearchQuery: ''
+      countrySearchQuery: '',
+      companiesCallError: false
     };
   },
 
@@ -189,6 +193,7 @@ export default {
 
   methods: {
     initiateSearch() {
+      this.companiesCallError = false;
       this.companiesLoading = true;
       this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
       this.countrySearchQuery = this.countryFilters.query;
@@ -205,7 +210,11 @@ export default {
 
           this.companiesLoading = false;
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          console.error(error)
+          this.companiesCallError = true;
+          this.companiesLoading = false;
+        });
     },
     paginationImplementation(pageToGo) {
       if (pageToGo > this.totalPages || pageToGo < 1) return;
