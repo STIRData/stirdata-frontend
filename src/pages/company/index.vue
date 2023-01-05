@@ -102,7 +102,7 @@
                               :class="act.code.includes('tol') ? 'not-clickable' : ''"
                               target="_blank"
                             >
-                              {{ act.label }}
+                              {{ act.label || act.code }}
                             </b-link>
                           </span>
                         </li>
@@ -123,6 +123,16 @@
                     >
                       {{ company.uri }}
                     </b-link>
+                  </b-col>
+                </b-row>
+                <b-row v-if="company.leiCode">
+                  <b-col md="4" class="head">LEI Code</b-col>
+                  <b-col md="8">
+                    <p
+                      class="anchor"
+                    >
+                      {{ company.leiCode }}
+                    </p>
                   </b-col>
                 </b-row>
               </div>
