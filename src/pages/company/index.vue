@@ -73,10 +73,10 @@
                         <ul>
                           <li class="separator" v-if="addr.lau" :class="{ 'no-parent-separator': !addr.nuts3 }">
                             <ul>
-                              <li>
-                                <span class="pill">
-                                  <a>{{ addr.lau.label }}</a>
-                                </span>
+                              <li class="pill">
+                                <a class="not-clickable">
+                                  {{ addr.lau.label }}
+                                </a>
                               </li>
                             </ul>
                           </li>
@@ -98,11 +98,9 @@
                         <li>
                           <span class="pill">
                             <b-link
-                              :to=" !act.code.includes('tol') ? { name: 'statistics-activity-activity', params: { activity: act.code } } : {}"
-                              :class="act.code.includes('tol') ? 'not-clickable' : ''"
-                              target="_blank"
+                              class="not-clickable"
                             >
-                              {{ act.label }}
+                              {{ act.label ? act.code +', ' + act.label : act.code }}
                             </b-link>
                           </span>
                         </li>
