@@ -435,7 +435,11 @@ export default {
         });
       else{
         this.naceTags.push(this.$route.params.naceFilter);
-        this.search();
+        this.$bvToast.toast('Your region and activity have been preselected.', {
+            variant: 'info',
+            title: 'Info',
+            solid: true
+        });
         return;
       }
     }
