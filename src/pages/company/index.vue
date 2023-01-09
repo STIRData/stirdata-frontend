@@ -102,7 +102,7 @@
                               :class="act.code.includes('tol') ? 'not-clickable' : ''"
                               target="_blank"
                             >
-                              {{ act.label || act.code }}
+                              {{ act.label }}
                             </b-link>
                           </span>
                         </li>
