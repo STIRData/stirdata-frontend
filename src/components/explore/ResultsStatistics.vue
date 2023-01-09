@@ -333,7 +333,7 @@ export default {
       this.errorOccured = false;
       this.statisticsLoading = true;
       this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
-      this.countryStatisticsQuery = `place=${this.countryFilters.place.join()}&activity=${this.countryFilters.activity.join()}&dimension=selection,place,activity,foundingDate`;
+      this.countryStatisticsQuery = `place=${this.countryFilters.place.join()}&activity=${this.countryFilters.activity.join()}&dimension=selection,place,activity`;
       this.$calls.getQueryStatistics(this.countryStatisticsQuery)
         .then(response => {
           this.resultsStatistics = response;
