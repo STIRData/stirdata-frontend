@@ -76,7 +76,12 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    [
     'bootstrap-vue/nuxt',
+         {
+             icons: false
+         }
+    ],
     'vue-scrollto/nuxt',
     '@nuxtjs/toast'
   ],
@@ -86,6 +91,7 @@ export default {
   generate: {
     fallback: '404.html',
     crawler: true,
+    /* TODO incomplete for static site generation, needs more precomputed routes */
     routes() {
       return axios.get(`${process.env.BASE_API_URL}/statistics?dimension=place`).then(res => {
         return res.data.placeGroups.map(place => {
@@ -135,8 +141,7 @@ export default {
       position: 'top-right',
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  },
+  build: { babel: { compact: true } },
 
   srcDir: 'src/'
 };
