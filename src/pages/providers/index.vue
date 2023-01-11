@@ -8,7 +8,7 @@
         <div class="headingtext">
           <h1>Data Providers</h1>
           <p class="half">
-            Data providers are the countries participating in the STIRDATA portal. Only the countries providing 
+            Data providers are the countries participating in the STIRDATA portal. Only the countries providing
             company related data as open data are listed below. There are countries that treat company data in a commercial way and are not included in this portal.
           </p>
         </div>
@@ -243,7 +243,7 @@
                       <li>
                         {{ Number(provider.legalEntityCount).toLocaleString() }}
                       </li>
-                      <li>
+                      <li class="license">
                         <a
                           v-if="'license' in provider && 'label' in provider.license"
                           :href="provider.license.uri"
@@ -380,5 +380,17 @@
         display: inline-block !important;
       }
     }
+  }
+
+  .license{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .source{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
   }
 </style>
