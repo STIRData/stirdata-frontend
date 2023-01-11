@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 export default {
-  target: 'static',
+  //target: 'static', Reverting to default server deployment for production 
   
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
