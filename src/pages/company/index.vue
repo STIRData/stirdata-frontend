@@ -12,7 +12,7 @@
     <section class="companydetail" v-else>
       <b-container>
         <b-row>
-          <b-col lg="6" xl="6" class="companydetail-left" v-if="company.registeredAddresses[0].nuts3">
+          <b-col lg="6" xl="6" class="companydetail-left" v-if="company.registeredAddresses && company.registeredAddresses[0].nuts3">
             <div class="companydetail-map">
               <div class="companydetail-map-section">
                 <SimpleMap
