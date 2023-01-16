@@ -98,12 +98,16 @@
                         <li>
                           <span class="pill">
                             <b-link
-                              class="not-clickable"
+                              :to="{ name: 'statistics-activity-activity', params: { activity: act.code } }"
+                              target="_blank"
                             >
-                              {{ act.label ? act.code +', ' + act.label : act.code }}
+                              {{ act.label ? act.label : act.code }}
                             </b-link>
                           </span>
                         </li>
+                        <template v-if="act.child">
+                          <ActivityChildNode :child="act.child" />
+                        </template>
                       </ul>
                       <span v-if="allActivitiesLoaded" class="pill" @click="loadMoreActivities">
                         Load more
@@ -205,7 +209,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .not-clickable {
   cursor: text;
   &:hover {
