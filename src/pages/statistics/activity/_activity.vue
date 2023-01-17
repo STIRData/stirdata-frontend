@@ -405,6 +405,7 @@
           .then(response => response.selection);
      
     },
+    fetchOnServer: false,
     computed: {
     ...mapState({
       activities: state => state.activitiesStatistics

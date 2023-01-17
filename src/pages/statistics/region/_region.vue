@@ -455,7 +455,8 @@
 
      // this.loading = false;
     },
-  methods: {
+    fetchOnServer: false,
+    methods: {
      regionIsLau(code){
         return code.split(':')[0] === 'lau'
       },
