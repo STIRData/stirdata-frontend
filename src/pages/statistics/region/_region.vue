@@ -137,7 +137,7 @@
                         v-b-tooltip.hover.left
                         :title="reg.place[0].label"
                         @mouseover="regionHover(reg.place[0])"
-                        @mouseleave="regionMouseLeave()"
+                        @mouseleave="regionHover(null)"
                       >
                         <b-link :disabled="reg.place[0].leaf"
                           :id="reg.place[0].code+'-label'"
@@ -336,7 +336,8 @@
         country: {},
         naceCode: '',
         nace: '',
-        region: ''
+        region: '',
+        timeout: null
       };
     },
     computed: {
@@ -483,11 +484,11 @@
         return separateWord;
       },
       regionHover(region){
-        this.$store.commit('setHoveredRegion', region);
+        if (this.timeout) clearTimeout(this.timeout)
+          this.timeout = setTimeout(() => {
+            this.$store.commit('setHoveredRegion', region);
+          }, 100)
       },
-      regionMouseLeave(){
-        this.$store.commit('setHoveredRegion', null);
-      }
     }
   };
 </script>
