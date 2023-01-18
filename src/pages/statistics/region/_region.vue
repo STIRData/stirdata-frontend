@@ -136,6 +136,8 @@
                         class="subject"
                         v-b-tooltip.hover.left
                         :title="reg.place[0].label"
+                        @mouseover="regionHover(reg.place[0])"
+                        @mouseleave="regionMouseLeave()"
                       >
                         <b-link :disabled="reg.place[0].leaf"
                           :id="reg.place[0].code+'-label'"
@@ -339,7 +341,8 @@
     },
     computed: {
     ...mapState({
-      allCountries: state => state.countriesStatistics
+      allCountries: state => state.countriesStatistics,
+      hoveredRegion: state => state.hoveredRegion
     }),
     hasLauSubregions() {
       return  this.subregions.length ? this.subregions[0].place[0].code.split(':')[0] === 'lau' : true;
@@ -412,7 +415,6 @@
        this.naceCode = this.nace.includes(':') ? this.nace : `nace-rev2:${this.nace}`;
       if(this.region!=='')
        this.regionCode = this.region.includes(':') ? this.region : `nuts:${this.region}`;
-      
       await this.$calls.getActivityByRegionStatistics(this.nace, this.region)
         .then(response => {
           this.subregions = response.placeGroups ?? [];
@@ -430,7 +432,6 @@
             }
             return 0;
           }
-         
           this.regionTotalCount = this.subregions.reduce(((a,b) => a + b.count), 0);
           this.subregions.sort(sortByCount);
           this.activities.sort(sortByCount);
@@ -480,6 +481,12 @@
           separateWord = separateWord.slice(0, 75) + '...';
         }
         return separateWord;
+      },
+      regionHover(region){
+        this.$store.commit('setHoveredRegion', region);
+      },
+      regionMouseLeave(){
+        this.$store.commit('setHoveredRegion', null);
       }
     }
   };
