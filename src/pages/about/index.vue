@@ -106,7 +106,7 @@
                     <li>
                       <a
                         class="button"
-                        href="#"
+                        href="mailto:stirdata-portal@ails.ece.ntua.gr"
                       >Contact Us</a>
                     </li>
                   </ul>
