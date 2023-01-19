@@ -51,7 +51,7 @@ export default (ctx, inject) => {
       let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
       let type = (resource === 'nace') ? 'activity' : 'place';
       return ctx.$api.get(resource)
-        .then(response => response.data[grouping].map(item => new Object({ value: item[type][0].code.split(':')[1], type: item[type][0].code.split(':')[0], text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}` })));
+        .then(response => response.data[grouping].map(item => new Object({ value: item[type][0].code.split(':')[1], type: item[type][0].code.split(':')[0], text: `${item[type][0].label}` })));
     },
     getSubLevels: (resource, code) => {
       let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
@@ -62,7 +62,7 @@ export default (ctx, inject) => {
             return response.data[grouping].map(item => new Object({
               value: item[type][0].code.split(':')[1],
               type: item[type][0].code.split(':')[0],
-              text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}`
+              text: `${item[type][0].label}`
             }));
           } else {
             return [];
