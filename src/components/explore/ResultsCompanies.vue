@@ -16,7 +16,7 @@
         from
         {{ totalResults.toLocaleString() }}
       </div>
-      <a class="download">Download Results</a>
+      <!-- <a class="download">Download Results</a> -->
     </div>
     <table class="table table-borderless table-stir">
       <thead>
