@@ -6,9 +6,9 @@
     <div class="pageintro">
       <b-container>
         <div class="headingtext">
-          <h1>Data Providers</h1>
+          <h1>Data Sources</h1>
           <p class="half">
-            Data providers are the countries participating in the STIRDATA portal. Only the countries providing
+            Data sources are the countries participating in the STIRDATA portal. Only the countries providing
             company related data as open data are listed below. There are countries that treat company data in a commercial way and are not included in this portal.
           </p>
         </div>
@@ -308,7 +308,7 @@
             to: { name: 'index' }
           },
           {
-            text: 'DATA PROVIDERS',
+            text: 'DATA SOURCES',
             active: true
           }
         ],

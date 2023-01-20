@@ -36,7 +36,7 @@
             </li>
             <li>
               <b-link :to="{ name: 'providers' }">
-                Data Providers
+                Data Sources
               </b-link>
             </li>
             <li v-if="!isAuthenticated">
