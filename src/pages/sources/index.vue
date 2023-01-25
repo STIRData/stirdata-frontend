@@ -123,30 +123,40 @@
                       <li class="head">
                         {{ provider.country.label }}
                       </li>
-                      <li><img v-if="'names' in provider && provider.names.length" src="../../assets/img/ic-check.png"></li>
+                      <li>
+                        <img
+                          v-if="'names' in provider && provider.names.length"
+                          src="../../assets/img/ic-check.png"
+                        >
+                        <span v-else>-</span>
+                      </li>
                       <li>
                         <img
                           v-if="'foundingDate' in provider"
                           src="../../assets/img/ic-check.png"
                         >
+                        <span v-else>-</span>
                       </li>
                       <li>
                         <img
                           v-if="'dissolutionDate' in provider"
                           src="../../assets/img/ic-check.png"
                         >
+                        <span v-else>-</span>
                       </li>
                       <li>
                         <img
                           v-if="'activityVocabularies' in provider"
                           src="../../assets/img/ic-check.png"
                         >
+                        <span v-else>-</span>
                       </li>
                       <li>
                         <img
                           v-if="'placeVocabularies' in provider"
                           src="../../assets/img/ic-check.png"
                         >
+                        <span v-else>-</span>
                       </li>
                     </ul>
                     <template #prevArrow="">
@@ -252,6 +262,7 @@
                         >
                           {{ provider.license.label }}
                         </a>
+                        <span v-else>-</span>
                       </li>
                       <li class="source">
                         <a
@@ -264,6 +275,7 @@
                         >
                           {{ provider.source.label }}
                         </a>
+                        <span v-else>-</span>
                       </li>
                     </ul>
                     <template #prevArrow="">
@@ -388,10 +400,9 @@
 
   .license,
   .source {
-    max-width: 128px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin: auto;
+    padding: 15px 8px !important;
   }
 </style>
