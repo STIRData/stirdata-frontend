@@ -16,7 +16,7 @@
     </div>
     <section class="two-columns">
       <b-container>
-        <b-row>
+        <b-row class="mx-0">
           <b-col
             lg="4"
             xl="3"
@@ -382,13 +382,13 @@
     }
   }
 
-  .license{
+  .license {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .source{
+  .source {
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-word;

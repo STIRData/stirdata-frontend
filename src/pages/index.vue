@@ -124,7 +124,7 @@
                 </div>
                 <div class="col-xl-4">
                   <h3>Harvest </h3>
-                  <p>The data is harvested from the business registries of the participating countries and updated on a regular basis. More information about the exact dates of the last update for each country can be found <a href="/providers#datinf" target="_self">here.</a></p>
+                  <p>The data is harvested from the business registries of the participating countries and updated on a regular basis. More information about the exact dates of the last update for each country can be found <a href="/sources#datinf" target="_self">here.</a></p>
                 </div>
               </div>
             </div>
