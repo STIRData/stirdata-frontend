@@ -423,7 +423,12 @@
           // Update the code and the dates in order to render the chart
           this.foundingDates = response.foundingDateGroups ?? [];
           this.dissolutionDates = response.dissolutionDateGroups ?? [];
-
+          if(response.selection){
+            this.subregionTemplate = 'place' in response.selection;
+            this.regionLabel = this.subregionTemplate ? response.selection.place[0].label : response.selection.country.label;
+            this.country = response.selection.country;
+            this.addCountryNameInBreadcrumb;
+          }
           function sortByCount(a, b) {
             if (a.count < b.count) {
               return 1;
@@ -433,19 +438,10 @@
             }
             return 0;
           }
-          this.regionTotalCount = this.subregions.reduce(((a,b) => a + b.count), 0);
+          this.regionTotalCount = response.selection.count;
           this.subregions.sort(sortByCount);
           this.activities.sort(sortByCount);
-        });
-
-      await this.$calls.getRegionData(this.region)
-        .then(response => {
-          if(response.selection){
-          this.subregionTemplate = 'place' in response.selection;
-          this.regionLabel = this.subregionTemplate ? response.selection.place[0].label : response.selection.country.label;
-          this.country = response.selection.country;
-          this.addCountryNameInBreadcrumb;
-          }
+          
         });
 
       await this.$store.dispatch('fetchTopLevelStatistics');

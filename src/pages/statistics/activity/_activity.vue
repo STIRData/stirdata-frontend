@@ -392,6 +392,9 @@
           this.activitiesTotalCount = this.subactivities.reduce(((a,b) => a + b.count), 0);
           this.subactivities.sort(sortByCount);
           this.countries.sort(sortByCount);
+          if(this.region.length)
+              this.currentRegion = response.selection;
+          
         });
 
       if (this.activities.length === 0) {
@@ -400,9 +403,6 @@
       this.currentActivity = await this.$calls.getActivityData(this.nace)
         .then(response => response.selection);
       this.addActivityInBreadcrumb;
-      if(this.region.length)
-        this.currentRegion = await this.$calls.getRegionData(this.region)
-          .then(response => response.selection);
      
     },
     fetchOnServer: false,
