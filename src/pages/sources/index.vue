@@ -203,9 +203,7 @@
                     <li>SPARQL Endpoint</li>
                     <li>Number of Entries</li>
                     <li>License</li>
-                    <li class="source">
-                      Source
-                    </li>
+                    <li>Source</li>
                   </ul>
                 </b-col>
                 <b-col
@@ -226,9 +224,9 @@
                         {{ provider.country.label }}
                       </li>
                       <li>
-                        <span v-if="'lastUpdated' in provider">{{
-                          provider.lastUpdated | formatDate
-                        }}</span>
+                        <span v-if="'lastUpdated' in provider">
+                          {{ provider.lastUpdated | formatDate }}
+                        </span>
                       </li>
                       <!-- <li>Monthly</li> -->
                       <li>
@@ -249,7 +247,11 @@
                           :href="provider.license.uri"
                           target="_blank"
                           rel="noopener noreferrer"
-                        >{{ provider.license.label }}</a>
+                          v-b-tooltip.hover.left
+                          :title="provider.license.label"
+                        >
+                          {{ provider.license.label }}
+                        </a>
                       </li>
                       <li class="source">
                         <a
@@ -257,6 +259,8 @@
                           :href="provider.source.uri"
                           target="_blank"
                           rel="noopener noreferrer"
+                          v-b-tooltip.hover.left
+                          :title="provider.source.label"
                         >
                           {{ provider.source.label }}
                         </a>
@@ -382,15 +386,12 @@
     }
   }
 
-  .license {
+  .license,
+  .source {
+    max-width: 128px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .source {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-word;
+    margin: auto;
   }
 </style>
