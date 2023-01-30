@@ -334,10 +334,10 @@
                         <font-awesome-icon icon="chevron-down" />
                       </div>
                     </h3>
-                    <b-form-group v-if="statTags.length > 0" class="mb-0">
+                    <b-form-group v-if="eurostatTags.length > 0" class="mb-0">
                       <b-form-tags
-                        v-model="statTags"
-                        input-id="features-tags"
+                        v-model="eurostatTags"
+                        input-id="filters-tags"
                         input-class="d-none"
                         :input-attrs="{ readonly: 'true' }"
                         class="p-0"
@@ -360,11 +360,8 @@
                             :id="'filter-'+index"
                             :key="'filter-'+index"
                           >
-                            <tree-menu-node
-                              menuType="stat"
-                              :menuItem="filter"
-                              :tags="statTags"
-                              @select-tag="selectTag"
+                            <eurostat-filter
+                              :filter="filter"
                             />
                           </li>
                         </ul>
@@ -400,6 +397,7 @@ import vClickOutside from 'v-click-outside';
 export default {
   components: {
     TreeMenuNode: () => import("../../components/TreeMenuNode"),
+    EurostatFilter: () => import("../../components/EurostatFilter"),
     ExploreResults: () => import("../../components/explore/ExploreResults"),
     Breadcrumb: () => import("../../components/Breadcrumb"),
     Spinner: () => import("../../components/Spinner")
@@ -449,6 +447,7 @@ export default {
       naceTags: [],
       dateTags: [],
       statTags: [],
+      eurostatTags: [],
       foundingStartDate: null,
       foundingEndDate: null,
       newViewTitle: ''
@@ -552,6 +551,9 @@ export default {
           checkbox.checked = false;
         }
       }
+    },
+    eurostatTags(newValue, oldValue) {
+      console.log( newValue, oldValue)
     }
   },
 
@@ -679,6 +681,7 @@ export default {
       this.naceTags = [];
       this.dateTags = [];
       this.statTags = [];
+      this.eurostatTags = [];
       this.foundingStartDate = null;
       this.foundingEndDate = null;
       if (resetSavedView) {
