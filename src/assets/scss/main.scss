@@ -1798,7 +1798,8 @@ body {
               overflow: hidden;
               text-overflow: ellipsis;
 						}
-						input[type="checkbox"]:checked + label {
+						input[type="checkbox"]:checked + label,
+						input[type="radio"]:checked + label {
 							background-image: url('../img/ic-checkbox.png');
 						}
 					}

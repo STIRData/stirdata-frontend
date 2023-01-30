@@ -20,7 +20,29 @@
         @show="isCollapseOpen = true"
       >
         <ul v-if="isCollapseOpen" class="treeMenu">
-          <li>prop</li>
+          <li v-for="property of filter.subLevels" :key="property.value">
+            <div class="eurostat-title" v-b-tooltip.hover.right :title="property.text">
+              {{ property.text }}
+            </div>
+            <b-form-group>
+              <b-form-radio-group
+                :id="'radio-group-' + property.value"
+                v-model="options[property.value]"
+                :name="property.value"
+                stacked
+              >
+                <b-form-radio
+                  class="eurostat-child"
+                  v-for="option of property.subLevels"
+                  :key="option.value"
+                  :value="option.value"
+                  @change="selectTag(property, option)"
+                >
+                  {{ option.text }}
+                </b-form-radio>
+              </b-form-radio-group>
+            </b-form-group>
+          </li>
         </ul>
       </b-collapse>
     </div>
@@ -39,14 +61,19 @@ export default {
     return {
       selected: false,
       isCollapseOpen: false,
+      options: {},
     };
   },
   mounted() {
     console.dir(this.filter);
+    this.filter.subLevels.forEach((subLevel) => {
+      this.options[subLevel.value] = null;
+    });
+    console.log(this.options);
   },
   methods: {
-    selectTag(tagCode, checked) {
-      console.log(this.filter);
+    selectTag(property, option) {
+      console.log(property, option)
     },
   },
 };
@@ -66,17 +93,8 @@ export default {
   text-overflow: ellipsis;
 }
 
-.custom-control.custom-checkbox {
-  width: 97%;
-  padding-left: 0;
-  height: 30px;
 
-  ::v-deep .custom-control-label::before {
-    display: none;
-  }
-}
-
-.treeMenuNode .custom-control.custom-checkbox::after {
+.eurostat-child::after {
   content: "";
   background: url(../assets/img/ic-hierarchy-small.png);
   position: relative;
