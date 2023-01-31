@@ -21,27 +21,70 @@
       >
         <ul v-if="isCollapseOpen" class="treeMenu">
           <li v-for="property of filter.subLevels" :key="property.value">
-            <div class="eurostat-title" v-b-tooltip.hover.right :title="property.text">
-              {{ property.text }}
-            </div>
-            <b-form-group>
-              <b-form-radio-group
-                :id="'radio-group-' + property.value"
-                v-model="options[property.value]"
-                :name="property.value"
-                stacked
-              >
-                <b-form-radio
-                  class="eurostat-child"
-                  v-for="option of property.subLevels"
-                  :key="option.value"
-                  :value="option.value"
-                  @change="selectTag(property, option)"
+            <template v-if="isUnitProperty(property)">
+              <div class="eurostat-title">
+                {{ property.subLevels[0].text }}
+                <i
+                  class="fa fa-info-circle"
+                  v-b-tooltip.hover.right
+                  :title="`Range between ${property.subLevels[0].minValue} to ${property.subLevels[0].maxValue}`"
+                />
+              </div>
+              <b-row>
+                <b-col md="5" sm="10">
+                  <b-form-input
+                    type="number"
+                    :id="property.subLevels[0].value + '-text--from'"
+                    :min="property.subLevels[0].minValue"
+                    :max="maxValue || property.subLevels[0].maxValue"
+                    placeholder="From"
+                    v-model="minValue"
+                    @change="selectTag()"
+                  ></b-form-input>
+                </b-col>
+                <b-col md="5" sm="10">
+                  <b-form-input
+                    type="number"
+                    :id="property.subLevels[0].value + '-text--to'"
+                    :min="minValue || property.subLevels[0].minValue"
+                    :max="property.subLevels[0].maxValue"
+                    placeholder="To"
+                    v-model="maxValue"
+                    @change="selectTag()"
+                  ></b-form-input>
+                </b-col>
+              </b-row>
+            </template>
+            <template v-else>
+              <template v-if="!oneLeafProperty(property)">
+                <div
+                  class="eurostat-title"
+                  v-b-tooltip.hover.right
+                  :title="property.text"
                 >
-                  {{ option.text }}
-                </b-form-radio>
-              </b-form-radio-group>
-            </b-form-group>
+                  {{ property.text }}
+                </div>
+                <b-form-group>
+                  <b-form-radio-group
+                    :id="'radio-group-' + property.value"
+                    v-model="options[property.value]"
+                    :name="property.value"
+                    stacked
+                  >
+                    <b-form-radio
+                      class="eurostat-child"
+                      v-for="option of property.subLevels"
+                      :key="option.value"
+                      :value="option.value"
+                      :id="option.value + '-radio'"
+                      @change="selectTag(property, option)"
+                    >
+                      {{ option.text }}
+                    </b-form-radio>
+                  </b-form-radio-group>
+                </b-form-group>
+              </template>
+            </template>
           </li>
         </ul>
       </b-collapse>
@@ -62,18 +105,50 @@ export default {
       selected: false,
       isCollapseOpen: false,
       options: {},
+      minValue: null,
+      maxValue: null,
     };
   },
   mounted() {
-    console.dir(this.filter);
     this.filter.subLevels.forEach((subLevel) => {
       this.options[subLevel.value] = null;
     });
-    console.log(this.options);
   },
   methods: {
-    selectTag(property, option) {
-      console.log(property, option)
+    selectTag() {
+      if (!this.checkIfAllFieldsAreFilled()) {
+        return;
+      }
+      this.$emit("select-tag", {
+        datasetCode: this.filter.datasetCode.split(":").pop(),
+        propertyCode: this.filter.propertyCode.split(":").pop(),
+        options: this.options,
+        minValue: this.minValue,
+        maxValue: this.maxValue,
+      });
+    },
+    isUnitProperty(prop) {
+      return prop.subLevels[0].value.split(":").pop().startsWith("unit");
+    },
+    oneLeafProperty(prop) {
+      return prop.subLevels.length == 1;
+    },
+    checkIfAllFieldsAreFilled() {
+      if (!this.minValue && !this.maxValue) {
+        return false;
+      }
+
+      for (let property of this.filter.subLevels) {
+        if (property.subLevels.length == 1) {
+          this.options[property.value] = property.subLevels[0].value;
+        }
+      }
+      for (let key in this.options) {
+        if (!this.options[key]) {
+          return false;
+        }
+      }
+      return true;
     },
   },
 };
@@ -93,7 +168,6 @@ export default {
   text-overflow: ellipsis;
 }
 
-
 .eurostat-child::after {
   content: "";
   background: url(../assets/img/ic-hierarchy-small.png);
@@ -112,5 +186,15 @@ ul.treeMenu {
 .tooltip {
   top: -1px !important;
   margin-left: 1.2rem;
+}
+
+.form-control {
+  margin-top: 0 !important;
+  margin-bottom: 5px;
+}
+
+.fa-info-circle {
+  color: $accent-first-color;
+  margin-left: 3px;
 }
 </style>

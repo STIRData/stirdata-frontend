@@ -176,6 +176,9 @@ export default (ctx, inject) => {
       return ctx.$api.get(`nuts/eurostat-filters`)
         .then(response => response.data.map((filter, index1) => {
           return {
+            datasetCode: filter.dataset.code,
+            propertyCode: filter.property.code,
+            uri: filter.dataset.uri,
             value: `filter-${index1}`,
             type: 'stat',
             text: filter.property.label,

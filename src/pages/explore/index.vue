@@ -362,6 +362,7 @@
                           >
                             <eurostat-filter
                               :filter="filter"
+                              @select-tag="eurostatFilterFilled"
                             />
                           </li>
                         </ul>
@@ -553,7 +554,36 @@ export default {
       }
     },
     eurostatTags(newValue, oldValue) {
-      console.log( newValue, oldValue)
+      let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
+
+      if (tagsDifference.length == 1) {
+        let tagsDifferenceArr = tagsDifference[0].split(':');
+        let datasetCode = [tagsDifferenceArr[1], tagsDifferenceArr[2]].join(':');
+        let parameters = tagsDifferenceArr[3].split('~');
+
+        for( let param of parameters){
+          let inputId = datasetCode + ':' +param;
+          if (param.startsWith('unit')) {
+            let inputTextFrom = document.getElementById(inputId +'-text--from');
+            let inputTextTo = document.getElementById(inputId +'-text--to');
+
+            if(inputTextFrom && inputTextTo){
+              inputTextFrom.value = '';
+              inputTextTo.value = '';
+              inputTextFrom.dispatchEvent(new Event('input'));
+              inputTextTo.dispatchEvent(new Event('input'));
+            }
+          }
+          else{
+            let checkbox = document.getElementById(inputId +'-radio');
+
+            if (checkbox) {
+              checkbox.checked = false;
+              checkbox.dispatchEvent(new Event('input'));
+            }
+          }
+        }
+      }
     }
   },
 
@@ -642,6 +672,32 @@ export default {
         this.clearSearch(prefix, results);
       }
     },
+    eurostatFilterFilled({datasetCode, propertyCode, options, minValue, maxValue}){
+      let optionsCopy = {}
+      for (const key in options) {
+        optionsCopy[key] = options[key].split(":").pop();
+      }
+      let optionsText = '';
+      for(const option in optionsCopy){
+        if(optionsText){
+          optionsText += '~'
+        }
+        optionsText += optionsCopy[option]
+        if(optionsCopy[option].startsWith('unit')) {
+          optionsText += ':'
+          if(minValue){
+            optionsText += minValue;
+          }
+          optionsText += ':';
+          if(maxValue){
+            optionsText += maxValue;
+          }
+        }
+      }
+
+      let tagCode = `stat:${datasetCode}:${propertyCode}:${optionsText}`
+      this.updateTags(tagCode, 'eurostat', true)
+    },
     selectTag(e) {
       this.updateTags(e.tagCode, e.type, e.checked);
     },
@@ -649,11 +705,32 @@ export default {
       let formTags = type + 'Tags';
 
       if (checked) {
-        this[formTags].push(tagCode);
+        if (type == 'eurostat'){
+          this.addOrUpdateEurostatTags(tagCode);
+        }
+        else{
+          this[formTags].push(tagCode);
+        }
       }
       else {
           let index = this[formTags].findIndex(code => code == tagCode);
           this[formTags].splice(index, 1);
+      }
+    },
+    addOrUpdateEurostatTags(eurostatCode) {
+      let datasetCode = eurostatCode.split(':')[1];
+      let indexFound = -1;
+      for(let index=0; index < this.eurostatTags.length; index++){
+        if (this.eurostatTags[index].includes(datasetCode)){
+          indexFound = index;
+          break;
+        }
+      }
+      if(indexFound != -1) {
+        this.eurostatTags.splice(indexFound, 1, eurostatCode )
+      }
+      else{
+        this.eurostatTags.push(eurostatCode);
       }
     },
     openDatepicker(id) {
@@ -717,9 +794,13 @@ export default {
           name: countryName,
           place: countries[country],
           feature: this.statTags,
-          activity: this.naceTags
+          activity: this.naceTags,
+          eurostatFilter: this.eurostatTags
         };
         filter.query = `place=${filter.place.join()}`;
+        if(filter.eurostatFilter.length) {
+          filter.query += `,${filter.eurostatFilter.join(',')}`
+        }
         if (this.statTags.length) {
           filter.query += `,${filter.feature.join()}`;
         }
