@@ -76,12 +76,12 @@
               <p>Quick view of established and dissoluted companies on a yearly basis based on the data each country is providing (not all countries are providing information about dissoluted companies).</p>
               <ul class="selector">
                 <li
-                  v-for="entry in countriesStatistics"
-                  :id="'chartSelector-'+entry.country.code"
-                  :key="entry.country.code"
+                  v-for="entry in countriesWithDates"
+                  :id="'chartSelector-'+entry.countryCode"
+                  :key="entry.countryCode"
                   class="chartSelector"
                 >
-                  <a @click="switchChart(entry.country.code)">{{ entry.country.label }}</a>
+                  <a @click="switchChart(entry.countryCode)">{{ entry.countryLabel }}</a>
                 </li>
               </ul>
               <div
@@ -124,7 +124,7 @@
                 </div>
                 <div class="col-xl-4">
                   <h3>Harvest </h3>
-                  <p>The data is harvested from the business registries of the participating countries and updated on a regular basis. More information about the exact dates of the last update for each country can be found <a href="/providers#datinf" target="_self">here.</a></p>
+                  <p>The data is harvested from the business registries of the participating countries and updated on a regular basis. More information about the exact dates of the last update for each country can be found <a href="/sources#datinf" target="_self">here.</a></p>
                 </div>
               </div>
             </div>
@@ -148,7 +148,8 @@
       ...mapState({
         countriesStatistics: state => state.countriesStatistics,
         activitiesStatistics: state => state.activitiesStatistics,
-        totalCompanies: state => state.totalCompanies
+        totalCompanies: state => state.totalCompanies,
+        countriesWithDates: state => state.countriesWithDates
       })
     },
 
@@ -161,8 +162,9 @@
 
     async mounted() {
       await this.$store.dispatch('fetchTopLevelStatistics');
+      if(!this.countriesWithDates.length) await this.$store.dispatch('fetchCountriesWithDates');
       this.fetched = true;
-      this.selectedCountryCode = this.countriesStatistics[0].country.code;
+      this.selectedCountryCode = this.countriesWithDates[0].countryCode;
       const activeCountryButton = document.getElementById('chartSelector-' + this.selectedCountryCode);
       activeCountryButton.classList.add('active');
     },

@@ -1,8 +1,9 @@
 <template>
-  <div id="simpleMap" />
+  <div id="simpleMap" :class="{'empty-map': emptyMapBool }" />
 </template>
 
 <script>
+import { mapState } from 'vuex';
   export default {
     name: 'SimpleMap',
 
@@ -15,6 +16,10 @@
       regionCode: {
         type: String,
         required: true
+      },
+      naceCode: {
+        type: String,
+        required: false
       },
       lau: {
         type: Object,
@@ -32,7 +37,8 @@
         customGeodata: {
           features: [],
           type: 'FeatureCollection'
-        }
+        },
+        emptyMapBool: false
       };
     },
 
@@ -46,7 +52,7 @@
 
       this.$calls.getRegionGeoJSON(this.regionCode, resolution)
         .then(async (response) => {
-          response.forEach(region => {
+          response?.forEach(region => {
             this.customGeodata.features.push({
               geometry: 'uri' in region.place[0] ? JSON.parse(region.place[0].geometry) : {},
               id: region.place[0].code,
@@ -58,9 +64,43 @@
               type: 'Feature'
             });
           });
+          if(!response || !Object.keys(this.customGeodata.features[0].geometry).length){
+            this.emptyMapBool = true
+          }
           this.initializeMap();
         })
         .catch(error => console.error(error));
+    },
+
+    computed: {
+      ...mapState({
+        hoveredRegion: state => state.hoveredRegion
+      })
+    },
+
+    watch: {
+      hoveredRegion(newValue, oldValue){
+        if(!this.polygonSeries || !this.polygonTemplate) return;
+
+        this.$store.commit('setHoveredRegion', newValue);
+        if (newValue) {
+          this.polygonSeries.data=[{
+            id: newValue.code,
+            name: newValue.label,
+            fill: this.am4core.color("#f9a800")
+          }];
+          this.polygonTemplate.propertyFields.fill = "fill";
+        }
+        else{
+          this.polygonSeries.data=[{
+            id: oldValue.code,
+            name: oldValue.label,
+            fill: this.am4core.color("#C4CEDD")
+          }];
+          this.polygonTemplate.propertyFields.fill = "fill";
+        }
+
+      }
     },
 
     methods: {
@@ -103,13 +143,18 @@
 
         // Add event listeners
         polygonTemplate.events.on('hit', (ev) => this.handleRegionClick(ev.target.dataItem.dataContext.id));
+        this.polygonTemplate = polygonTemplate;
+        this.polygonSeries = polygonSeries;
       },
 
       handleRegionClick(id) {
         if (id.includes('lau')) {
           return;
         }
-        this.$router.push({ name: 'statistics-region-region', params: { region: id } });
+        if(this.naceCode){
+          this.$router.push({ name: 'statistics-region-region', query:{ activity: this.naceCode, place: id } });
+        }
+        else { this.$router.push({ name: 'statistics-region-region', params: { region: id }})};
       }
     }
   };
@@ -118,5 +163,19 @@
 <style lang="scss" scoped>
   #simpleMap {
     height: inherit;
+  }
+  .empty-map{
+    position: relative;
+    &::after{
+      content:"There are no location data for this region!";
+      position: absolute;
+      left:50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: #355FAA;
+      font-size: 1.2rem;
+      text-align: center;
+      font-weight: 600;
+    }
   }
 </style>

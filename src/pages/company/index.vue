@@ -12,7 +12,7 @@
     <section class="companydetail" v-else>
       <b-container>
         <b-row>
-          <b-col lg="6" xl="6" class="companydetail-left">
+          <b-col lg="6" xl="6" class="companydetail-left" v-if="company.registeredAddresses && company.registeredAddresses[0].nuts3">
             <div class="companydetail-map">
               <div class="companydetail-map-section">
                 <SimpleMap
@@ -60,7 +60,7 @@
                   <b-col md="8">
                     <div class="category-pill">
                       <ul>
-                        <li>
+                        <li v-if="addr.nuts3">
                           <span class="pill">
                             <b-link
                               :to="{ name: 'statistics-region-region', params: { region: addr.nuts3.code } }"
@@ -71,12 +71,12 @@
                           </span>
                         </li>
                         <ul>
-                          <li class="separator" v-if="addr.lau">
+                          <li class="separator" v-if="addr.lau" :class="{ 'no-parent-separator': !addr.nuts3 }">
                             <ul>
-                              <li>
-                                <span class="pill">
-                                  <a>{{ addr.lau.label }}</a>
-                                </span>
+                              <li class="pill">
+                                <a class="not-clickable">
+                                  {{ addr.lau.label }}
+                                </a>
                               </li>
                             </ul>
                           </li>
@@ -98,14 +98,16 @@
                         <li>
                           <span class="pill">
                             <b-link
-                              :to=" !act.code.includes('tol') ? { name: 'statistics-activity-activity', params: { activity: act.code } } : {}"
-                              :class="act.code.includes('tol') ? 'not-clickable' : ''"
+                              :to="{ name: 'statistics-activity-activity', params: { activity: act.code } }"
                               target="_blank"
                             >
-                              {{ act.label }}
+                              {{ act.label ? act.label : act.code }}
                             </b-link>
                           </span>
                         </li>
+                        <template v-if="act.child">
+                          <ActivityChildNode :child="act.child" />
+                        </template>
                       </ul>
                       <span v-if="allActivitiesLoaded" class="pill" @click="loadMoreActivities">
                         Load more
@@ -123,6 +125,16 @@
                     >
                       {{ company.uri }}
                     </b-link>
+                  </b-col>
+                </b-row>
+                <b-row v-if="company.leiCode">
+                  <b-col md="4" class="head">LEI Code</b-col>
+                  <b-col md="8">
+                    <p
+                      class="anchor"
+                    >
+                      {{ company.leiCode }}
+                    </p>
                   </b-col>
                 </b-row>
               </div>
@@ -197,7 +209,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .not-clickable {
   cursor: text;
   &:hover {

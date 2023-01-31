@@ -6,9 +6,9 @@
     <div class="pageintro">
       <b-container>
         <div class="headingtext">
-          <h1>Data Providers</h1>
+          <h1>Data Sources</h1>
           <p class="half">
-            Data providers are the countries participating in the STIRDATA portal. Only the countries providing 
+            Data sources are the countries participating in the STIRDATA portal. Only the countries providing
             company related data as open data are listed below. There are countries that treat company data in a commercial way and are not included in this portal.
           </p>
         </div>
@@ -16,7 +16,7 @@
     </div>
     <section class="two-columns">
       <b-container>
-        <b-row>
+        <b-row class="mx-0">
           <b-col
             lg="4"
             xl="3"
@@ -123,30 +123,40 @@
                       <li class="head">
                         {{ provider.country.label }}
                       </li>
-                      <li><img v-if="'names' in provider && provider.names.length" src="../../assets/img/ic-check.png"></li>
+                      <li>
+                        <img
+                          v-if="'names' in provider && provider.names.length"
+                          src="../../assets/img/ic-check.png"
+                        >
+                        <span v-else>-</span>
+                      </li>
                       <li>
                         <img
                           v-if="'foundingDate' in provider"
                           src="../../assets/img/ic-check.png"
                         >
+                        <span v-else>-</span>
                       </li>
                       <li>
                         <img
                           v-if="'dissolutionDate' in provider"
                           src="../../assets/img/ic-check.png"
                         >
+                        <span v-else>-</span>
                       </li>
                       <li>
                         <img
                           v-if="'activityVocabularies' in provider"
                           src="../../assets/img/ic-check.png"
                         >
+                        <span v-else>-</span>
                       </li>
                       <li>
                         <img
                           v-if="'placeVocabularies' in provider"
                           src="../../assets/img/ic-check.png"
                         >
+                        <span v-else>-</span>
                       </li>
                     </ul>
                     <template #prevArrow="">
@@ -203,9 +213,7 @@
                     <li>SPARQL Endpoint</li>
                     <li>Number of Entries</li>
                     <li>License</li>
-                    <li class="source">
-                      Source
-                    </li>
+                    <li>Source</li>
                   </ul>
                 </b-col>
                 <b-col
@@ -226,9 +234,9 @@
                         {{ provider.country.label }}
                       </li>
                       <li>
-                        <span v-if="'lastUpdated' in provider">{{
-                          provider.lastUpdated | formatDate
-                        }}</span>
+                        <span v-if="'lastUpdated' in provider">
+                          {{ provider.lastUpdated | formatDate }}
+                        </span>
                       </li>
                       <!-- <li>Monthly</li> -->
                       <li>
@@ -243,13 +251,18 @@
                       <li>
                         {{ Number(provider.legalEntityCount).toLocaleString() }}
                       </li>
-                      <li>
+                      <li class="license">
                         <a
                           v-if="'license' in provider && 'label' in provider.license"
                           :href="provider.license.uri"
                           target="_blank"
                           rel="noopener noreferrer"
-                        >{{ provider.license.label }}</a>
+                          v-b-tooltip.hover.left
+                          :title="provider.license.label"
+                        >
+                          {{ provider.license.label }}
+                        </a>
+                        <span v-else>-</span>
                       </li>
                       <li class="source">
                         <a
@@ -257,9 +270,12 @@
                           :href="provider.source.uri"
                           target="_blank"
                           rel="noopener noreferrer"
+                          v-b-tooltip.hover.left
+                          :title="provider.source.label"
                         >
                           {{ provider.source.label }}
                         </a>
+                        <span v-else>-</span>
                       </li>
                     </ul>
                     <template #prevArrow="">
@@ -308,7 +324,7 @@
             to: { name: 'index' }
           },
           {
-            text: 'DATA PROVIDERS',
+            text: 'DATA SOURCES',
             active: true
           }
         ],
@@ -380,5 +396,13 @@
         display: inline-block !important;
       }
     }
+  }
+
+  .license,
+  .source {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 15px 8px !important;
   }
 </style>

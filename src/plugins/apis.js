@@ -7,10 +7,20 @@ export default function({ $axios, app }, inject) {
     baseURL: BASE_URL
   });
 
-  backendApi.onResponse((response) => {
-    if (response.status === 404) {
-      console.log('404 error');
+
+  backendApi.onError((error) => {
+      if (error.response) {
+        nuxtError({
+          statusCode: error.response.status,
+          message: error.message
+      })
+    } else {
+        nuxtError({
+          statusCode: error.status,
+          message: error.message
+      })
     }
+    return Promise.resolve(false)
   });
 
    backendApi.onRequest((config) => {

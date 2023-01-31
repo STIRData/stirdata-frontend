@@ -1,0 +1,2 @@
+echo DEPLOY_URL=https://dev.stirdata.eu >> $GITHUB_ENV
+echo BASE_API_URL=https://dev.stirdata.eu/api >> $GITHUB_ENV

@@ -34,8 +34,8 @@
             </b-link>
           </li>
           <li>
-            <b-link :to="{ name: 'providers' }">
-              Data Providers
+            <b-link :to="{ name: 'sources' }">
+              Data Sources
             </b-link>
           </li>
         </ul>
@@ -87,11 +87,8 @@
           >
             Saved view
           </b-dropdown-item>
-          <b-dropdown-item
-            class="ml-0 pl-0 dropdown-item"
-            @click="signOut"
-          >
-            Sign out
+          <b-dropdown-item class="ml-0 pl-0 dropdown-item"
+            :to="{ path: '/profile/logout' }"> Sign out
           </b-dropdown-item>
         </b-dropdown>
       </nav>
@@ -117,8 +114,8 @@
           <b-nav-item :to="{ name: 'partners' }">
             Partners
           </b-nav-item>
-          <b-nav-item :to="{ name: 'providers' }">
-            Data Providers
+          <b-nav-item :to="{ name: 'sources' }">
+            Data Sources
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -146,18 +143,6 @@
 
       isAuthenticated() {
         return this.$auth.loggedIn;
-      }
-    },
-
-    methods: {
-      signOut() {
-        this.$auth.logout();
-        if (this.$solid.auth) {
-          this.$solid.auth.logout()
-            .then(() => {
-              this.$store.commit('setUser', null);
-            });
-        } 
       }
     }
   };

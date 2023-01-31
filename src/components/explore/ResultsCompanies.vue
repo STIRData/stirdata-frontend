@@ -1,5 +1,8 @@
 <template>
   <Spinner class="text-center" v-if="companiesLoading" />
+  <h3 v-else-if="companiesCallError">
+    An error occured while fetching the data. Please try again or set different search criteria.
+  </h3>
   <h3 v-else-if="totalResults === 0">
     There are no companies in {{ countryFilters.name }} based on Filter
   </h3>
@@ -13,7 +16,7 @@
         from
         {{ totalResults.toLocaleString() }}
       </div>
-      <a class="download">Download Results</a>
+      <!-- <a class="download">Download Results</a> -->
     </div>
     <table class="table table-borderless table-stir">
       <thead>
@@ -32,10 +35,11 @@
           <!-- Company Name -->
           <td>
             <b-link
-              :to="{ name: 'company', query: {uri: company.uri} }"
+              :to="company.legalNames ? { name: 'company', query: {uri: company.uri} } : null"
               target="_blank"
+              :class="{ 'empty-legalnames': !company.legalNames }"
             >
-              {{ company.legalNames[0].value }}
+              {{ company.legalNames ? company.legalNames[0].value : 'Legal name not available' }}
             </b-link>
           </td>
           <!-- Registration Date -->
@@ -74,6 +78,7 @@
                 Visit URI
               </b-dropdown-item>
               <b-dropdown-item
+                v-if="company.legalNames"
                 :to="{ name: 'company', query: {uri: company.uri} }"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -160,7 +165,8 @@ export default {
       resultsCompanies: {},
       companiesLoading: true,
       countryFilters: {},
-      countrySearchQuery: ''
+      countrySearchQuery: '',
+      companiesCallError: false
     };
   },
 
@@ -187,6 +193,7 @@ export default {
 
   methods: {
     initiateSearch() {
+      this.companiesCallError = false;
       this.companiesLoading = true;
       this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
       this.countrySearchQuery = this.countryFilters.query;
@@ -203,7 +210,11 @@ export default {
 
           this.companiesLoading = false;
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          console.error(error)
+          this.companiesCallError = true;
+          this.companiesLoading = false;
+        });
     },
     paginationImplementation(pageToGo) {
       if (pageToGo > this.totalPages || pageToGo < 1) return;
@@ -253,6 +264,14 @@ export default {
 
   &:hover {
     border-radius: 0.25rem;
+  }
+}
+
+.empty-legalnames{
+  opacity: 0.5;
+  cursor: text;
+  &:hover{
+    text-decoration: none !important;
   }
 }
 </style>

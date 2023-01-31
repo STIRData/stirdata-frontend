@@ -35,6 +35,12 @@ export default (ctx, inject) => {
     saveNewView: (view) => {
       return ctx.$api.post('view', view)
     },
+    updateUser: (user) => {
+      return ctx.$api.put('user/updateUserDetails', user)
+    },
+    deleteUser: () => {
+      return ctx.$api.post('/user/deleteAccount')
+    },
     deleteView: (id)=>{
       return ctx.$api.delete(`view/${id}`)
     },
@@ -45,7 +51,7 @@ export default (ctx, inject) => {
       let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
       let type = (resource === 'nace') ? 'activity' : 'place';
       return ctx.$api.get(resource)
-        .then(response => response.data[grouping].map(item => new Object({ value: item[type][0].code.split(':')[1], type: item[type][0].code.split(':')[0], text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}` })));
+        .then(response => response.data[grouping].map(item => new Object({ value: item[type][0].code.split(':')[1], type: item[type][0].code.split(':')[0], text: `${item[type][0].label}` })));
     },
     getSubLevels: (resource, code) => {
       let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
@@ -56,7 +62,7 @@ export default (ctx, inject) => {
             return response.data[grouping].map(item => new Object({
               value: item[type][0].code.split(':')[1],
               type: item[type][0].code.split(':')[0],
-              text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}`
+              text: `${item[type][0].label}`
             }));
           } else {
             return [];
@@ -94,6 +100,16 @@ export default (ctx, inject) => {
     getActivityStatistics: activityCode => {
       let code = activityCode.includes(':') ? activityCode : `nace-rev2:${activityCode}`;
       return ctx.$api.get(`statistics?activity=${code}&dimension=place,activity`).then(response => response.data);
+    },
+    getActivityByRegionStatistics: (activityCode, regionCode) => {
+      let code='';
+      if(activityCode.length>0){
+        code = activityCode.includes(':') ? `&activity=${activityCode}` : `&activity=nace-rev2:${activityCode}`;
+      }
+      let rcode='';
+      if(regionCode.length>0){
+        rcode = regionCode.includes(':') ? `&place=${regionCode}` : `&place=nuts:${regionCode}`;}
+      return ctx.$api.get(`statistics?dimension=selection,place,activity${code}${rcode}`).then(response => response.data);
     },
     getRegionData: regionCode => {
       let code = regionCode.includes(':') ? regionCode : `nuts:${regionCode}`;
