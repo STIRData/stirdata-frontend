@@ -181,7 +181,32 @@ export default (ctx, inject) => {
             }))
           };
         }));
-    }
+    },
+    getEurostatFilters: () => {
+      return ctx.$api.get(`nuts/eurostat-filters`)
+        .then(response => response.data.map((filter, index1) => {
+          return {
+            datasetCode: filter.dataset.code,
+            propertyCode: filter.property.code,
+            uri: filter.dataset.uri,
+            value: `filter-${index1}`,
+            type: 'stat',
+            text: filter.property.label,
+            subLevels: filter.values.map((subfilter, index2) => new Object({
+              value: `filter-${index1}${index2}`,
+              type: 'stat',
+              text: subfilter.label,
+              subLevels: subfilter.values.map(value => new Object({
+                value: `${filter.dataset.code.split(':')[1]}:${filter.property.code.split(':')[1]}:${value.code.split(':')[1]}`,
+                type: 'stat',
+                text: value.label,
+                minValue: value.minDoubleValue,
+                maxValue: value.maxDoubleValue
+              }))
+            }))
+          };
+        }));
+    },
   };
 
   inject('calls', apiCalls);

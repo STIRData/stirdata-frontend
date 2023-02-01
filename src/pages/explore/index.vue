@@ -326,6 +326,51 @@
                       </div>
                     </b-collapse>
                   </div>
+                  <!-- Eurostat Filters -->
+                  <div class="sidebar-filters sidebar-section-wrap">
+                    <h3 id="heading-filters">
+                      <div v-b-toggle.collapseFilters class="accordion-button d-flex justify-content-between">
+                        Eurostat Filters
+                        <font-awesome-icon icon="chevron-down" />
+                      </div>
+                    </h3>
+                    <b-form-group v-if="eurostatTags.length > 0" class="mb-0">
+                      <b-form-tags
+                        v-model="eurostatTags"
+                        input-id="filters-tags"
+                        input-class="d-none"
+                        :input-attrs="{ readonly: 'true' }"
+                        class="p-0"
+                        tag-class="pill-class"
+                        add-button-text=""
+                        no-outer-focus
+                        size="lg"
+                        placeholder=""
+                      />
+                    </b-form-group>
+                    <b-collapse
+                      id="collapseFilters"
+                      class="accordion-collapse"
+                      v-model="toggles.filters"
+                    >
+                      <div class="input-filter">
+                        <ul>
+                          <li
+                            v-for="(filter, index) in eurostatFilters"
+                            :id="'filter-'+index"
+                            :key="'filter-'+index"
+                          >
+                            <eurostat-filter
+                              :filter="filter"
+                              :tags="eurostatTags"
+                              :key="savedEurostatRetrieved"
+                              @select-tag="eurostatFilterFilled"
+                            />
+                          </li>
+                        </ul>
+                      </div>
+                    </b-collapse>
+                  </div>
                   <!-- Form buttons -->
                   <div class="sidebar-action sidebar-section-wrap">
                     <div class="inputaction">
@@ -355,6 +400,7 @@ import vClickOutside from 'v-click-outside';
 export default {
   components: {
     TreeMenuNode: () => import("../../components/TreeMenuNode"),
+    EurostatFilter: () => import("../../components/EurostatFilter"),
     ExploreResults: () => import("../../components/explore/ExploreResults"),
     Breadcrumb: () => import("../../components/Breadcrumb"),
     Spinner: () => import("../../components/Spinner")
@@ -404,9 +450,11 @@ export default {
       naceTags: [],
       dateTags: [],
       statTags: [],
+      eurostatTags: [],
       foundingStartDate: null,
       foundingEndDate: null,
-      newViewTitle: ''
+      newViewTitle: '',
+      savedEurostatRetrieved: false
     };
   },
 
@@ -419,6 +467,9 @@ export default {
     }
     if (!this.regionFeatures.length) {
       await this.$store.dispatch('fetchRegionFeatures');
+    }
+    if (!this.eurostatFilters.length) {
+      await this.$store.dispatch('fetchEurostatFilters');
     }
     if (this.isAuthenticated) {
       this.$calls.getSavedViews().then(response => {
@@ -458,6 +509,7 @@ export default {
       topLevelNuts: state => state.topLevelNuts,
       topLevelNace: state => state.topLevelNace,
       regionFeatures: state => state.regionFeatures,
+      eurostatFilters: state => state.eurostatFilters,
       searchFilters: state => state.searchFilters
     }),
     isAuthenticated() {
@@ -513,6 +565,13 @@ export default {
           checkbox.checked = false;
         }
       }
+    },
+    eurostatTags(newValue, oldValue) {
+      let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
+
+      if (tagsDifference.length == 1) {
+        this.savedEurostatFetched();
+      }
     }
   },
 
@@ -530,6 +589,10 @@ export default {
       view.feature.forEach(feature => {
         this.selectSearchResult('stat', { type: 'stat', value: feature.split('stat:')[1] });
       });
+      view.eurostat.forEach(filter => {
+        this.eurostatTags.push(filter);
+      });
+      this.savedEurostatFetched();
       if (!!view.startDate) {
         this.foundingStartDate = view.startDate;
         this.selectDate('After: ', view.startDate);
@@ -550,6 +613,7 @@ export default {
         startDate: filters[0].date ? filters[0].date.split(':')[0] : null,
         endDate: filters[0].date ? filters[0].date.split(':')[1] : null,
         feature: filters[0].feature,
+        eurostat: filters[0].eurostat,
         place: filters.reduce((a,b) => a.concat(b.place), [])
       }
       await this.$calls.saveNewView(view)
@@ -576,6 +640,9 @@ export default {
         })
         .catch(error => console.error(error));
     },
+    savedEurostatFetched(){
+      this.savedEurostatRetrieved = !this.savedEurostatRetrieved
+    },
     searchTags(type, resultsArray, prefix) {
       if (prefix.length == 0) {
         return;
@@ -601,6 +668,32 @@ export default {
         this.clearSearch(prefix, results);
       }
     },
+    eurostatFilterFilled({datasetCode, propertyCode, options, minValue, maxValue}){
+      let optionsCopy = {}
+      for (const key in options) {
+        optionsCopy[key] = options[key].split(":").pop();
+      }
+      let optionsText = '';
+      for(const option in optionsCopy){
+        if(optionsText){
+          optionsText += '~'
+        }
+        optionsText += optionsCopy[option]
+        if(optionsCopy[option].startsWith('unit')) {
+          optionsText += ':'
+          if(minValue){
+            optionsText += minValue;
+          }
+          optionsText += ':';
+          if(maxValue){
+            optionsText += maxValue;
+          }
+        }
+      }
+
+      let tagCode = `stat:${datasetCode}:${propertyCode}:${optionsText}`
+      this.updateTags(tagCode, 'eurostat', true)
+    },
     selectTag(e) {
       this.updateTags(e.tagCode, e.type, e.checked);
     },
@@ -608,11 +701,32 @@ export default {
       let formTags = type + 'Tags';
 
       if (checked) {
-        this[formTags].push(tagCode);
+        if (type == 'eurostat'){
+          this.addOrUpdateEurostatTags(tagCode);
+        }
+        else{
+          this[formTags].push(tagCode);
+        }
       }
       else {
           let index = this[formTags].findIndex(code => code == tagCode);
           this[formTags].splice(index, 1);
+      }
+    },
+    addOrUpdateEurostatTags(eurostatCode) {
+      let datasetCode = eurostatCode.split(':')[1];
+      let indexFound = -1;
+      for(let index=0; index < this.eurostatTags.length; index++){
+        if (this.eurostatTags[index].includes(datasetCode)){
+          indexFound = index;
+          break;
+        }
+      }
+      if(indexFound != -1) {
+        this.eurostatTags.splice(indexFound, 1, eurostatCode )
+      }
+      else{
+        this.eurostatTags.push(eurostatCode);
       }
     },
     openDatepicker(id) {
@@ -640,6 +754,7 @@ export default {
       this.naceTags = [];
       this.dateTags = [];
       this.statTags = [];
+      this.eurostatTags = [];
       this.foundingStartDate = null;
       this.foundingEndDate = null;
       if (resetSavedView) {
@@ -675,9 +790,13 @@ export default {
           name: countryName,
           place: countries[country],
           feature: this.statTags,
-          activity: this.naceTags
+          activity: this.naceTags,
+          eurostat: this.eurostatTags
         };
         filter.query = `place=${filter.place.join()}`;
+        if(filter.eurostat.length) {
+          filter.query += `,${filter.eurostat.join(',')}`
+        }
         if (this.statTags.length) {
           filter.query += `,${filter.feature.join()}`;
         }
@@ -737,6 +856,7 @@ export default {
       this.toggles.activities = false;
       this.toggles.registration = false;
       this.toggles.features = false;
+      this.toggles.filters = false;
     }
   }
 }
