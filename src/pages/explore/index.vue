@@ -362,6 +362,8 @@
                           >
                             <eurostat-filter
                               :filter="filter"
+                              :tags="eurostatTags"
+                              :key="savedEurostatRetrieved"
                               @select-tag="eurostatFilterFilled"
                             />
                           </li>
@@ -451,7 +453,8 @@ export default {
       eurostatTags: [],
       foundingStartDate: null,
       foundingEndDate: null,
-      newViewTitle: ''
+      newViewTitle: '',
+      savedEurostatRetrieved: false
     };
   },
 
@@ -557,32 +560,7 @@ export default {
       let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
 
       if (tagsDifference.length == 1) {
-        let tagsDifferenceArr = tagsDifference[0].split(':');
-        let datasetCode = [tagsDifferenceArr[1], tagsDifferenceArr[2]].join(':');
-        let parameters = tagsDifferenceArr[3].split('~');
-
-        for( let param of parameters){
-          let inputId = datasetCode + ':' +param;
-          if (param.startsWith('unit')) {
-            let inputTextFrom = document.getElementById(inputId +'-text--from');
-            let inputTextTo = document.getElementById(inputId +'-text--to');
-
-            if(inputTextFrom && inputTextTo){
-              inputTextFrom.value = '';
-              inputTextTo.value = '';
-              inputTextFrom.dispatchEvent(new Event('input'));
-              inputTextTo.dispatchEvent(new Event('input'));
-            }
-          }
-          else{
-            let checkbox = document.getElementById(inputId +'-radio');
-
-            if (checkbox) {
-              checkbox.checked = false;
-              checkbox.dispatchEvent(new Event('input'));
-            }
-          }
-        }
+        this.savedEurostatFetched();
       }
     }
   },
@@ -601,6 +579,10 @@ export default {
       view.feature.forEach(feature => {
         this.selectSearchResult('stat', { type: 'stat', value: feature.split('stat:')[1] });
       });
+      view.eurostat.forEach(filter => {
+        this.eurostatTags.push(filter);
+      });
+      this.savedEurostatFetched();
       if (!!view.startDate) {
         this.foundingStartDate = view.startDate;
         this.selectDate('After: ', view.startDate);
@@ -621,6 +603,7 @@ export default {
         startDate: filters[0].date ? filters[0].date.split(':')[0] : null,
         endDate: filters[0].date ? filters[0].date.split(':')[1] : null,
         feature: filters[0].feature,
+        eurostat: filters[0].eurostat,
         place: filters.reduce((a,b) => a.concat(b.place), [])
       }
       await this.$calls.saveNewView(view)
@@ -646,6 +629,9 @@ export default {
           this.selectedSavedView = null;
         })
         .catch(error => console.error(error));
+    },
+    savedEurostatFetched(){
+      this.savedEurostatRetrieved = !this.savedEurostatRetrieved
     },
     searchTags(type, resultsArray, prefix) {
       if (prefix.length == 0) {
@@ -795,11 +781,11 @@ export default {
           place: countries[country],
           feature: this.statTags,
           activity: this.naceTags,
-          eurostatFilter: this.eurostatTags
+          eurostat: this.eurostatTags
         };
         filter.query = `place=${filter.place.join()}`;
-        if(filter.eurostatFilter.length) {
-          filter.query += `,${filter.eurostatFilter.join(',')}`
+        if(filter.eurostat.length) {
+          filter.query += `,${filter.eurostat.join(',')}`
         }
         if (this.statTags.length) {
           filter.query += `,${filter.feature.join()}`;
@@ -860,6 +846,7 @@ export default {
       this.toggles.activities = false;
       this.toggles.registration = false;
       this.toggles.features = false;
+      this.toggles.filters = false;
     }
   }
 }

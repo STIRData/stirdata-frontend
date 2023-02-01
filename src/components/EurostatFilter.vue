@@ -99,6 +99,10 @@ export default {
       type: Object,
       required: true,
     },
+    tags: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
@@ -110,8 +114,32 @@ export default {
     };
   },
   mounted() {
+    let dsCode = this.filter.datasetCode.split(":")[1];
     this.filter.subLevels.forEach((subLevel) => {
       this.options[subLevel.value] = null;
+    });
+
+    this.tags.forEach((tag) => {
+      let tagArray = tag.split(":");
+      if (tagArray[1] == dsCode) {
+
+        let parameters = tagArray[3].split("~");
+        for (let param of parameters) {
+          if (param.includes("unit")) {
+            let minVal = tag.split(param)[1].split(":")[1];
+            let maxVal = tag.split(param)[1].split(":")[2];
+            this.minValue = parseInt(minVal);
+            this.maxValue = parseInt(maxVal);
+          }
+          for (let sub1 of this.filter.subLevels) {
+            for (let sub2 of sub1.subLevels) {
+              if (sub2.value.includes(param)) {
+                this.options[sub1.value] = sub2.value;
+              }
+            }
+          }
+        }
+      }
     });
   },
   methods: {
