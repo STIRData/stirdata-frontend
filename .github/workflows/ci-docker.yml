@@ -1,0 +1,53 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - devops/citest
+      - dev
+      - main
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+    env:
+      PROJECT: stirdata
+      APP: frontend
+      SAGE_API_URL: https://stirdata-semantic.ails.ece.ntua.gr/api
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+
+    steps:
+
+
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Set env for branch
+        run: |
+          ([ -f "${{ github.workspace }}/.github/envs/${{ github.ref_name }}" ] && . "${{ github.workspace }}/.github/envs/${{ github.ref_name }}" )|| echo "no env file for ${{ github.ref_name }}"
+
+      - uses: datawise-ai/actions-build-npm@main
+        with:
+          NODE_VERSION: ${{ matrix.node }}
+
+      - uses: athenarc/actions-docker-build-push@master
+        id: docker_build
+        with:
+          DOCKER_REGISTRY: "${{ env.PROJECT }}.docker.ails.ece.ntua.gr"
+          DOCKER_REPO: "${{ env.APP }}"
+          DOCKER_PASSWORD: "${{ secrets.WITH_DOCKER_KEY }}"
+
+      - uses: athenarc/actions-docker-compose-deploy@master
+        id: docker_deploy
+        with:
+          AUTH_TOKEN: "${{ secrets.WITH_DOCKER_COMPOSE_DEPLOY_SECRET }}"
+          USE_PULL_REPO: "true"
+          DEPLOY_URL: "${{ env.DEPLOY_URL }}/docker-compose-deploy/deploy"
+          IMAGES: "${{ steps.docker_build.outputs.images }}"
+
+ 

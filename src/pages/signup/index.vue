@@ -19,7 +19,6 @@
                     <h2>
                       Explore, Search and <br>Navigate
                     </h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
                   </div>
                 </li>
                 <li>
@@ -28,7 +27,6 @@
                     <h2>
                       Visualize, Analyze and<br>Save
                     </h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
                   </div>
                 </li>
               </VueSlickCarousel>

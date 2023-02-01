@@ -457,8 +457,8 @@ body {
 				}
 				.contactwrap {
 					position: absolute;
-          top: 0;
-					// bottom: 0px;
+          // top: 0;
+					bottom: 0px;
 					left: 0px;
 					padding: 0 40px 0 10px;
 
@@ -2374,6 +2374,13 @@ body {
 							background-image:url("../img/ic-hierarchy.png");
 							background-repeat: no-repeat;
 						}
+            &.no-parent-separator{
+              margin-left: -40px;
+              &::after{
+                width: 0;
+                height: 0;
+              }
+            }
 					}
 
 					// pill

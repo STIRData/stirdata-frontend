@@ -34,8 +34,8 @@
             </b-link>
           </li>
           <li>
-            <b-link :to="{ name: 'providers' }">
-              Data Providers
+            <b-link :to="{ name: 'sources' }">
+              Data Sources
             </b-link>
           </li>
         </ul>
@@ -114,8 +114,8 @@
           <b-nav-item :to="{ name: 'partners' }">
             Partners
           </b-nav-item>
-          <b-nav-item :to="{ name: 'providers' }">
-            Data Providers
+          <b-nav-item :to="{ name: 'sources' }">
+            Data Sources
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>

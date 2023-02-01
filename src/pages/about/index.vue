@@ -23,7 +23,7 @@
               technologies as the means to overcome the technical barriers that
               hamper the reuse of open data, namely, poor quality and limited
               availability of Open Data. In particular, the Action seeks to
-              assist data providers through a set of data specifications,
+              assist data sources through a set of data specifications,
               guidelines, and an accompanying harmonisation toolset for
               streamlining and facilitating the process of enriching and
               publishing company data as Linked Data.
@@ -100,17 +100,17 @@
                   class="decor"
                   src="../../assets/img/ic-remarks.png"
                 >
-                <!-- <p>Contact us for more information regarding STIRDATA</p>
+                <p>Contact us for more information regarding STIRDATA</p>
                 <nav class="heronav">
                   <ul>
                     <li>
                       <a
                         class="button"
-                        href="#"
+                        href="mailto:stirdata-portal@ails.ece.ntua.gr"
                       >Contact Us</a>
                     </li>
                   </ul>
-                </nav> -->
+                </nav>
               </div>
             </b-col>
             <!-- right-->

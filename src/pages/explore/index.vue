@@ -478,19 +478,29 @@ export default {
     }
     if (this.$route.params.nutsFilter){
       this.nutsTags.push(this.$route.params.nutsFilter)
-      this.$bvToast.toast('Your region has been preselected.', {
-          variant: 'info',
-          title: 'Info',
-          solid: true
-      });
+      if (!this.$route.params.naceFilter)
+        this.$bvToast.toast('Your region has been preselected.', {
+            variant: 'info',
+            title: 'Info',
+            solid: true
+        });
+      else{
+        this.naceTags.push(this.$route.params.naceFilter);
+        this.$bvToast.toast('Your region and activity have been preselected.', {
+            variant: 'info',
+            title: 'Info',
+            solid: true
+        });
+        return;
+      }
     }
     if (this.$route.params.naceFilter){
       this.naceTags.push(this.$route.params.naceFilter)
       this.$bvToast.toast('Specify a region in addition to the activity that you have selected.', {
-          variant: 'info',
-          title: 'Info',
-          solid: true
-      });
+            variant: 'info',
+            title: 'Info',
+            solid: true
+        });
     }
   },
 

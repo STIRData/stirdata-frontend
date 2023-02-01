@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
   export default {
     name: 'SimpleMap',
 
@@ -15,6 +16,10 @@
       regionCode: {
         type: String,
         required: true
+      },
+      naceCode: {
+        type: String,
+        required: false
       },
       lau: {
         type: Object,
@@ -67,6 +72,37 @@
         .catch(error => console.error(error));
     },
 
+    computed: {
+      ...mapState({
+        hoveredRegion: state => state.hoveredRegion
+      })
+    },
+
+    watch: {
+      hoveredRegion(newValue, oldValue){
+        if(!this.polygonSeries || !this.polygonTemplate) return;
+
+        this.$store.commit('setHoveredRegion', newValue);
+        if (newValue) {
+          this.polygonSeries.data=[{
+            id: newValue.code,
+            name: newValue.label,
+            fill: this.am4core.color("#f9a800")
+          }];
+          this.polygonTemplate.propertyFields.fill = "fill";
+        }
+        else{
+          this.polygonSeries.data=[{
+            id: oldValue.code,
+            name: oldValue.label,
+            fill: this.am4core.color("#C4CEDD")
+          }];
+          this.polygonTemplate.propertyFields.fill = "fill";
+        }
+
+      }
+    },
+
     methods: {
       initializeMap() {
         // Create map instance
@@ -107,13 +143,18 @@
 
         // Add event listeners
         polygonTemplate.events.on('hit', (ev) => this.handleRegionClick(ev.target.dataItem.dataContext.id));
+        this.polygonTemplate = polygonTemplate;
+        this.polygonSeries = polygonSeries;
       },
 
       handleRegionClick(id) {
         if (id.includes('lau')) {
           return;
         }
-        this.$router.push({ name: 'statistics-region-region', params: { region: id } });
+        if(this.naceCode){
+          this.$router.push({ name: 'statistics-region-region', query:{ activity: this.naceCode, place: id } });
+        }
+        else { this.$router.push({ name: 'statistics-region-region', params: { region: id }})};
       }
     }
   };

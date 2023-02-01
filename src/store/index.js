@@ -9,7 +9,8 @@ export default {
     countriesWithDates: [],
     activitiesStatistics: [],
     totalCompanies: 0,
-    searchFilters: []
+    searchFilters: [],
+    hoveredRegion: null
   }),
 
   mutations: {
@@ -42,6 +43,9 @@ export default {
     },
     setSearchFilters(state, value) {
       state.searchFilters = value;
+    },
+    setHoveredRegion(state, value) {
+      state.hoveredRegion = value;
     }
   },
 
