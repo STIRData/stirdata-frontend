@@ -51,7 +51,7 @@
               Sign in
             </b-link>
           </li>
-          <li>
+          <li class="sign-up">
             <b-link
               :to="{ name: 'signup' }"
               class="button"
@@ -116,6 +116,12 @@
           </b-nav-item>
           <b-nav-item :to="{ name: 'sources' }">
             Data Sources
+          </b-nav-item>
+          <b-nav-item :to="{ name: 'signin' }">
+            Sign in
+          </b-nav-item>
+          <b-nav-item :to="{ name: 'signup' }">
+            Sign up
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
