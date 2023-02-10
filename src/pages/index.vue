@@ -239,5 +239,8 @@
         font-weight: bolder;
       }
     }
+    .selector li a {
+      padding: 4px 15px !important;
+    }
   }
 </style>
