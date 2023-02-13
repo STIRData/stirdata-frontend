@@ -494,6 +494,15 @@ export default {
         return;
       }
     }
+    if(this.$route.params.savedViewId){
+      this.selectedSavedView = this.$route.params.savedViewId;
+      this.selectSavedView();
+      this.$bvToast.toast('Your saved view has been preselected.', {
+            variant: 'info',
+            title: 'Info',
+            solid: true
+        });
+    }
     if (this.$route.params.naceFilter){
       this.naceTags.push(this.$route.params.naceFilter)
       this.$bvToast.toast('Specify a region in addition to the activity that you have selected.', {
