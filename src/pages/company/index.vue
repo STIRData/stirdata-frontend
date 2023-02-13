@@ -116,7 +116,7 @@
                   </b-col>
                 </b-row>
                 <b-row>
-                  <b-col md="4" class="head">URI</b-col>
+                  <b-col md="4" class="head">IRI</b-col>
                   <b-col md="8">
                     <b-link
                       class="anchor"
@@ -176,7 +176,7 @@ export default {
   },
 
   async mounted() {
-    this.$calls.getCompany(this.$route.query.uri)
+    this.$calls.getCompany(this.$route.query.iri)
       .then(response => {
         this.company = response;
         this.companyActivities = response.companyActivities ? response.companyActivities.slice(0,5) : [];

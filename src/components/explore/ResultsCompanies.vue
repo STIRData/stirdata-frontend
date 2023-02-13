@@ -35,7 +35,7 @@
           <!-- Company Name -->
           <td>
             <b-link
-              :to="company.legalNames ? { name: 'company', query: {uri: company.uri} } : null"
+              :to="company.legalNames ? { name: 'company', query: {iri: company.uri} } : null"
               target="_blank"
               :class="{ 'empty-legalnames': !company.legalNames }"
             >
@@ -75,11 +75,11 @@
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Visit URI
+                Visit IRI
               </b-dropdown-item>
               <b-dropdown-item
                 v-if="company.legalNames"
-                :to="{ name: 'company', query: {uri: company.uri} }"
+                :to="{ name: 'company', query: {iri: company.uri} }"
                 target="_blank"
                 rel="noopener noreferrer"
               >
