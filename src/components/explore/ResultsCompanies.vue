@@ -274,4 +274,12 @@ export default {
     text-decoration: none !important;
   }
 }
+@media (max-width: 767.98px) {
+  .table-stir {
+    vertical-align: top !important;
+    th, td {
+      padding: 15px 3px !important;
+    }
+  }
+}
 </style>
