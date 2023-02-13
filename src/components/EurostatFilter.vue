@@ -125,7 +125,7 @@ export default {
 
         let parameters = tagArray[3].split("~");
         for (let param of parameters) {
-          if (param.includes("unit")) {
+          if (param.startsWith("unit")) {
             let minVal = tag.split(param)[1].split(":")[1];
             let maxVal = tag.split(param)[1].split(":")[2];
             this.minValue = parseInt(minVal);
