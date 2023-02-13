@@ -67,7 +67,7 @@
       >
         <b-dropdown
           id="dropdownMenu"
-          class="username"
+          class="username d-md-block d-none"
           variant="outline-none"
           no-caret
           left
@@ -117,12 +117,25 @@
           <b-nav-item :to="{ name: 'sources' }">
             Data Sources
           </b-nav-item>
-          <b-nav-item :to="{ name: 'signin' }">
-            Sign in
-          </b-nav-item>
-          <b-nav-item :to="{ name: 'signup' }">
-            Sign up
-          </b-nav-item>
+          <template v-if="!isAuthenticated">
+            <b-nav-item :to="{ name: 'signin' }">
+              Sign in
+            </b-nav-item>
+            <b-nav-item :to="{ name: 'signup' }">
+              Sign up
+            </b-nav-item>
+          </template>
+          <template v-else>
+            <b-nav-item :to="{ name: 'profile' }">
+              Profile
+            </b-nav-item>
+            <b-nav-item :to="{ path: '/profile/savedview' }">
+              Saved View
+            </b-nav-item>
+            <b-nav-item :to="{ path: '/profile/logout' }">
+              Sign out
+            </b-nav-item>
+          </template>
         </b-navbar-nav>
       </b-collapse>
     </b-container>
