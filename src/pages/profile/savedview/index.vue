@@ -44,8 +44,13 @@
                 </thead>
                 <tbody>
                   <tr v-for="view of views" :key="view.creationDate">
-                    <!-- <td><a href="savedviewdetail.html">{{view.name}}</a></td> -->
-                    <td><a>{{view.name}}</a></td>
+                    <td>
+                      <b-link
+                        :to="{ name: 'explore', params: { savedViewId: view.id } }"
+                      >
+                        {{ view.name }}
+                      </b-link>
+                    </td>
                     <td>{{view.creationDate | formatDate}}</td>
                     <td class="end">
                       <b-dropdown
@@ -56,6 +61,11 @@
                         <template #button-content>
                           <img src="../../../assets/img/ic-bullets.png"/>
                         </template>
+                        <b-dropdown-item
+                          :to="{ name: 'explore', params: { savedViewId: view.id } }"
+                        >
+                          Show
+                        </b-dropdown-item>
                         <b-dropdown-item
                           target="_blank"
                           rel="noopener noreferrer"
