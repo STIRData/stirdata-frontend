@@ -182,4 +182,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (max-width: 767.98px) {
+  .accordion-companies-button::after {
+    right: 0 !important;
+  }
+  .accordion-statistics-button::after {
+    right: 0 !important;
+  }
+}
 </style>

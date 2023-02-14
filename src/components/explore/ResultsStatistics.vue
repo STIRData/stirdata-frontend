@@ -62,8 +62,9 @@
           <div class="line-stats chart-line-a">
             <ul>
               <li
-                v-for="inst in filteredArrayToShow.slice(5, 10)"
+                v-for="(inst, index) in filteredArrayToShow.slice(5, 10)"
                 :key="inst[statisticsKey][0].code"
+                :class="{'sec-col--first-el': index == 0}"
               >
                 <div class="wrap">
                   <div class="subject">
@@ -392,8 +393,8 @@ export default {
           separateWord[i].substring(1);
       }
       separateWord = separateWord.join(" ");
-      if (separateWord.length > 30) {
-        separateWord = separateWord.slice(0, 30) + "...";
+      if (separateWord.length > 29) {
+        separateWord = separateWord.slice(0, 29) + "...";
       }
       return separateWord;
     },
@@ -412,5 +413,11 @@ export default {
 }
 .chart img {
   max-width: 844px;
+}
+
+@media (max-width: 767.98px) {
+  .sec-col--first-el {
+    margin: 0 !important;
+  }
 }
 </style>

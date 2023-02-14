@@ -532,8 +532,8 @@
 
         .explore-controls {
           .explore-controls-results {
-            padding-left: calc(var(--bs-gutter-x) * .5);
-            padding-right: calc(var(--bs-gutter-x) * .5);
+            padding-left: 15px;
+            padding-right: 15px;
             // yellow button
             .tab-content .accordion-heading .accordion-button::after {
               right: -10px;
