@@ -35,7 +35,7 @@
           <!-- Company Name -->
           <td>
             <b-link
-              :to="company.legalNames ? { name: 'company', query: {uri: company.uri} } : null"
+              :to="company.legalNames ? { name: 'company', query: {iri: company.uri} } : null"
               target="_blank"
               :class="{ 'empty-legalnames': !company.legalNames }"
             >
@@ -75,11 +75,11 @@
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Visit URI
+                Visit IRI
               </b-dropdown-item>
               <b-dropdown-item
                 v-if="company.legalNames"
-                :to="{ name: 'company', query: {uri: company.uri} }"
+                :to="{ name: 'company', query: {iri: company.uri} }"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -272,6 +272,14 @@ export default {
   cursor: text;
   &:hover{
     text-decoration: none !important;
+  }
+}
+@media (max-width: 767.98px) {
+  .table-stir {
+    vertical-align: top !important;
+    th, td {
+      padding: 15px 3px !important;
+    }
   }
 }
 </style>
