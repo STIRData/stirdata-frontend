@@ -396,6 +396,9 @@
         .homepage-stat-region {
           margin-top: 50px;
           padding: 0;
+          h2 {
+            text-align: left;
+          }
         }
         // trend
         .homepage-stat-trend {
@@ -593,6 +596,9 @@
           }
         }
       }
+      .social {
+        justify-content: center;
+      }
     }
     // hide tooltip
     .tooltip {
@@ -694,6 +700,9 @@
           ul {
             li {
               &.sign {
+                display: none;
+              }
+              &.sign-up {
                 display: none;
               }
             }

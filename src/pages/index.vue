@@ -38,8 +38,9 @@
               <div class="line-stats chart-line-a">
                 <ul>
                   <li
-                    v-for="entry in countriesStatistics"
+                    v-for="(entry, index) in countriesStatistics"
                     :key="entry.country.code"
+                    :class="{'not-first-5': index > 4 && !showMoreStats}"
                   >
                     <div class="wrap">
                       <div class="subject">
@@ -49,7 +50,6 @@
                       </div>
                       <div class="stat">
                         <span class="detail-a">{{ entry.count.toLocaleString() }} Companies</span>
-                        <!-- <span class="detail-b">23 Activities</span> -->
                       </div>
                     </div>
                     <b-progress
@@ -59,6 +59,7 @@
                     />
                   </li>
                 </ul>
+                <span class="show-more-icon" @click="showMoreStatsClicked"><i class="fa" :class="{ 'fa-angle-down': !showMoreStats, 'fa-angle-up': showMoreStats}" /></span>
                 <div class="action">
                   <b-link :to="{ name: 'explore' }">
                     <span class="text">Explore business activities</span>
@@ -156,7 +157,8 @@
     data() {
       return {
         fetched: false,
-        selectedCountryCode: ''
+        selectedCountryCode: '',
+        showMoreStats: false
       };
     },
 
@@ -191,6 +193,9 @@
 
         // Render new line chart for the given country
         this.selectedCountryCode = id;
+      },
+      showMoreStatsClicked(){
+        this.showMoreStats = !this.showMoreStats;
       }
     }
   };
@@ -213,5 +218,29 @@
 
   .chartSelector:hover {
     cursor: pointer;
+  }
+
+  .show-more-icon {
+    display: none;
+  }
+  @media (max-width: 767.98px) {
+    .not-first-5{
+      display: none;
+    }
+    .show-more-icon{
+      display: block;
+      margin-top: -6px;
+      text-align: center;
+      position: relative;
+      top: -3px;
+      .fa {
+        color: #355FAA;
+        font-size: 40px;
+        font-weight: bolder;
+      }
+    }
+    .selector li a {
+      padding: 4px 15px !important;
+    }
   }
 </style>
