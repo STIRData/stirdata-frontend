@@ -32,7 +32,7 @@
               </li>
               <li>
                 <span class="count">
-                  {{ activitiesTotalCount }}
+                  {{ activitiesTotalCount.toLocaleString() }}
                 </span>
                 <span class="text">Registered<br>Companies</span>
               </li>
@@ -137,7 +137,7 @@
                         v-b-tooltip.hover.left
                         :title="capitalizeTheFirstLetterOfEachWord(activity.activity[0].label)"
                       >
-                        <b-link :disabled="activity.activity[0].leaf"
+                        <b-link :disabled="isRegionLeaf && activity.activity[0].leaf"
                           :id="activity.activity[0].code+'-label'"
                           :to="currentRegion ? { name: 'statistics-activity-activity', query:{ activity: activity.activity[0].code.split(':')[1], place:  currentRegion.place ? currentRegion.place[0].code : currentRegion.country.code } } : { name: 'statistics-activity-activity', query:{ activity:  activity.activity[0].code.split(':')[1]}} "
                         >
@@ -234,7 +234,6 @@
                           :style="{ 'background-color': colors[index] }"
                         />
                         <b-link
-                          :disabled="country.activity[0].leaf"
                           :id="country.country.code+'-label'"
                           :to="{ name: 'statistics-activity-activity', query:{ activity: naceCode, place: country.country.code } }"
                         >
@@ -267,7 +266,7 @@
                           class="color"
                           :style="{ 'background-color': colors[index] }"
                         />
-                        <b-link :disabled="place.place[0].leaf"
+                        <b-link :disabled="isActivityLeaf && place.place[0].leaf"
                           :id="place.place[0].code+'-label'"
                           :to="{ name: 'statistics-activity-activity', query:{ activity: naceCode, place: place.place[0].code } }"
                         >
@@ -363,7 +362,9 @@
         naceCode: '',
         nace: '',
         region: '',
-        regionCode: ''
+        regionCode: '',
+        isRegionLeaf: false,
+        isActivityLeaf: false
       };
     },
    watch: {
@@ -389,12 +390,14 @@
             }
             return 0;
           }
-          this.activitiesTotalCount = this.subactivities.reduce(((a,b) => a + b.count), 0);
+          this.activitiesTotalCount = response.selection.count ?? this.subactivities.reduce(((a,b) => a + b.count), 0);
           this.subactivities.sort(sortByCount);
           this.countries.sort(sortByCount);
           if(this.region.length)
               this.currentRegion = response.selection;
-          
+
+          this.isRegionLeaf = response.selection.place ? response.selection.place[0].leaf : false;
+          this.isActivityLeaf = response.selection.activity ? response.selection.activity[0].leaf : false;
         });
 
       if (this.activities.length === 0) {
@@ -403,7 +406,6 @@
       this.currentActivity = await this.$calls.getActivityData(this.nace)
         .then(response => response.selection);
       this.addActivityInBreadcrumb;
-     
     },
     fetchOnServer: false,
     computed: {
