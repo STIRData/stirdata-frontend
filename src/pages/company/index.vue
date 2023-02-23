@@ -46,7 +46,7 @@
                     {{ index === 0 ? "Address" : "" }}
                   </b-col>
                   <b-col md="8">
-                    {{ addr.fullAddress }}
+                    {{ addr.fullAddress || createFullAddress(addr) }}
                   </b-col>
                 </b-row>
                 <b-row
@@ -181,6 +181,7 @@ export default {
         this.company = response;
         this.companyActivities = response.companyActivities ? response.companyActivities.slice(0,5) : [];
         this.loading = false;
+        console.log(this.company)
       })
       .catch(error => {
         console.error(error);
@@ -204,6 +205,14 @@ export default {
   methods:{
     loadMoreActivities() {
       this.companyActivities = this.company.companyActivities.slice(0,this.companyActivities.length+5)
+    },
+    createFullAddress(address) {
+      let locatorDesignator = address.locatorDesignator ?? '';
+      let street = address.thoroughfare ?? '';
+      let postCode = address.postCode ?? '';
+      let city = address.postName ?? '';
+
+      return `${street.length ? locatorDesignator : ''} ${street}${street.length ? ',' : ''} ${postCode} ${city}`
     }
   }
 };
