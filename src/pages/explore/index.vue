@@ -789,8 +789,8 @@ export default {
       for (let country of Object.keys(countries)) {
         let countryName = '';
         for (let topNuts of this.topLevelNuts) {
-          if (topNuts.value == country) {
-            countryName = topNuts.text.split(' - ')[1];
+          if (topNuts.value === country) {
+            countryName = topNuts.text;
             break;
           }
         }
