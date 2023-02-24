@@ -136,47 +136,49 @@
                     </p>
                   </b-col>
                 </b-row>
-                <b-row
-                  v-for="(addOn, indexAddon) in company.addOns" :key="'addon-'+indexAddon"
-                >
-                  <b-col>
-                    <div
-                      class="w-100 head d-inline-flex justify-content-between align-items-center"
-                      v-b-toggle="'collapse-'+indexAddon"
-                    >
-                      <span class="title">{{ addOn.label }}</span>
-                      <font-awesome-icon icon="chevron-down" />
-                    </div>
-                    <b-collapse :id="'collapse-'+indexAddon">
-                      <b-row class="addon-row">
-                        <b-col
-                          v-for="(addOnKey, indexKey) in Object.keys(addOn.results[0])" :key="'addon-header-col-'+indexKey"
-                          class="head text-capitalize"
-                          :class="'col-' + 12/Object.keys(addOn.results[0]).length"
-                        >
-                          {{ addOnKey }}
-                        </b-col>
-                      </b-row>
-                      <b-row
-                        class="addon-row"
-                        v-for="(row, indexRow) in addOn.results" :key="'addon-row-'+indexRow"
+                <div v-if="company.addOns" class="section-addons">
+                  <b-row
+                    v-for="(addOn, indexAddon) in company.addOns" :key="'addon-'+indexAddon"
+                  >
+                    <b-col v-if="addOn.results.length">
+                      <div
+                        class="w-100 head d-inline-flex justify-content-between align-items-center"
+                        v-b-toggle="'collapse-'+indexAddon"
                       >
-                        <b-col
-                          v-for="(col, indexCol) in row" :key="'addon-col-'+indexCol"
-                          :class="'col-' + 12/Object.keys(addOn.results[0]).length"
+                        <span class="title">{{ addOn.label }}</span>
+                        <font-awesome-icon icon="chevron-down" />
+                      </div>
+                      <b-collapse :id="'collapse-'+indexAddon">
+                        <b-row class="addon-row">
+                          <b-col
+                            v-for="(addOnKey, indexKey) in Object.keys(addOn.results[0])" :key="'addon-header-col-'+indexKey"
+                            class="head text-capitalize"
+                            :class="'col-' + 12/Object.keys(addOn.results[0]).length"
+                          >
+                            {{ fieldName(addOn.fields, addOnKey) }}
+                          </b-col>
+                        </b-row>
+                        <b-row
+                          class="addon-row"
+                          v-for="(row, indexRow) in addOn.results" :key="'addon-row-'+indexRow"
                         >
-                          <span v-if="!col.startsWith('http')">{{ col }}</span>
-                          <font-awesome-icon
-                            v-else
-                            icon="fa-solid fa-arrow-up-right-from-square"
-                            :title="col"
-                            @click="openExternalLink(col)"
-                          />
-                        </b-col>
-                      </b-row>
-                    </b-collapse>
-                  </b-col>
-                </b-row>
+                          <b-col
+                            v-for="(col, indexCol) in row" :key="'addon-col-'+indexCol"
+                            :class="'col-' + 12/Object.keys(addOn.results[0]).length"
+                          >
+                            <span v-if="!col.startsWith('http')">{{ col }}</span>
+                            <font-awesome-icon
+                              v-else
+                              icon="fa-solid fa-arrow-up-right-from-square"
+                              :title="col"
+                              @click="openExternalLink(col)"
+                            />
+                          </b-col>
+                        </b-row>
+                      </b-collapse>
+                    </b-col>
+                  </b-row>
+                </div>
               </div>
             </div>
           </b-col>
@@ -221,7 +223,6 @@ export default {
         this.company = response;
         this.companyActivities = response.companyActivities ? response.companyActivities.slice(0,5) : [];
         this.loading = false;
-        console.log(this.company)
       })
       .catch(error => {
         console.error(error);
@@ -254,6 +255,14 @@ export default {
     },
     openExternalLink(link) {
       window.open(link, '_blank');
+    },
+    fieldName(addOnFields, key) {
+      for (let field of addOnFields) {
+        if (field.name === key) {
+          return field.label;
+        }
+      }
+      return '-';
     }
   }
 };
@@ -297,5 +306,9 @@ section.companydetail {
 }
 .fa-arrow-up-right-from-square {
   cursor: pointer;
+  display: var(--fa-display, inline-block);
+  height: 1em;
+  overflow: visible;
+  vertical-align: -.125em;
 }
 </style>
