@@ -18,7 +18,6 @@
                 <SimpleMap
                   :region-code="company.registeredAddresses[0].nuts3.code"
                   :lau="company.registeredAddresses[0].lau"
-                  :hasLauSubregions="true"
                 />
               </div>
             </div>
@@ -46,7 +45,7 @@
                     {{ index === 0 ? "Address" : "" }}
                   </b-col>
                   <b-col md="8">
-                    {{ addr.fullAddress }}
+                    {{ addr.fullAddress || createFullAddress(addr) }}
                   </b-col>
                 </b-row>
                 <b-row
@@ -137,6 +136,49 @@
                     </p>
                   </b-col>
                 </b-row>
+                <div v-if="company.addOns" class="section-addons">
+                  <b-row
+                    v-for="(addOn, indexAddon) in company.addOns" :key="'addon-'+indexAddon"
+                  >
+                    <b-col v-if="addOn.results.length">
+                      <div
+                        class="w-100 head d-inline-flex justify-content-between align-items-center"
+                        v-b-toggle="'collapse-'+indexAddon"
+                      >
+                        <span class="title">{{ addOn.label }}</span>
+                        <font-awesome-icon icon="chevron-down" />
+                      </div>
+                      <b-collapse :id="'collapse-'+indexAddon">
+                        <b-row class="addon-row">
+                          <b-col
+                            v-for="(addOnKey, indexKey) in Object.keys(addOn.results[0])" :key="'addon-header-col-'+indexKey"
+                            class="head text-capitalize"
+                            :class="'col-' + 12/Object.keys(addOn.results[0]).length"
+                          >
+                            {{ fieldName(addOn.fields, addOnKey) }}
+                          </b-col>
+                        </b-row>
+                        <b-row
+                          class="addon-row"
+                          v-for="(row, indexRow) in addOn.results" :key="'addon-row-'+indexRow"
+                        >
+                          <b-col
+                            v-for="(col, indexCol) in row" :key="'addon-col-'+indexCol"
+                            :class="'col-' + 12/Object.keys(addOn.results[0]).length"
+                          >
+                            <span v-if="!col.startsWith('http')">{{ col }}</span>
+                            <font-awesome-icon
+                              v-else
+                              icon="fa-solid fa-arrow-up-right-from-square"
+                              :title="col"
+                              @click="openExternalLink(col)"
+                            />
+                          </b-col>
+                        </b-row>
+                      </b-collapse>
+                    </b-col>
+                  </b-row>
+                </div>
               </div>
             </div>
           </b-col>
@@ -195,25 +237,78 @@ export default {
         .reduce((prev, cur) => `${prev} | ${cur.value}`, "")
         .slice(2);
     },
-
     allActivitiesLoaded: function() {
       return this.company.companyActivities ? this.companyActivities.length < this.company.companyActivities.length : true;
     }
   },
 
-  methods:{
+  methods: {
     loadMoreActivities() {
       this.companyActivities = this.company.companyActivities.slice(0,this.companyActivities.length+5)
+    },
+    createFullAddress(address) {
+      let locatorDesignator = address.locatorDesignator ?? '';
+      let street = address.thoroughfare ?? '';
+      let postCode = address.postCode ?? '';
+      let city = address.postName ?? '';
+      return `${street.length ? locatorDesignator : ''} ${street}${street.length ? ',' : ''} ${postCode} ${city}`
+    },
+    openExternalLink(link) {
+      window.open(link, '_blank');
+    },
+    fieldName(addOnFields, key) {
+      for (let field of addOnFields) {
+        if (field.name === key) {
+          return field.label;
+        }
+      }
+      return '-';
     }
   }
 };
 </script>
 
 <style lang="scss">
+section.companydetail {
+  @media (max-width: 991.98px) {
+    padding: 0 1rem;
+  }
+}
 .not-clickable {
   cursor: text;
   &:hover {
     text-decoration: none;
   }
+}
+.fa-chevron-down {
+  width: 19px;
+  color: #525558;
+  transform: rotate(0deg);
+  transition: transform 0.2s linear;
+}
+:not(.collapsed) > .fa-chevron-down {
+  color: #377fe8;
+  transform: rotate(-180deg);
+  transition: transform 0.2s linear;
+}
+:not(.collapsed) > .title {
+  font-weight: 600;
+}
+.row:last-of-type {
+  border-bottom: none !important;
+}
+.addon-row {
+  border-bottom: 1px solid #F3F3F2 !important;
+  .col {
+    text-align: center;
+    font-size: 0.875rem;
+  }
+}
+.fa-arrow-up-right-from-square {
+  cursor: pointer;
+  display: var(--fa-display, inline-block);
+  height: 1em;
+  overflow: visible;
+  vertical-align: -.125em;
 }
 </style>

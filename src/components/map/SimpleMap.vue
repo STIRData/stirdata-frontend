@@ -25,9 +25,9 @@ import { mapState } from 'vuex';
         type: Object,
         required: false
       },
-      hasLauSubregions:{
+      isActivityLeaf: {
         type: Boolean,
-        required: true,
+        required: false,
         default: false
       }
     },
@@ -137,7 +137,7 @@ import { mapState } from 'vuex';
           polygonTemplate.propertyFields.fill = "fill";
         }
         // Create hover state and set alternative fill color
-        polygonTemplate.cursorOverStyle = this.hasLauSubregions ? this.am4core.MouseCursorStyle.default : this.am4core.MouseCursorStyle.pointer;
+        polygonTemplate.cursorOverStyle = this.lau ? this.am4core.MouseCursorStyle.default : this.am4core.MouseCursorStyle.pointer;
         let hs = polygonTemplate.states.create('hover');
         hs.properties.fill = this.am4core.color('#f9a800');
 
@@ -148,7 +148,7 @@ import { mapState } from 'vuex';
       },
 
       handleRegionClick(id) {
-        if (id.includes('lau')) {
+        if (id.includes('lau') && (this.lau || this.isActivityLeaf)) {
           return;
         }
         if(this.naceCode){

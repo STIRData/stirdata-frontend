@@ -129,7 +129,7 @@ export default (ctx, inject) => {
     getRegionGeoJSON: (regionCode, resolution) => {
       let code = regionCode.includes(':') ? regionCode : `nuts:${regionCode}`;
       return ctx.$api.get(`nuts?top=${code}&geometry=${resolution}`)
-        .then(response => response.data.placeGroups);
+        .then(response => response.data.placeGroups || [response.data.selection]);
     },
     getCompany: (uri) => {
       if (!uri.includes('://')) {

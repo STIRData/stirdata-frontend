@@ -78,7 +78,7 @@ module.exports = {
     'space-unary-ops': 'error',
     'spaced-comment': ['error', 'always'],
     'switch-colon-spacing': 'error',
-    'vue/script-indent': ['error', 2, { 'baseIndent': 1 }]
+    // 'vue/script-indent': ['error', 2, { 'baseIndent': 1 }]
   },
   'overrides': [
     {
