@@ -44,10 +44,10 @@
                 <SimpleMap
                   :region-code="regionCode"
                   :nace-code="nace"
-                  :hasLauSubregions="hasLauSubregions"
+                  :isActivityLeaf="isActivityLeaf"
                 />
                 <div
-                  v-show="!hasLauSubregions"
+                  v-show="!isRegionLeaf"
                   class="maps-notify py-1"
                 >
                   <i class="fa fa-info-circle" />Click an area on the map to select a subregion
@@ -139,7 +139,7 @@
                         @mouseover="regionHover(reg.place[0])"
                         @mouseleave="regionHover(null)"
                       >
-                        <b-link :disabled="reg.place[0].leaf"
+                        <b-link :disabled="isActivityLeaf && reg.place[0].leaf"
                           :id="reg.place[0].code+'-label'"
                           class="wrap"
                           :to="currentActivity ? { name: 'statistics-region-region', query:{ activity: currentActivity.activity[0].code.split(':')[1], place: reg.place[0].code }}   : { name: 'statistics-region-region', params: { region: reg.place[0].code } } "
@@ -246,7 +246,7 @@
                           class="color"
                           :style="{ 'background-color': colors[index] }"
                         />
-                        <b-link :disabled="activity.activity[0].leaf"
+                        <b-link :disabled="isRegionLeaf && activity.activity[0].leaf"
                           :id="activity.activity[0].code+'-label'"
                           :to="{ name: 'statistics-region-region', query: { activity: activity.activity[0].code.split(':')[1] , place: region} }"
 
@@ -337,7 +337,9 @@
         naceCode: '',
         nace: '',
         region: '',
-        timeout: null
+        timeout: null,
+        isRegionLeaf: false,
+        isActivityLeaf: false
       };
     },
     computed: {
@@ -427,6 +429,8 @@
             this.subregionTemplate = 'place' in response.selection;
             this.regionLabel = this.subregionTemplate ? response.selection.place[0].label : response.selection.country.label;
             this.country = response.selection.country;
+            this.isRegionLeaf = response.selection.place ? response.selection.place[0].leaf : false;
+            this.isActivityLeaf = response.selection.activity ? response.selection.activity[0].leaf : false;
             this.addCountryNameInBreadcrumb;
           }
           function sortByCount(a, b) {
@@ -441,7 +445,6 @@
           this.regionTotalCount = response.selection.count;
           this.subregions.sort(sortByCount);
           this.activities.sort(sortByCount);
-          
         });
 
       await this.$store.dispatch('fetchTopLevelStatistics');

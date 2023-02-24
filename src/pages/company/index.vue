@@ -18,7 +18,6 @@
                 <SimpleMap
                   :region-code="company.registeredAddresses[0].nuts3.code"
                   :lau="company.registeredAddresses[0].lau"
-                  :hasLauSubregions="true"
                 />
               </div>
             </div>
