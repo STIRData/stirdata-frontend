@@ -101,6 +101,10 @@ export default (ctx, inject) => {
       let code = activityCode.includes(':') ? activityCode : `nace-rev2:${activityCode}`;
       return ctx.$api.get(`statistics?activity=${code}&dimension=place,activity`).then(response => response.data);
     },
+    getActivityTopLevelParent: activityCode => {
+      let code = activityCode.includes(':') ? activityCode : `nace-rev2:${activityCode}`;
+      return ctx.$api.get(`nace/getTopLevelParent?naceCode=${code}`).then(response => response.data);
+    },
     getActivityByRegionStatistics: (activityCode, regionCode) => {
       let code='';
       if(activityCode.length>0){
