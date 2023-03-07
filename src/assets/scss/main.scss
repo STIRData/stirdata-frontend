@@ -1124,9 +1124,12 @@ body {
 			}
 			.activityimage {
 				height: auto;
+        max-height: 500px;
 				img {
 					width: 100%;
 					border-radius: 4px;
+          max-height: 500px;
+          object-fit: cover;
 				}
 				// after
 				@include box-behind-decor($accent-second-color, -10px, 50%);
