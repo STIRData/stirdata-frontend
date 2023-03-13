@@ -469,7 +469,6 @@
         }
       },
       percentage(count, totalCount) {
-        console.log(count, totalCount)
         if (count == 0){
           return 0;
         }
