@@ -441,6 +441,9 @@
 
     methods: {
       percentage(count, totalCount) {
+        if(count == 0) {
+          return 0;
+        }
         return ((count / totalCount) * 100).toFixed(1) === '0.0' ? 0.1 : Number(((count / totalCount) * 100).toFixed(1));
       },
       arraySlice(start, end) {
