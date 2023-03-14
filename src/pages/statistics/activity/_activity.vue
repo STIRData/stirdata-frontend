@@ -39,7 +39,7 @@
             </ul>
             <!-- TODO: to be replaced with activity specific image -->
             <div class="activityimage">
-              <img src="../../../assets/img/icons/activity/manufacturing.jpg">
+              <img :src="getTopLevelImagePath">
             </div>
             <div class="activitylist">
               <div class="headingtext">
@@ -364,7 +364,8 @@
         region: '',
         regionCode: '',
         isRegionLeaf: false,
-        isActivityLeaf: false
+        isActivityLeaf: false,
+        imageCode: ''
       };
     },
    watch: {
@@ -398,6 +399,7 @@
 
           this.isRegionLeaf = response.selection.place ? response.selection.place[0].leaf : false;
           this.isActivityLeaf = response.selection.activity ? response.selection.activity[0].leaf : false;
+          this.getActivityTopLevelParentCode(this.nace);
         });
 
       if (this.activities.length === 0) {
@@ -436,6 +438,9 @@
           }
         ];
       }
+    },
+    getTopLevelImagePath() {
+      return require(`../../../assets/img/icons/activity/${this.imageCode}.jpeg`);
     }
     },
 
@@ -462,7 +467,14 @@
       },
       getImagePath(activity) {
         return require(`../../../assets/img/icons/ic-${activity.activity[0].code.split(':')[1]}.png`);
-      }
+      },
+      async getActivityTopLevelParentCode(activityCode) {
+        await this.$calls
+          .getActivityTopLevelParent(activityCode)
+          .then((response) => {
+            this.imageCode = response.code;
+          });
+      },
     }
   };
 </script>
