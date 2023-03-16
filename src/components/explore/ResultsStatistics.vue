@@ -334,8 +334,7 @@ export default {
       this.errorOccured = false;
       this.statisticsLoading = true;
       this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
-      this.countryStatisticsQuery = `place=${this.countryFilters.place.join()}&activity=${this.countryFilters.activity.join()}&dimension=selection,place,activity`;
-      this.$calls.getQueryStatistics(this.countryStatisticsQuery)
+      this.$calls.getQueryStatistics(this.countryFilters.query+'&dimension=selection,place,activity')
         .then(response => {
           this.resultsStatistics = response;
           this.statisticsSelection = response.selection ?? [];
