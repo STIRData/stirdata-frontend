@@ -115,7 +115,7 @@
                   </b-col>
                 </b-row>
                 <b-row>
-                  <b-col md="4" class="head">IRI</b-col>
+                  <b-col md="4" class="head">STIRData IRI</b-col>
                   <b-col md="8">
                     <b-link
                       class="anchor"
@@ -123,6 +123,20 @@
                       target="_blank"
                     >
                       {{ company.uri }}
+                    </b-link>
+                  </b-col>
+                </b-row>
+               <b-row
+                  v-for="(registry, index) in company.sameAs"
+                  :class="index !== company.sameAs.length - 1 ? 'content-row' : ''"
+                  :key="'registry-' + index"
+                >
+                  <b-col md="4" class="head">
+                    {{ index === 0 ? "Business Registry Link" : "" }}
+                  </b-col>
+                  <b-col md="8">
+                    <b-link class="anchor" :href="registry" target="_blank">
+                      {{ registry }}
                     </b-link>
                   </b-col>
                 </b-row>
