@@ -50,15 +50,36 @@
           <td>
             <div
               v-for="(activity, index) in company.companyActivities"
-              :key="'activity-'+activity.code"
+              :key="'activity-' + company.uri.split('/').at(-1) + activity.code+index"
             >
-              <a
-                :title="activity.label"
-                v-b-tooltip.hover
-              >
-                {{ activity.code }}<span v-if="index != company.companyActivities.length-1">, </span>
+              <a v-if="index < 3" :title="activity.label" v-b-tooltip.hover>
+                {{ activity.code }}<span v-if="index != company.companyActivities.length - 1">, </span>
               </a>
             </div>
+            <template v-if="company.companyActivities && company.companyActivities.length > 3">
+              <b-collapse
+                class=""
+                :id="'collapseMoreNace' + company.uri.split('/').at(-1)"
+                :accordion="'nace-accordion' + company.uri.split('/').at(-1)"
+              >
+                <div
+                  v-for="(activity, index) in company.companyActivities"
+                  :key="'activity-' + company.uri.split('/').at(-1) + activity.code+index"
+                >
+                  <a v-if="index >= 3" :title="activity.label" v-b-tooltip.hover>
+                    {{ activity.code }}<span v-if="index != company.companyActivities.length - 1">, </span>
+                  </a>
+                </div>
+              </b-collapse>
+              <a
+                class="show-more-nace-btn"
+                :id="'collapseMoreNace-' + company.uri.split('/').at(-1) +'-toggle'"
+                v-b-toggle="'collapseMoreNace' + company.uri.split('/').at(-1)"
+                role="tab"
+              >
+                Show more <i class="fa fa-angle-down"></i>
+              </a>
+            </template>
           </td>
           <!-- Action button -->
           <td class="end">
@@ -285,5 +306,9 @@ export default {
       padding: 15px 3px !important;
     }
   }
+}
+.show-more-nace-btn {
+  color: #355FAA !important;
+  cursor: pointer;
 }
 </style>
