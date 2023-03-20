@@ -21,7 +21,7 @@
     <table class="table table-borderless table-stir">
       <thead>
         <tr>
-          <th scope="col">Company Name</th>
+          <th scope="col" class="company-name-col">Company Name</th>
           <th scope="col">Registration Date</th>
           <th scope="col">Activity</th>
           <th class="end" scope="col">Action</th>
@@ -33,7 +33,7 @@
           :key="company.uri"
         >
           <!-- Company Name -->
-          <td>
+          <td class="company-name-col">
             <b-link
               :to="company.legalNames ? { name: 'company', query: {iri: company.uri} } : null"
               target="_blank"
@@ -246,6 +246,10 @@ export default {
 <style lang="scss" scoped>
 .pagination-stir ul li a:hover {
   cursor: pointer;
+}
+
+.company-name-col {
+  max-width: 350px;
 }
 
 .disabled {
