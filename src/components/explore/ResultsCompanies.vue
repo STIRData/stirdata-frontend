@@ -77,7 +77,7 @@
                 v-b-toggle="'collapseMoreNace' + company.uri.split('/').at(-1)"
                 role="tab"
               >
-                Show more <i class="fa fa-angle-down"></i>
+                Show <span class="more-text"> more</span> <span class="less-text"> less</span> <i class="fa fa-angle-down rotate"></i>
               </a>
             </template>
           </td>
@@ -310,5 +310,20 @@ export default {
 .show-more-nace-btn {
   color: #355FAA !important;
   cursor: pointer;
+}
+
+.collapsed{
+  .less-text{
+    display: none;
+  }
+}
+
+.not-collapsed{
+  .more-text{
+    display: none;
+  }
+  .rotate{
+    transform: rotate(180deg);
+  }
 }
 </style>
