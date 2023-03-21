@@ -5,7 +5,9 @@
         <div class="eurostat-title" v-b-tooltip.hover.right :title="filter.text">
           {{ filter.text }}
         </div>
-
+        <a :href="'https://ec.europa.eu/eurostat/web/products-datasets/-/'+dsCode" target="_blank" rel="noopener noreferrer">
+          <i class="fa fa-external-link"></i>
+        </a>
         <div
           v-if="filter.subLevels"
           class="plus-expander"
@@ -111,10 +113,12 @@ export default {
       options: {},
       minValue: null,
       maxValue: null,
+      dsCode: ''
     };
   },
   mounted() {
     let dsCode = this.filter.datasetCode.split(":")[1];
+    this.dsCode = dsCode.toLowerCase();
     this.filter.subLevels.forEach((subLevel) => {
       this.options[subLevel.value] = null;
     });
@@ -224,5 +228,10 @@ ul.treeMenu {
 .fa-info-circle {
   color: $accent-first-color;
   margin-left: 3px;
+}
+
+.fa-external-link {
+  color: #355FAA;
+  margin: 9px 10px 0;
 }
 </style>
