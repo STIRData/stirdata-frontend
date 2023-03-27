@@ -21,7 +21,7 @@
     <table class="table table-borderless table-stir">
       <thead>
         <tr>
-          <th scope="col">Company Name</th>
+          <th scope="col" class="company-name-col">Company Name</th>
           <th scope="col">Registration Date</th>
           <th scope="col">Activity</th>
           <th class="end" scope="col">Action</th>
@@ -33,7 +33,7 @@
           :key="company.uri"
         >
           <!-- Company Name -->
-          <td>
+          <td class="company-name-col">
             <b-link
               :to="company.legalNames ? { name: 'company', query: {iri: company.uri} } : null"
               target="_blank"
@@ -50,15 +50,36 @@
           <td>
             <div
               v-for="(activity, index) in company.companyActivities"
-              :key="'activity-'+activity.code"
+              :key="'activity-' + company.uri.split('/').at(-1) + activity.code+index"
             >
-              <a
-                :title="activity.label"
-                v-b-tooltip.hover
-              >
-                {{ activity.code }}<span v-if="index != company.companyActivities.length-1">, </span>
+              <a v-if="index < 3" :title="activity.label" v-b-tooltip.hover>
+                {{ activity.code }}<span v-if="index != company.companyActivities.length - 1">, </span>
               </a>
             </div>
+            <template v-if="company.companyActivities && company.companyActivities.length > 3">
+              <b-collapse
+                class=""
+                :id="'collapseMoreNace' + company.uri.split('/').at(-1)"
+                :accordion="'nace-accordion' + company.uri.split('/').at(-1)"
+              >
+                <div
+                  v-for="(activity, index) in company.companyActivities"
+                  :key="'activity-' + company.uri.split('/').at(-1) + activity.code+index"
+                >
+                  <a v-if="index >= 3" :title="activity.label" v-b-tooltip.hover>
+                    {{ activity.code }}<span v-if="index != company.companyActivities.length - 1">, </span>
+                  </a>
+                </div>
+              </b-collapse>
+              <a
+                class="show-more-nace-btn"
+                :id="'collapseMoreNace-' + company.uri.split('/').at(-1) +'-toggle'"
+                v-b-toggle="'collapseMoreNace' + company.uri.split('/').at(-1)"
+                role="tab"
+              >
+                Show <span class="more-text"> more</span> <span class="less-text"> less</span> <i class="fa fa-angle-down rotate"></i>
+              </a>
+            </template>
           </td>
           <!-- Action button -->
           <td class="end">
@@ -248,6 +269,10 @@ export default {
   cursor: pointer;
 }
 
+.company-name-col {
+  max-width: 350px;
+}
+
 .disabled {
   background-color: rgb(182, 181, 181) !important;
   cursor: not-allowed !important;
@@ -280,6 +305,25 @@ export default {
     th, td {
       padding: 15px 3px !important;
     }
+  }
+}
+.show-more-nace-btn {
+  color: #355FAA !important;
+  cursor: pointer;
+}
+
+.collapsed{
+  .less-text{
+    display: none;
+  }
+}
+
+.not-collapsed{
+  .more-text{
+    display: none;
+  }
+  .rotate{
+    transform: rotate(180deg);
   }
 }
 </style>
