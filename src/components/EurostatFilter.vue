@@ -189,6 +189,14 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/variables.scss";
 
+.check-wrap {
+  align-items: center;
+}
+
+.expand {
+  margin-top: 0 !important;
+}
+
 .eurostat-title {
   display: inline-block;
   width: 90%;
@@ -232,6 +240,7 @@ ul.treeMenu {
 
 .fa-external-link {
   color: #355FAA;
-  margin: 9px 10px 0;
+  margin: 0 24px 0 8px;
+  font-size: 12px;
 }
 </style>
