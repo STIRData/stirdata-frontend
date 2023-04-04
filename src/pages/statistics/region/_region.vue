@@ -465,7 +465,11 @@
         try {
           return require(`../../../assets/img/icons/ic-${country.country.code.toLowerCase()}.png`);
         } catch (e) {
-          return require('../../../assets/img/broken-image.png');
+            try {
+            return require(`../../../assets/img/icons/ic-${country.country.code.toLowerCase()}.svg`);
+          } catch (e) {
+            return require('../../../assets/img/broken-image.png');
+          }
         }
       },
       percentage(count, totalCount) {
