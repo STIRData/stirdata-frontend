@@ -100,7 +100,7 @@
                       <ul v-if="searchNutsResults.length > 0" class="searchNutsResults expandList">
                         <li
                           v-for="nutsResult in searchNutsResults"
-                          :key="nutsResult.text"
+                          :key="'search-result-'+nutsResult.value"
                           @click="selectSearchResult('nuts', nutsResult, 'searchNutsPrefix', 'searchNutsResults')"
                         >
                           <div>
@@ -176,7 +176,7 @@
                       <ul v-if="searchNaceResults.length > 0" class="searchNaceResults expandList">
                         <li
                           v-for="naceResult in searchNaceResults"
-                          :key="naceResult.text"
+                          :key="'search-result-'+naceResult.value"
                           @click="selectSearchResult('nace', naceResult, 'searchNacePrefix', 'searchNaceResults')"
                         >
                           <div>
@@ -659,7 +659,8 @@ export default {
 
       this.$calls.searchLabels(type, prefix)
         .then(response => {
-          this[resultsArray] = response;
+          // Filter out results with duplicate value
+          this[resultsArray] = response.filter((obj, index, self) => self.findIndex(objAlt => (objAlt.value === obj.value)) === index);
         })
         .catch(error => console.error(error));
     },

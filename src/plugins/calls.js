@@ -153,18 +153,20 @@ export default (ctx, inject) => {
     searchLabels: (type, prefix) => {
       let url = '';
       if (type === 'nace') {
-        url = `content/index/nace-eu/phrase-prefix-search?keys=label-en&text=${prefix}&fields=label-en`;
+        url = `content/index/nace-eu/nace/search?text=${prefix}&keys=label&fields=label-en,notation&type=match-phrase-prefix`;
       }
       else {
-        url = `content/index/${type}/phrase-prefix-search?text=${prefix}&fields=label,notation&type=prefix&keys=label`;
+        url = `content/index/nuts-lau/search?text=${prefix}&keys=label,alt-label&fields=label,notation&type=match-phrase-prefix`;
       }
       return ctx.$sageApi.get(url)
         .then(response => {
           if (response.data) {
             return response.data.map(item => new Object({
-              value: (type === 'nace') ? item.uri.split('/item/')[1] : item.notation[0],
-              type: (type === 'nace') ? 'nace-rev2' : item.uri.split('/resource/')[1].split('/')[0],
-              text: (type === 'nace') ? `${item.uri.split('/item/')[1]} - ${item['label-en'][0]}` : `${item.notation[0]} - ${item.label[0]}`
+              value: item.notation[0],
+              type: (type === 'nace')
+                ? 'nace-rev2'
+                : (item.uri.includes('nuts') ? 'nuts' : 'lau'),
+              text: (type === 'nace') ? item['label-en'][0] : `${item.notation[0]} ${item.label[0]}`
             }));
           } else {
             return [];
