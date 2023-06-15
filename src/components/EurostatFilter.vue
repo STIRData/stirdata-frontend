@@ -23,7 +23,9 @@
       >
         <ul v-if="isCollapseOpen" class="treeMenu">
           <li v-for="property of filter.subLevels" :key="property.value">
-            <template v-if="isUnitProperty(property)">
+            <template
+              v-if="isUnitProperty(property) && oneLeafProperty(property)"
+            >
               <div class="eurostat-title">
                 {{ property.subLevels[0].text }}
                 <i
@@ -54,6 +56,78 @@
                     v-model="maxValue"
                     @change="selectTag()"
                   ></b-form-input>
+                </b-col>
+              </b-row>
+            </template>
+            <template
+              v-else-if="isUnitProperty(property) && !oneLeafProperty(property)"
+            >
+              <div class="eurostat-title">Unit</div>
+              <b-form-group>
+                <b-form-radio-group
+                  :id="'radio-group-' + property.value"
+                  v-model="options[property.value]"
+                  :name="property.value"
+                  stacked
+                >
+                  <b-form-radio
+                    class="eurostat-child"
+                    v-for="(option, index) of property.subLevels"
+                    :key="option.value"
+                    :value="option.value"
+                    :id="option.value + '-radio'"
+                    @change="selectUnit(property, option, index)"
+                    v-b-tooltip.hover.right
+                    :title="option.text"
+                  >
+                    {{ option.text }}
+                  </b-form-radio>
+                </b-form-radio-group>
+              </b-form-group>
+              <b-row>
+                <b-col md="5" sm="10">
+                  <b-form-input
+                    type="number"
+                    :id="
+                      property.subLevels[selectedUnitIndex].value +
+                      '-text--from'
+                    "
+                    :min="property.subLevels[selectedUnitIndex].minValue"
+                    :max="
+                      maxValue || property.subLevels[selectedUnitIndex].maxValue
+                    "
+                    placeholder="From"
+                    v-model="minValue"
+                    @change="selectTag()"
+                    :disabled="options[property.value] == ''"
+                  ></b-form-input>
+                </b-col>
+                <b-col md="5" sm="10">
+                  <b-form-input
+                    type="number"
+                    :id="
+                      property.subLevels[selectedUnitIndex].value + '-text--to'
+                    "
+                    :min="
+                      minValue || property.subLevels[selectedUnitIndex].minValue
+                    "
+                    :max="property.subLevels[selectedUnitIndex].maxValue"
+                    placeholder="To"
+                    v-model="maxValue"
+                    @change="selectTag()"
+                    :disabled="options[property.value] == ''"
+                  ></b-form-input>
+                </b-col>
+                <b-col
+                  md="2"
+                  sm="2"
+                  class="align-self-center d-sm-block d-none"
+                >
+                  <i
+                    class="fa fa-info-circle"
+                    v-b-tooltip.hover.right
+                    :title="`Range between ${property.subLevels[selectedUnitIndex].minValue} to ${property.subLevels[selectedUnitIndex].maxValue}`"
+                  />
                 </b-col>
               </b-row>
             </template>
@@ -113,7 +187,8 @@ export default {
       options: {},
       minValue: null,
       maxValue: null,
-      dsCode: ''
+      dsCode: "",
+      selectedUnitIndex: 0,
     };
   },
   mounted() {
@@ -158,6 +233,10 @@ export default {
         minValue: this.minValue,
         maxValue: this.maxValue,
       });
+    },
+    selectUnit(property, option, index) {
+      this.selectedUnitIndex = index;
+      this.selectTag(property, option);
     },
     isUnitProperty(prop) {
       return prop.subLevels[0].value.split(":").pop().startsWith("unit");
