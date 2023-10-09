@@ -31,7 +31,7 @@
                 <i
                   class="fa fa-info-circle"
                   v-b-tooltip.hover.right
-                  :title="`Range between ${property.subLevels[0].minValue} to ${property.subLevels[0].maxValue}`"
+                  :title="`Range between ${minRange} to ${maxRange}`"
                 />
               </div>
               <b-row>
@@ -39,8 +39,8 @@
                   <b-form-input
                     type="number"
                     :id="property.subLevels[0].value + '-text--from'"
-                    :min="property.subLevels[0].minValue"
-                    :max="maxValue || property.subLevels[0].maxValue"
+                    :min="minRange"
+                    :max="maxValue || maxRange"
                     placeholder="From"
                     v-model="minValue"
                     @change="selectTag()"
@@ -50,8 +50,8 @@
                   <b-form-input
                     type="number"
                     :id="property.subLevels[0].value + '-text--to'"
-                    :min="minValue || property.subLevels[0].minValue"
-                    :max="property.subLevels[0].maxValue"
+                    :min="minValue || minRange"
+                    :max="maxRange"
                     placeholder="To"
                     v-model="maxValue"
                     @change="selectTag()"
@@ -74,7 +74,7 @@
                     class="eurostat-child"
                     v-for="(option, index) of property.subLevels"
                     :key="option.value"
-                    :value="option.value"
+                    :value="option.value + ',' + option.minValue + ',' + option.maxValue"
                     :id="option.value + '-radio'"
                     @change="selectUnit(property, option, index)"
                     v-b-tooltip.hover.right
@@ -92,9 +92,9 @@
                       property.subLevels[selectedUnitIndex].value +
                       '-text--from'
                     "
-                    :min="property.subLevels[selectedUnitIndex].minValue"
+                    :min="minRange"
                     :max="
-                      maxValue || property.subLevels[selectedUnitIndex].maxValue
+                      maxValue || maxRange
                     "
                     placeholder="From"
                     v-model="minValue"
@@ -109,9 +109,9 @@
                       property.subLevels[selectedUnitIndex].value + '-text--to'
                     "
                     :min="
-                      minValue || property.subLevels[selectedUnitIndex].minValue
+                      minValue || minRange
                     "
-                    :max="property.subLevels[selectedUnitIndex].maxValue"
+                    :max="maxRange"
                     placeholder="To"
                     v-model="maxValue"
                     @change="selectTag()"
@@ -126,7 +126,7 @@
                   <i
                     class="fa fa-info-circle"
                     v-b-tooltip.hover.right
-                    :title="`Range between ${property.subLevels[selectedUnitIndex].minValue} to ${property.subLevels[selectedUnitIndex].maxValue}`"
+                    :title="`Range between ${minRange} to ${maxRange}`"
                   />
                 </b-col>
               </b-row>
@@ -151,9 +151,9 @@
                       class="eurostat-child"
                       v-for="option of property.subLevels"
                       :key="option.value"
-                      :value="option.value"
+                      :value="option.value + ',' + option.minValue + ',' + option.maxValue"
                       :id="option.value + '-radio'"
-                      @change="selectTag(property, option)"
+                      @change="changeRange('field')"
                     >
                       {{ option.text }}
                     </b-form-radio>
@@ -185,6 +185,10 @@ export default {
       selected: false,
       isCollapseOpen: false,
       options: {},
+      minRangeArray: [],
+      maxRangeArray: [],
+      minRange: 0,
+      maxRange: 0,
       minValue: null,
       maxValue: null,
       dsCode: "",
@@ -197,6 +201,15 @@ export default {
     this.filter.subLevels.forEach((subLevel) => {
       this.options[subLevel.value] = null;
     });
+
+    for (let property of this.filter.subLevels){
+      if(this.isUnitProperty(property)){
+        this.minRangeArray = [property.subLevels[0].minValue];
+        this.maxRangeArray = [property.subLevels[0].maxValue];
+      }
+    }
+    this.minRange = Math.max(...this.minRangeArray);
+    this.maxRange = Math.min(...this.maxRangeArray);
 
     this.tags.forEach((tag) => {
       let tagArray = tag.split(":");
@@ -213,7 +226,7 @@ export default {
           for (let sub1 of this.filter.subLevels) {
             for (let sub2 of sub1.subLevels) {
               if (sub2.value.includes(param)) {
-                this.options[sub1.value] = sub2.value;
+                this.options[sub1.value] = sub2.value + ',' + sub2.minValue + ',' + sub2.maxValue;
               }
             }
           }
@@ -221,7 +234,28 @@ export default {
       }
     });
   },
+  computed: {
+  },
   methods: {
+    changeRange(fieldState) {
+      // We store in the arrays all the thresholds for every filter
+      // and we show in the tooltip the intersection of these limits
+      let cnt = 1;
+      if (fieldState == 'unit') {
+        cnt = 0
+      }
+      for ( let key in this.options) {
+        let val = this.options[key];
+        if(val) {
+          this.minRangeArray[cnt] = parseInt(val.split(',')[1]);
+          this.maxRangeArray[cnt] = parseInt(val.split(',')[2]);
+        }
+        cnt++;
+      }
+      this.minRange = Math.max(...this.minRangeArray);
+      this.maxRange = Math.min(...this.maxRangeArray);
+      this.selectTag()
+    },
     selectTag() {
       if (!this.checkIfAllFieldsAreFilled()) {
         return;
@@ -236,6 +270,7 @@ export default {
     },
     selectUnit(property, option, index) {
       this.selectedUnitIndex = index;
+      this.changeRange('unit');
       this.selectTag(property, option);
     },
     isUnitProperty(prop) {

@@ -681,7 +681,7 @@ export default {
     eurostatFilterFilled({datasetCode, propertyCode, options, minValue, maxValue}){
       let optionsCopy = {}
       for (const key in options) {
-        optionsCopy[key] = options[key].split(":").pop();
+        optionsCopy[key] = options[key].split(',')[0].split(":").pop();
       }
       let optionsText = '';
       for(const option in optionsCopy){
