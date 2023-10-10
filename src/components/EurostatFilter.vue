@@ -250,6 +250,10 @@ export default {
           this.minRangeArray[cnt] = parseInt(val.split(',')[1]);
           this.maxRangeArray[cnt] = parseInt(val.split(',')[2]);
         }
+        else {
+          this.minRangeArray[cnt] = -Math.pow(10, 100);
+          this.maxRangeArray[cnt] = Math.pow(10, 100);
+        }
         cnt++;
       }
       this.minRange = Math.max(...this.minRangeArray);
