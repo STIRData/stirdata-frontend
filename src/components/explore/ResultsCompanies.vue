@@ -221,10 +221,13 @@ export default {
       this.$calls.searchCompanies(this.countrySearchQuery)
         .then(response => {
           this.resultsCompanies = response[0];
-          this.totalResults = this.resultsCompanies.page.totalResults ?? 0;
-          this.totalPages = Math.ceil(this.totalResults / this.resultsCompanies.page.pageSize);
-          this.currentPage = this.resultsCompanies.page.pageNumber;
-
+          if (this.resultsCompanies) {
+            this.totalResults = this.resultsCompanies.page.totalResults ?? 0;
+            this.totalPages = Math.ceil(this.totalResults / this.resultsCompanies.page.pageSize);
+            this.currentPage = this.resultsCompanies.page.pageNumber;
+          } else {
+            this.totalResults = 0;
+          }
           // Loading the first page is a lot slower than the other pages
           // Solution: we keep the first 20 companies and we load them instantly
           // this.firstResultsCompanies = this.resultsCompanies;
@@ -232,7 +235,7 @@ export default {
           this.companiesLoading = false;
         })
         .catch(error => {
-          console.error(error)
+          console.error(error);
           this.companiesCallError = true;
           this.companiesLoading = false;
         });
