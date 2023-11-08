@@ -35,6 +35,12 @@ export default (ctx, inject) => {
     saveNewView: (view) => {
       return ctx.$api.post('view', view)
     },
+    updateUser: (user) => {
+      return ctx.$api.put('user/updateUserDetails', user)
+    },
+    deleteUser: () => {
+      return ctx.$api.post('/user/deleteAccount')
+    },
     deleteView: (id)=>{
       return ctx.$api.delete(`view/${id}`)
     },
@@ -45,7 +51,7 @@ export default (ctx, inject) => {
       let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
       let type = (resource === 'nace') ? 'activity' : 'place';
       return ctx.$api.get(resource)
-        .then(response => response.data[grouping].map(item => new Object({ value: item[type][0].code.split(':')[1], type: item[type][0].code.split(':')[0], text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}` })));
+        .then(response => response.data[grouping].map(item => new Object({ value: item[type][0].code.split(':')[1], type: item[type][0].code.split(':')[0], text: `${item[type][0].label}` })));
     },
     getSubLevels: (resource, code) => {
       let grouping = (resource === 'nace') ? 'activityGroups' : 'placeGroups';
@@ -56,7 +62,7 @@ export default (ctx, inject) => {
             return response.data[grouping].map(item => new Object({
               value: item[type][0].code.split(':')[1],
               type: item[type][0].code.split(':')[0],
-              text: `${item[type][0].code.split(':')[1]} - ${item[type][0].label}`
+              text: `${item[type][0].label}`
             }));
           } else {
             return [];
@@ -95,6 +101,20 @@ export default (ctx, inject) => {
       let code = activityCode.includes(':') ? activityCode : `nace-rev2:${activityCode}`;
       return ctx.$api.get(`statistics?activity=${code}&dimension=place,activity`).then(response => response.data);
     },
+    getActivityTopLevelParent: activityCode => {
+      let code = activityCode.includes(':') ? activityCode : `nace-rev2:${activityCode}`;
+      return ctx.$api.get(`nace/getTopLevelParent?naceCode=${code}`).then(response => response.data);
+    },
+    getActivityByRegionStatistics: (activityCode, regionCode) => {
+      let code='';
+      if(activityCode.length>0){
+        code = activityCode.includes(':') ? `&activity=${activityCode}` : `&activity=nace-rev2:${activityCode}`;
+      }
+      let rcode='';
+      if(regionCode.length>0){
+        rcode = regionCode.includes(':') ? `&place=${regionCode}` : `&place=nuts:${regionCode}`;}
+      return ctx.$api.get(`statistics?dimension=selection,place,activity${code}${rcode}`).then(response => response.data);
+    },
     getRegionData: regionCode => {
       let code = regionCode.includes(':') ? regionCode : `nuts:${regionCode}`;
       return ctx.$api.get(`statistics?place=${code}`).then(response => response.data);
@@ -113,7 +133,7 @@ export default (ctx, inject) => {
     getRegionGeoJSON: (regionCode, resolution) => {
       let code = regionCode.includes(':') ? regionCode : `nuts:${regionCode}`;
       return ctx.$api.get(`nuts?top=${code}&geometry=${resolution}`)
-        .then(response => response.data.placeGroups);
+        .then(response => response.data.placeGroups || [response.data.selection]);
     },
     getCompany: (uri) => {
       if (!uri.includes('://')) {
@@ -133,24 +153,66 @@ export default (ctx, inject) => {
     searchLabels: (type, prefix) => {
       let url = '';
       if (type === 'nace') {
-        url = `content/index/nace-eu/phrase-prefix-search?keys=label-en&text=${prefix}&fields=label-en`;
+        url = `content/index/nace-eu/nace/search?text=${prefix}&keys=label&fields=label-en,notation&type=match-phrase-prefix`;
       }
       else {
-        url = `content/index/${type}/phrase-prefix-search?text=${prefix}&fields=label,notation&type=prefix&keys=label`;
+        url = `content/index/nuts-lau/search?text=${prefix}&keys=label,alt-label&fields=label,notation&type=match-phrase-prefix`;
       }
       return ctx.$sageApi.get(url)
         .then(response => {
           if (response.data) {
             return response.data.map(item => new Object({
-              value: (type === 'nace') ? item.uri.split('/item/')[1] : item.notation[0],
-              type: (type === 'nace') ? 'nace-rev2' : item.uri.split('/resource/')[1].split('/')[0],
-              text: (type === 'nace') ? `${item.uri.split('/item/')[1]} - ${item['label-en'][0]}` : `${item.notation[0]} - ${item.label[0]}`
+              value: item.notation[0],
+              type: (type === 'nace')
+                ? 'nace-rev2'
+                : (item.uri.includes('nuts') ? 'nuts' : 'lau'),
+              text: (type === 'nace') ? item['label-en'][0] : `${item.notation[0]} ${item.label[0]}`
             }));
           } else {
             return [];
           }
         });
-    }
+    },
+    getRegionFeatures: () => {
+      return ctx.$api.get(`nuts/filters`)
+        .then(response => response.data.map((feature, index) => {
+          return {
+            value: `feature-${index}`,
+            type: 'stat',
+            text: feature.property.label,
+            subLevels: feature.values.map(value => new Object({
+              value: `${feature.dataset.code.split(':')[1]}:${feature.property.code.split(':')[1]}:${value.code.split(':')[1]}`,
+              type: 'stat',
+              text: value.label
+            }))
+          };
+        }));
+    },
+    getEurostatFilters: () => {
+      return ctx.$api.get(`nuts/eurostat-filters`)
+        .then(response => response.data.map((filter, index1) => {
+          return {
+            datasetCode: filter.dataset.code,
+            propertyCode: filter.property.code,
+            uri: filter.dataset.uri,
+            value: `filter-${index1}`,
+            type: 'stat',
+            text: filter.property.label,
+            subLevels: filter.values.map((subfilter, index2) => new Object({
+              value: `filter-${index1}${index2}`,
+              type: 'stat',
+              text: subfilter.label,
+              subLevels: subfilter.values.map(value => new Object({
+                value: `${filter.dataset.code.split(':')[1]}:${filter.property.code.split(':')[1]}:${value.code.split(':')[1]}`,
+                type: 'stat',
+                text: value.label,
+                minValue: value.minDoubleValue,
+                maxValue: value.maxDoubleValue
+              }))
+            }))
+          };
+        }));
+    },
   };
 
   inject('calls', apiCalls);

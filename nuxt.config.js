@@ -1,6 +1,10 @@
 /* eslint-disable camelcase */
+import axios from 'axios';
 
 export default {
+  //target: 'static', Reverting to default server deployment for production 
+  target: 'server',
+  
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'STIRData',
@@ -48,8 +52,7 @@ export default {
     '~plugins/filters',
     { src: '~/plugins/chart.js', mode: 'client' },
     { src: '~/plugins/amCharts.js', mode: 'client' },
-    { src: '~/plugins/vue-slick-carousel.js', mode: 'client' },
-    { src: '~/plugins/solidLogin.js'},
+    { src: '~/plugins/vue-slick-carousel.js', mode: 'client' }
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -74,13 +77,38 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    [
     'bootstrap-vue/nuxt',
+         {
+             icons: false
+         }
+    ],
     'vue-scrollto/nuxt',
+    '@nuxtjs/toast'
   ],
+
+
+ /* dynamic route generation */
+  generate: {
+    fallback: '404.html',
+    crawler: true,
+    /* TODO incomplete for static site generation, needs more precomputed routes */
+    routes() {
+      return axios.get(`${process.env.BASE_API_URL}/statistics?dimension=place`).then(res => {
+        return res.data.placeGroups.map(place => {
+          return {
+            route: '/statistics/region/' + place.country.code,
+            payload: place.country
+          }
+        })
+      })
+    }
+  },
 
   auth: {
     redirect: {
       login : '/signin',
+      logout: '/',
       callback: '/signin/callback',
       home: false,  
     },
@@ -104,23 +132,17 @@ export default {
       google: {
         clientId:  process.env.GOOGLE_CLIENT_ID,
         codeChallengeMethod: '',
-        responseType: 'id_token',
-        scope: ['profile', 'email', 'openid'],
-        endpoints: {
-          userInfo: false,
-        },
-        token: {
-         property: 'id_token',
-         type: 'Bearer',
-         maxAge: 1800
-       }
+        responseType: 'token id_token',
+        scope: ['email', 'profile', 'openid'],
       }
     },
     plugins: [{ src: '~/plugins/apis.js', ssr: true }, {src:'~/plugins/auth.js'}]
   },
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
+ toast: {
+      position: 'top-right',
   },
+  // Build Configuration: https://go.nuxtjs.dev/config-build
+  build: { babel: { compact: true } },
 
   srcDir: 'src/'
 };

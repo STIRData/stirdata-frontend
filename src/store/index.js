@@ -3,10 +3,14 @@ export default {
     user: null,
     topLevelNuts: [],
     topLevelNace: [],
+    regionFeatures: [],
+    eurostatFilters: [],
     countriesStatistics: [],
+    countriesWithDates: [],
     activitiesStatistics: [],
     totalCompanies: 0,
-    searchFilters: []
+    searchFilters: [],
+    hoveredRegion: null
   }),
 
   mutations: {
@@ -19,6 +23,12 @@ export default {
     setTopLevelNace(state, value) {
       state.topLevelNace = value;
     },
+    setRegionFeatures(state, value) {
+      state.regionFeatures = value;
+    },
+    setEurostatFilters(state, value) {
+      state.eurostatFilters = value;
+    },
     setCountriesStatistics(state, value) {
       state.countriesStatistics = value;
     },
@@ -28,8 +38,14 @@ export default {
     setTotalCompanies(state, value) {
       state.totalCompanies = value;
     },
+    setCountriesWithDates(state, value) {
+      state.countriesWithDates = value;
+    },
     setSearchFilters(state, value) {
       state.searchFilters = value;
+    },
+    setHoveredRegion(state, value) {
+      state.hoveredRegion = value;
     }
   },
 
@@ -51,6 +67,14 @@ export default {
       return this.$calls.getTopLevel('nace')
         .then(nace => commit('setTopLevelNace', nace));
     },
+    fetchRegionFeatures({ dispatch, commit }) {
+      return this.$calls.getRegionFeatures()
+        .then(features => commit('setRegionFeatures', features));
+    },
+    fetchEurostatFilters({ dispatch, commit }) {
+      return this.$calls.getEurostatFilters()
+        .then(filters => commit('setEurostatFilters', filters));
+    },
     fetchTopLevelStatistics({ dispatch, commit }) {
       return this.$calls.getStatistics()
         .then(response => {
@@ -58,6 +82,24 @@ export default {
           commit('setActivitiesStatistics', response.activityGroups);
           commit('setCountriesStatistics', response.placeGroups);
         });
+    },
+    async fetchCountriesWithDates({ dispatch, commit, state }) {
+      let countriesWithDates = await Promise.all(state.countriesStatistics.map( async (stat) =>{
+        return new Promise((resolve) => {
+          this.$calls.getRegionStatistics(stat.country.code)
+            .then( response =>{
+              response['countryCode'] = stat.country.code
+              response['countryLabel'] = stat.country.label
+            resolve(response);
+          })
+        })
+      }))
+      countriesWithDates =  countriesWithDates.filter(
+        ( stat ) =>
+          (stat.dissolutionDateGroups && stat.dissolutionDateGroups.length) ||
+          (stat.foundingDateGroups && stat.foundingDateGroups.length))
+      commit('setCountriesWithDates', countriesWithDates)
+
     }
   }
 };

@@ -127,15 +127,12 @@
 </template>
 
 <script>
-  import VueSlickCarousel from 'vue-slick-carousel';
-  import 'vue-slick-carousel/dist/vue-slick-carousel.css';
   import { mapState } from 'vuex';
 
   export default {
     components: {
       Breadcrumb: () => import('../../components/Breadcrumb'),
-      Spinner: () => import('../../components/Spinner'),
-      VueSlickCarousel
+      Spinner: () => import('../../components/Spinner')
     },
 
     data() {

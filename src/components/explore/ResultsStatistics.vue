@@ -4,7 +4,10 @@
     <!-- Chart View -->
     <div v-if="layout === 'chart'">
       <div class="headingtext">
-        <h3 v-if="filteredArrayToShow.length === 0">
+        <h3 v-if="errorOccured">
+          An error occured while fetching the data. Please try again or set different search criteria.
+        </h3>
+        <h3 v-else-if="filteredArrayToShow.length === 0">
           There are no {{ titleToShow }} in {{ countryFilters.name }} based on Filter
         </h3>
         <h3 v-else>Top 10 {{ titleToShow }} in {{ countryFilters.name }} based on Filter</h3>
@@ -59,8 +62,9 @@
           <div class="line-stats chart-line-a">
             <ul>
               <li
-                v-for="inst in filteredArrayToShow.slice(5, 10)"
+                v-for="(inst, index) in filteredArrayToShow.slice(5, 10)"
                 :key="inst[statisticsKey][0].code"
+                :class="{'sec-col--first-el': index == 0}"
               >
                 <div class="wrap">
                   <div class="subject">
@@ -245,7 +249,8 @@ export default {
       placeTotalResults: 0,
       activityCurrentPage: 1,
       activityTotalPages: 1,
-      activityTotalResults: 0
+      activityTotalResults: 0,
+      errorOccured: false
     };
   },
 
@@ -326,10 +331,10 @@ export default {
 
   methods: {
     initiateRetrieveStatistics() {
+      this.errorOccured = false;
       this.statisticsLoading = true;
       this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
-      this.countryStatisticsQuery = `place=${this.countryFilters.place.join()}&activity=${this.countryFilters.activity.join()}&dimension=selection,place,activity,foundingDate`;
-      this.$calls.getQueryStatistics(this.countryStatisticsQuery)
+      this.$calls.getQueryStatistics(this.countryFilters.query+'&dimension=selection,place,activity')
         .then(response => {
           this.resultsStatistics = response;
           this.statisticsSelection = response.selection ?? [];
@@ -356,6 +361,7 @@ export default {
         })
         .catch(error => {
           console.error(error);
+          this.errorOccured = true;
           this.statisticsLoading = false;
         });
     },
@@ -386,8 +392,8 @@ export default {
           separateWord[i].substring(1);
       }
       separateWord = separateWord.join(" ");
-      if (separateWord.length > 30) {
-        separateWord = separateWord.slice(0, 30) + "...";
+      if (separateWord.length > 29) {
+        separateWord = separateWord.slice(0, 29) + "...";
       }
       return separateWord;
     },
@@ -406,5 +412,11 @@ export default {
 }
 .chart img {
   max-width: 844px;
+}
+
+@media (max-width: 767.98px) {
+  .sec-col--first-el {
+    margin: 0 !important;
+  }
 }
 </style>

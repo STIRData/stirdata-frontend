@@ -50,11 +50,11 @@
                       </div>
                     </b-collapse>
                   </div>
-                  <!-- Regions -->
+                  <!-- Countries -->
                   <div class="sidebar-countries sidebar-section-wrap">
                     <h3 id="heading-countries">
                       <div v-b-toggle.collapseCountries class="accordion-button d-flex justify-content-between">
-                        Countries &amp; Regions
+                        Countries
                         <font-awesome-icon icon="chevron-down" />
                       </div>
                     </h3>
@@ -100,7 +100,7 @@
                       <ul v-if="searchNutsResults.length > 0" class="searchNutsResults expandList">
                         <li
                           v-for="nutsResult in searchNutsResults"
-                          :key="nutsResult.text"
+                          :key="'search-result-'+nutsResult.value"
                           @click="selectSearchResult('nuts', nutsResult, 'searchNutsPrefix', 'searchNutsResults')"
                         >
                           <div>
@@ -176,7 +176,7 @@
                       <ul v-if="searchNaceResults.length > 0" class="searchNaceResults expandList">
                         <li
                           v-for="naceResult in searchNaceResults"
-                          :key="naceResult.text"
+                          :key="'search-result-'+naceResult.value"
                           @click="selectSearchResult('nace', naceResult, 'searchNacePrefix', 'searchNaceResults')"
                         >
                           <div>
@@ -281,6 +281,96 @@
                       </div>
                     </b-collapse>
                   </div>
+                  <!-- Region Features -->
+                  <div class="sidebar-features sidebar-section-wrap">
+                    <h3 id="heading-features">
+                      <div v-b-toggle.collapseFeatures class="accordion-button d-flex justify-content-between">
+                        Region Features
+                        <font-awesome-icon icon="chevron-down" />
+                      </div>
+                    </h3>
+                    <b-form-group v-if="statTags.length > 0" class="mb-0">
+                      <b-form-tags
+                        v-model="statTags"
+                        input-id="features-tags"
+                        input-class="d-none"
+                        :input-attrs="{ readonly: 'true' }"
+                        class="p-0"
+                        tag-class="pill-class"
+                        add-button-text=""
+                        no-outer-focus
+                        size="lg"
+                        placeholder=""
+                      />
+                    </b-form-group>
+                    <b-collapse
+                      id="collapseFeatures"
+                      class="accordion-collapse"
+                      v-model="toggles.features"
+                    >
+                      <div class="input-filter">
+                        <ul>
+                          <li
+                            v-for="(feature, index) in regionFeatures"
+                            :id="'feature-'+index"
+                            :key="'feature-'+index"
+                          >
+                            <tree-menu-node
+                              menuType="stat"
+                              :menuItem="feature"
+                              :tags="statTags"
+                              @select-tag="selectTag"
+                            />
+                          </li>
+                        </ul>
+                      </div>
+                    </b-collapse>
+                  </div>
+                  <!-- Eurostat Filters -->
+                  <div class="sidebar-filters sidebar-section-wrap">
+                    <h3 id="heading-filters">
+                      <div v-b-toggle.collapseFilters class="accordion-button d-flex justify-content-between">
+                        Eurostat Filters
+                        <font-awesome-icon icon="chevron-down" />
+                      </div>
+                    </h3>
+                    <b-form-group v-if="eurostatTags.length > 0" class="mb-0">
+                      <b-form-tags
+                        v-model="eurostatTags"
+                        input-id="filters-tags"
+                        input-class="d-none"
+                        :input-attrs="{ readonly: 'true' }"
+                        class="p-0"
+                        tag-class="pill-class"
+                        add-button-text=""
+                        no-outer-focus
+                        size="lg"
+                        placeholder=""
+                      />
+                    </b-form-group>
+                    <b-collapse
+                      id="collapseFilters"
+                      class="accordion-collapse"
+                      v-model="toggles.filters"
+                    >
+                      <div class="input-filter">
+                        <ul>
+                          <li
+                            v-for="(filter, index) in eurostatFilters"
+                            :id="'filter-'+index"
+                            :key="'filter-'+index"
+                          >
+                            <eurostat-filter
+                              :filter="filter"
+                              :tags="eurostatTags"
+                              :key="savedEurostatRetrieved"
+                              @select-tag="eurostatFilterFilled"
+                            />
+                          </li>
+                        </ul>
+                      </div>
+                    </b-collapse>
+                  </div>
                   <!-- Form buttons -->
                   <div class="sidebar-action sidebar-section-wrap">
                     <div class="inputaction">
@@ -310,9 +400,15 @@ import vClickOutside from 'v-click-outside';
 export default {
   components: {
     TreeMenuNode: () => import("../../components/TreeMenuNode"),
+    EurostatFilter: () => import("../../components/EurostatFilter"),
     ExploreResults: () => import("../../components/explore/ExploreResults"),
     Breadcrumb: () => import("../../components/Breadcrumb"),
     Spinner: () => import("../../components/Spinner")
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit('setSearchFilters', []);
+    next();
   },
 
   directives: {
@@ -342,6 +438,7 @@ export default {
         countries: false,
         activities: false,
         registration: false,
+        features: false,
         afterDate: false,
         beforeDate: false
       },
@@ -352,9 +449,12 @@ export default {
       nutsTags: [],
       naceTags: [],
       dateTags: [],
+      statTags: [],
+      eurostatTags: [],
       foundingStartDate: null,
       foundingEndDate: null,
-      newViewTitle: ''
+      newViewTitle: '',
+      savedEurostatRetrieved: false
     };
   },
 
@@ -365,10 +465,51 @@ export default {
     if (!this.topLevelNace.length) {
       await this.$store.dispatch('fetchTopLevelNace');
     }
+    if (!this.regionFeatures.length) {
+      await this.$store.dispatch('fetchRegionFeatures');
+    }
+    if (!this.eurostatFilters.length) {
+      await this.$store.dispatch('fetchEurostatFilters');
+    }
     if (this.isAuthenticated) {
       this.$calls.getSavedViews().then(response => {
         response.forEach(view => this.savedViews.push({ value: view.id, text: view.name}));
       });
+    }
+    if (this.$route.params.nutsFilter){
+      this.nutsTags.push(this.$route.params.nutsFilter)
+      if (!this.$route.params.naceFilter)
+        this.$bvToast.toast('Your region has been preselected.', {
+            variant: 'info',
+            title: 'Info',
+            solid: true
+        });
+      else{
+        this.naceTags.push(this.$route.params.naceFilter);
+        this.$bvToast.toast('Your region and activity have been preselected.', {
+            variant: 'info',
+            title: 'Info',
+            solid: true
+        });
+        return;
+      }
+    }
+    if(this.$route.params.savedViewId){
+      this.selectedSavedView = this.$route.params.savedViewId;
+      this.selectSavedView();
+      this.$bvToast.toast('Your saved view has been preselected.', {
+            variant: 'info',
+            title: 'Info',
+            solid: true
+        });
+    }
+    if (this.$route.params.naceFilter){
+      this.naceTags.push(this.$route.params.naceFilter)
+      this.$bvToast.toast('Specify a region in addition to the activity that you have selected.', {
+            variant: 'info',
+            title: 'Info',
+            solid: true
+        });
     }
   },
 
@@ -376,6 +517,8 @@ export default {
     ...mapState({
       topLevelNuts: state => state.topLevelNuts,
       topLevelNace: state => state.topLevelNace,
+      regionFeatures: state => state.regionFeatures,
+      eurostatFilters: state => state.eurostatFilters,
       searchFilters: state => state.searchFilters
     }),
     isAuthenticated() {
@@ -421,6 +564,23 @@ export default {
       if (!after) {
         this.foundingStartDate = null;
       }
+    },
+    statTags(newValue, oldValue) {
+      let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
+
+      if (tagsDifference.length == 1) {
+        let checkbox = document.getElementById('stat-checkbox-'+tagsDifference[0].split('stat:')[1]);
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+      }
+    },
+    eurostatTags(newValue, oldValue) {
+      let tagsDifference = oldValue.filter(tag => !newValue.includes(tag));
+
+      if (tagsDifference.length == 1) {
+        this.savedEurostatFetched();
+      }
     }
   },
 
@@ -435,6 +595,13 @@ export default {
       view.activity.forEach(activity => {
         this.selectSearchResult('nace', { type: activity.split(':')[0], value: activity.split(':')[1] }, 'searchNacePrefix', 'searchNaceResults');
       });
+      view.feature.forEach(feature => {
+        this.selectSearchResult('stat', { type: 'stat', value: feature.split('stat:')[1] });
+      });
+      view.eurostat.forEach(filter => {
+        this.eurostatTags.push(filter);
+      });
+      this.savedEurostatFetched();
       if (!!view.startDate) {
         this.foundingStartDate = view.startDate;
         this.selectDate('After: ', view.startDate);
@@ -454,6 +621,8 @@ export default {
         activity: filters[0].activity,
         startDate: filters[0].date ? filters[0].date.split(':')[0] : null,
         endDate: filters[0].date ? filters[0].date.split(':')[1] : null,
+        feature: filters[0].feature,
+        eurostat: filters[0].eurostat,
         place: filters.reduce((a,b) => a.concat(b.place), [])
       }
       await this.$calls.saveNewView(view)
@@ -480,6 +649,9 @@ export default {
         })
         .catch(error => console.error(error));
     },
+    savedEurostatFetched(){
+      this.savedEurostatRetrieved = !this.savedEurostatRetrieved
+    },
     searchTags(type, resultsArray, prefix) {
       if (prefix.length == 0) {
         return;
@@ -487,7 +659,8 @@ export default {
 
       this.$calls.searchLabels(type, prefix)
         .then(response => {
-          this[resultsArray] = response;
+          // Filter out results with duplicate value
+          this[resultsArray] = response.filter((obj, index, self) => self.findIndex(objAlt => (objAlt.value === obj.value)) === index);
         })
         .catch(error => console.error(error));
     },
@@ -501,7 +674,35 @@ export default {
         checkbox.checked = true;
       }
       this.updateTags(`${tag.type}:${tag.value}`, type, true);
-      this.clearSearch(prefix, results);
+      if (prefix && results) {
+        this.clearSearch(prefix, results);
+      }
+    },
+    eurostatFilterFilled({datasetCode, propertyCode, options, minValue, maxValue}){
+      let optionsCopy = {}
+      for (const key in options) {
+        optionsCopy[key] = options[key].split(',')[0].split(":").pop();
+      }
+      let optionsText = '';
+      for(const option in optionsCopy){
+        if(optionsText){
+          optionsText += '~'
+        }
+        optionsText += optionsCopy[option]
+        if(optionsCopy[option].startsWith('unit')) {
+          optionsText += ':'
+          if(minValue){
+            optionsText += minValue;
+          }
+          optionsText += ':';
+          if(maxValue){
+            optionsText += maxValue;
+          }
+        }
+      }
+
+      let tagCode = `stat:${datasetCode}:${propertyCode}:${optionsText}`
+      this.updateTags(tagCode, 'eurostat', true)
     },
     selectTag(e) {
       this.updateTags(e.tagCode, e.type, e.checked);
@@ -510,11 +711,32 @@ export default {
       let formTags = type + 'Tags';
 
       if (checked) {
-        this[formTags].push(tagCode);
+        if (type == 'eurostat'){
+          this.addOrUpdateEurostatTags(tagCode);
+        }
+        else{
+          this[formTags].push(tagCode);
+        }
       }
       else {
           let index = this[formTags].findIndex(code => code == tagCode);
           this[formTags].splice(index, 1);
+      }
+    },
+    addOrUpdateEurostatTags(eurostatCode) {
+      let datasetCode = eurostatCode.split(':')[1];
+      let indexFound = -1;
+      for(let index=0; index < this.eurostatTags.length; index++){
+        if (this.eurostatTags[index].includes(datasetCode)){
+          indexFound = index;
+          break;
+        }
+      }
+      if(indexFound != -1) {
+        this.eurostatTags.splice(indexFound, 1, eurostatCode )
+      }
+      else{
+        this.eurostatTags.push(eurostatCode);
       }
     },
     openDatepicker(id) {
@@ -541,6 +763,8 @@ export default {
       this.nutsTags = [];
       this.naceTags = [];
       this.dateTags = [];
+      this.statTags = [];
+      this.eurostatTags = [];
       this.foundingStartDate = null;
       this.foundingEndDate = null;
       if (resetSavedView) {
@@ -566,8 +790,8 @@ export default {
       for (let country of Object.keys(countries)) {
         let countryName = '';
         for (let topNuts of this.topLevelNuts) {
-          if (topNuts.value == country) {
-            countryName = topNuts.text.split(' - ')[1];
+          if (topNuts.value === country) {
+            countryName = topNuts.text;
             break;
           }
         }
@@ -575,9 +799,20 @@ export default {
           code: country,
           name: countryName,
           place: countries[country],
-          activity: this.naceTags
+          feature: this.statTags,
+          activity: this.naceTags,
+          eurostat: this.eurostatTags
         };
-        filter.query = `place=${filter.place.join()}&activity=${filter.activity.join()}`;
+        filter.query = `place=${filter.place.join()}`;
+        if(filter.eurostat.length) {
+          filter.query += `,${filter.eurostat.join(',')}`
+        }
+        if (this.statTags.length) {
+          filter.query += `,${filter.feature.join()}`;
+        }
+        if (this.naceTags.length) {
+          filter.query += `&activity=${filter.activity.join()}`;
+        }
         if (this.foundingStartDate || this.foundingEndDate) {
           filter.date = (this.foundingStartDate ?? '') + ':' + (this.foundingEndDate ?? '');
           filter.query += `&founding=date-range:${filter.date}`;
@@ -630,6 +865,8 @@ export default {
       this.toggles.countries = false;
       this.toggles.activities = false;
       this.toggles.registration = false;
+      this.toggles.features = false;
+      this.toggles.filters = false;
     }
   }
 }

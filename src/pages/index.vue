@@ -38,8 +38,9 @@
               <div class="line-stats chart-line-a">
                 <ul>
                   <li
-                    v-for="entry in countriesStatistics"
+                    v-for="(entry, index) in countriesStatistics"
                     :key="entry.country.code"
+                    :class="{'not-first-5': index > 4 && !showMoreStats}"
                   >
                     <div class="wrap">
                       <div class="subject">
@@ -49,7 +50,6 @@
                       </div>
                       <div class="stat">
                         <span class="detail-a">{{ entry.count.toLocaleString() }} Companies</span>
-                        <!-- <span class="detail-b">23 Activities</span> -->
                       </div>
                     </div>
                     <b-progress
@@ -59,11 +59,12 @@
                     />
                   </li>
                 </ul>
+                <span class="show-more-icon" @click="showMoreStatsClicked"><i class="fa" :class="{ 'fa-angle-down': !showMoreStats, 'fa-angle-up': showMoreStats}" /></span>
                 <div class="action">
                   <b-link :to="{ name: 'explore' }">
                     <span class="text">Explore business activities</span>
                   </b-link>
-                  <b-link :to="{ name: 'search' }">
+                  <b-link :to="{ name: 'explore' }">
                     <span class="icon"><i class="fa fa-angle-right" /></span>
                   </b-link>
                 </div>
@@ -73,15 +74,15 @@
           <div class="col-xl-6 col-lg-6">
             <div class="homepage-stat-trend">
               <h2>Established and Dissoluted Company Yearly Trend</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+              <p>Quick view of established and dissoluted companies on a yearly basis based on the data each country is providing (not all countries are providing information about dissoluted companies).</p>
               <ul class="selector">
                 <li
-                  v-for="entry in countriesStatistics"
-                  :id="'chartSelector-'+entry.country.code"
-                  :key="entry.country.code"
+                  v-for="entry in countriesWithDates"
+                  :id="'chartSelector-'+entry.countryCode"
+                  :key="entry.countryCode"
                   class="chartSelector"
                 >
-                  <a @click="switchChart(entry.country.code)">{{ entry.country.label }}</a>
+                  <a @click="switchChart(entry.countryCode)">{{ entry.countryLabel }}</a>
                 </li>
               </ul>
               <div
@@ -116,15 +117,15 @@
               <div class="row features">
                 <div class="col-xl-4">
                   <h3>Target </h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                  <p>Use of Linked Data and Semantic Technologies as the means to “stir” different and heterogeneous data from multiple sources.</p>
                 </div>
                 <div class="col-xl-4">
                   <h3>API </h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                  <p>STIRDATA is providing an API to access its data. More information on how to use the API can be found in this <a href="https://dev.stirdata.eu/api/swagger-ui/index.html" target="_blank">link.</a></p>
                 </div>
                 <div class="col-xl-4">
                   <h3>Harvest </h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                  <p>The data is harvested from the business registries of the participating countries and updated on a regular basis. More information about the exact dates of the last update for each country can be found <a href="/sources#datinf" target="_self">here.</a></p>
                 </div>
               </div>
             </div>
@@ -148,21 +149,24 @@
       ...mapState({
         countriesStatistics: state => state.countriesStatistics,
         activitiesStatistics: state => state.activitiesStatistics,
-        totalCompanies: state => state.totalCompanies
+        totalCompanies: state => state.totalCompanies,
+        countriesWithDates: state => state.countriesWithDates
       })
     },
 
     data() {
       return {
         fetched: false,
-        selectedCountryCode: ''
+        selectedCountryCode: '',
+        showMoreStats: false
       };
     },
 
     async mounted() {
       await this.$store.dispatch('fetchTopLevelStatistics');
+      if(!this.countriesWithDates.length) await this.$store.dispatch('fetchCountriesWithDates');
       this.fetched = true;
-      this.selectedCountryCode = this.countriesStatistics[0].country.code;
+      this.selectedCountryCode = this.countriesWithDates[0].countryCode;
       const activeCountryButton = document.getElementById('chartSelector-' + this.selectedCountryCode);
       activeCountryButton.classList.add('active');
     },
@@ -189,6 +193,9 @@
 
         // Render new line chart for the given country
         this.selectedCountryCode = id;
+      },
+      showMoreStatsClicked(){
+        this.showMoreStats = !this.showMoreStats;
       }
     }
   };
@@ -211,5 +218,29 @@
 
   .chartSelector:hover {
     cursor: pointer;
+  }
+
+  .show-more-icon {
+    display: none;
+  }
+  @media (max-width: 767.98px) {
+    .not-first-5{
+      display: none;
+    }
+    .show-more-icon{
+      display: block;
+      margin-top: -6px;
+      text-align: center;
+      position: relative;
+      top: -3px;
+      .fa {
+        color: #355FAA;
+        font-size: 40px;
+        font-weight: bolder;
+      }
+    }
+    .selector li a {
+      padding: 4px 15px !important;
+    }
   }
 </style>

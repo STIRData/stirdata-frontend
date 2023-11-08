@@ -1,5 +1,8 @@
 <template>
   <Spinner class="text-center" v-if="companiesLoading" />
+  <h3 v-else-if="companiesCallError">
+    An error occured while fetching the data. Please try again or set different search criteria.
+  </h3>
   <h3 v-else-if="totalResults === 0">
     There are no companies in {{ countryFilters.name }} based on Filter
   </h3>
@@ -13,12 +16,12 @@
         from
         {{ totalResults.toLocaleString() }}
       </div>
-      <a class="download">Download Results</a>
+      <!-- <a class="download">Download Results</a> -->
     </div>
     <table class="table table-borderless table-stir">
       <thead>
         <tr>
-          <th scope="col">Company Name</th>
+          <th scope="col" class="company-name-col">Company Name</th>
           <th scope="col">Registration Date</th>
           <th scope="col">Activity</th>
           <th class="end" scope="col">Action</th>
@@ -30,12 +33,13 @@
           :key="company.uri"
         >
           <!-- Company Name -->
-          <td>
+          <td class="company-name-col">
             <b-link
-              :to="{ name: 'company', query: {uri: company.uri} }"
+              :to="company.legalNames ? { name: 'company', query: {iri: company.uri} } : null"
               target="_blank"
+              :class="{ 'empty-legalnames': !company.legalNames }"
             >
-              {{ company.legalNames[0].value }}
+              {{ company.legalNames ? company.legalNames[0].value : 'Legal name not available' }}
             </b-link>
           </td>
           <!-- Registration Date -->
@@ -46,15 +50,36 @@
           <td>
             <div
               v-for="(activity, index) in company.companyActivities"
-              :key="'activity-'+activity.code"
+              :key="'activity-' + company.uri.split('/').at(-1) + activity.code+index"
             >
-              <a
-                :title="activity.label"
-                v-b-tooltip.hover
-              >
-                {{ activity.code }}<span v-if="index != company.companyActivities.length-1">, </span>
+              <a v-if="index < 3" :title="activity.label" v-b-tooltip.hover>
+                {{ activity.code }}<span v-if="index != company.companyActivities.length - 1">, </span>
               </a>
             </div>
+            <template v-if="company.companyActivities && company.companyActivities.length > 3">
+              <b-collapse
+                class=""
+                :id="'collapseMoreNace' + company.uri.split('/').at(-1)"
+                :accordion="'nace-accordion' + company.uri.split('/').at(-1)"
+              >
+                <div
+                  v-for="(activity, index) in company.companyActivities"
+                  :key="'activity-' + company.uri.split('/').at(-1) + activity.code+index"
+                >
+                  <a v-if="index >= 3" :title="activity.label" v-b-tooltip.hover>
+                    {{ activity.code }}<span v-if="index != company.companyActivities.length - 1">, </span>
+                  </a>
+                </div>
+              </b-collapse>
+              <a
+                class="show-more-nace-btn"
+                :id="'collapseMoreNace-' + company.uri.split('/').at(-1) +'-toggle'"
+                v-b-toggle="'collapseMoreNace' + company.uri.split('/').at(-1)"
+                role="tab"
+              >
+                Show <span class="more-text"> more</span> <span class="less-text"> less</span> <i class="fa fa-angle-down rotate"></i>
+              </a>
+            </template>
           </td>
           <!-- Action button -->
           <td class="end">
@@ -71,10 +96,11 @@
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Visit URI
+                Visit IRI
               </b-dropdown-item>
               <b-dropdown-item
-                :to="{ name: 'company', query: {uri: company.uri} }"
+                v-if="company.legalNames"
+                :to="{ name: 'company', query: {iri: company.uri} }"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -160,7 +186,8 @@ export default {
       resultsCompanies: {},
       companiesLoading: true,
       countryFilters: {},
-      countrySearchQuery: ''
+      countrySearchQuery: '',
+      companiesCallError: false
     };
   },
 
@@ -187,23 +214,31 @@ export default {
 
   methods: {
     initiateSearch() {
+      this.companiesCallError = false;
       this.companiesLoading = true;
       this.countryFilters = this.searchFilters.find(filterObj => filterObj.code === this.countryCode);
       this.countrySearchQuery = this.countryFilters.query;
       this.$calls.searchCompanies(this.countrySearchQuery)
         .then(response => {
           this.resultsCompanies = response[0];
-          this.totalResults = this.resultsCompanies.page.totalResults;
-          this.totalPages = Math.ceil(this.totalResults / this.resultsCompanies.page.pageSize);
-          this.currentPage = this.resultsCompanies.page.pageNumber;
-
+          if (this.resultsCompanies) {
+            this.totalResults = this.resultsCompanies.page.totalResults ?? 0;
+            this.totalPages = Math.ceil(this.totalResults / this.resultsCompanies.page.pageSize);
+            this.currentPage = this.resultsCompanies.page.pageNumber;
+          } else {
+            this.totalResults = 0;
+          }
           // Loading the first page is a lot slower than the other pages
           // Solution: we keep the first 20 companies and we load them instantly
           // this.firstResultsCompanies = this.resultsCompanies;
 
           this.companiesLoading = false;
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          console.error(error);
+          this.companiesCallError = true;
+          this.companiesLoading = false;
+        });
     },
     paginationImplementation(pageToGo) {
       if (pageToGo > this.totalPages || pageToGo < 1) return;
@@ -237,6 +272,10 @@ export default {
   cursor: pointer;
 }
 
+.company-name-col {
+  max-width: 350px;
+}
+
 .disabled {
   background-color: rgb(182, 181, 181) !important;
   cursor: not-allowed !important;
@@ -253,6 +292,41 @@ export default {
 
   &:hover {
     border-radius: 0.25rem;
+  }
+}
+
+.empty-legalnames{
+  opacity: 0.5;
+  cursor: text;
+  &:hover{
+    text-decoration: none !important;
+  }
+}
+@media (max-width: 767.98px) {
+  .table-stir {
+    vertical-align: top !important;
+    th, td {
+      padding: 15px 3px !important;
+    }
+  }
+}
+.show-more-nace-btn {
+  color: #355FAA !important;
+  cursor: pointer;
+}
+
+.collapsed{
+  .less-text{
+    display: none;
+  }
+}
+
+.not-collapsed{
+  .more-text{
+    display: none;
+  }
+  .rotate{
+    transform: rotate(180deg);
   }
 }
 </style>

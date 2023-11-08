@@ -34,24 +34,24 @@
             </b-link>
           </li>
           <li>
-            <b-link :to="{ name: 'providers' }">
-              Data Providers
+            <b-link :to="{ name: 'sources' }">
+              Data Sources
             </b-link>
           </li>
         </ul>
       </nav>
       <!-- navigation-->
+      <client-only>
       <nav
-        v-show="!isAuthenticated"
-        class="actionnav"
-      >
+        v-if="!isAuthenticated"
+        class="actionnav">
         <ul>
           <li class="sign">
             <b-link :to="{ name: 'signin' }">
               Sign in
             </b-link>
           </li>
-          <li>
+          <li class="sign-up">
             <b-link
               :to="{ name: 'signup' }"
               class="button"
@@ -62,12 +62,12 @@
         </ul>
       </nav>
       <nav
-        v-if="$auth.loggedIn"
+        v-else
         class="actionnav"
       >
         <b-dropdown
           id="dropdownMenu"
-          class="username"
+          class="username d-md-block d-none"
           variant="outline-none"
           no-caret
           left
@@ -87,14 +87,12 @@
           >
             Saved view
           </b-dropdown-item>
-          <b-dropdown-item
-            class="ml-0 pl-0 dropdown-item"
-            @click="signOut"
-          >
-            Sign out
+          <b-dropdown-item class="ml-0 pl-0 dropdown-item"
+            :to="{ path: '/profile/logout' }"> Sign out
           </b-dropdown-item>
         </b-dropdown>
       </nav>
+      </client-only>
       <!-- hamburger-->
       <b-navbar-toggle target="hamburger-menu">
         <span class="navbar-toggler-icon" />
@@ -116,9 +114,28 @@
           <b-nav-item :to="{ name: 'partners' }">
             Partners
           </b-nav-item>
-          <b-nav-item :to="{ name: 'providers' }">
-            Data Providers
+          <b-nav-item :to="{ name: 'sources' }">
+            Data Sources
           </b-nav-item>
+          <template v-if="!isAuthenticated">
+            <b-nav-item :to="{ name: 'signin' }">
+              Sign in
+            </b-nav-item>
+            <b-nav-item :to="{ name: 'signup' }">
+              Sign up
+            </b-nav-item>
+          </template>
+          <template v-else>
+            <b-nav-item :to="{ name: 'profile' }">
+              Profile
+            </b-nav-item>
+            <b-nav-item :to="{ path: '/profile/savedview' }">
+              Saved View
+            </b-nav-item>
+            <b-nav-item :to="{ path: '/profile/logout' }">
+              Sign out
+            </b-nav-item>
+          </template>
         </b-navbar-nav>
       </b-collapse>
     </b-container>
@@ -145,18 +162,6 @@
 
       isAuthenticated() {
         return this.$auth.loggedIn;
-      }
-    },
-
-    methods: {
-      signOut() {
-        this.$auth.logout();
-        if (this.$solid.auth) {
-          this.$solid.auth.logout()
-            .then(() => {
-              this.$store.commit('setUser', null);
-            });
-        } 
       }
     }
   };

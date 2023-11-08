@@ -12,13 +12,12 @@
     <section class="companydetail" v-else>
       <b-container>
         <b-row>
-          <b-col lg="6" xl="6" class="companydetail-left">
+          <b-col lg="6" xl="6" class="companydetail-left" v-if="company.registeredAddresses && company.registeredAddresses[0].nuts3">
             <div class="companydetail-map">
               <div class="companydetail-map-section">
                 <SimpleMap
                   :region-code="company.registeredAddresses[0].nuts3.code"
                   :lau="company.registeredAddresses[0].lau"
-                  :hasLauSubregions="true"
                 />
               </div>
             </div>
@@ -46,7 +45,7 @@
                     {{ index === 0 ? "Address" : "" }}
                   </b-col>
                   <b-col md="8">
-                    {{ addr.fullAddress }}
+                    {{ addr.fullAddress || createFullAddress(addr) }}
                   </b-col>
                 </b-row>
                 <b-row
@@ -60,7 +59,7 @@
                   <b-col md="8">
                     <div class="category-pill">
                       <ul>
-                        <li>
+                        <li v-if="addr.nuts3">
                           <span class="pill">
                             <b-link
                               :to="{ name: 'statistics-region-region', params: { region: addr.nuts3.code } }"
@@ -71,12 +70,12 @@
                           </span>
                         </li>
                         <ul>
-                          <li class="separator" v-if="addr.lau">
+                          <li class="separator" v-if="addr.lau" :class="{ 'no-parent-separator': !addr.nuts3 }">
                             <ul>
-                              <li>
-                                <span class="pill">
-                                  <a>{{ addr.lau.label }}</a>
-                                </span>
+                              <li class="pill">
+                                <a class="not-clickable">
+                                  {{ addr.lau.label }}
+                                </a>
                               </li>
                             </ul>
                           </li>
@@ -98,14 +97,16 @@
                         <li>
                           <span class="pill">
                             <b-link
-                              :to=" !act.code.includes('tol') ? { name: 'statistics-activity-activity', params: { activity: act.code } } : {}"
-                              :class="act.code.includes('tol') ? 'not-clickable' : ''"
+                              :to="{ name: 'statistics-activity-activity', params: { activity: act.code } }"
                               target="_blank"
                             >
-                              {{ act.label }}
+                              {{ act.label ? act.label : act.code }}
                             </b-link>
                           </span>
                         </li>
+                        <template v-if="act.child">
+                          <ActivityChildNode :child="act.child" />
+                        </template>
                       </ul>
                       <span v-if="allActivitiesLoaded" class="pill" @click="loadMoreActivities">
                         Load more
@@ -114,7 +115,7 @@
                   </b-col>
                 </b-row>
                 <b-row>
-                  <b-col md="4" class="head">URI</b-col>
+                  <b-col md="4" class="head">STIRData IRI</b-col>
                   <b-col md="8">
                     <b-link
                       class="anchor"
@@ -125,6 +126,73 @@
                     </b-link>
                   </b-col>
                 </b-row>
+               <b-row
+                  v-for="(registry, index) in company.sameAs"
+                  :class="index !== company.sameAs.length - 1 ? 'content-row' : ''"
+                  :key="'registry-' + index"
+                >
+                  <b-col md="4" class="head">
+                    {{ index === 0 ? "Business Registry Link" : "" }}
+                  </b-col>
+                  <b-col md="8">
+                    <b-link class="anchor" :href="registry" target="_blank">
+                      {{ registry }}
+                    </b-link>
+                  </b-col>
+                </b-row>
+                <b-row v-if="company.leiCode">
+                  <b-col md="4" class="head">LEI Code</b-col>
+                  <b-col md="8">
+                    <p
+                      class="anchor"
+                    >
+                      {{ company.leiCode }}
+                    </p>
+                  </b-col>
+                </b-row>
+                <div v-if="company.addOns" class="section-addons">
+                  <b-row
+                    v-for="(addOn, indexAddon) in company.addOns" :key="'addon-'+indexAddon"
+                  >
+                    <b-col v-if="addOn.results.length">
+                      <div
+                        class="w-100 head d-inline-flex justify-content-between align-items-center"
+                        v-b-toggle="'collapse-'+indexAddon"
+                      >
+                        <span class="title">{{ addOn.label }}</span>
+                        <font-awesome-icon icon="chevron-down" />
+                      </div>
+                      <b-collapse :id="'collapse-'+indexAddon">
+                        <b-row class="addon-row">
+                          <b-col
+                            v-for="(addOnKey, indexKey) in Object.keys(addOn.results[0])" :key="'addon-header-col-'+indexKey"
+                            class="head text-capitalize"
+                            :class="'col-' + 12/Object.keys(addOn.results[0]).length"
+                          >
+                            {{ fieldName(addOn.fields, addOnKey) }}
+                          </b-col>
+                        </b-row>
+                        <b-row
+                          class="addon-row"
+                          v-for="(row, indexRow) in addOn.results" :key="'addon-row-'+indexRow"
+                        >
+                          <b-col
+                            v-for="(col, indexCol) in row" :key="'addon-col-'+indexCol"
+                            :class="'col-' + 12/Object.keys(addOn.results[0]).length"
+                          >
+                            <span v-if="!col.startsWith('http')">{{ col }}</span>
+                            <font-awesome-icon
+                              v-else
+                              icon="fa-solid fa-arrow-up-right-from-square"
+                              :title="col"
+                              @click="openExternalLink(col)"
+                            />
+                          </b-col>
+                        </b-row>
+                      </b-collapse>
+                    </b-col>
+                  </b-row>
+                </div>
               </div>
             </div>
           </b-col>
@@ -164,7 +232,7 @@ export default {
   },
 
   async mounted() {
-    this.$calls.getCompany(this.$route.query.uri)
+    this.$calls.getCompany(this.$route.query.iri)
       .then(response => {
         this.company = response;
         this.companyActivities = response.companyActivities ? response.companyActivities.slice(0,5) : [];
@@ -183,25 +251,78 @@ export default {
         .reduce((prev, cur) => `${prev} | ${cur.value}`, "")
         .slice(2);
     },
-
     allActivitiesLoaded: function() {
       return this.company.companyActivities ? this.companyActivities.length < this.company.companyActivities.length : true;
     }
   },
 
-  methods:{
+  methods: {
     loadMoreActivities() {
       this.companyActivities = this.company.companyActivities.slice(0,this.companyActivities.length+5)
+    },
+    createFullAddress(address) {
+      let locatorDesignator = address.locatorDesignator ?? '';
+      let street = address.thoroughfare ?? '';
+      let postCode = address.postCode ?? '';
+      let city = address.postName ?? '';
+      return `${street.length ? locatorDesignator : ''} ${street}${street.length ? ',' : ''} ${postCode} ${city}`
+    },
+    openExternalLink(link) {
+      window.open(link, '_blank');
+    },
+    fieldName(addOnFields, key) {
+      for (let field of addOnFields) {
+        if (field.name === key) {
+          return field.label;
+        }
+      }
+      return '-';
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+section.companydetail {
+  @media (max-width: 991.98px) {
+    padding: 0 1rem;
+  }
+}
 .not-clickable {
   cursor: text;
   &:hover {
     text-decoration: none;
   }
+}
+.fa-chevron-down {
+  width: 19px;
+  color: #525558;
+  transform: rotate(0deg);
+  transition: transform 0.2s linear;
+}
+:not(.collapsed) > .fa-chevron-down {
+  color: #377fe8;
+  transform: rotate(-180deg);
+  transition: transform 0.2s linear;
+}
+:not(.collapsed) > .title {
+  font-weight: 600;
+}
+.row:last-of-type {
+  border-bottom: none !important;
+}
+.addon-row {
+  border-bottom: 1px solid #F3F3F2 !important;
+  .col {
+    text-align: center;
+    font-size: 0.875rem;
+  }
+}
+.fa-arrow-up-right-from-square {
+  cursor: pointer;
+  display: var(--fa-display, inline-block);
+  height: 1em;
+  overflow: visible;
+  vertical-align: -.125em;
 }
 </style>

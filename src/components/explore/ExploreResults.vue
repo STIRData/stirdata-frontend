@@ -74,14 +74,14 @@
                       >
                         Activity
                       </b-form-radio>
-                      <b-form-radio
+                      <!-- <b-form-radio
                         v-if="layoutSelected == 'chart'"
                         value="date"
                         v-b-tooltip.hover
                         title="Group based on Date"
                       >
                         Date
-                      </b-form-radio>
+                      </b-form-radio> -->
                     </b-form-radio-group>
                   </b-form-group>
                 </div>
@@ -182,4 +182,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (max-width: 767.98px) {
+  .accordion-companies-button::after {
+    right: 0 !important;
+  }
+  .accordion-statistics-button::after {
+    right: 0 !important;
+  }
+}
 </style>

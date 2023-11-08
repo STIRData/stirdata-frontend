@@ -1,30 +1,22 @@
 <template>
-  <main
-    role="main"
-  >
+  <main role="main">
     <b-container>
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>
-    <div
-      v-if="loading"
-      class="text-center"
-    >
-      <Spinner />
+    <div v-if="$fetchState.pending"
+      class="text-center">
+      <Spinner/>
     </div>
-    <div
-      v-if="!loading"
-      class="pageintro"
-    >
+    <div v-else-if="$fetchState.error"><b-container>Error while fetching statistics. Please try again</b-container></div>
+   <div v-else>
+    <div class="pageintro">
       <div class="container">
         <div class="headingtext">
           <h1>{{ currentActivity.activity[0].label }}</h1>
         </div>
       </div>
     </div>
-    <section
-      v-if="!loading"
-      class="statisticsdetail"
-    >
+    <section class="statisticsdetail">
       <b-container>
         <b-row>
           <b-col
@@ -35,26 +27,27 @@
             <ul class="counter">
               <li v-if="countries.length">
                 <span class="count">{{ countries.length }}</span>
-                <span class="text"> European <br>Countries</span>
+                <span class="text" v-if="currentRegion"> regions in <br/>{{currentRegion.country.label}}{{ currentRegion && currentRegion.place ? `, ${currentRegion.place[0].label}` : ''}}</span>
+                <span class="text" v-else> European Countries<br/><br/></span>
               </li>
               <li>
                 <span class="count">
-                  {{ Number(currentActivity.count).toLocaleString() }}
+                  {{ activitiesTotalCount.toLocaleString() }}
                 </span>
                 <span class="text">Registered<br>Companies</span>
               </li>
             </ul>
             <!-- TODO: to be replaced with activity specific image -->
             <div class="activityimage">
-              <img src="../../../assets/img/icons/activity/manufacturing.jpg">
+              <img :src="getTopLevelImagePath">
             </div>
             <div class="activitylist">
               <div class="headingtext">
                 <h2>Explore other Business Activity in STIRDATA</h2>
               </div>
               <div>
+                <client-only>
                 <VueSlickCarousel
-                  v-if="!loading"
                   v-bind="activityCarouselSettings"
                 >
                   <ul
@@ -67,7 +60,7 @@
                     >
                       <b-link
                         class="wrap"
-                        :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
+                       :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
                       >
                         <div class="icon">
                           <img :src="getImagePath(activity)">
@@ -100,6 +93,7 @@
                     </button>
                   </template>
                 </VueSlickCarousel>
+                </client-only>
               </div>
             </div>
           </b-col>
@@ -114,7 +108,7 @@
             >
               <div class="headingtext">
                 <h2>
-                  Statistics by {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
+                  Statistics by {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity {{ currentRegion ? `in ${currentRegion.country.label}` : '' }}{{ currentRegion && currentRegion.place ? `, ${currentRegion.place[0].label}` : ''}}
                 </h2>
               </div>
               <!-- line stats-->
@@ -134,23 +128,21 @@
                     </div>
                   </li>
                   <li
-                    v-for="activity in subactivities"
-                    :key="activity.activity[0].code"
+                    v-for="(activity,index) in subactivities"
+                    :key="'A'+index"
                   >
                     <div class="wrap">
-                      <div class="subject">
-                        <b-link
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="capitalizeTheFirstLetterOfEachWord(activity.activity[0].label)"
+                      >
+                        <b-link :disabled="isRegionLeaf && activity.activity[0].leaf"
                           :id="activity.activity[0].code+'-label'"
-                          :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
+                          :to="currentRegion ? { name: 'statistics-activity-activity', query:{ activity: activity.activity[0].code.split(':')[1], place:  currentRegion.place ? currentRegion.place[0].code : currentRegion.country.code } } : { name: 'statistics-activity-activity', query:{ activity:  activity.activity[0].code.split(':')[1]}} "
                         >
                           {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-link>
-                        <b-tooltip
-                          :target="activity.activity[0].code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="detail-a">
@@ -174,9 +166,9 @@
                 </ul>
                 <!-- <br /> -->
                 <div class="action">
-                  <b-link :to="{ name: 'explore' }">
+                  <b-link :to="{ name: 'explore', params: { naceFilter: naceCode , nutsFilter: regionCode} }">
                     <span class="text">
-                      Explore all companies for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
+                      Explore all companies for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity {{ currentRegion ? `in ${currentRegion.country.label}` : '' }}{{ currentRegion && currentRegion.place ? `, ${currentRegion.place[0].label}` : ''}}
                     </span>
                     <span class="icon"><i class="fa fa-angle-right" /></span>
                   </b-link>
@@ -185,11 +177,10 @@
             </div>
             <div
               v-if="countries.length"
-              class="activitystats"
-            >
+              class="activitystats">
               <div class="headingtext">
                 <h2>
-                  Top 5 countries by companies amount in {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }}
+                  Top 5 {{regionCode === '' ?  "countries" : "regions"}} by companies amount in {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} {{ currentRegion ? `in ${currentRegion.country.label}` : '' }}{{ currentRegion && currentRegion.place ? `, ${currentRegion.place[0].label}` : ''}}
                 </h2>
               </div>
               <div class="chart-line-c line-stats-dynamic">
@@ -205,8 +196,8 @@
                     :style="{ 'background-color': colors[index] }"
                   />
                   <b-tooltip
-                    v-for="country in countries.slice(0, 5)"
-                    :key="country.country.code"
+                    v-for="(country, index) in countries.slice(0, 5)"
+                    :key="'B'+index"
                     :target="country.country.code"
                     triggers="hover"
                   >
@@ -217,7 +208,7 @@
                   <li class="heading">
                     <div class="wrap">
                       <div class="subject">
-                        Country
+                        {{regionCode === '' ?  "Country" : "Region"}}
                       </div>
                       <div class="stat">
                         Companies
@@ -227,28 +218,27 @@
                       </div>
                     </div>
                   </li>
+                  <template v-if="regionCode===''">
                   <li
                     v-for="(country, index) in countries.slice(0, 5)"
-                    :key="country.country.code"
+                    :key="'C'+index"
                   >
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="country.country.label"
+                      >
                         <div
                           class="color"
                           :style="{ 'background-color': colors[index] }"
                         />
                         <b-link
                           :id="country.country.code+'-label'"
-                          :to="{ name: 'statistics-region-region', params: { region: country.country.code } }"
+                          :to="{ name: 'statistics-activity-activity', query:{ activity: naceCode, place: country.country.code } }"
                         >
                           {{ country.country.label }}
                         </b-link>
-                        <b-tooltip
-                          :target="country.country.code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ country.country.label }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="count">
@@ -260,9 +250,43 @@
                       </div>
                     </div>
                   </li>
+                  </template>
+                  <template v-else>
+                  <li
+                    v-for="(place, index) in countries.slice(0, 5)"
+                    :key="'D'+index"
+                  >
+                    <div class="wrap">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="place.place[0].label"
+                      >
+                        <div
+                          class="color"
+                          :style="{ 'background-color': colors[index] }"
+                        />
+                        <b-link :disabled="isActivityLeaf && place.place[0].leaf"
+                          :id="place.place[0].code+'-label'"
+                          :to="{ name: 'statistics-activity-activity', query:{ activity: naceCode, place: place.place[0].code } }"
+                        >
+                          {{ place.place[0].label }}
+                        </b-link>
+                      </div>
+                      <div class="stat">
+                        <span class="count">
+                          {{ Number(place.count).toLocaleString() }}
+                        </span>
+                      </div>
+                      <div class="scale percentage">
+                        {{ percentage(place.count, currentActivity.count) }}%
+                      </div>
+                    </div>
+                  </li>
+                  </template>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'explore' }">
+                  <b-link :to="{ name: 'explore', params: { naceFilter: naceCode } }">
                     <span class="text">
                       Explore all countries for {{ capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label) }} Business Activity
                     </span>
@@ -275,18 +299,16 @@
         </b-row>
       </b-container>
     </section>
+    </div>
   </main>
 </template>
 
 <script>
-  import VueSlickCarousel from 'vue-slick-carousel';
-  import 'vue-slick-carousel/dist/vue-slick-carousel.css';
   import { mapState } from 'vuex';
 
   export default {
     components: {
-      Breadcrumb: () => import('../../../components/Breadcrumb'),
-      VueSlickCarousel
+      Breadcrumb: () => import('../../../components/Breadcrumb')
     },
 
     data() {
@@ -332,15 +354,30 @@
         ],
         breadcrumb_items: [],
         currentActivity: {},
+        currentRegion: null,
         loading: true,
         subactivities: [],
-        countries: []
+        activitiesTotalCount: 0,
+        countries: [],
+        naceCode: '',
+        nace: '',
+        region: '',
+        regionCode: '',
+        isRegionLeaf: false,
+        isActivityLeaf: false,
+        imageCode: ''
       };
     },
-
-    async mounted() {
-      let nace = this.$route.params.activity;
-      await this.$calls.getActivityStatistics(nace)
+   watch: {
+    '$route.params': '$fetch'
+    },
+    async fetch() {
+      this.nace = this.$route.params.activity ? this.$route.params.activity : this.$route.query.activity;
+      this.region = this.$route.query && this.$route.query.place ? this.$route.query.place : '';
+      this.naceCode = this.nace.includes(':') ? this.nace : `nace-rev2:${this.nace}`;
+      if(this.region!=='')
+       this.regionCode = this.region.includes(':') ? this.region : `nuts:${this.region}`;
+      await this.$calls.getActivityByRegionStatistics(this.nace, this.regionCode)
         .then(response => {
           this.subactivities = response.activityGroups ?? [];
           this.countries = response.placeGroups ?? [];
@@ -354,20 +391,25 @@
             }
             return 0;
           }
-          this.activitiesTotalCount = this.subactivities.reduce(((a,b) => a + b.count), 0);
+          this.activitiesTotalCount = response.selection.count ?? this.subactivities.reduce(((a,b) => a + b.count), 0);
           this.subactivities.sort(sortByCount);
           this.countries.sort(sortByCount);
+          if(this.region.length)
+              this.currentRegion = response.selection;
+
+          this.isRegionLeaf = response.selection.place ? response.selection.place[0].leaf : false;
+          this.isActivityLeaf = response.selection.activity ? response.selection.activity[0].leaf : false;
+          this.getActivityTopLevelParentCode(this.nace);
         });
 
       if (this.activities.length === 0) {
         await this.$store.dispatch('fetchTopLevelStatistics');
       }
-      this.currentActivity = await this.$calls.getActivityData(nace)
+      this.currentActivity = await this.$calls.getActivityData(this.nace)
         .then(response => response.selection);
       this.addActivityInBreadcrumb;
-      this.loading = false;
     },
-
+    fetchOnServer: false,
     computed: {
     ...mapState({
       activities: state => state.activitiesStatistics
@@ -396,11 +438,17 @@
           }
         ];
       }
+    },
+    getTopLevelImagePath() {
+      return require(`../../../assets/img/icons/activity/${this.imageCode}.jpeg`);
     }
     },
 
     methods: {
       percentage(count, totalCount) {
+        if(count == 0) {
+          return 0;
+        }
         return ((count / totalCount) * 100).toFixed(1) === '0.0' ? 0.1 : Number(((count / totalCount) * 100).toFixed(1));
       },
       arraySlice(start, end) {
@@ -419,7 +467,14 @@
       },
       getImagePath(activity) {
         return require(`../../../assets/img/icons/ic-${activity.activity[0].code.split(':')[1]}.png`);
-      }
+      },
+      async getActivityTopLevelParentCode(activityCode) {
+        await this.$calls
+          .getActivityTopLevelParent(activityCode)
+          .then((response) => {
+            this.imageCode = response.code;
+          });
+      },
     }
   };
 </script>
@@ -432,11 +487,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  ::v-deep .arrow::before {
-    border-top-color: $accent-first-color;
-    border-bottom-color: $accent-first-color;
   }
 
   body main[role=main] .chart-line-c .action a,
@@ -452,5 +502,14 @@
     span.icon {
       top: 0;
     }
+  }
+
+  .disabled {
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    margin-right: 0.5rem;
   }
 </style>

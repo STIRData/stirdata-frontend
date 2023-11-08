@@ -23,32 +23,48 @@
               technologies as the means to overcome the technical barriers that
               hamper the reuse of open data, namely, poor quality and limited
               availability of Open Data. In particular, the Action seeks to
-              assist data providers through a set of data specifications,
+              assist data sources through a set of data specifications,
               guidelines, and an accompanying harmonisation toolset for
               streamlining and facilitating the process of enriching and
               publishing company data as Linked Data.
             </p>
             <!-- counter-->
-            <ul class="counter">
+
+            <ul class="counter" v-if="fetched">
               <li>
-                <span class="count">10</span><span class="text"> European <br>Countries</span>
+                <span class="count">{{ countriesStatistics.length }}</span><span class="text"> European <br>Countries</span>
               </li>
               <li>
-                <span class="count">1,5M+</span><span class="text">Registered<br>Companies</span>
+                <span class="count">{{ totalCompanies.toLocaleString()}}</span><span class="text">Registered<br>Companies</span>
               </li>
               <li>
-                <span class="count">21</span><span class="text"> Business<br>Activities</span>
+                <span class="count">{{ activitiesStatistics.length }}</span><span class="text"> Business<br>Activities</span>
               </li>
             </ul>
+            <div
+              v-else
+              class="d-flex justify-content-center"
+            >
+              <Spinner />
+            </div>
             <!-- button nav-->
             <b-nav class="heronav">
-              <ul>
+              <ul class="w-100 d-flex justify-content-between">
                 <li>
                   <b-link
                     class="button"
                     :to="{ name: 'partners'}"
                   >
                     View Partners
+                  </b-link>
+                </li>
+                <li>
+                  <b-link
+                    class="button ml-2"
+                    href="https://stirdata.eu/"
+                    target="_blank"
+                  >
+                    About STIRData Project
                   </b-link>
                 </li>
               </ul>
@@ -85,13 +101,12 @@
                   src="../../assets/img/ic-remarks.png"
                 >
                 <p>Contact us for more information regarding STIRDATA</p>
-                <!-- button nav-->
                 <nav class="heronav">
                   <ul>
                     <li>
                       <a
                         class="button"
-                        href="#"
+                        href="mailto:stirdata-portal@ails.ece.ntua.gr"
                       >Contact Us</a>
                     </li>
                   </ul>
@@ -129,6 +144,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+
   export default {
     components: {
       Breadcrumb: () => import('../../components/Breadcrumb')
@@ -145,8 +162,22 @@
             text: 'ABOUT',
             active: true
           }
-        ]
+        ],
+        fetched: false
       };
+    },
+
+    computed: {
+      ...mapState({
+        countriesStatistics: state => state.countriesStatistics,
+        activitiesStatistics: state => state.activitiesStatistics,
+        totalCompanies: state => state.totalCompanies
+      })
+    },
+
+    async mounted() {
+      await this.$store.dispatch('fetchTopLevelStatistics');
+      this.fetched = true;
     },
 
     methods: {

@@ -14,7 +14,7 @@
               <ul>
                 <b-nav-item :to="{ name: 'profile' }">Profile</b-nav-item>
                 <b-nav-item class="active" :to="{ name: 'profile-savedview' }">Saved view</b-nav-item>
-                <b-nav-item @click="signOut()">Sign out</b-nav-item>
+                <b-nav-item :to="{ path: 'logout' }">Sign out</b-nav-item>
               </ul>
             </nav>
           </b-col>
@@ -44,8 +44,13 @@
                 </thead>
                 <tbody>
                   <tr v-for="view of views" :key="view.creationDate">
-                    <!-- <td><a href="savedviewdetail.html">{{view.name}}</a></td> -->
-                    <td><a>{{view.name}}</a></td>
+                    <td>
+                      <b-link
+                        :to="{ name: 'explore', params: { savedViewId: view.id } }"
+                      >
+                        {{ view.name }}
+                      </b-link>
+                    </td>
                     <td>{{view.creationDate | formatDate}}</td>
                     <td class="end">
                       <b-dropdown
@@ -56,6 +61,11 @@
                         <template #button-content>
                           <img src="../../../assets/img/ic-bullets.png"/>
                         </template>
+                        <b-dropdown-item
+                          :to="{ name: 'explore', params: { savedViewId: view.id } }"
+                        >
+                          Show
+                        </b-dropdown-item>
                         <b-dropdown-item
                           target="_blank"
                           rel="noopener noreferrer"
@@ -143,23 +153,6 @@ export default {
       await this.$calls.deleteView(id)
       this.views = await this.$calls.getSavedViews();
       this.loading = false;
-    },
-    signOut() {
-      if (this.$solid.auth) {
-        this.$solid.auth.logout()
-          .then(() => {
-            this.$store.commit('setUser', null);
-          });
-      } else {
-        let auth2 = gapi.auth2.getAuthInstance();
-        auth2
-          .signOut()
-          .then(() => {
-            auth2.disconnect();
-          })
-          .then(this.$store.commit('setUser', null));
-      }
-      this.$router.push('/');
     },
     reset() {
 

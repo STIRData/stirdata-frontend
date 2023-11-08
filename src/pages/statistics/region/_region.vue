@@ -1,7 +1,5 @@
 <template>
-  <main
-    role="main"
-  >
+  <main role="main">
     <b-container>
       <Breadcrumb :breadcrumb_items="breadcrumb_items" />
     </b-container>
@@ -9,25 +7,22 @@
       v-if="$fetchState.pending"
       class="text-center"
     >
-      <Spinner />
+      <Spinner/>
     </div>
-    <div v-else> 
-    <b-container
-    >
+    <div v-else-if="$fetchState.error"><b-container>Error while fetching statistics. Please try again</b-container></div>
+    <div v-else>
+    <b-container>
       <div class="headingtext">
-        <h1>{{ regionLabel }}</h1>
+        <h1>{{ regionLabel }} {{ currentActivity ? `for ${capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label)}` : '' }}</h1>
       </div>
     </b-container>
-    <section
-      class="statisticsdetail"
-    >
-    <b-container>
+    <section class="statisticsdetail">
+      <b-container>
         <b-row>
           <b-col
             lg="6"
             xl="7"
-            class="statisticsdetail-left"
-          >
+            class="statisticsdetail-left">
             <ul class="counter">
               <li v-show="subregionsCount">
                 <span class="count">{{ subregionsCount }}</span>
@@ -40,7 +35,7 @@
                 <span class="text">Registered<br>Companies</span>
               </li>
               <li v-show="activities.length">
-                <span class="count">{{ activitiesCount }}</span>
+                <span class="count">{{ activitiesCount.toLocaleString() }}</span>
                 <span class="text"> Business<br>Activities</span>
               </li>
             </ul>
@@ -48,10 +43,11 @@
               <div class="statisticsmap-section">
                 <SimpleMap
                   :region-code="regionCode"
-                  :hasLauSubregions="hasLauSubregions"
+                  :nace-code="nace"
+                  :isActivityLeaf="isActivityLeaf"
                 />
                 <div
-                  v-show="!hasLauSubregions"
+                  v-show="!isRegionLeaf"
                   class="maps-notify py-1"
                 >
                   <i class="fa fa-info-circle" />Click an area on the map to select a subregion
@@ -112,7 +108,7 @@
               class="regionstats"
             >
               <div class="headingtext">
-                <h2>Statistics by region in {{ regionLabel }}</h2>
+                <h2>Statistics by region in {{ regionLabel }} {{ currentActivity ? `for ${capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label)}` : ''  }}</h2>
                 <p>
                   {{ Number(regionTotalCount).toLocaleString() }} Registered Companies in {{ subregionsCount }} Regions
                 </p>
@@ -134,23 +130,22 @@
                   </li>
                   <li
                     v-for="reg in subregions"
-                    :key="reg.place[0].code"
-                  >
+                    :key="reg.place[0].code">
                     <div class="wrap">
-                      <div class="subject">
-                        <b-link
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="reg.place[0].label"
+                        @mouseover="regionHover(reg.place[0])"
+                        @mouseleave="regionHover(null)"
+                      >
+                        <b-link :disabled="isActivityLeaf && reg.place[0].leaf"
                           :id="reg.place[0].code+'-label'"
                           class="wrap"
-                          :to="!regionIsLau(reg.place[0].code) ? { name: 'statistics-region-region', params: { region: reg.place[0].code } } : {}"
-                        >
+                          :to="currentActivity ? { name: 'statistics-region-region', query:{ activity: currentActivity.activity[0].code.split(':')[1], place: reg.place[0].code }}   : { name: 'statistics-region-region', params: { region: reg.place[0].code } } "
+                       >
                           {{ reg.place[0].label }}
                         </b-link>
-                        <b-tooltip
-                          :target="reg.place[0].code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ reg.place[0].label }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="detail-a">
@@ -170,9 +165,9 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'explore' }">
+                  <b-link :to="{ name: 'explore', params: { nutsFilter: regionCode,  naceFilter: naceCode } }">
                     <span class="text">
-                      Explore all companies in {{ regionLabel }}
+                      Explore all companies in {{ regionLabel }} {{ currentActivity ? `for ${capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label)}` : ''  }}
                     </span>
                     <span class="icon"><i class="fa fa-angle-right" /></span>
                   </b-link>
@@ -181,11 +176,10 @@
             </div>
             <div
               v-show="activities.length"
-              class="activitystats"
-            >
+              class="activitystats">
               <div class="headingtext">
                 <h2>
-                  Top 5 activities by companies amount in {{ regionLabel }}
+                  Top 5 activities by companies amount in {{ regionLabel }}{{ currentActivity ? ` for ${capitalizeTheFirstLetterOfEachWord(currentActivity.activity[0].label)}` : ''  }}
                 </h2>
                 <p>
                   {{ Number(activitiesTotalCount).toLocaleString() }} Registered Activity Codes in {{ activitiesCount }} Activities
@@ -243,23 +237,22 @@
                     :key="activity.activity[0].code"
                   >
                     <div class="wrap">
-                      <div class="subject">
+                      <div
+                        class="subject"
+                        v-b-tooltip.hover.left
+                        :title="capitalizeTheFirstLetterOfEachWord(activity.activity[0].label)"
+                      >
                         <div
                           class="color"
                           :style="{ 'background-color': colors[index] }"
                         />
-                        <b-link
+                        <b-link :disabled="isRegionLeaf && activity.activity[0].leaf"
                           :id="activity.activity[0].code+'-label'"
-                          :to="{ name: 'statistics-activity-activity', params: { activity: activity.activity[0].code.split(':')[1] } }"
+                          :to="{ name: 'statistics-region-region', query: { activity: activity.activity[0].code.split(':')[1] , place: region} }"
+
                         >
                           {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
                         </b-link>
-                        <b-tooltip
-                          :target="activity.activity[0].code+'-label'"
-                          triggers="hover"
-                        >
-                          {{ capitalizeTheFirstLetterOfEachWord(activity.activity[0].label) }}
-                        </b-tooltip>
                       </div>
                       <div class="stat">
                         <span class="count">
@@ -292,7 +285,7 @@
                   </li>
                 </ul>
                 <div class="action">
-                  <b-link :to="{ name: 'explore' }">
+                  <b-link :to="{ name: 'explore', params: { nutsFilter: regionCode } }">
                     <span class="text">
                       Explore all Business Activities in {{ regionLabel }}
                     </span>
@@ -338,13 +331,21 @@
         regionTotalCount: 0,
         activitiesTotalCount: 0,
         regionLabel: '',
+        currentActivity: null,
         subregionTemplate: false,
-        country: {}
+        country: {},
+        naceCode: '',
+        nace: '',
+        region: '',
+        timeout: null,
+        isRegionLeaf: false,
+        isActivityLeaf: false
       };
     },
     computed: {
     ...mapState({
-      allCountries: state => state.countriesStatistics
+      allCountries: state => state.countriesStatistics,
+      hoveredRegion: state => state.hoveredRegion
     }),
     hasLauSubregions() {
       return  this.subregions.length ? this.subregions[0].place[0].code.split(':')[0] === 'lau' : true;
@@ -407,16 +408,31 @@
       return this.activitiesTotalCount - sum;
     }
     },
+    watch: {
+     '$route.params': '$fetch'
+    },
     async fetch() {
-      await this.$calls.getRegionStatistics(this.$route.params.region)
+      this.region = this.$route.params.region ? this.$route.params.region : this.$route.query.place;
+      this.nace = this.$route.query && this.$route.query.activity ? this.$route.query.activity : '';
+      if(this.nace!=='')
+       this.naceCode = this.nace.includes(':') ? this.nace : `nace-rev2:${this.nace}`;
+      if(this.region!=='')
+       this.regionCode = this.region.includes(':') ? this.region : `nuts:${this.region}`;
+      await this.$calls.getActivityByRegionStatistics(this.nace, this.region)
         .then(response => {
           this.subregions = response.placeGroups ?? [];
           this.activities = response.activityGroups ?? [];
           // Update the code and the dates in order to render the chart
-          this.regionCode = this.$route.params.region;
           this.foundingDates = response.foundingDateGroups ?? [];
           this.dissolutionDates = response.dissolutionDateGroups ?? [];
-
+          if(response.selection){
+            this.subregionTemplate = 'place' in response.selection;
+            this.regionLabel = this.subregionTemplate ? response.selection.place[0].label : response.selection.country.label;
+            this.country = response.selection.country;
+            this.isRegionLeaf = response.selection.place ? response.selection.place[0].leaf : false;
+            this.isActivityLeaf = response.selection.activity ? response.selection.activity[0].leaf : false;
+            this.addCountryNameInBreadcrumb;
+          }
           function sortByCount(a, b) {
             if (a.count < b.count) {
               return 1;
@@ -426,36 +442,40 @@
             }
             return 0;
           }
+          this.regionTotalCount = response.selection.count;
           this.subregions.sort(sortByCount);
           this.activities.sort(sortByCount);
         });
-        this.activitiesTotalCount = this.activities.reduce(((a,b) => a + b.count), 0)
-      await this.$calls.getRegionData(this.$route.params.region)
-        .then(response => {
-          this.regionTotalCount = response.selection.count;
-          this.subregionTemplate = 'place' in response.selection;
-          this.regionLabel = this.subregionTemplate ? response.selection.place[0].label : response.selection.country.label;
-          this.country = response.selection.country;
-          this.addCountryNameInBreadcrumb;
-        });
-    
+
       await this.$store.dispatch('fetchTopLevelStatistics');
-      
+      this.activitiesTotalCount = this.activities.reduce(((a,b) => a + b.count), 0);
+
+      if(this.nace)
+        this.currentActivity = await this.$calls.getActivityData(this.nace)
+          .then(response => response.selection);
+
      // this.loading = false;
     },
-
+    fetchOnServer: false,
     methods: {
-      regionIsLau(code){
+     regionIsLau(code){
         return code.split(':')[0] === 'lau'
       },
       getImagePath(country) {
         try {
           return require(`../../../assets/img/icons/ic-${country.country.code.toLowerCase()}.png`);
         } catch (e) {
-          return require('../../../assets/img/broken-image.png');
+            try {
+            return require(`../../../assets/img/icons/ic-${country.country.code.toLowerCase()}.svg`);
+          } catch (e) {
+            return require('../../../assets/img/broken-image.png');
+          }
         }
       },
       percentage(count, totalCount) {
+        if (count == 0){
+          return 0;
+        }
         return ((count / totalCount) * 100).toFixed(1) === '0.0' ? 0.1 : Number(((count / totalCount) * 100).toFixed(1));
       },
       capitalizeTheFirstLetterOfEachWord(words) {
@@ -468,7 +488,13 @@
           separateWord = separateWord.slice(0, 75) + '...';
         }
         return separateWord;
-      }
+      },
+      regionHover(region){
+        if (this.timeout) clearTimeout(this.timeout)
+          this.timeout = setTimeout(() => {
+            this.$store.commit('setHoveredRegion', region);
+          }, 100)
+      },
     }
   };
 </script>
@@ -480,11 +506,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  ::v-deep .arrow::before {
-    border-top-color: $accent-first-color;
-    border-bottom-color: $accent-first-color;
   }
 
   body main[role=main] .chart-line-b .action a,
@@ -500,5 +521,14 @@
     span.icon {
       top: 0;
     }
+  }
+
+  .disabled {
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    margin-right: 0.5rem;
   }
 </style>

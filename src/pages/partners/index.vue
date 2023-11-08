@@ -5,11 +5,9 @@
     </b-container>
     <b-container>
       <div class="headingtext">
-        <h1>STIRDATA Partners</h1>
+        <h1>STIRData Partners</h1>
         <p class="half">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam.
+          The STIRData Consortium has been set up around a core group of data experts from public administrations and technical experts. The list of partners can be found below.
         </p>
       </div>
     </b-container>
